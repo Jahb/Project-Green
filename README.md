@@ -7,6 +7,9 @@ Julius de Jeu
 Paul Stepanov
 ![Paul Stepanov](/doc/images/cvpoza.png)`
 
+Pablo Rodrigo 
+![Pablo Rodrigo](/doc/images/PabloRodrigo.jpg)
+
 ###### Other people add here
 
 ## PDP's
@@ -62,3 +65,34 @@ R: I only had the first real contact with Databases last quarter so it's pretty 
 O: I could try to be responsible for the Database part of our project but in the same time discuss all the matters with my teammates. I don't really think that there will be a problem regarding this, so I guess nothing is currently stopping me from reaching this goal.
 
 W: First, I wanna do some research of how you have to include databases in the project, and then actually start trying to code and put all my ideas altogether. I am going to start this as soons as possible. The first concrete step is actually starting to test things on my own in order to gain some experience. My teammates will help me by deciding which options are better (code, style, performance).
+
+###Pablo 
+
+My two strong points are strategical vision and consistence. An example of consistence is the fact I was able to make a game in assembly without any prior knowledge in two weeks, by working hard and not stopying until achieving it. In a team I think both attributes are key, the first one helps when developing the concept and throughout the process to not loose track of the leng-endterms goals. The second one is seen when problems appear and you must keep working until finding a solution. 
+
+My two weak points are my prior knowledge and too perfectionist.  One example of this is the time I lose in details in every project, nevertheless I like it. The first point refers to my lack of previous knowledge before starting the university related to programming which restricts me when starting big projects like this one. 
+
+CORE QUADRANT
+
+
+
+G- 
+My goal within is this project is to expand my programming capablities and enlarge my tools when facing new problems in the future. As well, I would like to learn how to make the most of the process of working in a team towards the same aim, and learn organizational dificulties in order to prevent them from happining in future projects. 
+
+Both aims are tightly related to the success of future projects and that is why they are important for me. 
+
+I think this goals can never be fully achieved. However as more experience better abilities, therefore better performance. 
+
+R- 
+
+Yes, I truly think I’m doing my best in order to achieve bothe above mentioned goals. My programming knowledge is improving at its pace. Time, I would like to have more free time to focus on learning specific skills inside the programming field. 
+
+O- 
+
+The main path to achieve the mentioned goals is keep working and gaining experience along the project. I would like to learn and improve my skills when problems come to scene. I don’t think there is anything special that is not letting me achieve this goal.
+
+W-
+
+I am going to keep working hard towards my goal. From now on, I am already in the process of achieving the goal. I think strategy is key in fighting for goals, and right now I can do the strategy of the path towards my goals. My second goal is a collective goal, therefore to be achieved I need the collaboration of all the teammates. 
+
+First of all I am going to deconstruct the aim, in small steps, identify the difficulties and try to work on them as hard as I can
