@@ -10,6 +10,9 @@ Paul Stepanov
 Pablo Rodrigo 
 ![Pablo Rodrigo](/doc/images/PabloRodrigo.jpg)
 
+Vlad Florea
+![Vlad Florea](/doc/images/22d61c22-5ff1-4183-8bf7-37117d17b57a.jpg)
+
 ###### Other people add here
 
 ## PDP's
