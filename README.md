@@ -12,6 +12,7 @@ Pablo Rodrigo
 
 Vlad Florea
 ![Vlad Florea](/doc/images/22d61c22-5ff1-4183-8bf7-37117d17b57a.jpg)
+<img src="/doc/images/22d61c22-5ff1-4183-8bf7-37117d17b57a.jpg"  width="120" height="120">
 
 ###### Other people add here
 
