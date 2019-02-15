@@ -33,9 +33,3 @@ In both cases nothing is really stopping me from reaching my goals.
 ###W - Will (Motivation, plan of action)
 * For the leading part I will constantly try to steer the group in the right direction, since it is also benifitial for the rest of the group. I will do this every meeting, and maybe inbetween via WhatsApp. The first step is be appointed chairman, and that already happened. My teammates can help me by telling me what to change if I do something wrong in their eyes. 
 * For the explaining part I am going to try to help my teammates when they need it, mostly explaining things that arent immediately clear. I will do this when it is needed. And i cant really do that right now, first my teammates need to have questions. My teammates can help by asking me all the questions they want answered. I can't really make a concrete plan for this, since it depends on my teammates asking questions. 
-
-What are you going to do to reach your goal?
-When are you going to do this?
-What is the first concrete step you can take RIGHT NOW?
-How can your teammates help you achieve this goal?
-Can you make an action plan with concrete steps to help you achieve your goal?
