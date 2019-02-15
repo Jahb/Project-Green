@@ -97,7 +97,7 @@ I am going to keep working hard towards my goal. From now on, I am already in th
 
 First of all I am going to deconstruct the aim, in small steps, identify the difficulties and try to work on them as hard as I can
 
-###Vlad Florea
+### Vlad Florea
 
 
 Strong points:
