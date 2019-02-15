@@ -66,7 +66,7 @@ O: I could try to be responsible for the Database part of our project but in the
 
 W: First, I wanna do some research of how you have to include databases in the project, and then actually start trying to code and put all my ideas altogether. I am going to start this as soons as possible. The first concrete step is actually starting to test things on my own in order to gain some experience. My teammates will help me by deciding which options are better (code, style, performance).
 
-###Pablo 
+### Pablo 
 
 My two strong points are strategical vision and consistence. An example of consistence is the fact I was able to make a game in assembly without any prior knowledge in two weeks, by working hard and not stopying until achieving it. In a team I think both attributes are key, the first one helps when developing the concept and throughout the process to not loose track of the leng-endterms goals. The second one is seen when problems appear and you must keep working until finding a solution. 
 
