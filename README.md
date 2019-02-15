@@ -101,34 +101,34 @@ First of all I am going to deconstruct the aim, in small steps, identify the dif
 
 
 Strong points:
-*I enjoy working in a team and it gives me motivation to not waste any time.
-*I am creatively focused and enjoy learning new things and brainstorming.
+* I enjoy working in a team and it gives me motivation to not waste any time.
+* I am creatively focused and enjoy learning new things and brainstorming.
 
 Weak points:
-*I am prone to procrastinating and get anxiety from having deadlines closing in on me.
-*I don’t have extensive experience with Java programming and I get overwhelmed by work at times.
+* I am prone to procrastinating and get anxiety from having deadlines closing in on me.
+* I don’t have extensive experience with Java programming and I get overwhelmed by work at times.
 
 
 G- Goal:
-*Finishing the project as soon as possible while still delivering a complete and functional design.
-*Discovering new facets of programming (JavaFX, using databases) and expanding upon my knowledge.
-*Learning to work better as part of a team and becoming more focused overall.
-*I wish to achieve all of these goals by the end of this project.
+* Finishing the project as soon as possible while still delivering a complete and functional design.
+* Discovering new facets of programming (JavaFX, using databases) and expanding upon my knowledge.
+* Learning to work better as part of a team and becoming more focused overall.
+* I wish to achieve all of these goals by the end of this project.
 
 R- Reality:
-*I’m eager to start work and slightly intimidated by the scale of the project.
-*I’m optimistic about the capabilities of my team and hoping I don’t let anyone down.
-*I feel like I still get sidetracked too easily when I should be doing work.
+* I’m eager to start work and slightly intimidated by the scale of the project.
+* I’m optimistic about the capabilities of my team and hoping I don’t let anyone down.
+* I feel like I still get sidetracked too easily when I should be doing work.
 
 O- Options:
-*Communicating with my team regularly and keeping track constantly of where I am with regards to achieving the goals I’ve set.
-*Keeping a tight schedule and trying to not waste any time.
-*I will use both of these options.
+* Communicating with my team regularly and keeping track constantly of where I am with regards to achieving the goals I’ve set.
+* Keeping a tight schedule and trying to not waste any time.
+* I will use both of these options.
 *Nothing is stopping me from reaching my goals aside from my own mental conditioning.
 
 W- Will:
-*I am going to start studying JavaFX and getting a better grasp on the knowledge I need. 
-*I will do this now/ as soon as possible.
-*The first step I can take is to start studying and discussing the details concerning the design of the application with my team.
-*My teammates can help me by providing information about coding in the areas I’m not very familiar with and working at a steady pace alongside me.
+* I am going to start studying JavaFX and getting a better grasp on the knowledge I need. 
+* I will do this now/ as soon as possible.
+* The first step I can take is to start studying and discussing the details concerning the design of the application with my team.
+* My teammates can help me by providing information about coding in the areas I’m not very familiar with and working at a steady pace alongside me.
 
