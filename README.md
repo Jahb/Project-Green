@@ -315,37 +315,50 @@ W- Will:
 * My teammates can help me by providing information about coding in the areas I’m not very familiar with and working at a steady pace alongside me.
 
 
-### Kamron
+### Kamron Geijsen
 
-Strong points:
--Java: ~6 years with many (group) projects
--Gamemakers critique/reviewer hobbyist (may help with the design in the front-end)
+Student number: 4892836
 
-Weaker points:
--Database
--Legibility (Testing and comments)
--Punctuality (Arriving on time)
+Date of birth: 28/6/2000
 
-CORE QUADRANT
-+ Quality: Self-taught Java programmer 
-- Pitfall: Code tends to be lazy and illegable
+####Strenghts and weaknesses
 
-+ Quality: Open for many interpretations
-- Pitfall: Indecisive
+#####Strong points:
+*Java: ~6 years with many (group) projects
+*Gamemakers critique/reviewer hobbyist (may help with the design in the front-end)
 
-+ Quality: Eye for detail
-- Pitfall: Slow worker
+#####Weaker points:
+*Database
+*Legibility (Testing and comments)
+*Punctuality (Arriving on time)
+
+####CORE QUADRANT
+Quality: Self-taught Java programmer 
+
+Pitfall: Code tends to be lazy and illegable
 
 
-Goal:
-My goal is to learn more about the pro's and con's of working in a large group and to share project-philosophies and idea's with my teammates, both ways.
-I believe that gaining experience though this project will be beneficial for my potential future projects and hopefully as well for my teammates.
-I would naturally also like to improve my expertise in the fields that I have marked as 'Weaker points' but I would rather prioritise helping my teammates in need in the fields I am familiar with
+Quality: Open for many interpretations
 
-Reality (Your current situation)
-Whenever I have free time, I pick up one of my many ongoing projects. So far these projects have helped me substantially with my project management, programming literacy and overall knowledge in computer science.
-Most of my projects are home-projects, so my programming style tends to be lazy and illegable for others.
+Pitfall: Indecisive
 
-Options (Look at possible options) & Will
-Just by finishing the project (regardless of it's quality) and trying different work methods, will help to advance towards my final goal.
-Communication with my teammates will be key to reach my goal, as I might learn through both experience and dialogue what kind of project management does and doesn't work.
+
+Quality: Eye for detail
+
+Pitfall: Slow worker
+
+
+####Plan to reach my goal
+
+#####Goal:
+*My goal is to learn more about the pro's and con's of working in a large group and to share project-philosophies and idea's with my teammates, both ways.
+*I believe that gaining experience though this project will be beneficial for my potential future projects and hopefully as well for my teammates.
+*I would naturally also like to improve my expertise in the fields that I have marked as 'Weaker points' but I would rather prioritise helping my teammates in need in the fields I am familiar with
+
+#####Reality (Your current situation)
+*Whenever I have free time, I pick up one of my many ongoing projects. So far these projects have helped me substantially with my project management, programming literacy and overall knowledge in computer science.
+*Most of my projects are home-projects, so my programming style tends to be lazy and illegable for others.
+
+#####Options (Look at possible options) & Will
+*Just by finishing the project (regardless of it's quality) and trying different work methods, will help to advance towards my final goal.
+*Communication with my teammates will be key to reach my goal, as I might learn through both experience and dialogue what kind of project management does and doesn't work.
