@@ -140,6 +140,40 @@ W- Will:
 * The first step I can take is to start studying and discussing the details concerning the design of the application with my team.
 * My teammates can help me by providing information about coding in the areas I’m not very familiar with and working at a steady pace alongside me.
 
+### Jahson O'Dwyer Wha Binda (4772288)
+
+Strong Points:
+My will and determination to get “things done” no matter what obstacles are in the way. One such example being the completion of the Web project to create a Chess game coming from 0 programming experience.
+
+In a team situation this allows for a constant move forward mentality to make sure we meet expectations.
+
+Weak Points:
+Probably following through with an idea I think is bad.
+If needed to be done I will do it but can be hesitant
+
+Plan to achieve goal:
+
+Goal:
+My learning goal in this exercise is to improve not only my programming knowledge and get experience working with a team but also to create a functional and feature-full piece of software.
+
+I feel this is important because in it core this is the closest to working like a Computer Scientist as I have gotten to.
+
+I will considered this goal achieved once we have created a piece of software that is functional and I can be proud of.
+
+Reality:
+I am in the processes in achieving my goal
+So far everything seems to be going well and improvements seem to be to gain a greater understanding of the java programming language.
+
+Options:
+To achieve my goal I must learn online and from my teammates
+I do not lean to a particular option I plan to rely on both.
+My java programing skills right now are not up to par to make a full GUI.
+
+Will:
+To reach my goal I plan to work and learn hard as soon as possible
+Right now I can start by learning JavaFX which we agreed would be to used to make the GUI.
+Yes we have teammates with more knowledge and experience so learning from them would be great.
+
 
 ### Kamron Geijsen  
 Student number: 4892836  
