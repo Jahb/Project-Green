@@ -145,6 +145,7 @@ W- Will:
 Student number: 4892836  
 Date of birth: 28/6/2000  
 
+
 #### Strenghts and weaknesses
 
 ##### Strong points:
@@ -156,7 +157,7 @@ Date of birth: 28/6/2000
 * Legibility (Testing and comments)
 * Punctuality (Arriving on time)
 
-#### CORE QUADRANT  
+#### Core quadrants  
 Quality: Self-taught Java programmer  
 Pitfall: Code tends to be lazy and illegable
 
@@ -175,9 +176,9 @@ Pitfall: Slow worker
 * I would naturally also like to improve my expertise in the fields that I have marked as 'Weaker points' but I would rather prioritise helping my teammates in need in the fields I am familiar with
 
 ##### Reality (Your current situation)
-*Whenever I have free time, I pick up one of my many ongoing projects. So far these projects have helped me substantially with my project management, programming literacy and overall knowledge in computer science.
-*Most of my projects are home-projects, so my programming style tends to be lazy and illegable for others.
+* Whenever I have free time, I pick up one of my many ongoing projects. So far these projects have helped me substantially with my project management, programming literacy and overall knowledge in computer science.
+* Most of my projects are home-projects, so my programming style tends to be lazy and illegable for others.
 
 ##### Options (Look at possible options) & Will
-*Just by finishing the project (regardless of it's quality) and trying different work methods, will help to advance towards my final goal.
-*Communication with my teammates will be key to reach my goal, as I might learn through both experience and dialogue what kind of project management does and doesn't work.
+* Just by finishing the project (regardless of it's quality) and trying different work methods, will help to advance towards my final goal.
+* Communication with my teammates will be key to reach my goal, as I might learn through both experience and dialogue what kind of project management does and doesn't work.
