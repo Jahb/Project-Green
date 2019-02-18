@@ -1,0 +1,13 @@
+plugins {
+    id 'java'
+}
+
+dependencies {
+    compile project(':library')
+}
+
+shadowJar {
+    baseName = 'GoGreen'
+    classifier = 'server'
+    version = project.version
+}
