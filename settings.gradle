@@ -9,6 +9,6 @@
 
 rootProject.name = 'GoGreen'
 
-include 'client'
 include 'library'
+include 'client'
 include 'server'

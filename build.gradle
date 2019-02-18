@@ -8,6 +8,10 @@
  plugins {
      id 'idea'
      id 'eclipse'
+     id 'checkstyle'
+     id 'com.github.johnrengelman.shadow' version '4.0.4' apply false
+     id 'java'
+
  }
 
 allprojects {
@@ -15,13 +19,18 @@ allprojects {
         jcenter() 
     }
     group "nl.tudelft.gogreen"
-}
 
-subprojects {
-    
 }
 
 subprojects {
     version = '1.0'
+
+    apply plugin: 'com.github.johnrengelman.shadow'
+    apply plugin: 'checkstyle'
+    apply plugin: 'java'
+
+    checkstyle {
+        configFile rootProject.file('/CSE1105.checkstyle.xml')
+    }
 }
 
