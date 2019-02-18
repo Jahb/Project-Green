@@ -30,7 +30,7 @@ subprojects {
     apply plugin: 'java'
 
     checkstyle {
-        configFile rootProject.file('/CSE1105.checkstyle.xml')
+        configFile rootProject.file('CSE1105.checkstyle.xml')
     }
 }
 
