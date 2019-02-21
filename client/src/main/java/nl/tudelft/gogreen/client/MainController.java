@@ -6,7 +6,7 @@ import javafx.scene.control.*;
 
 
 
-public class MainController {
+public class MainController{
     @FXML
     private TextField passwordField;
     @FXML
@@ -24,6 +24,8 @@ public class MainController {
         if(userField.getText().equals("username")&& passwordField.getText().equals("password")){
             loginLabel.setText("Login Successful!");
         }
-        else loginLabel.setText("Login Failed! Wrong username or password.");
+        else {
+            loginLabel.setText("Login Failed! Wrong username or password.");
+        }
     }
 }

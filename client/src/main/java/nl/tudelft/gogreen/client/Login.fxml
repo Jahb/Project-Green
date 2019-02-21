@@ -14,7 +14,7 @@
             <Font size="18.0" />
          </font>
       </TextField>
-      <Button fx:id="login" layoutX="199.0" layoutY="337.0" mnemonicParsing="false" prefHeight="39.0" prefWidth="95.0" text="Login">
+      <Button fx:id="loginButton" layoutX="199.0" layoutY="337.0" mnemonicParsing="false" prefHeight="39.0" prefWidth="95.0" text="Login">
          <font>
             <Font size="18.0" />
          </font>
@@ -29,13 +29,12 @@
             <Font size="18.0" />
          </font>
       </Label>
-      <Button fx:id="register" layoutX="328.0" layoutY="337.0" mnemonicParsing="false" prefHeight="39.0" prefWidth="95.0" text="Register">
+      <Button fx:id="registerButton" layoutX="328.0" layoutY="337.0" mnemonicParsing="false" prefHeight="39.0" prefWidth="95.0" text="Register">
          <font>
             <Font size="18.0" />
          </font>
       </Button>
-      <Button fx:id="frgtPass" layoutX="201.0" layoutY="278.0" mnemonicParsing="false" prefHeight="31.0"
-              prefWidth="224.0" text="Forgot password..." textAlignment="CENTER">
+      <Button fx:id="frgtPass" layoutX="201.0" layoutY="278.0" mnemonicParsing="false" prefHeight="31.0" prefWidth="224.0" text="Forgot password..." textAlignment="CENTER">
          <font>
             <Font size="18.0" />
          </font>
