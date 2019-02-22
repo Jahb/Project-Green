@@ -5,20 +5,21 @@
  * Learn how to create Gradle builds at https://guides.gradle.org/creating-new-gradle-builds/
  */
 
- plugins {
-     id 'idea'
-     id 'eclipse'
-     id 'checkstyle'
-     id 'com.github.johnrengelman.shadow' version '4.0.4' apply false
-     id 'java'
+plugins {
+    id 'idea'
+    id 'eclipse'
+    id 'checkstyle'
+    id 'com.github.johnrengelman.shadow' version '4.0.4' apply false
+    id 'java'
 
- }
+}
 
 allprojects {
     repositories {
-        jcenter() 
+        jcenter()
     }
     group "nl.tudelft.gogreen"
+    sourceCompatibility = targetCompatibility = 1.8
 
 }
 
