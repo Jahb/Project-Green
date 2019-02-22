@@ -1,4 +1,4 @@
-package nl.tudelft.gogreen.client;
+package main.client;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
