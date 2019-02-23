@@ -1,33 +1,72 @@
 package nl.tudelft.gogreen.server;
-import org.springframework.security.crypto.bcrypt.*;
-import java.sql.*;
-import java.sql.Connection;
-import java.sql.DriverManager;
+import java.util.Scanner;
 
 public class db_main {
-    public static void initial_menu(String username){
+
+    public static void initial_menu() {
         try {
-            Class.forName("org.postgresql.Driver");
-            Connection conn = DriverManager.getConnection("jdbc:postgresql://localhost:5432/gogreen", "postgres", "pablo.rodrigo");
-            PreparedStatement stmt = conn.prepareStatement("select * from user_table");
-            ResultSet rs = stmt.executeQuery();
 
-            while (rs.next()) {
+            Scanner scanner = new Scanner(System.in);
 
-                if (rs.getString(2).equals(username)) {
-                    log_in.log_in(username);
-                    return;
+
+            System.out.println("Welcome to the GoGreen application!");
+            System.out.println("What do you want to do?");
+            System.out.println("\t 1 - Log in ");
+            System.out.println("\t 2 - Sign in ");
+
+
+            boolean loop = false;
+            int option;
+            String logedin = null;
+            while (!loop) {
+                System.out.print("Enter an option: ");
+                option = scanner.nextInt();
+
+                switch (option) {
+                    case 1:
+                        logedin = log_in.log_in();
+                        loop = true;
+                        break;
+                    case 2:
+                        create_user.create_user();
+                        loop = true;
+                        break;
+
+                    default:
+                        System.out.println("Option not available, please try again!");
+                }
+            }
+            if (logedin != null){
+                System.out.println("What do you want to do?");
+                System.out.println("\t 1 - Enter a vegatarian meal ");
+                System.out.println("\t 2 - Exit the program");
+
+                boolean loop2 = false;
+                int option2;
+
+                while (!loop2) {
+                    System.out.print("Enter an option: ");
+                    option2 = scanner.nextInt();
+
+                    switch (option2) {
+                        case 1:
+                            vegetarian_meal.vegetarian_meal(logedin);
+                            loop2 = true;
+                            break;
+                        case 2:
+                            System.exit(0);
+
+                        default:
+                            System.out.println("Option not available, please try again!");
+                    }
                 }
             }
 
-            create_user.createuser(username);
-
-
-        }
-        catch (Exception exception){
+        } catch (Exception exception) {
             System.out.println("There has been an error accessing the database");
             System.out.println(exception.getMessage());
         }
 
     }
+
 }
