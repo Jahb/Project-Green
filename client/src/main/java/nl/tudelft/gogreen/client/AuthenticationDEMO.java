@@ -12,17 +12,13 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
-import jdk.internal.util.xml.impl.Input;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.util.EntityUtils;
-import sun.net.www.http.HttpClient;
 
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.StringWriter;
 
 import static javafx.geometry.Pos.CENTER;
 
