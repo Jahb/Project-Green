@@ -12,6 +12,7 @@ public class AchievementsController {
     @FXML
     private Button backButton;
 
+    //scene switching via button
     public void GotoMenu(ActionEvent event1) throws Exception{
         Stage stage = (Stage) backButton.getScene().getWindow();
         Parent root1 = FXMLLoader.load(getClass().getResource("PlaceholderMenu.fxml"));

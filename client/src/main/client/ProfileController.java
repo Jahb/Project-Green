@@ -26,11 +26,14 @@ public  class ProfileController implements Initializable {
     @FXML
     private Circle profileCircle;
 
+    //scene switching via button
     public void GotoMenu(ActionEvent event2) throws Exception{
         Stage stage = (Stage) backButton.getScene().getWindow();
         Parent root2 = FXMLLoader.load(getClass().getResource("PlaceholderMenu.fxml"));
         stage.setScene(new Scene(root2, 1200, 700));
     }
+
+    //Added profile picture within circle
     @FXML
     Image img = new Image("main/resources/logo.png");
     @FXML

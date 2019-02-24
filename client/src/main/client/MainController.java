@@ -42,6 +42,7 @@ public class MainController {
             loginLabel.setText("Login Failed! Wrong username or password.");
         }
     }
+    //scene switching via button
     @FXML
     private Button pButton;
 

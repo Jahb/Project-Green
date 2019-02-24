@@ -12,6 +12,7 @@ public class SettingsController {
     @FXML
     private Button backButton;
 
+    //scene switching via button
     public void GotoMenu(ActionEvent event2) throws Exception{
         Stage stage = (Stage) backButton.getScene().getWindow();
         Parent root2 = FXMLLoader.load(getClass().getResource("PlaceholderMenu.fxml"));
