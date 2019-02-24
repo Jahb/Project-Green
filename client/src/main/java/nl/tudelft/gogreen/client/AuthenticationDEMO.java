@@ -12,6 +12,13 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
+import org.apache.http.client.methods.CloseableHttpResponse;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClients;
+import org.apache.http.util.EntityUtils;
+
+import java.io.IOException;
 
 import static javafx.geometry.Pos.CENTER;
 
@@ -124,7 +131,16 @@ public class AuthenticationDEMO extends Application implements EventHandler<Acti
         }
         if (event.getSource() == ping) {
             //Implement Method calling here
-            window.setScene(unimpScene);
+            CloseableHttpClient httpclient = HttpClients.createDefault();
+
+            HttpGet get = new HttpGet("http://localhost:8080/ping");
+
+            try {
+                CloseableHttpResponse res = httpclient.execute(get);
+                System.out.println(EntityUtils.toString(res.getEntity()));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
         if (event.getSource() == back) {
             window.setScene(mainScene);
