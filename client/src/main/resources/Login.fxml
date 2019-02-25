@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane prefHeight="432.0" prefWidth="625.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="nl.tudelft.gogreen.client.MainController">
+    <children>
+        <TextField fx:id="userField" layoutX="199.0" layoutY="159.0" promptText="Insert Username">
+            <font>
+                <Font size="18.0" />
+            </font>
+        </TextField>
+        <Button fx:id="loginButton" layoutX="199.0" layoutY="337.0" mnemonicParsing="false" onAction="#Login" prefHeight="39.0" prefWidth="95.0" text="Login">
+            <font>
+                <Font size="18.0" />
+            </font>
+        </Button>
+        <PasswordField fx:id="passwordField" layoutX="199.0" layoutY="216.0" promptText="Insert Password">
+            <font>
+                <Font size="18.0" />
+            </font>
+        </PasswordField>
+        <Label fx:id="loginLabel" layoutX="96.0" layoutY="73.0" prefHeight="31.0" prefWidth="430.0" text="Log into your account:">
+            <font>
+                <Font size="18.0" />
+            </font>
+        </Label>
+        <Button fx:id="registerButton" layoutX="328.0" layoutY="337.0" mnemonicParsing="false" prefHeight="39.0" prefWidth="95.0" text="Register">
+            <font>
+                <Font size="18.0" />
+            </font>
+        </Button>
+        <Button fx:id="frgtPass" layoutX="201.0" layoutY="278.0" mnemonicParsing="false" prefHeight="31.0" prefWidth="224.0" text="Forgot password..." textAlignment="CENTER">
+            <font>
+                <Font size="18.0" />
+            </font>
+        </Button>
+    </children>
+</AnchorPane>

@@ -2,11 +2,18 @@ package nl.tudelft.gogreen.client;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.*;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
+import javafx.stage.Stage;
+
+import java.io.IOException;
 
 
-
-public class MainController{
+public class MainController {
     @FXML
     private TextField passwordField;
     @FXML
@@ -20,12 +27,18 @@ public class MainController{
     @FXML
     private Label loginLabel;
 
-    public void Login(ActionEvent event){
-        if(userField.getText().equals("username")&& passwordField.getText().equals("password")){
+    /* switches to main menu on successful login */
+    public void Login(ActionEvent event) throws IOException {
+        if (userField.getText().equals("username") && passwordField.getText().equals("password")) {
             loginLabel.setText("Login Successful!");
-        }
-        else {
+            Stage stage = (Stage) loginButton.getScene().getWindow();
+            Parent root1 = FXMLLoader.load(getClass().getResource("/PlaceholderMenu.fxml"));
+            stage.setScene(new Scene(root1, 1200, 700));
+        } else {
             loginLabel.setText("Login Failed! Wrong username or password.");
         }
     }
+
 }
+
+
