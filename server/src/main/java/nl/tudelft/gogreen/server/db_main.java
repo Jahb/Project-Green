@@ -1,4 +1,5 @@
 package nl.tudelft.gogreen.server;
+
 import java.util.Scanner;
 
 public class db_main {
@@ -26,6 +27,7 @@ public class db_main {
                     case 1:
                         logedin = log_in.log_in();
                         loop = true;
+                        System.out.println(logedin);
                         break;
                     case 2:
                         create_user.create_user();
@@ -36,11 +38,17 @@ public class db_main {
                         System.out.println("Option not available, please try again!");
                 }
             }
-            if (logedin != null){
+            if (logedin != null) {
                 System.out.println("What do you want to do?");
                 System.out.println("\t 1 - Enter a vegatarian meal ");
-                System.out.println("\t 2 - Exit the program");
-
+                System.out.println("\t 2 - Buying local product");
+                System.out.println("\t 3 - Use the bike ");
+                System.out.println("\t 4 - Use public transport ");
+                System.out.println("\t 5 - I lowered the temperature of my house ");
+                System.out.println("\t 6 - I installed solar panels");
+                System.out.println("\t 7 - I recycled");
+                System.out.println("\t 8 - Exit the program");
+                String feature = null;
                 boolean loop2 = false;
                 int option2;
 
@@ -50,16 +58,44 @@ public class db_main {
 
                     switch (option2) {
                         case 1:
-                            vegetarian_meal.vegetarian_meal(logedin);
+                            feature = "Vegetarian Meal";
                             loop2 = true;
                             break;
                         case 2:
+                            feature = "Local Product";
+                            loop2 = true;
+                            break;
+                        case 3:
+                            feature = "Usage of Bike";
+                            loop2 = true;
+                            break;
+                        case 4:
+                            feature = "Usage of Public Transport";
+                            loop2 = true;
+                            break;
+
+                        case 5:
+
+                            feature = "Lower Temperature";
+                            loop2 = true;
+                            break;
+                        case 6:
+
+                            feature = "Solar Panels";
+                            loop2 = true;
+                            break;
+                        case 7:
+                            feature = "Recycling";
+                            loop2 = true;
+                            break;
+                        case 8:
                             System.exit(0);
 
                         default:
                             System.out.println("Option not available, please try again!");
                     }
                 }
+                new_feature.adding_feature(logedin, feature);
             }
 
         } catch (Exception exception) {
