@@ -1,5 +1,7 @@
 package nl.tudelft.gogreen.client;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -7,6 +9,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.ListView;
 import javafx.scene.image.Image;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.ImagePattern;
@@ -21,6 +24,12 @@ public  class ProfileController implements Initializable {
     private Button backButton;
     @FXML
     private Circle profileCircle;
+    @FXML
+    private ListView<ListItem> friendsList= new ListView<ListItem>();
+
+
+
+
 
     //scene switching via button
     public void GotoMenu(ActionEvent event2) throws Exception{
@@ -31,12 +40,29 @@ public  class ProfileController implements Initializable {
 
     //Added profile picture within circle
     @FXML
-    Image img = new Image("/logo.png");
-    @FXML
     StackPane imageContainer = new StackPane();
+    @FXML
+    Circle achievementCircle1;
+    @FXML
+    Circle achievementCircle2;
+    @FXML
+    Circle achievementCircle3;
 
+    private ObservableList<ListItem> items = FXCollections.observableArrayList();
+
+    //setting placeholder pictures
     @Override
-    public void initialize (URL url , ResourceBundle rb){
-        profileCircle.setFill(new ImagePattern(img));
+    public void initialize (URL url , ResourceBundle rb) {
+        Image profileImg = new Image("main/resources/logo.png");
+        Image achievementImg = new Image("main/resources/achievementImage.png");
+        profileCircle.setFill(new ImagePattern(profileImg));
+        achievementCircle1.setFill(new ImagePattern(achievementImg));
+        achievementCircle2.setFill(new ImagePattern(achievementImg));
+        achievementCircle3.setFill(new ImagePattern(achievementImg));
+        friendsList.setItems(items);
+        for(ListItem a : items){
+            a.setImage(achievementImg);
+            a.setText("friend");
+        }
     }
 }
