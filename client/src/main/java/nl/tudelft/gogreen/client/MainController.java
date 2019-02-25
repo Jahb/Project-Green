@@ -38,15 +38,7 @@ public class MainController {
             loginLabel.setText("Login Failed! Wrong username or password.");
         }
     }
-    //scene switching via button
-    @FXML
-    private Button pButton;
 
-    public void GotoProfile(ActionEvent event1) throws Exception{
-        Stage stage = (Stage) pButton.getScene().getWindow();
-        Parent root1 = FXMLLoader.load(getClass().getResource("/ProfileGUI.fxml"));
-        stage.setScene(new Scene(root1, 1200, 700));
-    }
 }
 
 

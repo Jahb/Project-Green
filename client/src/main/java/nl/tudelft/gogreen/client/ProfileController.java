@@ -28,9 +28,6 @@ public  class ProfileController implements Initializable {
     private ListView<ListItem> friendsList= new ListView<ListItem>();
 
 
-
-
-
     //scene switching via button
     public void GotoMenu(ActionEvent event2) throws Exception{
         Stage stage = (Stage) backButton.getScene().getWindow();
@@ -53,8 +50,8 @@ public  class ProfileController implements Initializable {
     //setting placeholder pictures
     @Override
     public void initialize (URL url , ResourceBundle rb) {
-        Image profileImg = new Image("main/resources/logo.png");
-        Image achievementImg = new Image("main/resources/achievementImage.png");
+        Image profileImg = new Image("/logo.png");
+        Image achievementImg = new Image("/achievementImage.png");
         profileCircle.setFill(new ImagePattern(profileImg));
         achievementCircle1.setFill(new ImagePattern(achievementImg));
         achievementCircle2.setFill(new ImagePattern(achievementImg));
