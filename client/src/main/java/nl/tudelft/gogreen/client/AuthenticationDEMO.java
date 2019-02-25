@@ -12,14 +12,27 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
+import org.apache.http.client.methods.CloseableHttpResponse;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClients;
+import org.apache.http.util.EntityUtils;
+
+import java.io.IOException;
 
 import static javafx.geometry.Pos.CENTER;
 
+/**
+ * Authentication Demo To Demonstrate Client Server Communication
+ *
+ * @author Jahson
+ * @version 1.0
+ */
 public class AuthenticationDEMO extends Application implements EventHandler<ActionEvent> {
     //Intit Buttons
     private Button login;
     private Button register;
-    private Button frgtPass;
+    private Button ping;
     private Button back;
 
     private Stage window;
@@ -31,28 +44,33 @@ public class AuthenticationDEMO extends Application implements EventHandler<Acti
         launch(args);
     }
 
+    /**
+     * Start method overide from Application contains Scenes and buttons
+     *
+     * @param main
+     * @throws Exception
+     */
     @Override
     public void start(Stage main) throws Exception {
         window = main;
-
         window.setTitle("GoGreen Authentication Demo");
 
         login = new Button();
         register = new Button();
-        frgtPass = new Button();
+        ping = new Button();
         login.setText("Login");
         register.setText("Register");
-        frgtPass.setText("Forgot Password");
+        ping.setText("Ping Server");
         //Attaching Event Handler to Buttons
         login.setOnAction(this);
         register.setOnAction(this);
-        frgtPass.setOnAction(this);
+        ping.setOnAction(this);
 
         //Layout for Butons Hbox (One after other)
         HBox buttons = new HBox();
         buttons.setPadding(new Insets(15, 12, 15, 12));
         buttons.setSpacing(10);
-        buttons.getChildren().addAll(register, login, frgtPass);
+        buttons.getChildren().addAll(register, login, ping);
 
         buttons.setAlignment(CENTER);
 
@@ -111,8 +129,18 @@ public class AuthenticationDEMO extends Application implements EventHandler<Acti
         if (event.getSource() == register) {
             window.setScene(unimpScene);
         }
-        if (event.getSource() == frgtPass) {
-            window.setScene(unimpScene);
+        if (event.getSource() == ping) {
+            //Implement Method calling here
+            CloseableHttpClient httpclient = HttpClients.createDefault();
+
+            HttpGet get = new HttpGet("http://localhost:8080/ping");
+
+            try {
+                CloseableHttpResponse res = httpclient.execute(get);
+                System.out.println(EntityUtils.toString(res.getEntity()));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
         if (event.getSource() == back) {
             window.setScene(mainScene);
