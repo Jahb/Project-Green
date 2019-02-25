@@ -14,7 +14,7 @@ public class AchievementsController {
 
     public void GotoMenu(ActionEvent event1) throws Exception{
         Stage stage = (Stage) backButton.getScene().getWindow();
-        Parent root1 = FXMLLoader.load(getClass().getResource("../../../../../resources/PlaceholderMenu.fxml"));
+        Parent root1 = FXMLLoader.load(getClass().getResource("/PlaceholderMenu.fxml"));
         stage.setScene(new Scene(root1, 1200, 700));
     }
 }
