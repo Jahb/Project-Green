@@ -38,6 +38,7 @@ public class VerifyUser {
         Random random = new Random(System.currentTimeMillis());
         StringBuilder key = new StringBuilder();
         random.ints().limit(16).boxed().forEach(i -> {
+
             String hex = Integer.toHexString(i);
             while (hex.length() < 8) {
                 hex = '0' + hex;
@@ -49,6 +50,10 @@ public class VerifyUser {
 
     /**
      * Checks whether the user can be authenticated.
+     * <<<<<<< HEAD
+     * =======
+     * <p>
+     * >>>>>>> master
      *
      * @param user the user to check
      * @return an AuthAgreement whether the user is valid or not

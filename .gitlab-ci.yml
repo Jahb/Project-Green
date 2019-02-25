@@ -1,7 +1,7 @@
 # This is the Gradle build system for JVM applications
 # https://gradle.org/
 # https://github.com/gradle/gradle
-image: gradle:alpine
+image: platpus/javafx:latest
 
 # Disable the Gradle daemon for Continuous Integration servers as correctness
 # is usually a priority over speed in CI environments. Using a fresh
@@ -12,10 +12,11 @@ variables:
 
 before_script:
   - export GRADLE_USER_HOME=`pwd`/.gradle
+  - chmod +x ./gradlew
 
 build:
   stage: build
-  script: gradle --build-cache assemble
+  script: ./gradlew --build-cache assemble
   cache:
     key: "$CI_COMMIT_REF_NAME"
     policy: push
@@ -26,7 +27,7 @@ build:
 
 test:
   stage: test
-  script: gradle check
+  script: ./gradlew check
   cache:
     key: "$CI_COMMIT_REF_NAME"
     policy: pull
