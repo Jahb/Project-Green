@@ -1,6 +1,5 @@
-package main.client;
+package nl.tudelft.gogreen.client;
 
-import javafx.embed.swing.JFXPanel;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -9,11 +8,8 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 
-import java.awt.*;
 import java.io.IOException;
 
 
@@ -36,7 +32,7 @@ public class MainController {
         if (userField.getText().equals("username") && passwordField.getText().equals("password")) {
             loginLabel.setText("Login Successful!");
             Stage stage = (Stage) loginButton.getScene().getWindow();
-            Parent root1 = FXMLLoader.load(getClass().getResource("PlaceholderMenu.fxml"));
+            Parent root1 = FXMLLoader.load(getClass().getResource("/PlaceholderMenu.fxml"));
             stage.setScene(new Scene(root1, 1200, 700));
         } else {
             loginLabel.setText("Login Failed! Wrong username or password.");
@@ -47,7 +43,7 @@ public class MainController {
 
     public void GotoProfile(ActionEvent event1) throws Exception{
         Stage stage = (Stage) pButton.getScene().getWindow();
-        Parent root1 = FXMLLoader.load(getClass().getResource("ProfileGUI.fxml"));
+        Parent root1 = FXMLLoader.load(getClass().getResource("/ProfileGUI.fxml"));
         stage.setScene(new Scene(root1, 1200, 700));
     }
 }

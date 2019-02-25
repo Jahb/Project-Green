@@ -9,7 +9,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane prefHeight="748.0" prefWidth="1088.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="main.client.ProfileController">
+<AnchorPane prefHeight="748.0" prefWidth="1088.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="nl.tudelft.gogreen.client.ProfileController">
    <children>
       <Circle fx:id="achievementCircle1" fill="DODGERBLUE" layoutX="133.0" layoutY="512.0" radius="72.0" stroke="BLACK" strokeType="INSIDE" />
       <Circle fx:id="achievementCircle2" fill="DODGERBLUE" layoutX="354.0" layoutY="512.0" radius="72.0" stroke="BLACK" strokeType="INSIDE" />
