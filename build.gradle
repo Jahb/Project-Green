@@ -21,6 +21,11 @@ allprojects {
     group "nl.tudelft.gogreen"
     sourceCompatibility = targetCompatibility = 1.8
 
+    javadoc {
+        destinationDir = file("${rootProject.projectDir}build/javadoc")
+        options.addBooleanOption('html5', true)
+
+    }
 }
 
 subprojects {
@@ -33,6 +38,7 @@ subprojects {
 
     checkstyle {
         configFile rootProject.file('CSE1105.checkstyle.xml')
+        checkstyleTest.enabled = false
     }
 }
 
