@@ -1,7 +1,6 @@
 # Meeting 2
-> Quoted text will give you extra pointers to how an agenda should look like
-
-
+**Chairman: **Kamron Geijsen  
+**Secretary: **Vlad Florea  
 
 ## Opening
 
@@ -19,10 +18,10 @@ Vlad approves
 
 ## Points of action
 
--Hand in Demo 1: Communication client and server
--Have the weekly requirements checked
--Confer about future sprints
--Discuss next meeting
+- Hand in Demo 1: Communication client and server
+- Have the weekly requirements checked
+- Confer about future sprints
+- Discuss next meeting
 
 ## Any other business
 
