@@ -5,8 +5,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 
 
-
-public class MainController{
+public class MainController {
     @FXML
     private TextField passwordField;
     @FXML
@@ -20,11 +19,10 @@ public class MainController{
     @FXML
     private Label loginLabel;
 
-    public void Login(ActionEvent event){
-        if(userField.getText().equals("username")&& passwordField.getText().equals("password")){
+    public void Login(ActionEvent event) {
+        if (userField.getText().equals("username") && passwordField.getText().equals("password")) {
             loginLabel.setText("Login Successful!");
-        }
-        else {
+        } else {
             loginLabel.setText("Login Failed! Wrong username or password.");
         }
     }
