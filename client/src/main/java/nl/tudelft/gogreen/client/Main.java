@@ -15,14 +15,18 @@ import java.net.URL;
 public class Main extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
-        URL u = Main.class.getResource("/MainScreen.fxml");
-        System.out.println(u);
-        Parent root = FXMLLoader.load(u);
+        URL url = Main.class.getResource("/MainScreen.fxml");
+        System.out.println(url);
+        Parent root = FXMLLoader.load(url);
         Scene loginScene = new Scene(root, 920, 720);
         primaryStage.setScene(loginScene);
         primaryStage.show();
     }
 
+    /**
+     * Main Method
+     * @param args
+     */
     public static void main(String[] args) {
         Unirest.setObjectMapper(new ObjectMapper() {
             private Gson gson = new GsonBuilder().setPrettyPrinting().create();

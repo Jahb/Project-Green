@@ -11,41 +11,46 @@
 
 <AnchorPane id="main" prefHeight="720.0" prefWidth="920.0" stylesheets="@MainScreenCSS.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="nl.tudelft.gogreen.client.MainScreenController">
    <children>
-      <Text layoutX="287.0" layoutY="344.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Rings Place Holder">
+      <TextArea id="helpText" fx:id="helpText" editable="false" layoutX="450.0" layoutY="158.0" prefHeight="394.0" prefWidth="470.0" promptText="How To Earn Points" stylesheets="@MainScreenCSS.css" text="Welcome to Project Green!&#10;&#10;The goal is simple earn points by&#10;doing various activities that reduce your&#10;CO2 emissions.&#10;&#10;Doing so earns you &quot;Green Points&quot;&#10;which in term fills your Ring. &#10;Try and compete with others using the app!&#10;Rings reset once a week.&#10;&#10;The aim is to get as many points and you can&#10; and the ring is initially set to a goal of 1000 points." visible="false" wrapText="true" AnchorPane.bottomAnchor="168.0" AnchorPane.rightAnchor="0.0">
          <font>
-            <Font size="42.0" />
-         </font>
-      </Text>
-      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="WHITE" height="81.0" stroke="WHITE" strokeLineCap="ROUND" strokeType="OUTSIDE" strokeWidth="0.0" width="358.0" />
-      <Text fill="#4bd35b" layoutX="12.0" layoutY="49.0" stroke="BLACK" strokeType="OUTSIDE" strokeWidth="0.0" text="Project Green Logo Placeholder" wrappingWidth="334.6708984375">
-         <font>
-            <Font name="Cambria" size="24.0" />
-         </font>
-      </Text>
-      <ListView id="PointAdd" disable="true" layoutX="239.0" layoutY="99.0" prefHeight="430.0" prefWidth="442.0" stylesheets="@MainScreenCSS.css" />
-      <TextArea id="helpText" disable="true" layoutX="569.0" layoutY="265.0" prefHeight="262.0" prefWidth="335.0" stylesheets="@MainScreenCSS.css" text="Welcome to Project Green!&#10;&#10;The goal is simple earn points by&#10;doing various activities that reduce your&#10;CO2 emissions.&#10;&#10;Doing so earns you &quot;Green Points&quot;&#10;which in term fills your Ring. &#10;Try and compete with others using the app!&#10;Rings reset once a week.&#10;&#10;The aim is to get as many points and you can&#10; and the ring is initially set to a goal of 1000 points." wrapText="true" />
+            <Font size="19.0" />
+         </font></TextArea>
       <BorderPane id="buttonPane" layoutY="527.0" prefHeight="194.0" prefWidth="920.0" stylesheets="@MainScreenCSS.css" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
          <left>
-            <ImageView fitHeight="150.0" fitWidth="150.0" onMousePressed="#menuPress" onMouseReleased="#menuRelease" BorderPane.alignment="CENTER">
+            <ImageView fx:id="menuButton" fitHeight="150.0" fitWidth="150.0" onMousePressed="#menuPress" onMouseReleased="#menuRelease" BorderPane.alignment="CENTER">
                <image>
-                  <Image url="@../../../../../resources/ButtonMenu.png" />
+                     <Image url="@ButtonMenu.png" />
                </image>
             </ImageView>
          </left>
          <center>
-            <ImageView fitHeight="150.0" fitWidth="463.0" onMousePressed="#addPress" onMouseReleased="#addRelease" BorderPane.alignment="CENTER">
+            <ImageView fx:id="addButton" fitHeight="150.0" fitWidth="463.0" onMousePressed="#addPress" onMouseReleased="#addRelease" BorderPane.alignment="CENTER">
                <image>
-                  <Image url="@../../../../../resources/ButtonAdd.png" />
+                     <Image url="@ButtonAdd.png" />
                </image>
             </ImageView>
          </center>
          <right>
-            <ImageView fitHeight="150.0" fitWidth="150.0" onMousePressed="#helpPress" onMouseReleased="#helpRelease" BorderPane.alignment="CENTER">
+            <ImageView fx:id="helpButton" fitHeight="150.0" fitWidth="150.0" onMousePressed="#helpPress" onMouseReleased="#helpRelease" BorderPane.alignment="CENTER">
                <image>
-                  <Image url="@../../../../../resources/ButtonHelp.png" />
+                     <Image url="@ButtonHelp.png" />
                </image>
             </ImageView>
          </right>
+      </BorderPane>
+      <ImageView fitHeight="75.0" fitWidth="200.0" layoutX="-6.0" AnchorPane.leftAnchor="-6.0" AnchorPane.topAnchor="0.0">
+         <image>
+               <Image url="@TemporaryLogo.png" />
+         </image>
+      </ImageView>
+      <BorderPane prefHeight="524.0" prefWidth="920.0" AnchorPane.bottomAnchor="196.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <center>
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Rings Place Holder" BorderPane.alignment="CENTER">
+               <font>
+                  <Font size="42.0" />
+               </font>
+            </Text>
+         </center>
       </BorderPane>
    </children>
 </AnchorPane>

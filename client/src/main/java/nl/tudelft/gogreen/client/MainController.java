@@ -17,6 +17,9 @@ import nl.tudelft.gogreen.shared.auth.UserAuth;
 
 import java.io.IOException;
 
+/**
+ * Controller For MainControllerFXML
+ */
 public class MainController {
     @FXML
     private TextField passwordField;
@@ -32,7 +35,13 @@ public class MainController {
     private Label loginLabel;
 
 
-    /* switches to main menu on successful login */
+    /**
+     * Switches to Main Menu After a Successful Login
+     *
+     * @param event
+     * @throws UnirestException
+     * @throws IOException
+     */
     public void Login(ActionEvent event) throws UnirestException, IOException {
         String un = userField.getText();
         String pw = passwordField.getText();
@@ -45,11 +54,15 @@ public class MainController {
 
         AuthAgreement agreement = auth.getBody();
 
-        if (agreement.isSuccess()){
+        if (agreement.isSuccess()) {
             login();
         }
     }
 
+    /**
+     * Changes Scene to menu after login
+     * @throws IOException
+     */
     private void login() throws IOException {
         Stage stage = (Stage) loginButton.getScene().getWindow();
         Parent root1 = FXMLLoader.load(getClass().getResource("/PlaceholderMenu.fxml"));
