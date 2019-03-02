@@ -90,6 +90,8 @@ public  class ProfileController implements Initializable {
                                 if(item!=null){
                                     Image img = new Image(getClass().getResource("/" + item.getImageLocation()).toExternalForm());
                                     ImageView imgview = new ImageView(img);
+                                    imgview.setFitHeight(90);
+                                    imgview.setFitWidth(90);
                                     setGraphic(imgview);
                                     setText(item.getName());
                                 }
