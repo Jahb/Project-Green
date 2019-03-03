@@ -43,14 +43,5 @@
                <Image url="@TemporaryLogo.png" />
          </image>
       </ImageView>
-      <BorderPane prefHeight="524.0" prefWidth="920.0" AnchorPane.bottomAnchor="196.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-         <center>
-            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Rings Place Holder" BorderPane.alignment="CENTER">
-               <font>
-                  <Font size="42.0" />
-               </font>
-            </Text>
-         </center>
-      </BorderPane>
    </children>
 </AnchorPane>
