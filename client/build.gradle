@@ -1,5 +1,5 @@
 plugins {
-
+    id 'application'
 }
 
 dependencies {
@@ -9,6 +9,8 @@ dependencies {
 
 }
 
+
+mainClassName = 'nl.tudelft.gogreen.client.Main'
 
 shadowJar {
     baseName = 'GoGreen'
