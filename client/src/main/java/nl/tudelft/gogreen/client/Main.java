@@ -1,50 +1,27 @@
 package nl.tudelft.gogreen.client;
 
-import java.net.URL;
-
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.mashape.unirest.http.ObjectMapper;
 import com.mashape.unirest.http.Unirest;
-
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.layout.AnchorPane;
-import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
+import java.net.URL;
+
 public class Main extends Application {
-    
-    
-    int width = 920;
-    int height = 720;
-    
-    Ring ring;
-    
-	@Override
+    @Override
     public void start(Stage primaryStage) throws Exception {
-		long startTime = System.nanoTime();
         URL url = Main.class.getResource("/MainScreen.fxml");
         System.out.println(url);
-        AnchorPane root = FXMLLoader.load(url);
-        System.out.println((System.nanoTime()-startTime)/1000000/1000.0);
-        addRing(root);
-        Scene loginScene = new Scene(root, width, height);
+        Parent root = FXMLLoader.load(url);
+        Scene loginScene = new Scene(root, 920, 720);
         primaryStage.setScene(loginScene);
         primaryStage.show();
-        
-        ring.startAnimation();
     }
-    
-    void addRing(AnchorPane root) {
-        ring = new Ring((int) (150*.75), 150, width/2, 200);
-        ring.addSegment(20, Color.LAWNGREEN);
-        ring.addSegment(30, Color.YELLOW);
-        ring.addSegment(40, Color.SANDYBROWN);
-        ring.addNodes(root);
-    }
-    
 
     /**
      * Main Method

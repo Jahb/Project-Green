@@ -6,8 +6,8 @@ import javafx.animation.AnimationTimer;
 import javafx.animation.FillTransition;
 import javafx.animation.Transition;
 import javafx.event.EventHandler;
+import javafx.scene.Group;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Arc;
 import javafx.scene.shape.ArcType;
@@ -18,6 +18,8 @@ public class Ring {
 
 
     public Ring(int innerRadius, int outerRadius, int centerx, int centery) {
+        this.innerRadius = innerRadius;
+        this.outerRadius = outerRadius;
         this.centerx = centerx;
         this.centery = centery;
 
@@ -25,13 +27,13 @@ public class Ring {
         innerCircle.setCenterX(centerx);
         innerCircle.setCenterY(centery);
         innerCircle.setRadius(innerRadius);
-        innerCircle.setFill(Color.LIGHTGRAY);
+        innerCircle.setFill(Color.WHITE);
         innerCircle.setStroke(Color.BLACK);
 
         outerCircle.setCenterX(centerx);
         outerCircle.setCenterY(centery);
         outerCircle.setRadius(outerRadius);
-        outerCircle.setFill(Color.GRAY);
+        outerCircle.setFill(Color.LIGHTGRAY);
         outerCircle.setStroke(Color.BLACK);
     }
 
@@ -39,40 +41,30 @@ public class Ring {
         segments.add(new RingSegment(this, percentage, color));
     }
 
-    void addNodes(AnchorPane root) {
+    void addNodes(Group root) {
         root.getChildren().add(outerCircle);
         for (RingSegment rs : segments)
             rs.addNodes(root);
         root.getChildren().add(innerCircle);
     }
 
-    private Circle innerCircle = new Circle();
-    private Circle outerCircle = new Circle();
-    private ArrayList<RingSegment> segments = new ArrayList<RingSegment>();
-    private int centerx, centery;
+    Circle innerCircle = new Circle();
+    Circle outerCircle = new Circle();
+    ArrayList<RingSegment> segments = new ArrayList<RingSegment>();
+    int outerRadius, innerRadius;
+    int centerx, centery;
 
-    public void setX(int x) {
+
+    void setX(int x) {
         centerx = x;
         innerCircle.setCenterX(x);
         outerCircle.setCenterX(x);
         for (RingSegment rs : segments)
             rs.arc.setCenterX(x);
     }
-    public void setY(int y) {
-        centery = y;
-        innerCircle.setCenterY(y);
-        outerCircle.setCenterY(y);
-        for (RingSegment rs : segments)
-            rs.arc.setCenterY(y);
-    }
-    
-    
-    public void startAnimation() {
-    	timerStart = System.nanoTime();
-    	timer.start();
-    }
-    private long timerStart;
-    private AnimationTimer timer = new AnimationTimer() {
+
+    long timerStart;
+    AnimationTimer timer = new AnimationTimer() {
 
         @Override
         public void handle(long l) {
@@ -128,8 +120,8 @@ public class Ring {
 
             arc.setCenterX(ring.centerx);
             arc.setCenterY(ring.centery);
-            arc.setRadiusX(ring.outerCircle.getRadius());
-            arc.setRadiusY(ring.outerCircle.getRadius());
+            arc.setRadiusX(ring.outerRadius);
+            arc.setRadiusY(ring.outerRadius);
             arc.setStartAngle(90);
             arc.setLength(0);
 
@@ -142,7 +134,7 @@ public class Ring {
             addTransitions();
         }
 
-        void addNodes(AnchorPane root) {
+        void addNodes(Group root) {
             root.getChildren().add(arc);
         }
 
