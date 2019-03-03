@@ -28,7 +28,7 @@
                 <Font size="18.0" />
             </font>
         </Label>
-        <Button fx:id="registerButton" layoutX="328.0" layoutY="337.0" mnemonicParsing="false" prefHeight="39.0" prefWidth="95.0" text="Register">
+        <Button fx:id="registerButton" layoutX="328.0" layoutY="337.0" mnemonicParsing="false" onAction="#register" prefHeight="39.0" prefWidth="95.0" text="Register">
             <font>
                 <Font size="18.0" />
             </font>

@@ -1,11 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="nl.tudelft.gogreen.client.MenuController">
+<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="nl.tudelft.gogreen.client.MenuController">
    <children>
-      <Button fx:id="achievementsButton" layoutX="107.0" layoutY="185.0" mnemonicParsing="false" onAction="#GotoAchievements" text="Achievements" />
+      <Button fx:id="leaderboardButton" layoutX="107.0" layoutY="185.0" mnemonicParsing="false" onAction="#GotoLeaderboard" text="Leaderboard" />
       <Button fx:id="settingsButton" layoutX="386.0" layoutY="185.0" mnemonicParsing="false" onAction="#GotoSettings" text="Settings" />
       <Button fx:id="pButton" layoutX="268.0" layoutY="185.0" mnemonicParsing="false" onAction="#GotoProfile" text="Profile" />
    </children>
