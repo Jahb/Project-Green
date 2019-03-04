@@ -5,34 +5,38 @@ import java.net.URL;
 
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.scene.control.TextArea;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
+import javafx.stage.Stage;
 
 /**
  * MainScreen object
  *
  * @author Kamron Geijsen
- * @version 3.1415.9235.85
+ * @version 4.0
  */
 public class MainScreen {
-
+	
+	
 	private Ring ring;
 	private IconButton leaderboardButton;
 	private IconButton addButton;
 	private IconButton helpButton;
-
+	TextArea helpText;
+	
 	public Scene getScene() throws IOException {
 		URL url = Main.class.getResource("/MainScreen.fxml");
 		System.out.println(url);
 		AnchorPane root = FXMLLoader.load(url);
 
+		helpText = (TextArea) root.getChildren().get(0);
 		addMainRing(root);
 		addIconButtons(root);
-//		MainScreenController.helpText.setVisible(true);
-		
+
 		ring.startAnimation();
 		Scene mainScreenScene = new Scene(root, Main.width, Main.height);
 		return mainScreenScene;
@@ -69,6 +73,12 @@ public class MainScreen {
 			addButton.setY(newVal.intValue() - 175);
 			helpButton.setY(newVal.intValue() - 175);
 		});
+		
+		helpButton.clicked(event -> toggleHelpText());
+	}
+	
+	private void toggleHelpText() {
+		helpText.setVisible(!helpText.isVisible());
 	}
 
 }

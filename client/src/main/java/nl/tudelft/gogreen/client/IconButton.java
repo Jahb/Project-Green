@@ -1,5 +1,6 @@
 package nl.tudelft.gogreen.client;
 
+import javafx.event.EventHandler;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
@@ -61,6 +62,10 @@ public class IconButton {
 
 	StackPane getStackPane() {
 		return new StackPane(layoutBox, clickBox, icon);
+	}
+	
+	void clicked(EventHandler<MouseEvent> handler) {
+		clickBox.addEventHandler(MouseEvent.MOUSE_PRESSED, handler);
 	}
 	
 	protected String name;
