@@ -25,11 +25,6 @@ public class MainScreenController {
     private Image helpPress = new Image("ButtonHelpClicked.png");
     private Image helpRel = new Image("ButtonHelp.png");
 
-    public void initialize() {
-        //Insert Ring Code Here!
-
-    }
-
     public void menuPress() {
         System.out.println("Left Button Pressed");
         menuButton.setImage(menuPress);
