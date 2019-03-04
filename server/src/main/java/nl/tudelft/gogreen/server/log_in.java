@@ -1,54 +1,86 @@
 package nl.tudelft.gogreen.server;
-import org.springframework.security.crypto.bcrypt.*;
-import java.sql.*;
+import org.springframework.security.crypto.bcrypt.BCrypt;
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.util.ResourceBundle;
 import java.util.Scanner;
+
+
 public class log_in {
 
-    public static void log_in(String username) {
+    private static ResourceBundle resource = ResourceBundle.getBundle("db");
 
-        try{
-            System.out.println("Im in log in page");
-            Class.forName("org.postgresql.Driver");
-            Connection conn = DriverManager.getConnection("jdbc:postgresql://localhost:5432/gogreen", "postgres", "pablo.rodrigo");
+    /**
+     * log in method that gives access to the database to a user.
+     */
+
+    public static String log_in() {
+
+        try {
+
+
+            Connection conn = DriverManager.getConnection(resource.getString("Postgresql.datasource.url"), resource.getString("Postgresql.datasource.username"), resource.getString("Postgresql.datasource.password"));
             Scanner scanner = new Scanner(System.in);
-            String password = null;
-            PreparedStatement stmt = conn.prepareStatement("select * from user_table");
-            ResultSet rs = stmt.executeQuery();
+            boolean loop = false;
+            boolean loged = false;
+            String username = null;
+            int intents = 3;
+            while(!loop && intents > 0) {
+                System.out.print("Enter your username: ");
+                username = scanner.next();
+                System.out.print("Insert your password: ");
+                String password = scanner.next();
+                loged = log_in(username, password, conn);
 
-            while(rs.next()){
-
-                if(rs.getString(2).equals(username)) {
-                    password = rs.getString(3);
-
+                if(loged) {
+                    loop = true;
                 }
-            }
-            if(password == null){
-                System.out.print("You are not registered, click this button to sign in!");
-                create_user.createuser(username);
-            }
-            else {
-
-                while(true) {
-                    System.out.print("Insert your password: ");
-                    String dbpassword = scanner.next();
-                    boolean pass = BCrypt.checkpw(dbpassword, password);
-
-
-                    if(pass) {
-                        System.out.print("You are in!");
-                        return;
-                    }
-                    else {
-                        System.out.print("Wrong!Try again!");
-
-                    }
+                else{
+                    intents--;
+                    System.out.println("Incorrect identification");
                 }
+
             }
-        }
-        catch (Exception exception){
+            if(loged) {
+                System.out.println("You are in!");
+                return username;
+            }
+
+        } catch (Exception exception) {
             System.out.println("There has been an error accessing the database");
             System.out.println(exception.getMessage());
         }
+        return null;
+    }
+    public static boolean  log_in(String username, String password,  Connection conn) {
+        try {
+
+
+            PreparedStatement stmt = conn.prepareStatement(resource.getString("getAllUsers"));
+            ResultSet rs = stmt.executeQuery();
+            String dbpassword = null;
+            while (rs.next()) {
+
+                if (rs.getString(2).equals(username)) {
+                    dbpassword = rs.getString(3);
+                }
+            }
+            boolean access = BCrypt.checkpw(password, dbpassword);
+
+            if (dbpassword == null) {
+                System.out.print("You are not registered, click this button to sign in!");
+                create_user.create_user();
+                return false;
+            }
+            return access;
+        } catch (Exception exception) {
+            System.out.println("There has been an error accessing the database");
+            System.out.println(exception.getMessage());
+        }
+        return false;
     }
 
 }
