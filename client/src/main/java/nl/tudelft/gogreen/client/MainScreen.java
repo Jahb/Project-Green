@@ -29,10 +29,10 @@ public class MainScreen {
 		System.out.println(url);
 		AnchorPane root = FXMLLoader.load(url);
 
-		BorderPane buttonsPane = (BorderPane) root.getChildren().get(1);
 		addMainRing(root);
-		addIconButtons(buttonsPane);
-
+		addIconButtons(root);
+//		MainScreenController.helpText.setVisible(true);
+		
 		ring.startAnimation();
 		Scene mainScreenScene = new Scene(root, Main.width, Main.height);
 		return mainScreenScene;
@@ -50,13 +50,13 @@ public class MainScreen {
 		});
 	}
 
-	void addIconButtons(BorderPane root) {
+	void addIconButtons(AnchorPane root) {
 		leaderboardButton = new IconButton("Leaderboard", new Rectangle(50, 100, 150, 150));
-		root.setLeft(leaderboardButton.getStackPane());
+		leaderboardButton.addNodes(root);
 		addButton = new IconButton("Add", new Rectangle(200, 100, 600, 150));
-		root.setCenter(addButton.getStackPane());
+		addButton.addNodes(root);
 		helpButton = new IconButton("Help", new Rectangle(500, 100, 150, 150));
-		root.setCenter(helpButton.getStackPane());
+		helpButton.addNodes(root);
 
 		root.widthProperty().addListener((obs, oldVal, newVal) -> {
 			leaderboardButton.setX(0);
