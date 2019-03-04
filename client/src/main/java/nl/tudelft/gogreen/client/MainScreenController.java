@@ -25,6 +25,10 @@ public class MainScreenController {
     private Image helpPress = new Image("ButtonHelpClicked.png");
     private Image helpRel = new Image("ButtonHelp.png");
 
+    public void initialize(){
+        //Insert Ring Code Here!
+        
+    }
 
     public void menuPress() {
         System.out.println("Left Button Pressed");
@@ -63,8 +67,10 @@ public class MainScreenController {
 
         if (helpText.isVisible()) {
             helpText.setVisible(false);
+            helpText.toFront();
         } else {
             helpText.setVisible(true);
+            helpText.toFront();
         }
         helpButton.setImage(helpRel);
     }

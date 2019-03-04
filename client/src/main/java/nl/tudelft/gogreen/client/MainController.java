@@ -36,7 +36,7 @@ public class MainController {
 
 
     /**
-     * Switches to Main Menu After a Successful Login
+     * Switches to Main Menu After a Successful Login.
      *
      * @param event
      * @throws UnirestException

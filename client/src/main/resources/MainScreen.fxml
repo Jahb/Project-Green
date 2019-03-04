@@ -43,6 +43,9 @@
                <Image url="@TemporaryLogo.png" />
          </image>
       </ImageView>
-      <BorderPane prefHeight="527.0" prefWidth="920.0" AnchorPane.bottomAnchor="193.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+      <BorderPane prefHeight="527.0" prefWidth="920.0" AnchorPane.bottomAnchor="193.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <center>
+            <AnchorPane fx:id="centerPane" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER" />
+         </center></BorderPane>
    </children>
 </AnchorPane>
