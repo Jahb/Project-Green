@@ -18,9 +18,7 @@
       <BorderPane id="buttonPane" layoutY="527.0" prefHeight="194.0" prefWidth="920.0" stylesheets="@MainScreenCSS.css" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
          <left>
             <ImageView fx:id="menuButton" fitHeight="150.0" fitWidth="150.0" onMousePressed="#menuPress" onMouseReleased="#menuRelease" BorderPane.alignment="CENTER">
-               <image>
                      <Image url="@ButtonMenu.png" />
-               </image>
             </ImageView>
          </left>
          <center>

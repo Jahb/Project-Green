@@ -19,17 +19,21 @@ import javafx.stage.Stage;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-public  class ProfileController implements Initializable {
+public class ProfileController implements Initializable {
     @FXML
     private Button backButton;
     @FXML
     private Circle profileCircle;
     @FXML
-    private ListView<ListItem> friendsList= new ListView<ListItem>();
+    private ListView<ListItem> friendsList = new ListView<ListItem>();
 
 
-    //scene switching via button
-    public void GotoMenu(ActionEvent event2) throws Exception{
+    /**
+     * Scene switching via button.
+     * @param event2
+     * @throws Exception
+     */
+    public void GotoMenu(ActionEvent event2) throws Exception {
         Stage stage = (Stage) backButton.getScene().getWindow();
         Parent root2 = FXMLLoader.load(getClass().getResource("/PlaceholderMenu.fxml"));
         stage.setScene(new Scene(root2, 1200, 700));
@@ -49,7 +53,7 @@ public  class ProfileController implements Initializable {
 
     //setting placeholder pictures
     @Override
-    public void initialize (URL url , ResourceBundle rb) {
+    public void initialize(URL url, ResourceBundle rb) {
         Image profileImg = new Image("/logo.png");
         Image achievementImg = new Image("/achievementImage.png");
         profileCircle.setFill(new ImagePattern(profileImg));
@@ -57,7 +61,7 @@ public  class ProfileController implements Initializable {
         achievementCircle2.setFill(new ImagePattern(achievementImg));
         achievementCircle3.setFill(new ImagePattern(achievementImg));
         friendsList.setItems(items);
-        for(ListItem a : items){
+        for (ListItem a : items) {
             a.setImage(achievementImg);
             a.setText("friend");
         }
