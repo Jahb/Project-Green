@@ -114,7 +114,7 @@ public class MainScreenController implements Initializable {
         Stage stage = (Stage) rootPane.getScene().getWindow();
         try {
             Parent root1 = (AnchorPane) FXMLLoader.load(getClass().getResource(location));
-            stage.setScene(new Scene(root1, 1200, 700));
+            stage.setScene(new Scene(root1, 1000, 720));
         } catch (IOException e) {
             e.printStackTrace();
         }
