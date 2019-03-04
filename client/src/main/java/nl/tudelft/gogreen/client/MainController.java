@@ -18,7 +18,7 @@ import nl.tudelft.gogreen.shared.auth.UserAuth;
 import java.io.IOException;
 
 /**
- * Controller For MainControllerFXML
+ * Controller For MainControllerFXML.
  */
 public class MainController {
     @FXML

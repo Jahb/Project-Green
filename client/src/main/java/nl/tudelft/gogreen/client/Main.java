@@ -17,10 +17,10 @@ import javafx.stage.Stage;
 public class Main extends Application {
     
     
-    int width = 920;
-    int height = 720;
+    private int width = 920;
+    private int height = 720;
     
-    Ring ring;
+    private Ring ring;
     
 	@Override
     public void start(Stage primaryStage) throws Exception {
@@ -36,8 +36,12 @@ public class Main extends Application {
         
         ring.startAnimation();
     }
-    
-    void addRing(AnchorPane root) {
+
+    /**
+     * Adds Ring to Pane
+     * @param root
+     */
+    private void addRing(AnchorPane root) {
         ring = new Ring((int) (150*.75), 150, width/2, 200);
         ring.addSegment(20, Color.LAWNGREEN);
         ring.addSegment(30, Color.YELLOW);
