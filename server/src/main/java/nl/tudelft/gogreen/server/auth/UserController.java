@@ -1,5 +1,6 @@
 package nl.tudelft.gogreen.server.auth;
 
+import nl.tudelft.gogreen.server.ConflictError;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -17,7 +18,7 @@ public class UserController {
         if (res) {
             return "Success!";
         }
-        return "Error, User already exists";
+        throw new ConflictError();
     }
 
 }
