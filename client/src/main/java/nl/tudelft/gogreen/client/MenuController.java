@@ -12,28 +12,26 @@ public class MenuController {
     @FXML
     private Button pButton;
     @FXML
-    private Button leaderboardButton;
+    private Button achievementsButton;
     @FXML
     private Button settingsButton;
 
     //scene switching via button
-    public void GotoProfile(ActionEvent event1) throws Exception {
+    public void GotoProfile(ActionEvent event1) throws Exception{
         Stage stage = (Stage) pButton.getScene().getWindow();
         Parent root1 = FXMLLoader.load(getClass().getResource("/ProfileGUI.fxml"));
         stage.setScene(new Scene(root1, 1200, 700));
     }
-
     //scene switching via button
-    public void GotoSettings(ActionEvent event2) throws Exception {
+    public void GotoSettings(ActionEvent event2) throws Exception{
         Stage stage = (Stage) settingsButton.getScene().getWindow();
         Parent root1 = FXMLLoader.load(getClass().getResource("/SettingsGUI.fxml"));
         stage.setScene(new Scene(root1, 1200, 700));
     }
-
     //scene switching via button
-    public void GotoLeaderboard(ActionEvent event3) throws Exception {
-        Stage stage = (Stage) leaderboardButton.getScene().getWindow();
-        Parent root1 = FXMLLoader.load(getClass().getResource("/LeaderboardGUI.fxml"));
+    public void GotoAchievements(ActionEvent event3) throws Exception{
+        Stage stage = (Stage) achievementsButton.getScene().getWindow();
+        Parent root1 = FXMLLoader.load(getClass().getResource("/AchievementsGUI.fxml"));
         stage.setScene(new Scene(root1, 1200, 700));
     }
 }
