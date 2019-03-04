@@ -12,7 +12,10 @@ import java.sql.ResultSet;
 import java.util.ResourceBundle;
 
 import static org.junit.Assert.assertTrue;
+<<<<<<< Updated upstream
 
+=======
+>>>>>>> Stashed changes
 
 public class create_userTest {
     private static ResourceBundle resource = ResourceBundle.getBundle("db");

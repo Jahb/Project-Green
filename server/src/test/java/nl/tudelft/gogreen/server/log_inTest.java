@@ -42,6 +42,7 @@ public class log_inTest {
         }
     }
     @Test
+<<<<<<< Updated upstream
     public void log_inTest() {
         try {
             Connection conn = DriverManager.getConnection(resource.getString("Postgresql.datasource.url"), resource.getString("Postgresql.datasource.username"), resource.getString("Postgresql.datasource.password"));
@@ -50,6 +51,15 @@ public class log_inTest {
         catch (Exception exception){
             System.out.println("Error!");
         }
+=======
+public void log_inTest() {
+    try {
+        Connection conn = DriverManager.getConnection(resource.getString("Postgresql.datasource.url"), resource.getString("Postgresql.datasource.username"), resource.getString("Postgresql.datasource.password"));
+        assertTrue(log_in.log_in("paul","paul",conn));
+    }
+    catch (Exception exception){
+        System.out.println("Error!");
+>>>>>>> Stashed changes
     }
 
 }
