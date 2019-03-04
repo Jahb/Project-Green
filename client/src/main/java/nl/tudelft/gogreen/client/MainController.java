@@ -18,7 +18,7 @@ import nl.tudelft.gogreen.shared.auth.UserAuth;
 import java.io.IOException;
 
 /**
- * Controller For MainControllerFXML.
+ * Controller For MainControllerFXML
  */
 public class MainController {
     @FXML
@@ -36,7 +36,7 @@ public class MainController {
 
 
     /**
-     * Switches to Main Menu After a Successful Login.
+     * Switches to Main Menu After a Successful Login
      *
      * @param event
      * @throws UnirestException
@@ -61,19 +61,12 @@ public class MainController {
 
     /**
      * Changes Scene to menu after login
-     *
      * @throws IOException
      */
     private void login() throws IOException {
         Stage stage = (Stage) loginButton.getScene().getWindow();
-        Parent root1 = FXMLLoader.load(getClass().getResource("/MainScreen.fxml"));
-        stage.setScene(new Scene(root1, 1000, 720));
-    }
-
-    public void register(ActionEvent event1) throws IOException {
-        Stage stage = (Stage) registerButton.getScene().getWindow();
-        Parent root1 = FXMLLoader.load(getClass().getResource("/Register.fxml"));
-        stage.setScene(new Scene(root1, 1000, 720));
+        Parent root1 = FXMLLoader.load(getClass().getResource("/PlaceholderMenu.fxml"));
+        stage.setScene(new Scene(root1, 1200, 700));
     }
 
 }

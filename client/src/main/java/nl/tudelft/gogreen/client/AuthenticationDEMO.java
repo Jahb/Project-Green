@@ -23,13 +23,13 @@ import java.io.IOException;
 import static javafx.geometry.Pos.CENTER;
 
 /**
- * Authentication Demo To Demonstrate Client Server Communication.
+ * Authentication Demo To Demonstrate Client Server Communication
  *
  * @author Jahson
  * @version 1.0
  */
 public class AuthenticationDEMO extends Application implements EventHandler<ActionEvent> {
-    //Intit Buttons
+    //Init Buttons
     private Button login;
     private Button register;
     private Button ping;
@@ -106,7 +106,7 @@ public class AuthenticationDEMO extends Application implements EventHandler<Acti
 
         subLayout.setBottom(back);
         subLayout.setCenter(unimp);
-        subLayout.setAlignment(back, Pos.CENTER);
+        BorderPane.setAlignment(back, Pos.CENTER);
 
         Scene scene2 = new Scene(subLayout, 500, 200);
         unimpScene = scene2;
