@@ -2,7 +2,10 @@ package nl.tudelft.gogreen.server.auth;
 
 import nl.tudelft.gogreen.shared.auth.AuthAgreement;
 import nl.tudelft.gogreen.shared.auth.UserAuth;
+import org.springframework.security.crypto.bcrypt.BCrypt;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Random;
 
 public class VerifyUser {
@@ -14,7 +17,17 @@ public class VerifyUser {
      */
     public static User findUser(String username) {
         //STUB
-        return new User(username, "testpw");
+        String pw = users.get(username);
+        if (pw == null) return null;
+        return new User(username, pw);
+    }
+
+    private static Map<String, String> users = new HashMap<>();
+
+    public static boolean addNewUser(String username, String password) {
+        if (users.containsKey(username)) return false;
+        users.put(username, BCrypt.hashpw(password, BCrypt.gensalt()));
+        return true;
     }
 
     /**

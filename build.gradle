@@ -12,6 +12,8 @@ plugins {
     id 'checkstyle'
     id 'com.github.johnrengelman.shadow' version '4.0.4' apply false
     id 'java'
+    id "io.freefair.lombok" version "3.1.4"
+
 }
 
 allprojects {
@@ -39,6 +41,11 @@ subprojects {
     checkstyle {
         configFile rootProject.file('CSE1105.checkstyle.xml')
         checkstyleTest.enabled = false
+    }
+
+    dependencies{
+        compileOnly 'org.projectlombok:lombok:1.18.4'
+        annotationProcessor 'org.projectlombok:lombok:1.18.4'
     }
 }
 

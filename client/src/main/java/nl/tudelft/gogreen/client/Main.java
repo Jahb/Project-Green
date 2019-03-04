@@ -13,6 +13,8 @@ import javafx.stage.Stage;
 import java.net.URL;
 
 public class Main extends Application {
+    public static Gson gson = new GsonBuilder().setPrettyPrinting().create();
+
     @Override
     public void start(Stage primaryStage) throws Exception {
         URL u = Main.class.getResource("/Login.fxml");
@@ -25,7 +27,6 @@ public class Main extends Application {
 
     public static void main(String[] args) {
         Unirest.setObjectMapper(new ObjectMapper() {
-            private Gson gson = new GsonBuilder().setPrettyPrinting().create();
 
             @Override
             public <T> T readValue(String value, Class<T> valueType) {
