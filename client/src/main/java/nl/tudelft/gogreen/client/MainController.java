@@ -61,15 +61,16 @@ public class MainController {
 
     /**
      * Changes Scene to menu after login
+     *
      * @throws IOException
      */
     private void login() throws IOException {
         Stage stage = (Stage) loginButton.getScene().getWindow();
-        Parent root1 = FXMLLoader.load(getClass().getResource("/PlaceholderMenu.fxml"));
+        Parent root1 = FXMLLoader.load(getClass().getResource("/MainScreen.fxml"));
         stage.setScene(new Scene(root1, 1200, 700));
     }
 
-    public void register (ActionEvent event1) throws IOException {
+    public void register(ActionEvent event1) throws IOException {
         Stage stage = (Stage) registerButton.getScene().getWindow();
         Parent root1 = FXMLLoader.load(getClass().getResource("/Register.fxml"));
         stage.setScene(new Scene(root1, 920, 720));

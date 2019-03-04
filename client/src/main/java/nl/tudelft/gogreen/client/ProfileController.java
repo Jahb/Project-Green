@@ -9,7 +9,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.image.Image;
@@ -24,13 +24,14 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 public class ProfileController implements Initializable {
-    @FXML
-    private Button backButton;
+
     @FXML
     private Circle profileCircle;
     @FXML
-    private ListView<ListItem> friendsList = new ListView<ListItem>();
+    private ImageView backButton = new ImageView("ButtonBack.png");
 
+    private Image bRelease = new Image("ButtonBack.png");
+    private Image bPress = new Image("ButtonBackClicked.png");
 
     /**
      * Scene switching via button.
@@ -40,7 +41,7 @@ public class ProfileController implements Initializable {
      */
     public void GotoMenu(ActionEvent event2) throws Exception {
         Stage stage = (Stage) backButton.getScene().getWindow();
-        Parent root2 = FXMLLoader.load(getClass().getResource("/PlaceholderMenu.fxml"));
+        Parent root2 = FXMLLoader.load(getClass().getResource("/MainScreen.fxml"));
         stage.setScene(new Scene(root2, 1200, 700));
     }
 
@@ -54,12 +55,16 @@ public class ProfileController implements Initializable {
     @FXML
     Circle achievementCircle3;
 
+    @FXML
+    private ListView<ListItem> friendsList = new ListView<ListItem>();
+
     ListItem a = new ListItem("friend1", "/achievementImage.png");
     ListItem b = new ListItem("friend2", "/achievementImage.png");
     ListItem c = new ListItem("friend3", "/achievementImage.png");
 
 
     private final ObservableList<ListItem> items = FXCollections.observableArrayList();
+
 
 
     //setting placeholder pictures
@@ -75,7 +80,7 @@ public class ProfileController implements Initializable {
         items.clear();
         items.add(new ListItem("profile1", "achievementImage.png"));
         items.add(new ListItem("profile2", "achievementImage.png"));
-        items.add(new ListItem("profile3", "achievementImage.png"));
+        items.add(new ListItem("profile3", "ButtonProfile.png"));
         friendsList.setCellFactory(new Callback<ListView<ListItem>, ListCell<ListItem>>() {
 
             @Override
@@ -87,10 +92,12 @@ public class ProfileController implements Initializable {
                         if (item != null) {
                             Image img = new Image(getClass().getResource("/" + item.getImageLocation()).toExternalForm());
                             ImageView imgview = new ImageView(img);
+
+                            imgview.setFitWidth(120);
                             imgview.setFitHeight(90);
-                            imgview.setFitWidth(90);
                             setGraphic(imgview);
                             setText(item.getName());
+                            super.setStyle("-fx-font-weight: bold; -fx-font-size: 25");
                         }
                     }
                 };
@@ -98,4 +105,19 @@ public class ProfileController implements Initializable {
             }
         });
     }
+
+    //back button methods
+    public void backPress() {
+        System.out.println("Back Button Pressed");
+        backButton.setImage(bPress);
+    }
+
+    public void backRelease() throws Exception {
+        System.out.println("Back Button Released");
+        backButton.setImage(bRelease);
+        Stage stage = (Stage) profileCircle.getScene().getWindow();
+        Parent root2 = FXMLLoader.load(getClass().getResource("/MainScreen.fxml"));
+        stage.setScene(new Scene(root2, 1200, 700));
+    }
+
 }

@@ -25,13 +25,13 @@ public class RegisterController {
     @FXML
     Button createAccountButton;
 
-    public void RegisterAccount (ActionEvent event) throws Exception {
-        if(passField1.getText().equals(passField2.getText())&& passField1.getText().length()>7) {
+    public void RegisterAccount(ActionEvent event) throws Exception {
+        if (passField1.getText().equals(passField2.getText()) && passField1.getText().length() > 7) {
             Stage stage = (Stage) createAccountButton.getScene().getWindow();
             Parent root1 = FXMLLoader.load(getClass().getResource("/ProfileGUI.fxml"));
-            stage.setScene(new Scene(root1,1200,700));
-        }
-        else if(!passField1.getText().equals(passField2.getText())){infoLabel.setText("Passwords do not match. Try again:");}
-        else infoLabel.setText("Password needs to be at least 8 characters in length. Try again:");
+            stage.setScene(new Scene(root1, 1200, 700));
+        } else if (!passField1.getText().equals(passField2.getText())) {
+            infoLabel.setText("Passwords do not match. Try again:");
+        } else infoLabel.setText("Password needs to be at least 8 characters in length. Try again:");
     }
 }

@@ -21,7 +21,7 @@ public class Main extends Application {
     private int width = 1000;
     private int height = 720;
 
-    private Ring ring;
+    Ring ring;
 
     @Override
     public void start(Stage primaryStage) throws Exception {
@@ -34,26 +34,20 @@ public class Main extends Application {
         Scene loginScene = new Scene(root, width, height);
         primaryStage.setScene(loginScene);
         primaryStage.show();
-
         ring.startAnimation();
     }
 
-    /**
-     * Adds Ring to Pane.
-     *
-     * @param root
-     */
-    private void addRing(AnchorPane root) {
+    void addRing(AnchorPane root) {
         ring = new Ring((int) (150 * .75), 150, width / 2, 200);
-        ring.addSegment(30, Color.LAWNGREEN);
-        ring.addSegment(15, Color.GREEN);
-        ring.addSegment(20, Color.YELLOW);
+        ring.addSegment(20, Color.LAWNGREEN);
+        ring.addSegment(30, Color.YELLOW);
+        ring.addSegment(40, Color.SANDYBROWN);
         ring.addNodes(root);
     }
 
 
     /**
-     * Main Method.
+     * Main Method
      *
      * @param args
      */

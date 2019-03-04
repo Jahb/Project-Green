@@ -23,7 +23,7 @@ import java.io.IOException;
 import static javafx.geometry.Pos.CENTER;
 
 /**
- * Authentication Demo To Demonstrate Client Server Communication
+ * Authentication Demo To Demonstrate Client Server Communication.
  *
  * @author Jahson
  * @version 1.0

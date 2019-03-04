@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.image.*?>
 <?import javafx.scene.text.*?>
 <?import java.lang.*?>
 <?import java.util.*?>
@@ -7,13 +8,61 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-
-<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="nl.tudelft.gogreen.client.HabitsController">
+<AnchorPane prefHeight="560.0" prefWidth="733.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="nl.tudelft.gogreen.client.HabitsController">
    <children>
-      <Button fx:id="setHabitsButton" layoutX="248.0" layoutY="302.0" mnemonicParsing="false" onAction="#SetHabits" text="Set Habits">
+      <VBox layoutX="37.0" prefHeight="200.0" prefWidth="100.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="30.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="50.0">
+         <children>
+            <Label prefHeight="96.0" prefWidth="291.0" text="Are you a vegetarian?">
+               <font>
+                  <Font size="24.0" />
+               </font>
+            </Label>
+            <Label prefHeight="102.0" prefWidth="243.0" text="placeholder">
+               <font>
+                  <Font size="24.0" />
+               </font>
+            </Label>
+            <Label prefHeight="96.0" prefWidth="300.0" text="How often do you smoke?">
+               <font>
+                  <Font size="24.0" />
+               </font>
+            </Label>
+         </children>
+      </VBox>
+      <ImageView fitHeight="150.0" fitWidth="200.0" layoutX="-125.0" layoutY="-16.0" pickOnBounds="true" preserveRatio="true" />
+      <VBox layoutX="533.0" layoutY="51.0" prefHeight="423.0" prefWidth="148.0">
+         <children>
+            <ImageView fx:id="denyButton1" fitHeight="103.0" fitWidth="148.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@ButtonDeny.png" />
+               </image>
+            </ImageView>
+            <ImageView fx:id="denyButton2" fitHeight="103.0" fitWidth="148.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@ButtonDeny.png" />
+               </image>
+            </ImageView>
+         </children>
+      </VBox>
+      <VBox layoutX="395.0" layoutY="54.0" prefHeight="423.0" prefWidth="148.0">
+         <children>
+            <ImageView fx:id="confirmButton1" fitHeight="103.0" fitWidth="148.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@ButtonConfirm.png" />
+               </image>
+            </ImageView>
+            <ImageView fx:id="confirmButton2" fitHeight="103.0" fitWidth="148.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@ButtonConfirm.png" />
+               </image>
+            </ImageView>
+         </children>
+      </VBox>
+      <Button fx:id="setHabitsButton" alignment="BOTTOM_CENTER" contentDisplay="CENTER" layoutX="293.0" layoutY="496.0" mnemonicParsing="false" onAction="#SetHabits" prefHeight="46.0" prefWidth="165.0" text="Set Habits">
          <font>
             <Font size="18.0" />
          </font>
       </Button>
+      <Slider fx:id="smokingSlider" layoutX="416.0" layoutY="280.0" prefHeight="39.0" prefWidth="233.0" />
    </children>
 </AnchorPane>

@@ -1,11 +1,27 @@
 package nl.tudelft.gogreen.client;
 
+import javafx.animation.FadeTransition;
+import javafx.application.Application;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.fxml.Initializable;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.TextArea;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.paint.Color;
+import javafx.stage.Stage;
+import javafx.util.Duration;
 
-public class MainScreenController {
+import java.io.IOException;
+import java.net.URL;
+import java.util.ResourceBundle;
+
+public class MainScreenController implements Initializable {
 
     @FXML
     public ImageView addButton;
@@ -15,6 +31,8 @@ public class MainScreenController {
     public ImageView helpButton;
     @FXML
     public TextArea helpText;
+    @FXML
+    public AnchorPane rootPane;
 
     private Image menuPress = new Image("ButtonMenuClicked.png");
     private Image menuRel = new Image("ButtonMenu.png");
@@ -35,9 +53,10 @@ public class MainScreenController {
         menuButton.setImage(menuPress);
     }
 
-    public void menuRelease() {
+    public void menuRelease() throws Exception {
         System.out.println("Left Button Released");
         menuButton.setImage(menuRel);
+        FadeOut("/LeaderboardGUI.fxml");
     }
 
     public void addPress() {
@@ -45,13 +64,10 @@ public class MainScreenController {
         addButton.setImage(addPress);
     }
 
-    /**
-     * Method call on release of Add Button.
-     */
-    public void addRelease() {
+    public void addRelease() throws Exception {
         System.out.println("Add Button Released");
         addButton.setImage(addRel);
-        
+        FadeOut("/HabitsScreen.fxml");
     }
 
     public void helpPress() {
@@ -73,5 +89,34 @@ public class MainScreenController {
             helpText.toFront();
         }
         helpButton.setImage(helpRel);
+    }
+
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
+    }
+
+    private void FadeOut(String location) {
+        FadeTransition fadetransition = new FadeTransition();
+        fadetransition.setDuration(Duration.millis(150));
+        fadetransition.setNode(rootPane);
+        fadetransition.setFromValue(1);
+        fadetransition.setToValue(0);
+        fadetransition.setOnFinished(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                loadScene(location);
+            }
+        });
+        fadetransition.play();
+    }
+
+    private void loadScene(String location) {
+        Stage stage = (Stage) rootPane.getScene().getWindow();
+        try {
+            Parent root1 = (AnchorPane) FXMLLoader.load(getClass().getResource(location));
+            stage.setScene(new Scene(root1, 1200, 700));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }

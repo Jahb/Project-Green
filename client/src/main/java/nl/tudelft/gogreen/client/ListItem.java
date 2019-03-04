@@ -6,12 +6,15 @@ import javafx.scene.image.ImageView;
 public class ListItem {
     private String name;
     private String imageLocation;
+
     public String getName() {
         return name;
     }
+
     public String getImageLocation() {
         return imageLocation;
     }
+
     public ListItem(String name, String location) {
         super();
         this.name = name;
