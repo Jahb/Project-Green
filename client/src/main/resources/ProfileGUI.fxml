@@ -14,9 +14,13 @@
       <Circle fx:id="achievementCircle1" fill="DODGERBLUE" layoutX="133.0" layoutY="512.0" radius="72.0" stroke="BLACK" strokeType="INSIDE" />
       <Circle fx:id="achievementCircle2" fill="DODGERBLUE" layoutX="354.0" layoutY="512.0" radius="72.0" stroke="BLACK" strokeType="INSIDE" />
       <Circle fx:id="achievementCircle3" fill="DODGERBLUE" layoutX="576.0" layoutY="512.0" radius="72.0" stroke="BLACK" strokeType="INSIDE" />
-      <Button fx:id="backButton" layoutX="29.0" layoutY="29.0" mnemonicParsing="false" onAction="#GotoMenu" text="Back" />
-      <ListView fx:id="friendsList" layoutX="888.0" layoutY="-2.0" prefHeight="748.0" prefWidth="365.0" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+      <ListView fx:id="friendsList" layoutX="888.0" layoutY="-2.0" prefHeight="748.0" prefWidth="365.0" stylesheets="ListStyle.css" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
       <Circle fx:id="profileCircle" fill="DODGERBLUE" layoutX="354.0" layoutY="233.0" radius="141.0" stroke="BLACK" strokeType="INSIDE" />
       <StackPane fx:id="imageContainer" layoutX="261.0" layoutY="143.0" prefHeight="150.0" prefWidth="200.0" />
+      <ImageView fx:id="backButton" fitHeight="150.0" fitWidth="150.0" onMousePressed="#backPress" onMouseReleased="#backRelease">
+         <image>
+            <Image url="@ButtonBack.png" />
+         </image>
+      </ImageView>
    </children>
 </AnchorPane>
