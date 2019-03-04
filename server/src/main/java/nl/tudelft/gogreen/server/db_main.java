@@ -10,13 +10,6 @@ public class db_main {
             Scanner scanner = new Scanner(System.in);
 
 
-
-
-
-
-
-
-
             System.out.println("Welcome to the GoGreen application!");
             System.out.println("What do you want to do?");
             System.out.println("\t 1 - Log in ");

@@ -57,7 +57,7 @@ public class create_user {
             String hashed = BCrypt.hashpw(password, BCrypt.gensalt());
             String hashpass = "'" + hashed + "'";
 
-            PreparedStatement user = conn.prepareStatement("insert into user_table values ( " +  id + ", " + username + ", " + hashpass + ");");
+            PreparedStatement user = conn.prepareStatement("insert into user_table values ( " +  id + ",'" + username + "', " + hashpass + ");");
             user.execute();
             PreparedStatement obj = conn.prepareStatement("insert into objective values (" + id + ", NULL);");
             obj.execute();
@@ -80,5 +80,23 @@ public class create_user {
         }
         return false;
 
+    }
+    public static boolean delete_user(int id,Connection conn) {
+        try {
+            PreparedStatement delObjective = conn.prepareStatement("delete from objective where user_id =" + id + ";");
+            PreparedStatement delHabits = conn.prepareStatement("delete from initial_habits where user_id =" + id + "; ");
+            PreparedStatement delStreak = conn.prepareStatement("delete from streak where user_id =" + id + "; ");
+            PreparedStatement delUserPoints = conn.prepareStatement("delete from user_points where user_id =" + id + "; ");
+            PreparedStatement delUser_table = conn.prepareStatement("delete from user_table where user_id =" + id + "; ");
+            delObjective.execute();
+            delHabits.execute();
+            delStreak.execute();
+            delUserPoints.execute();
+            delUser_table.execute();
+            return true;
+        }
+        catch (Exception exception){
+            return false;
+        }
     }
 }
