@@ -44,9 +44,9 @@ public class Main extends Application {
      */
     private void addRing(AnchorPane root) {
         ring = new Ring((int) (150 * .75), 150, width / 2, 200);
-        ring.addSegment(20, Color.LAWNGREEN);
-        ring.addSegment(30, Color.YELLOW);
-        ring.addSegment(40, Color.SANDYBROWN);
+        ring.addSegment(30, Color.LAWNGREEN);
+        ring.addSegment(15, Color.GREEN);
+        ring.addSegment(20, Color.YELLOW);
         ring.addNodes(root);
     }
 

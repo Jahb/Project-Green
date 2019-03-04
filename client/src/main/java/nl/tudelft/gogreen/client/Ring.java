@@ -36,7 +36,7 @@ public class Ring {
         outerCircle.setCenterX(centerx);
         outerCircle.setCenterY(centery);
         outerCircle.setRadius(outerRadius);
-        outerCircle.setFill(Color.GRAY);
+        outerCircle.setFill(Color.WHITE);
         outerCircle.setStroke(Color.BLACK);
     }
 
