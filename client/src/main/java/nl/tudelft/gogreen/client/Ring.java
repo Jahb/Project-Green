@@ -1,6 +1,6 @@
 package nl.tudelft.gogreen.client;
 
-import java.util.ArrayList;
+
 
 import javafx.animation.AnimationTimer;
 import javafx.animation.FillTransition;
@@ -14,12 +14,16 @@ import javafx.scene.shape.ArcType;
 import javafx.scene.shape.Circle;
 import javafx.util.Duration;
 
+import java.util.ArrayList;
+
 public class Ring {
 
     private Circle innerCircle = new Circle();
     private Circle outerCircle = new Circle();
     private ArrayList<RingSegment> segments = new ArrayList<RingSegment>();
-    private int centerx, centery;
+
+    private int centerx;
+    private int centery;
 
 
     public Ring(int innerRadius, int outerRadius, int centerx, int centery) {
@@ -78,7 +82,7 @@ public class Ring {
 
         @Override
         public void handle(long l) {
-            double progress = ((l - timerStart) / 15_000_000d);
+            double progress = ((l - timerStart) / 31_000_000d);
             double startAngle = 0;
 
             if (progress > 100)

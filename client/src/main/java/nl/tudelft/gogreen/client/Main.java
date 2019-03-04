@@ -1,11 +1,10 @@
 package nl.tudelft.gogreen.client;
 
-import java.net.URL;
-
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.mashape.unirest.http.ObjectMapper;
+
 import com.mashape.unirest.http.Unirest;
+import com.mashape.unirest.http.ObjectMapper;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -14,10 +13,12 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
+import java.net.URL;
+
 public class Main extends Application {
 
 
-    private int width = 920;
+    private int width = 1000;
     private int height = 720;
 
     private Ring ring;

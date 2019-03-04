@@ -69,6 +69,12 @@ public class MainController {
         stage.setScene(new Scene(root1, 1200, 700));
     }
 
+    public void register (ActionEvent event1) throws IOException {
+        Stage stage = (Stage) registerButton.getScene().getWindow();
+        Parent root1 = FXMLLoader.load(getClass().getResource("/Register.fxml"));
+        stage.setScene(new Scene(root1, 920, 720));
+    }
+
 }
 
 
