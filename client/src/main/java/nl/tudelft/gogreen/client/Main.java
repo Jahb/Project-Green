@@ -1,6 +1,6 @@
 package nl.tudelft.gogreen.client;
 
-import java.io.IOException;
+import java.net.URL;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -8,25 +8,46 @@ import com.mashape.unirest.http.ObjectMapper;
 import com.mashape.unirest.http.Unirest;
 
 import javafx.application.Application;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Scene;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
 public class Main extends Application {
-
-	static int width = 1280;
-	static int height = 720;
-
-	LoginScreen loginScreen = new LoginScreen();
-	MainScreen mainScreen = new MainScreen();
-
+    
+    
+    int width = 920;
+    int height = 720;
+    
+    Ring ring;
+    
 	@Override
-	public void start(Stage primaryStage) throws IOException {
+    public void start(Stage primaryStage) throws Exception {
+
+
 		long startTime = System.nanoTime();
+        URL url = Main.class.getResource("/MainScreen.fxml");
+        System.out.println(url);
+        AnchorPane root = FXMLLoader.load(url);
+        System.out.println((System.nanoTime()-startTime)/1000000/1000.0);
+        addRing(root);
+        Scene loginScene = new Scene(root, width, height);
+        primaryStage.setScene(loginScene);
+        primaryStage.show();
+        
+        ring.startAnimation();
+    }
+    
+    void addRing(AnchorPane root) {
+        ring = new Ring((int) (150*.75), 150, width/2, 200);
+        ring.addSegment(20, Color.LAWNGREEN);
+        ring.addSegment(30, Color.YELLOW);
+        ring.addSegment(40, Color.SANDYBROWN);
+        ring.addNodes(root);
+    }
+    
 
-		primaryStage.setScene(mainScreen.getScene());
-		primaryStage.show();
-
-		System.out.println("Initialization code took " + ((System.nanoTime() - startTime) / 1000000 / 1000.0) + "s");
-	}
 
 	/**
 	 * Main Method

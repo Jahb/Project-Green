@@ -26,7 +26,7 @@ public class ProfileController implements Initializable {
 	private Circle profileCircle;
 	@FXML
 	private ListView<ListItem> friendsList = new ListView<ListItem>();
-
+*
 	// scene switching via button
 	public void GotoMenu(ActionEvent event2) throws Exception {
 		Stage stage = (Stage) backButton.getScene().getWindow();
