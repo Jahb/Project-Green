@@ -1,5 +1,7 @@
 package nl.tudelft.gogreen.client;
 
+import static javafx.geometry.Pos.CENTER;
+
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -12,6 +14,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
+
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.CloseableHttpClient;
@@ -20,16 +23,14 @@ import org.apache.http.util.EntityUtils;
 
 import java.io.IOException;
 
-import static javafx.geometry.Pos.CENTER;
-
 /**
  * Authentication Demo To Demonstrate Client Server Communication.
  *
  * @author Jahson
  * @version 1.0
  */
-public class AuthenticationDEMO extends Application implements EventHandler<ActionEvent> {
-    //Intit Buttons
+public class AuthenticationDemo extends Application implements EventHandler<ActionEvent> {
+    //Buttons
     private Button login;
     private Button register;
     private Button ping;
@@ -37,7 +38,7 @@ public class AuthenticationDEMO extends Application implements EventHandler<Acti
 
     private Stage window;
     private Scene mainScene;
-    private Scene unimpScene;
+    private Scene unImpScene;
 
     public static void main(String[] args) {
         //Start Application implementation;
@@ -45,13 +46,12 @@ public class AuthenticationDEMO extends Application implements EventHandler<Acti
     }
 
     /**
-     * Start method overide from Application contains Scenes and buttons
+     * Start method override from Application contains Scenes and buttons.
      *
-     * @param main
-     * @throws Exception
+     * @param main Main Stage.
      */
     @Override
-    public void start(Stage main) throws Exception {
+    public void start(Stage main) {
         window = main;
         window.setTitle("GoGreen Authentication Demo");
 
@@ -66,7 +66,7 @@ public class AuthenticationDEMO extends Application implements EventHandler<Acti
         register.setOnAction(this);
         ping.setOnAction(this);
 
-        //Layout for Butons Hbox (One after other)
+        //Layout for Buttons H box (One after other)
         HBox buttons = new HBox();
         buttons.setPadding(new Insets(15, 12, 15, 12));
         buttons.setSpacing(10);
@@ -78,14 +78,10 @@ public class AuthenticationDEMO extends Application implements EventHandler<Acti
         BorderPane mainLayout = new BorderPane();
         mainLayout.setBottom(buttons);
 
-////////////Failed Image adding to GUI
-//       ImageView logo= new ImageView();
-//       logo.setImage(new Image("/client/src/main/assets/logo.png"));
-//        center.getChildren().add(logo);
-
-        Text centertxt = new Text("Welcome to the Login Demo\n This is the show communication between the Server and Client");
+        Text centerTxt = new Text("Welcome to the Login Demo\n " +
+                "This is the show communication between the Server and Client");
         StackPane center = new StackPane();
-        center.getChildren().add(centertxt);
+        center.getChildren().add(centerTxt);
 
         mainLayout.setCenter(center);
 
@@ -95,21 +91,18 @@ public class AuthenticationDEMO extends Application implements EventHandler<Acti
         window.setScene(scene);
         window.show();
 
-        ///////////////////////Creating UnImplemented Scene TO BE DELETED
-        BorderPane subLayout = new BorderPane();
-
-        Text unimp = new Text("Sorry This Has Not Been Implemented Yet");
         back = new Button();
         back.setText("Go Back To Login Page");
         back.setOnAction(this);
 
+        BorderPane subLayout = new BorderPane();
+        Text unImp = new Text("Sorry This Has Not Been Implemented Yet");
 
         subLayout.setBottom(back);
-        subLayout.setCenter(unimp);
-        subLayout.setAlignment(back, Pos.CENTER);
+        subLayout.setCenter(unImp);
+        BorderPane.setAlignment(back, Pos.CENTER);
 
-        Scene scene2 = new Scene(subLayout, 500, 200);
-        unimpScene = scene2;
+        unImpScene = new Scene(subLayout, 500, 200);
 
 
     }
@@ -124,10 +117,10 @@ public class AuthenticationDEMO extends Application implements EventHandler<Acti
     @Override
     public void handle(ActionEvent event) {
         if (event.getSource() == login) {
-            window.setScene(unimpScene);
+            window.setScene(unImpScene);
         }
         if (event.getSource() == register) {
-            window.setScene(unimpScene);
+            window.setScene(unImpScene);
         }
         if (event.getSource() == ping) {
             //Implement Method calling here
