@@ -11,7 +11,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ResourceBundle;
 
-import static org.testng.Assert.assertTrue;
+import static org.junit.Assert.assertTrue;
+
 
 public class create_userTest {
     private static ResourceBundle resource = ResourceBundle.getBundle("db");
