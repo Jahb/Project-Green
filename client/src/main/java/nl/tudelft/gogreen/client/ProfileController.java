@@ -46,78 +46,19 @@ public class ProfileController implements Initializable {
 
 	private ObservableList<ListItem> items = FXCollections.observableArrayList();
 
-    //Added profile picture within circle
-    @FXML
-    StackPane imageContainer = new StackPane();
-    @FXML
-    Circle achievementCircle1;
-    @FXML
-    Circle achievementCircle2;
-    @FXML
-    Circle achievementCircle3;
-
-    @FXML
-    private ListView<ListItem> friendsList = new ListView<ListItem>();
-
-    ListItem a = new ListItem("friend1", "/achievementImage.png");
-    ListItem b = new ListItem("friend2", "/achievementImage.png");
-    ListItem c = new ListItem("friend3", "/achievementImage.png");
-
-
-    private final ObservableList<ListItem> items = FXCollections.observableArrayList();
-
-
-    //setting placeholder pictures
-    @Override
-    public void initialize(URL location, ResourceBundle resources) {
-        Image profileImg = new Image("/logo.png");
-        Image achievementImg = new Image("/achievementImage.png");
-        profileCircle.setFill(new ImagePattern(profileImg));
-        achievementCircle1.setFill(new ImagePattern(achievementImg));
-        achievementCircle2.setFill(new ImagePattern(achievementImg));
-        achievementCircle3.setFill(new ImagePattern(achievementImg));
-
-        items.clear();
-        items.add(new ListItem("profile1", "achievementImage.png"));
-        items.add(new ListItem("profile2", "achievementImage.png"));
-        items.add(new ListItem("profile3", "ButtonProfile.png"));
-        friendsList.setCellFactory(new Callback<ListView<ListItem>, ListCell<ListItem>>() {
-
-            @Override
-            public ListCell<ListItem> call(ListView<ListItem> arg0) {
-                ListCell<ListItem> cell = new ListCell<ListItem>() {
-                    @Override
-                    protected void updateItem(ListItem item, boolean bool) {
-                        super.updateItem(item, bool);
-                        if (item != null) {
-                            Image img = new Image(getClass().getResource("/" + item.getImageLocation()).toExternalForm());
-                            ImageView imgview = new ImageView(img);
-
-                            imgview.setFitWidth(120);
-                            imgview.setFitHeight(90);
-                            setGraphic(imgview);
-                            setText(item.getName());
-                            super.setStyle("-fx-font-weight: bold; -fx-font-size: 25");
-                        }
-                    }
-                };
-                return cell;
-            }
-        });
-    }
-
-    //back button methods
-    public void backPress() {
-        System.out.println("Back Button Pressed");
-        backButton.setImage(bPress);
-    }
-
-    public void backRelease() throws Exception {
-        System.out.println("Back Button Released");
-        backButton.setImage(bRelease);
-        Stage stage = (Stage) profileCircle.getScene().getWindow();
-        Parent root2 = FXMLLoader.load(getClass().getResource("/MainScreen.fxml"));
-        stage.setScene(new Scene(root2, 1200, 700));
-    }
-
+	// setting placeholder pictures
+	@Override
+	public void initialize(URL url, ResourceBundle rb) {
+		Image profileImg = new Image("/logo.png");
+		Image achievementImg = new Image("/achievementImage.png");
+		profileCircle.setFill(new ImagePattern(profileImg));
+		achievementCircle1.setFill(new ImagePattern(achievementImg));
+		achievementCircle2.setFill(new ImagePattern(achievementImg));
+		achievementCircle3.setFill(new ImagePattern(achievementImg));
+		friendsList.setItems(items);
+		for (ListItem a : items) {
+			a.setImage(achievementImg);
+			a.setText("friend");
+		}
+	}
 }
