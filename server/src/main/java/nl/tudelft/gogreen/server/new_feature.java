@@ -1,5 +1,5 @@
-package nl.tudelft.gogreen.server;
 
+package nl.tudelft.gogreen.server;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -21,11 +21,34 @@ public class new_feature {
         try {
 
             Connection conn = getConnection(resource.getString("Postgresql.datasource.url"), resource.getString("Postgresql.datasource.username"), resource.getString("Postgresql.datasource.password"));
+            int id = getId(username, conn);
+//            newStreak(id, conn);
+//            actualizingfeatures(conn, feature);
+//            addingToLog(id, conn, feature);
+//            actualizingUserPoints(id, feature, 20, conn);
+//            actualizingUserLog(id, feature, 20, conn);
+
 
         } catch (Exception exception) {
             System.out.print("There has been an error accessing the database");
         }
 
+    }
+
+    public static int getId(String username, Connection conn) {
+        int id  = -1;
+        try {
+            System.out.println("the username is: " + username);
+            PreparedStatement getId = conn.prepareStatement("select user_id from user_table where username = '" + username + "';");
+            ResultSet rs = getId.executeQuery();
+            while (rs.next()) {
+                id = rs.getInt(1);
+            }
+            return id;
+        } catch (Exception exception) {
+            System.out.println("Error!");
+        }
+        return id;
     }
 
 
