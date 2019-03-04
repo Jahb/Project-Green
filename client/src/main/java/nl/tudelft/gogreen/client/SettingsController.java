@@ -14,8 +14,6 @@ public class SettingsController {
 
     //scene switching via button
     public void gotoMenu(ActionEvent event2) throws Exception{
-        Stage stage = (Stage) backButton.getScene().getWindow();
-        Parent root2 = FXMLLoader.load(getClass().getResource("/PlaceholderMenu.fxml"));
-        stage.setScene(new Scene(root2, 1200, 700));
+        Main.openMainScreen();
     }
 }

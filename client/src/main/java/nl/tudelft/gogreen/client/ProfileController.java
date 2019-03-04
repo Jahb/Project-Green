@@ -26,12 +26,10 @@ public class ProfileController implements Initializable {
 	private Circle profileCircle;
 	@FXML
 	private ListView<ListItem> friendsList = new ListView<ListItem>();
-*
+
 	// scene switching via button
 	public void GotoMenu(ActionEvent event2) throws Exception {
-		Stage stage = (Stage) backButton.getScene().getWindow();
-		Parent root2 = FXMLLoader.load(getClass().getResource("/PlaceholderMenu.fxml"));
-		stage.setScene(new Scene(root2, 1200, 700));
+		Main.openMainScreen();
 	}
 
 	// Added profile picture within circle
