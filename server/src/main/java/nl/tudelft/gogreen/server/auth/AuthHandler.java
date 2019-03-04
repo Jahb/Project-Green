@@ -16,22 +16,22 @@ import java.io.IOException;
 
 @Component
 public class AuthHandler implements AuthenticationSuccessHandler, LogoutSuccessHandler, AuthenticationFailureHandler {
-    MessageHolder error = new MessageHolder<>("Auth success!", true);
-    MessageHolder yeet = new MessageHolder<>("Auth Failed!", false);
-    MessageHolder yote = new MessageHolder("Logged out!");
+    private MessageHolder authSuccess = new MessageHolder<>("Auth success!", true);
+    private MessageHolder authFail = new MessageHolder<>("Auth Failed!", false);
+    private MessageHolder logoutSuccess = new MessageHolder("Logged out!");
 
     @Override
     public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response, AuthenticationException exception) throws IOException, ServletException {
-        Utils.writeJson(response, yeet, 401);
+        Utils.writeJson(response, authFail, 401);
     }
 
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
-        Utils.writeJson(response, error);
+        Utils.writeJson(response, authSuccess);
     }
 
     @Override
     public void onLogoutSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
-        Utils.writeJson(response, yote);
+        Utils.writeJson(response, logoutSuccess);
     }
 }

@@ -1,7 +1,5 @@
 package nl.tudelft.gogreen.client;
 
-import com.google.gson.reflect.TypeToken;
-import com.mashape.unirest.http.Unirest;
 import com.mashape.unirest.http.exceptions.UnirestException;
 import com.mashape.unirest.request.body.MultipartBody;
 import javafx.event.ActionEvent;
@@ -13,7 +11,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
-import nl.tudelft.gogreen.shared.MessageHolder;
+import nl.tudelft.gogreen.client.communication.API;
 
 import java.io.IOException;
 
@@ -39,10 +37,7 @@ public class MainController {
         String pw = passwordField.getText();
 
 
-        String holder = Unirest.post("http://localhost:8080/login")
-                .field("username", un).field("password", pw).asString().getBody();
-        MessageHolder<Boolean> res = Main.gson.fromJson(holder, new TypeToken<MessageHolder<Boolean>>(){}.getType());
-        if (res.getData()){
+        if (API.getTestApi().login(un, pw)) {
             login();
         }
 
