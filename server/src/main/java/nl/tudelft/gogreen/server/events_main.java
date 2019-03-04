@@ -25,9 +25,15 @@ public class events_main {
             System.out.println("An error has occurred!");
         }
     }
-
-
-
+    public static void delete_event(String username, String eventName, Connection conn){
+        //delete event
+        try{
+            PreparedStatement join = conn.prepareStatement("");
+        }
+        catch (Exception exception){
+            System.out.println("An error has occurred!");
+        }
+    }
 
     public static void join_event(String username, String eventName, Connection conn){
         try{
@@ -37,6 +43,13 @@ public class events_main {
             System.out.println("An error has occurred!");
         }
     }
-
+    public static void leave_event(String username, String eventName, Connection conn){
+        try{
+            PreparedStatement join = conn.prepareStatement("");
+        }
+        catch (Exception exception){
+            System.out.println("An error has occurred!");
+        }
+    }
 
 }
