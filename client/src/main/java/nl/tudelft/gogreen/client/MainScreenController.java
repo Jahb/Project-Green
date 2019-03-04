@@ -16,50 +16,62 @@ public class MainScreenController {
     @FXML
     public TextArea helpText;
 
-    private Image mPress = new Image("ButtonMenuClicked.png");
-    private Image mRel = new Image("ButtonMenu.png");
+    private Image menuPress = new Image("ButtonMenuClicked.png");
+    private Image menuRel = new Image("ButtonMenu.png");
 
-    private Image aPress = new Image("ButtonAddClicked.png");
-    private Image aRel = new Image("ButtonAdd.png");
+    private Image addPress = new Image("ButtonAddClicked.png");
+    private Image addRel = new Image("ButtonAdd.png");
 
-    private Image hPress = new Image("ButtonHelpClicked.png");
-    private Image hRel = new Image("ButtonHelp.png");
+    private Image helpPress = new Image("ButtonHelpClicked.png");
+    private Image helpRel = new Image("ButtonHelp.png");
 
+    public void initialize(){
+        //Insert Ring Code Here!
+        
+    }
 
     public void menuPress() {
         System.out.println("Left Button Pressed");
-        menuButton.setImage(mPress);
+        menuButton.setImage(menuPress);
     }
 
     public void menuRelease() {
         System.out.println("Left Button Released");
-        menuButton.setImage(mRel);
+        menuButton.setImage(menuRel);
     }
 
     public void addPress() {
         System.out.println("Add Button Pressed");
-        addButton.setImage(aPress);
+        addButton.setImage(addPress);
     }
 
+    /**
+     * Method call on release of Add Button.
+     */
     public void addRelease() {
         System.out.println("Add Button Released");
-        addButton.setImage(aRel);
+        addButton.setImage(addRel);
         
     }
 
     public void helpPress() {
         System.out.println("Help Button Pressed");
-        helpButton.setImage(hPress);
+        helpButton.setImage(helpPress);
     }
 
+    /**
+     * Method called on release of Help button.
+     */
     public void helpRelease() {
         System.out.println("Help Button Released");
 
         if (helpText.isVisible()) {
             helpText.setVisible(false);
+            helpText.toFront();
         } else {
             helpText.setVisible(true);
+            helpText.toFront();
         }
-        helpButton.setImage(hRel);
+        helpButton.setImage(helpRel);
     }
 }

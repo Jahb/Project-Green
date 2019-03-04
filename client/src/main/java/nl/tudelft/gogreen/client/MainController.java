@@ -18,7 +18,7 @@ import nl.tudelft.gogreen.shared.auth.UserAuth;
 import java.io.IOException;
 
 /**
- * Controller For MainControllerFXML
+ * Controller For MainControllerFXML.
  */
 public class MainController {
     @FXML
@@ -36,7 +36,7 @@ public class MainController {
 
 
     /**
-     * Switches to Main Menu After a Successful Login
+     * Switches to Main Menu After a Successful Login.
      *
      * @param event
      * @throws UnirestException

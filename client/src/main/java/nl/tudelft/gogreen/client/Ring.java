@@ -16,6 +16,11 @@ import javafx.util.Duration;
 
 public class Ring {
 
+    private Circle innerCircle = new Circle();
+    private Circle outerCircle = new Circle();
+    private ArrayList<RingSegment> segments = new ArrayList<RingSegment>();
+    private int centerx, centery;
+
 
     public Ring(int innerRadius, int outerRadius, int centerx, int centery) {
         this.centerx = centerx;
@@ -31,7 +36,7 @@ public class Ring {
         outerCircle.setCenterX(centerx);
         outerCircle.setCenterY(centery);
         outerCircle.setRadius(outerRadius);
-        outerCircle.setFill(Color.GRAY);
+        outerCircle.setFill(Color.WHITE);
         outerCircle.setStroke(Color.BLACK);
     }
 
@@ -46,11 +51,6 @@ public class Ring {
         root.getChildren().add(innerCircle);
     }
 
-    private Circle innerCircle = new Circle();
-    private Circle outerCircle = new Circle();
-    private ArrayList<RingSegment> segments = new ArrayList<RingSegment>();
-    private int centerx, centery;
-
     public void setX(int x) {
         centerx = x;
         innerCircle.setCenterX(x);
@@ -58,6 +58,7 @@ public class Ring {
         for (RingSegment rs : segments)
             rs.arc.setCenterX(x);
     }
+
     public void setY(int y) {
         centery = y;
         innerCircle.setCenterY(y);
@@ -65,12 +66,13 @@ public class Ring {
         for (RingSegment rs : segments)
             rs.arc.setCenterY(y);
     }
-    
-    
+
+
     public void startAnimation() {
-    	timerStart = System.nanoTime();
-    	timer.start();
+        timerStart = System.nanoTime();
+        timer.start();
     }
+
     private long timerStart;
     private AnimationTimer timer = new AnimationTimer() {
 
