@@ -7,7 +7,7 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 
-public class IconButton {
+public class IconButton extends ImageView{
 	static Color color = new Color(.3, .9, .5, 1);
 	static Color colorMouseOver = new Color(.32, .92, .52, 1);
 	static Color colorMouseDown = new Color(.25, .90, .45, 1);

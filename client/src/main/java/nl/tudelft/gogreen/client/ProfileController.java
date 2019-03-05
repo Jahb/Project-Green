@@ -9,15 +9,18 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
+import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
+import javafx.scene.control.SelectionMode;
 import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Circle;
 
 public class ProfileController implements Initializable {
 	@FXML
-	private Button backButton;
+	private ImageView backButton;
 	@FXML
 	private Circle profileCircle;
 	@FXML
@@ -28,7 +31,7 @@ public class ProfileController implements Initializable {
 		Main.openMainScreen();
 	}
 
-	// Added profile picture within circle
+	//Added profile picture within circle
 	@FXML
 	StackPane imageContainer = new StackPane();
 	@FXML
@@ -38,21 +41,55 @@ public class ProfileController implements Initializable {
 	@FXML
 	Circle achievementCircle3;
 
-	private ObservableList<ListItem> items = FXCollections.observableArrayList();
+	ListItem a = new ListItem("friend1","/achievementImage.png");
+	ListItem b = new ListItem("friend2","/achievementImage.png");
+	ListItem c = new ListItem("friend3","/achievementImage.png");
 
-	// setting placeholder pictures
+
+
+
+	private final ObservableList<ListItem> items = FXCollections.observableArrayList();
+	@FXML
+	private ListView<ListItem> friendsList= new ListView<ListItem>();
+
+
+
+	//setting placeholder pictures
 	@Override
-	public void initialize(URL url, ResourceBundle rb) {
+	public void initialize (URL location , ResourceBundle resources){
+
 		Image profileImg = new Image("/logo.png");
 		Image achievementImg = new Image("/achievementImage.png");
 		profileCircle.setFill(new ImagePattern(profileImg));
 		achievementCircle1.setFill(new ImagePattern(achievementImg));
 		achievementCircle2.setFill(new ImagePattern(achievementImg));
 		achievementCircle3.setFill(new ImagePattern(achievementImg));
+
+		items.clear();
+		items.add(new ListItem("profile1", "achievementImage.png"));
+		items.add(new ListItem("profile2", "achievementImage.png"));
+		items.add(new ListItem("profile3", "achievementImage.png"));
+		friendsList.setCellFactory(new Callback<ListView<ListItem>, ListCell<ListItem>>(){
+
+			@Override
+			public ListCell<ListItem> call (ListView<ListItem> arg0){
+				ListCell<ListItem> cell = new ListCell<ListItem>(){
+					@Override
+					protected void updateItem(ListItem item, boolean bool){
+						super.updateItem(item, bool);
+						if(item!=null){
+							Image img = new Image(getClass().getResource("/" + item.getImageLocation()).toExternalForm());
+							ImageView imgview = new ImageView(img);
+							imgview.setFitHeight(90);
+							imgview.setFitWidth(90);
+							setGraphic(imgview);
+							setText(item.getName());
+						}
+					}
+				};
+				return cell;
+			}
+		});
 		friendsList.setItems(items);
-		for (ListItem a : items) {
-			a.setImage(achievementImg);
-			a.setText("friend");
-		}
 	}
 }

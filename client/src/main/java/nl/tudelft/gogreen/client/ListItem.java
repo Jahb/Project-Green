@@ -5,19 +5,27 @@ import javafx.scene.image.ImageView;
 
 public class ListItem {
      String text;
-     ImageView image;
+     String image;
 
 
-    public void setText(String text) {
+    public void setName(String text) {
         this.text = text;
     }
 
-    public void setImage(Image img) {
-        this.image.setImage(img);
+    public String getName() {
+        return text;
+    }
+
+    public String getImageLocation() {
+        return image;
+    }
+
+    public void setImageLocation(String img) {
+        this.image = img;
     }
 
     public ListItem(final String text, final String imageURL) {
-        this.text = text;
-        this.image = new ImageView(imageURL);
+      this.text=text;
+      this.image=imageURL;
     }
 }
