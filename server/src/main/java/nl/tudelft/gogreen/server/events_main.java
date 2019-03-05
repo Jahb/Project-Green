@@ -19,6 +19,7 @@ public class events_main {
             System.out.println("\t 4 - Delete event ");
             boolean loop = false;
             int option;
+            String name;
 
             while (!loop) {
                 System.out.print("Enter an option: ");
@@ -27,19 +28,32 @@ public class events_main {
 
                 switch (option) {
                     case 1:
-                        create_event(username,new_feature.getId(username,conn),"carnaval" , conn );
+
+                        System.out.print("Enter an event name: ");
+                        name = scanner.next();
+
+                        create_event(username,new_feature.getId(username,conn),name , conn );
                         loop = true;
                         break;
                     case 2:
-                        delete_event(username,"carnaval" , conn );
+                        System.out.print("Enter event name you want to delete: ");
+                        name = scanner.next();
+
+                        delete_event(username,name , conn );
                         loop = true;
                         break;
                     case 3:
-                        join_event(username,"carnaval" , conn );
+                        System.out.print("Enter event name: ");
+                        name = scanner.next();
+
+                        join_event(username,name , conn );
                         loop = true;
                         break;
                     case 4:
-                        leave_event(username,"carnaval" , conn );
+                        System.out.print("Enter event name: ");
+                        name = scanner.next();
+
+                        leave_event(username,name , conn );
                         loop = true;
                         break;
                     default:
