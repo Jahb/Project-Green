@@ -17,95 +17,99 @@ import javafx.stage.Stage;
 
 public class Main extends Application {
 
-	public static int width = 1280;
-	public static int height = 720;
+    public static int width = 1280;
+    public static int height = 720;
 
-	@Override
-	public void start(Stage primaryStage) throws IOException {
-		long startTime = System.nanoTime();
+    @Override
+    public void start(Stage primaryStage) throws IOException {
+        final long startTime = System.nanoTime();
 
-		stage = primaryStage;
-		openMainScreen();
-		stage.show();
+        stage = primaryStage;
+        openMainScreen();
+        stage.show();
 
-		System.out.println("Initialization code took " + ((System.nanoTime() - startTime) / 1000000 / 1000.0) + "s");
-	}
+        System.out.println("Initialization code took " + 
+                 ((System.nanoTime() - startTime) / 1000000 / 1000.0) + "s");
+    }
 
-	private static Stage stage;
+    private static Stage stage;
 
-	private static LoginScreen loginScreen = new LoginScreen();
-	private static MainScreen mainScreen = new MainScreen();
+    private static MainScreen mainScreen = new MainScreen();
+    private static LoginScreen loginScreen = new LoginScreen();
 
-	public static void openLoginScreen() {
-		try {
-			stage.setScene(loginScreen.getScene());
-		} catch (Exception e) {
-			pageOpenError(e);
-		}
-	}
 
-	public static void openMainScreen() {
-		try {
-			stage.setScene(mainScreen.getScene());
-		} catch (Exception e) {
-			pageOpenError(e);
-		}
-	}
+    public static void openLoginScreen() {
+        try {
+            stage.setScene(loginScreen.getScene());
+        } catch (IOException ex) {
+            pageOpenError(ex);
+        }
+    }
 
-	public static void openLeaderboardScreen() {
-		try {
-			Parent root1 = FXMLLoader.load(Main.class.getResource("/LeaderboardGUI.fxml"));
-			stage.setScene(new Scene(root1, width, height));
-		} catch (Exception e) {
-			pageOpenError(e);
-		}
-	}
+    public static void openMainScreen() {
+        try {
+            stage.setScene(mainScreen.getScene());
+        } catch (IOException ex) {
+            pageOpenError(ex);
+        }
+        
+    }
 
-	public static void openProfileScreen() {
-		try {
-			Parent root1 = FXMLLoader.load(Main.class.getResource("/ProfileGUI.fxml"));
-			stage.setScene(new Scene(root1, width, height));
-		} catch (Exception e) {
-			pageOpenError(e);
-		}
-	}
+    public static void openLeaderboardScreen() {
+        try {
+            Parent root1 = FXMLLoader.load(Main.class.getResource("/LeaderboardGUI.fxml"));
+            stage.setScene(new Scene(root1, width, height));
+        } catch (IOException ex) {
+            pageOpenError(ex);
+        }
+    }
 
-	public static void openAchievementsScreen() {
-		try {
-			Parent root1 = FXMLLoader.load(Main.class.getResource("/SettingsGUI.fxml"));
-			stage.setScene(new Scene(root1, width, height));
-		} catch (Exception e) {
-			pageOpenError(e);
-		}
-	}
+    public static void openProfileScreen() {
+        try {
+            Parent root1 = FXMLLoader.load(Main.class.getResource("/ProfileGUI.fxml"));
+            stage.setScene(new Scene(root1, width, height));
+        } catch (IOException ex) {
+            pageOpenError(ex);
+        }
+    }
 
-	private static void pageOpenError(Exception e) {
-		e.printStackTrace();
-		Pane p = new Pane();
-		p.getChildren().add(new Label("Something went wrong"));
-		stage.setScene(new Scene(p, width, height));
-	}
+    public static void openAchievementsScreen() {
+        try {
+            Parent root1 = FXMLLoader.load(Main.class.getResource("/SettingsGUI.fxml"));
+            stage.setScene(new Scene(root1, width, height));
+        } catch (IOException ex) {
+            pageOpenError(ex);
+        }
+    }
 
-	/**
-	 * Main Method
-	 * 
-	 * @param args
-	 */
-	public static void main(String[] args) {
-		Unirest.setObjectMapper(new ObjectMapper() {
-			private Gson gson = new GsonBuilder().setPrettyPrinting().create();
+    private static void pageOpenError(Exception ex) {
+        ex.printStackTrace();
+        Pane pane = new Pane();
+        pane.getChildren().add(new Label("Something went wrong"));
+        stage.setScene(new Scene(pane, width, height));
+    }
 
-			@Override
-			public <T> T readValue(String value, Class<T> valueType) {
-				return gson.fromJson(value, valueType);
-			}
+    /**
+     * Main Method.
+     * 
+     * @param args
+     * Program arguments
+     */
+    public static void main(String[] args) {
+        Unirest.setObjectMapper(new ObjectMapper() {
+            private Gson gson = new GsonBuilder().setPrettyPrinting().create();
 
-			@Override
-			public String writeValue(Object value) {
-				return gson.toJson(value);
-			}
-		});
+            @Override
+            public <T> T readValue(String value, Class<T> valueType) {
+                return gson.fromJson(value, valueType);
+            }
 
-		launch(args);
-	}
+            @Override
+            public String writeValue(Object value) {
+                return gson.toJson(value);
+            }
+        });
+
+        launch(args);
+    }
 }
