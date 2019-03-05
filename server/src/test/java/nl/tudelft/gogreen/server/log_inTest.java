@@ -19,7 +19,7 @@ public class log_inTest {
         try
         {
             Connection conn = DriverManager.getConnection(resource.getString("Postgresql.datasource.url"), resource.getString("Postgresql.datasource.username"), resource.getString("Postgresql.datasource.password"));
-            create_user.create_user("paul","paul", conn);
+            create_user.create_user("'paul'","paul", conn);
 
         }
         catch(Exception exception)

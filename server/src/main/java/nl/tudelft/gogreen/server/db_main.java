@@ -47,7 +47,8 @@ public class db_main {
                 System.out.println("\t 5 - I lowered the temperature of my house ");
                 System.out.println("\t 6 - I installed solar panels");
                 System.out.println("\t 7 - I recycled");
-                System.out.println("\t 8 - Exit the program");
+                System.out.println("\t 8 - I want to go on events_menu");
+                System.out.println("\t 9 - Exit the program");
                 String feature = null;
                 boolean loop2 = false;
                 int option2;
@@ -89,6 +90,10 @@ public class db_main {
                             loop2 = true;
                             break;
                         case 8:
+                            events_main.main_event("paul", "carnaval");
+                            loop2 = true;
+                            break;
+                        case 9:
                             System.exit(0);
 
                         default:
