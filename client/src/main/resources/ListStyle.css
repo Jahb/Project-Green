@@ -20,6 +20,8 @@
 }
 .list-view .list-cell{
     -fx-graphic-text-gap: 20;
+    -fx-font-size:25;
+    -fx-font-weight: bold;
 }
 .list-view {
     -fx-border-color: gray ;

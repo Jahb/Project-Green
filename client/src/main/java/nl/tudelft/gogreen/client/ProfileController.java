@@ -17,6 +17,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Circle;
+import javafx.util.Callback;
 
 public class ProfileController implements Initializable {
 	@FXML
@@ -50,7 +51,6 @@ public class ProfileController implements Initializable {
 
 	private final ObservableList<ListItem> items = FXCollections.observableArrayList();
 	@FXML
-	private ListView<ListItem> friendsList= new ListView<ListItem>();
 
 
 

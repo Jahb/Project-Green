@@ -26,10 +26,6 @@
          </children>
       </HBox>
       <ListView fx:id="leaderboardList" layoutX="1.0" layoutY="113.0" prefHeight="280.0" prefWidth="600.0" stylesheets="ListStyle.css" AnchorPane.bottomAnchor="7.0" AnchorPane.leftAnchor="1.0" AnchorPane.rightAnchor="-1.0" AnchorPane.topAnchor="113.0" />
-      <ImageView fx:id="backButton" fitHeight="125.0" fitWidth="125.0" onMousePressed="#backPress" onMouseReleased="#backRelease">
-         <image>
-            <Image url="@ButtonBack.png" />
-         </image>
-      </ImageView>
+
    </children>
 </AnchorPane>
