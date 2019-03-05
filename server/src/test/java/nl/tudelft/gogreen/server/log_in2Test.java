@@ -9,9 +9,9 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.util.ResourceBundle;
 
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.assertFalse;
 
-public class log_inTest {
+public class log_in2Test {
     private static ResourceBundle resource = ResourceBundle.getBundle("db");
 
     @Before
@@ -19,7 +19,7 @@ public class log_inTest {
         try
         {
             Connection conn = DriverManager.getConnection(resource.getString("Postgresql.datasource.url"), resource.getString("Postgresql.datasource.username"), resource.getString("Postgresql.datasource.password"));
-            CreateUser.create_user("paul","paul");
+            CreateUser.create_user("'paul'","paul");
 
         }
         catch(Exception exception)
@@ -42,10 +42,10 @@ public class log_inTest {
         }
     }
     @Test
-    public void log_inTest() {
+    public void log_inTestNegativeScenario() {
         try {
             Connection conn = DriverManager.getConnection(resource.getString("Postgresql.datasource.url"), resource.getString("Postgresql.datasource.username"), resource.getString("Postgresql.datasource.password"));
-            assertTrue(LogIn.log_in("paul","paul"));
+            assertFalse(LogIn.log_in("paul","pa"));
         }
         catch (Exception exception){
             System.out.println("Error!");

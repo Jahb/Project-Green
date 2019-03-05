@@ -11,7 +11,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ResourceBundle;
 
-import static org.junit.Assert.assertTrue;
+import static junit.framework.TestCase.assertTrue;
 
 
 public class create_userTest {
@@ -22,31 +22,34 @@ public class create_userTest {
     public void deleteUser() {
         try {
 
-            Connection conn = DriverManager.getConnection(resource.getString("Postgresql.datasource.url"), resource.getString("Postgresql.datasource.username"), resource.getString("Postgresql.datasource.password"));
-            int id = new_feature.getId("paul",conn);
-            create_user.delete_user(id, conn);
-        }
-        catch(Exception exception){
+            Connection conn = DriverManager.getConnection(resource.getString("Postgresql.datasource.url"),
+                    resource.getString("Postgresql.datasource.username"),
+                    resource.getString("Postgresql.datasource.password"));
+            int id = NewFeature.getId("paul", conn);
+            CreateUser.delete_user(id, conn);
+        } catch (Exception exception) {
             System.out.println("Error!");
         }
     }
-@Test
-public void create_userTest() {
-    try {
-        Connection conn = DriverManager.getConnection(resource.getString("Postgresql.datasource.url"), resource.getString("Postgresql.datasource.username"), resource.getString("Postgresql.datasource.password"));
-        create_user.create_user("paul", "paul", conn);
-        PreparedStatement getHash = conn.prepareStatement("select password from user_table where username = 'paul';");
-        ResultSet rs = getHash.executeQuery();
-        String hash = null;
-        while(rs.next()){
-            hash = rs.getString(1);
+
+
+    @Test
+    public void create_userTest() {
+        try {
+            Connection conn = DriverManager.getConnection(resource.getString("Postgresql.datasource.url"), resource.getString("Postgresql.datasource.username"), resource.getString("Postgresql.datasource.password"));
+            CreateUser.create_user("paul", "paul");
+            System.out.println("hash");
+            PreparedStatement getHash = conn.prepareStatement("select password from user_table where username = 'paul';");
+            ResultSet rs = getHash.executeQuery();
+            String hash = null;
+            while (rs.next()) {
+                hash = rs.getString(1);
+            }
+            assertTrue(BCrypt.checkpw("paul", hash));
+        } catch (Exception exception) {
+            System.out.println("Error!");
         }
-        assertTrue(BCrypt.checkpw("paul", hash));
     }
-    catch (Exception exception){
-        System.out.println("Error!");
-    }
-}
 
 }
 
