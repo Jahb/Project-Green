@@ -1,15 +1,14 @@
 package nl.tudelft.gogreen.client;
 
-import java.io.IOException;
-import java.net.URL;
-
-
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.TextArea;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.paint.Color;
+
+import java.io.IOException;
+import java.net.URL;
 
 /**
  * MainScreen object.
@@ -20,14 +19,10 @@ import javafx.scene.paint.Color;
 public class MainScreen {
 
     private Ring ring;
-    private IconButton leaderboardButton;
-    private IconButton addButton;
-    private IconButton helpButton;
     private TextArea helpText;
 
     /**
      * Creates a scene for MainScreen.
-     * 
      */
     public Scene getScene() throws IOException {
         URL url = Main.class.getResource("/MainScreen.fxml");
@@ -43,8 +38,7 @@ public class MainScreen {
         ring.startAnimation();
         helpText.toFront();
         helpText.setVisible(false);
-        Scene mainScreenScene = new Scene(root, Main.getWidth(), Main.getHeight());
-        return mainScreenScene;
+        return new Scene(root, Main.getWidth(), Main.getHeight());
     }
 
     private void addMainRing(AnchorPane root) {
@@ -54,24 +48,20 @@ public class MainScreen {
         ring.addSegment(15, Color.GREEN);
         root.getChildren().add(ring.getPane());
 
-        root.widthProperty().addListener((obs, oldVal, newVal) -> {
-            ring.setX(newVal.intValue() / 2);
-        });
+        root.widthProperty().addListener((obs,oldVal, newVal) -> ring.setX(newVal.intValue() >> 1));
     }
 
     private void addIconButtons(BorderPane root) {
-        leaderboardButton = new IconButton("Leaderboard", 150, 150);
-        addButton = new IconButton("Add", 600, 150);
-        helpButton = new IconButton("Help", 150, 150);
+        IconButton leaderboardButton = new IconButton("Leaderboard", 150, 150);
+        IconButton addButton = new IconButton("Add", 600, 150);
+        IconButton helpButton = new IconButton("Help", 150, 150);
 
         root.setLeft(leaderboardButton.getStackPane());
         root.setCenter(addButton.getStackPane());
         root.setRight(helpButton.getStackPane());
 
-        helpButton.setOnClick(event -> {
-            helpText.setVisible(!helpText.isVisible());
+        helpButton.setOnClick(event -> helpText.setVisible(!helpText.isVisible()));
 
-        });
         addButton.setOnClick(event -> {
             // TODO - this event is called when addButton is clicked
 
