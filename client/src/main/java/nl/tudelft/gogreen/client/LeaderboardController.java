@@ -13,22 +13,29 @@ import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.paint.ImagePattern;
 import javafx.stage.Stage;
 import javafx.util.Callback;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
 public class LeaderboardController implements Initializable {
-    @FXML
-    private Button backButton;
+
+    private IconButton backButton;
 
     //scene switching via button
-    public void GotoMenu(ActionEvent event1) throws Exception {
-        Stage stage = (Stage) backButton.getScene().getWindow();
-        Parent root1 = FXMLLoader.load(getClass().getResource("/PlaceholderMenu.fxml"));
-        stage.setScene(new Scene(root1, 1200, 700));
+    public Scene getScene() throws IOException {
+        URL url = Main.class.getResource("/LeaderboardGUI.fxml");
+        System.out.println(url);
+        AnchorPane root = FXMLLoader.load(url);
+        BorderPane buttonPane = (BorderPane) root.getChildren().get(2);
+        addBackButton(buttonPane);
+        Scene leaderboardScene = new Scene(root, Main.getWidth(), Main.getHeight());
+        return leaderboardScene;
     }
 
     @FXML
@@ -68,6 +75,14 @@ public class LeaderboardController implements Initializable {
             }
         });
         leaderboardList.setItems(items);
+    }
+
+    private void addBackButton(BorderPane root){
+        backButton= new IconButton("Back",100 ,100 );
+        root.setLeft(backButton.getStackPane());
+        backButton.setOnClick(event ->{
+            Main.openMainScreen();
+        });
     }
 }
 

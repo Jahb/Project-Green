@@ -23,6 +23,7 @@ public class Main extends Application {
     private static Stage stage;
     private static MainScreen mainScreen = new MainScreen();
     private static LoginScreen loginScreen = new LoginScreen();
+    private static LeaderboardController leaderboardScreen = new LeaderboardController();
 
 
     static int getWidth() {
@@ -73,8 +74,7 @@ public class Main extends Application {
      */
     public static void openLeaderboardScreen() {
         try {
-            Parent root1 = FXMLLoader.load(Main.class.getResource("/LeaderboardGUI.fxml"));
-            stage.setScene(new Scene(root1, width, height));
+            stage.setScene(leaderboardScreen.getScene());
         } catch (IOException ex) {
             pageOpenError(ex);
         }

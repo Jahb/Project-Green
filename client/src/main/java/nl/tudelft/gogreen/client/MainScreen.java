@@ -77,7 +77,7 @@ public class MainScreen {
 
         });
         leaderboardButton.setOnClick(event -> {
-            // TODO - this event is called when leaderbaordButton is clicked
+            // TODO - this event is called when leaderboardButton is clicked
             Main.openLeaderboardScreen();
         });
     }

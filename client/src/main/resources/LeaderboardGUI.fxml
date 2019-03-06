@@ -25,7 +25,8 @@
             </ImageView>
          </children>
       </HBox>
-      <ListView fx:id="leaderboardList" layoutX="1.0" layoutY="113.0" prefHeight="280.0" prefWidth="600.0" stylesheets="ListStyle.css" AnchorPane.bottomAnchor="7.0" AnchorPane.leftAnchor="1.0" AnchorPane.rightAnchor="-1.0" AnchorPane.topAnchor="113.0" />
+      <ListView fx:id="leaderboardList" layoutX="1.0" layoutY="113.0" prefHeight="280.0" prefWidth="600.0" stylesheets="ListStyle.css" AnchorPane.bottomAnchor="1.0" AnchorPane.leftAnchor="1.0" AnchorPane.rightAnchor="-1.0" AnchorPane.topAnchor="113.0" />
+      <BorderPane prefHeight="114.0" prefWidth="608.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
 
    </children>
 </AnchorPane>
