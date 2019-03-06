@@ -78,7 +78,7 @@ public class Ring {
 
         @Override
         public void handle(long time) {
-            double progress = (time - timerStart) / 15_000_000d;
+            double progress = (time - timerStart) / 38_000_000d;
             double startAngle = 0;
 
             if (progress > 100)
