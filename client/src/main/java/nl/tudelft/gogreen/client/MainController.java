@@ -5,20 +5,16 @@ import com.mashape.unirest.http.Unirest;
 import com.mashape.unirest.http.exceptions.UnirestException;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
-import javafx.stage.Stage;
 import nl.tudelft.gogreen.shared.auth.AuthAgreement;
 import nl.tudelft.gogreen.shared.auth.UserAuth;
 
 import java.io.IOException;
 
 /**
- * Controller For MainControllerFXML
+ * Controller For MainControllerFXML.
  */
 public class MainController {
     @FXML
@@ -36,7 +32,7 @@ public class MainController {
 
 
     /**
-     * Switches to Main Menu After a Successful Login
+     * Switches to Main Menu After a Successful Login.
      *
      * @param event
      * @throws UnirestException
@@ -55,18 +51,8 @@ public class MainController {
         AuthAgreement agreement = auth.getBody();
 
         if (agreement.isSuccess()) {
-            login();
+            Main.openMainScreen();
         }
-    }
-
-    /**
-     * Changes Scene to menu after login
-     * @throws IOException
-     */
-    private void login() throws IOException {
-        Stage stage = (Stage) loginButton.getScene().getWindow();
-        Parent root1 = FXMLLoader.load(getClass().getResource("/PlaceholderMenu.fxml"));
-        stage.setScene(new Scene(root1, 1200, 700));
     }
 
 }
