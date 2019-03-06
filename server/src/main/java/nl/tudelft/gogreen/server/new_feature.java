@@ -27,6 +27,8 @@ public class new_feature {
 //            actualizingUserPoints(id, feature, 20, conn);
 //            actualizingUserLog(id, feature, 20, conn);
 
+            //comments
+
 
         } catch (Exception exception) {
             System.out.print("There has been an error accessing the database");
