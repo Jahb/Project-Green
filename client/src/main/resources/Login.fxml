@@ -16,26 +16,26 @@
                 <Font size="18.0" />
             </font>
         </TextField>
-        <Button id="button" fx:id="loginButton" layoutX="364.0" layoutY="314.0" mnemonicParsing="false" onAction="#Login" prefHeight="39.0" prefWidth="95.0" stylesheets="@Login.css" text="Login" textFill="WHITE" AnchorPane.rightAnchor="166.0" AnchorPane.topAnchor="314.0">
-            <font>
-                <Font size="18.0" />
-            </font>
-        </Button>
         <PasswordField fx:id="passwordField" layoutX="363.0" layoutY="247.0" promptText="Insert Password" AnchorPane.rightAnchor="38.0" AnchorPane.topAnchor="247.0">
             <font>
                 <Font size="18.0" />
             </font>
         </PasswordField>
-        <Label fx:id="loginLabel" layoutX="363.0" layoutY="112.0" prefHeight="31.0" prefWidth="239.0" text="Login or Register Below:" textFill="WHITE" AnchorPane.rightAnchor="23.0" AnchorPane.topAnchor="112.0">
+        <Button id="button" fx:id="loginButton" layoutX="364.0" layoutY="314.0" mnemonicParsing="false" onAction="#Login" prefHeight="39.0" prefWidth="95.0" stylesheets="@Login.css" text="Login" textFill="WHITE" AnchorPane.rightAnchor="166.0" AnchorPane.topAnchor="314.0">
             <font>
-                <Font name="System Bold" size="19.0" />
+                <Font size="18.0" />
             </font>
-        </Label>
+        </Button>
         <Button id="button" fx:id="registerButton" layoutX="492.0" layoutY="314.0" mnemonicParsing="false" prefHeight="39.0" prefWidth="95.0" stylesheets="@Login.css" text="Register" textFill="WHITE" AnchorPane.rightAnchor="38.0" AnchorPane.topAnchor="314.0">
             <font>
                 <Font size="18.0" />
             </font>
         </Button>
+        <Label fx:id="loginLabel" layoutX="363.0" layoutY="112.0" prefHeight="31.0" prefWidth="239.0" text="Login or Register Below:" textFill="WHITE" AnchorPane.rightAnchor="23.0" AnchorPane.topAnchor="112.0">
+            <font>
+                <Font name="System Bold" size="19.0" />
+            </font>
+        </Label>
       <ImageView fitHeight="147.0" fitWidth="391.0" layoutX="20.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true" AnchorPane.leftAnchor="20.0" AnchorPane.topAnchor="14.0">
          <image>
             <Image url="@TemporaryLogo.png" />
