@@ -90,7 +90,7 @@ public class db_main {
                             loop2 = true;
                             break;
                         case 8:
-                            events_main.main_event("paul", "carnaval");
+                            //events_main.main_event("paul", "carnaval");
                             loop2 = true;
                             break;
                         case 9:
