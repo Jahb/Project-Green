@@ -11,6 +11,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
+import javafx.scene.image.Image;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 
@@ -38,7 +39,9 @@ public class Main extends Application {
         final long startTime = System.nanoTime();
 
         stage = primaryStage;
-        openMainScreen();
+        primaryStage.setTitle("Project Green: CO2 Reduction Tracker");
+        primaryStage.getIcons().add(new Image("/addButton.png"));
+        openLoginScreen();
         stage.show();
 
         System.out.println("Initialization code took " +
@@ -50,9 +53,10 @@ public class Main extends Application {
      */
     public static void openLoginScreen() {
         try {
-            stage.setScene(loginScreen.getScene());
-        } catch (IOException ex) {
-            pageOpenError(ex);
+            Parent root1 = FXMLLoader.load(Main.class.getResource("/Login.fxml"));
+            stage.setScene(new Scene(root1));
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 
@@ -62,6 +66,7 @@ public class Main extends Application {
     public static void openMainScreen() {
         try {
             stage.setScene(mainScreen.getScene());
+            stage.setTitle("Go Green: MainScreen");
         } catch (IOException ex) {
             pageOpenError(ex);
         }
