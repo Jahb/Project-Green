@@ -28,7 +28,26 @@ public class log_in {
             boolean loged = false;
             String username = null;
             int intents = 3;
-           
+            while(!loop && intents > 0) {
+                System.out.print("Enter your username: ");
+                username = scanner.next();
+                System.out.print("Insert your password: ");
+                String password = scanner.next();
+                loged = log_in(username, password, conn);
+
+                if(loged) {
+                    loop = true;
+                }
+                else{
+                    intents--;
+                    System.out.println("Incorrect identification");
+                }
+
+            }
+            if(loged) {
+                System.out.println("You are in!");
+                return username;
+            }
 
         } catch (Exception exception) {
             System.out.println("There has been an error accessing the database");
