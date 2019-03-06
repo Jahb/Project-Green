@@ -1,9 +1,8 @@
 package nl.tudelft.gogreen.client;
 
-import java.io.IOException;
-
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+
 import com.mashape.unirest.http.ObjectMapper;
 import com.mashape.unirest.http.Unirest;
 
@@ -15,29 +14,40 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 
+import java.io.IOException;
+
 public class Main extends Application {
 
-    public static int width = 1280;
-    public static int height = 720;
+    private static int width = 1000;
+    private static int height = 720;
+    private static Stage stage;
+    private static MainScreen mainScreen = new MainScreen();
+    private static LoginScreen loginScreen = new LoginScreen();
+
+
+    static int getWidth() {
+        return width;
+    }
+
+    static int getHeight() {
+        return height;
+    }
 
     @Override
-    public void start(Stage primaryStage) throws IOException {
+    public void start(Stage primaryStage) {
         final long startTime = System.nanoTime();
 
         stage = primaryStage;
         openMainScreen();
         stage.show();
 
-        System.out.println("Initialization code took " + 
-                 ((System.nanoTime() - startTime) / 1000000 / 1000.0) + "s");
+        System.out.println("Initialization code took " +
+                ((System.nanoTime() - startTime) / 1000000 / 1000.0) + "s");
     }
 
-    private static Stage stage;
-
-    private static MainScreen mainScreen = new MainScreen();
-    private static LoginScreen loginScreen = new LoginScreen();
-
-
+    /**
+     * Method that changes scene to LoginScreen.
+     */
     public static void openLoginScreen() {
         try {
             stage.setScene(loginScreen.getScene());
@@ -46,15 +56,21 @@ public class Main extends Application {
         }
     }
 
+    /**
+     * Method that changes scene to MainScreen.
+     */
     public static void openMainScreen() {
         try {
             stage.setScene(mainScreen.getScene());
         } catch (IOException ex) {
             pageOpenError(ex);
         }
-        
+
     }
 
+    /**
+     * Method that changes scene to LeaderBoard.
+     */
     public static void openLeaderboardScreen() {
         try {
             Parent root1 = FXMLLoader.load(Main.class.getResource("/LeaderboardGUI.fxml"));
@@ -64,6 +80,9 @@ public class Main extends Application {
         }
     }
 
+    /**
+     * Method that changes scene to ProfileScreen.
+     */
     public static void openProfileScreen() {
         try {
             Parent root1 = FXMLLoader.load(Main.class.getResource("/ProfileGUI.fxml"));
@@ -73,6 +92,9 @@ public class Main extends Application {
         }
     }
 
+    /**
+     * Method that changes scene to the AchievementsScreen.
+     */
     public static void openAchievementsScreen() {
         try {
             Parent root1 = FXMLLoader.load(Main.class.getResource("/SettingsGUI.fxml"));
@@ -91,9 +113,8 @@ public class Main extends Application {
 
     /**
      * Main Method.
-     * 
-     * @param args
-     * Program arguments
+     *
+     * @param args Program arguments
      */
     public static void main(String[] args) {
         Unirest.setObjectMapper(new ObjectMapper() {

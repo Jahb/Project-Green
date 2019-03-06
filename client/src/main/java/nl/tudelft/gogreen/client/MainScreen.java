@@ -42,12 +42,12 @@ public class MainScreen {
 
         ring.startAnimation();
         helpText.toFront();
-        Scene mainScreenScene = new Scene(root, Main.width, Main.height);
+        Scene mainScreenScene = new Scene(root, Main.getWidth(), Main.getHeight());
         return mainScreenScene;
     }
 
     private void addMainRing(AnchorPane root) {
-        ring = new Ring((int) (150 * .75), 150, Main.width / 2, 200);
+        ring = new Ring((int) (150 * .75), 150, Main.getHeight() / 2, 200);
         ring.addSegment(20, Color.LAWNGREEN);
         ring.addSegment(30, Color.YELLOW);
         ring.addSegment(40, Color.SANDYBROWN);
