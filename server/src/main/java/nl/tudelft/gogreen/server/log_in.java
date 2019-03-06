@@ -6,6 +6,7 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ResourceBundle;
+import java.util.Scanner;
 
 
 public class log_in {
@@ -22,7 +23,13 @@ public class log_in {
 
 
             Connection conn = DriverManager.getConnection(resource.getString("Postgresql.datasource.url"), resource.getString("Postgresql.datasource.username"), resource.getString("Postgresql.datasource.password"));
-            
+            Scanner scanner = new Scanner(System.in);
+            boolean loop = false;
+            boolean loged = false;
+            String username = null;
+            int intents = 3;
+           
+
         } catch (Exception exception) {
             System.out.println("There has been an error accessing the database");
             System.out.println(exception.getMessage());
