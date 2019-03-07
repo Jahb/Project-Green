@@ -29,7 +29,18 @@ public class log_inTest {
     }
 
 
-   
+    @After
+    public void deleteUser() {
+        try {
+
+            Connection conn = DriverManager.getConnection(resource.getString("Postgresql.datasource.url"), resource.getString("Postgresql.datasource.username"), resource.getString("Postgresql.datasource.password"));
+            int id = new_feature.getId("paul",conn);
+            create_user.delete_user(id, conn);
+        }
+        catch(Exception exception){
+            System.out.println("Error!");
+        }
+    }
     @Test
 
     public void log_inTest() {
