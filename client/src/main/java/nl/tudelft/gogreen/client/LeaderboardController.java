@@ -3,6 +3,7 @@ package nl.tudelft.gogreen.client;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -13,8 +14,10 @@ import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.ImagePattern;
 import javafx.stage.Stage;
 import javafx.util.Callback;
@@ -26,14 +29,20 @@ import java.util.ResourceBundle;
 public class LeaderboardController implements Initializable {
 
     private IconButton backButton;
+    private IconButton dayButton;
+    private IconButton weekButton;
+    private IconButton monthButton;
+    private IconButton overallButton;
 
     //scene switching via button
     public Scene getScene() throws IOException {
         URL url = Main.class.getResource("/LeaderboardGUI.fxml");
         System.out.println(url);
         AnchorPane root = FXMLLoader.load(url);
-        BorderPane buttonPane = (BorderPane) root.getChildren().get(2);
-        addBackButton(buttonPane);
+        BorderPane topPane = (BorderPane) root.getChildren().get(2);
+        addBackButton(topPane);
+        VBox buttonBox =(VBox) root.getChildren().get(3);
+        addTimeframeButtons(buttonBox);
         Scene leaderboardScene = new Scene(root, Main.getWidth(), Main.getHeight());
         return leaderboardScene;
     }
@@ -50,9 +59,9 @@ public class LeaderboardController implements Initializable {
 
 
         items.clear();
-        items.add(new ListItem("profile1", "achievementImage.png"));
-        items.add(new ListItem("profile2", "achievementImage.png"));
-        items.add(new ListItem("profile3", "achievementImage.png"));
+        items.add(new ListItem("profile1", "achievementImage.png", 3000));
+        items.add(new ListItem("profile2", "achievementImage.png", 420));
+        items.add(new ListItem("profile3", "achievementImage.png", 3));
         leaderboardList.setCellFactory(new Callback<ListView<ListItem>, ListCell<ListItem>>() {
 
             @Override
@@ -67,7 +76,8 @@ public class LeaderboardController implements Initializable {
                             imgview.setFitHeight(90);
                             imgview.setFitWidth(90);
                             setGraphic(imgview);
-                            setText(item.getName());
+                            setText(item.getName()+ "\nScore: " + item.getScore());
+
                         }
                     }
                 };
@@ -75,14 +85,25 @@ public class LeaderboardController implements Initializable {
             }
         });
         leaderboardList.setItems(items);
+
     }
 
     private void addBackButton(BorderPane root){
-        backButton= new IconButton("Back",100 ,100 );
+        backButton = new IconButton("Back",100 ,100 );
         root.setLeft(backButton.getStackPane());
         backButton.setOnClick(event ->{
             Main.openMainScreen();
         });
+    }
+    private void addTimeframeButtons (VBox root){
+        dayButton = new IconButton("Add",450 ,100 );
+        weekButton = new IconButton("Add",450 ,100 );
+        monthButton = new IconButton("Add",450 ,100 );
+        overallButton = new IconButton("Add",450 ,100 );
+        root.getChildren().addAll(dayButton.getStackPane(),
+                weekButton.getStackPane(),
+                monthButton.getStackPane(),
+                overallButton.getStackPane());
     }
 }
 

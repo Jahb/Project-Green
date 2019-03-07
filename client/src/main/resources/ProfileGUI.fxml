@@ -9,18 +9,27 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane prefHeight="748.0" prefWidth="1088.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="nl.tudelft.gogreen.client.ProfileController">
+<AnchorPane prefHeight="720.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="nl.tudelft.gogreen.client.ProfileController">
    <children>
-      <Circle fx:id="achievementCircle1" fill="DODGERBLUE" layoutX="133.0" layoutY="512.0" radius="72.0" stroke="BLACK" strokeType="INSIDE" />
-      <Circle fx:id="achievementCircle2" fill="DODGERBLUE" layoutX="354.0" layoutY="512.0" radius="72.0" stroke="BLACK" strokeType="INSIDE" />
-      <Circle fx:id="achievementCircle3" fill="DODGERBLUE" layoutX="576.0" layoutY="512.0" radius="72.0" stroke="BLACK" strokeType="INSIDE" />
-      <ListView fx:id="friendsList" layoutX="888.0" layoutY="-2.0" prefHeight="748.0" prefWidth="365.0" stylesheets="ListStyle.css" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
-      <Circle fx:id="profileCircle" fill="DODGERBLUE" layoutX="354.0" layoutY="233.0" radius="141.0" stroke="BLACK" strokeType="INSIDE" />
-      <StackPane fx:id="imageContainer" layoutX="261.0" layoutY="143.0" prefHeight="150.0" prefWidth="200.0" />
-      <ImageView fx:id="backButton" fitHeight="150.0" fitWidth="150.0" onMousePressed="#backPress" onMouseReleased="#backRelease">
-         <image>
-            <Image url="@ButtonBack.png" />
-         </image>
-      </ImageView>
+      <Circle fx:id="achievementCircle1" fill="#50E476" layoutX="101.0" layoutY="396.0" radius="56.0" stroke="BLACK" strokeType="INSIDE" />
+      <Circle fx:id="achievementCircle2" fill="#50E476" layoutX="101.0" layoutY="516.0" radius="56.0" stroke="BLACK" strokeType="INSIDE" />
+      <Circle fx:id="achievementCircle3" fill="#50E476" layoutX="101.0" layoutY="636.0" radius="56.0" stroke="BLACK" strokeType="INSIDE" />
+      <ListView fx:id="friendsList" layoutX="888.0" layoutY="102.0" prefHeight="646.0" prefWidth="365.0" stylesheets="ListStyle.css" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="100.0" />
+      <Circle fx:id="profileCircle" fill="#50E476" layoutX="172.0" layoutY="177.0" radius="127.0" stroke="BLACK" strokeType="INSIDE" AnchorPane.topAnchor="50.0" />
+      <AnchorPane style="-fx-background-color: #50E476;" layoutX="726.0" layoutY="5.0" prefHeight="100.0" prefWidth="365.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <children>
+            <Label style="-fx-color: white" alignment="CENTER" layoutX="160.0" layoutY="40.0" prefHeight="39.0" prefWidth="172.0" text="Friends" AnchorPane.bottomAnchor="30.0" AnchorPane.leftAnchor="100.0" AnchorPane.rightAnchor="100.0">
+               <font>
+                  <Font size="25.0" />
+               </font>
+            </Label>
+         </children>
+      </AnchorPane>
+      <Label alignment="CENTER" layoutX="323.0" layoutY="50.0" prefHeight="66.0" prefWidth="277.0" text="Username">
+         <font>
+            <Font size="25.0" />
+         </font>
+      </Label>
+      <TextArea layoutX="323.0" layoutY="118.0" prefHeight="186.0" prefWidth="277.0" text="Profile Description&#10;&#10;" />
    </children>
 </AnchorPane>

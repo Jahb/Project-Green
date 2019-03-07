@@ -1,8 +1,10 @@
 package nl.tudelft.gogreen.client;
 
+import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.TextArea;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.paint.Color;
@@ -21,6 +23,8 @@ public class MainScreen {
     private Ring ring;
     private TextArea helpText;
 
+
+
     /**
      * Creates a scene for MainScreen.
      */
@@ -34,6 +38,7 @@ public class MainScreen {
 
         addMainRing(root);
         addIconButtons(buttonPane);
+
 
         ring.startAnimation();
         helpText.toFront();
@@ -67,7 +72,6 @@ public class MainScreen {
 
         });
         leaderboardButton.setOnClick(event -> {
-            // TODO - this event is called when leaderboardButton is clicked
             Main.openLeaderboardScreen();
         });
     }
