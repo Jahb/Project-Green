@@ -19,7 +19,7 @@ public class IconButton extends ImageView {
         layoutBox.setFill(new Color(0, 0, 0, 0));
         clickBox = new Rectangle();
         double min = Math.min(layoutBox.getWidth(), layoutBox.getHeight());
-        double padding = min / 32;
+        double padding = min / 16;
         clickBox.setWidth(layoutBox.getWidth() - padding * 2);
         clickBox.setHeight(layoutBox.getHeight() - padding * 2);
         clickBox.setArcHeight(min - padding * 2);

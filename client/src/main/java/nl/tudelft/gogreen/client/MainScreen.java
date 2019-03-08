@@ -29,7 +29,7 @@ public class MainScreen {
 		URL url = Main.class.getResource("/MainScreen.fxml");
 		System.out.println(url);
 		StackPane root = FXMLLoader.load(url);
-		System.out.println(root);
+//		System.out.println(root);
 		
 		BorderPane baseLayer = (BorderPane) root.getChildren().get(0);
 		AnchorPane mainRingPane = (AnchorPane) baseLayer.getCenter();
@@ -40,6 +40,7 @@ public class MainScreen {
 		
 		addMainRing(mainRingPane);
 		addIconButtons(buttonsPanel);
+		addActivityButton(overlayLayer);
 
 		ring.startAnimation();
 		helpText.setVisible(false);
@@ -54,6 +55,11 @@ public class MainScreen {
 		anchorPane.getChildren().add(ring.getPane());
 
 		anchorPane	.widthProperty().addListener((obs, oldVal, newVal) -> ring.setX(newVal.intValue() >> 1));
+	}
+	
+	private void addActivityButton(AnchorPane anchorPane) {
+		AddActivityButton activityButton = new AddActivityButton();
+		anchorPane.getChildren().add(0,activityButton.getPane());
 	}
 
 	private void addIconButtons(BorderPane root) {
