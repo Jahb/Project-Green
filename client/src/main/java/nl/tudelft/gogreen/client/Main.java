@@ -23,6 +23,7 @@ public class Main extends Application {
     private static int height = 720;
     private static Stage stage;
     private static MainScreen mainScreen = new MainScreen();
+    private static ProfileController profileScreen = new ProfileController();
     private static LoginScreen loginScreen = new LoginScreen();
     private static LeaderboardController leaderboardScreen = new LeaderboardController();
 
@@ -90,8 +91,7 @@ public class Main extends Application {
      */
     public static void openProfileScreen() {
         try {
-            Parent root1 = FXMLLoader.load(Main.class.getResource("/ProfileGUI.fxml"));
-            stage.setScene(new Scene(root1, width, height));
+            stage.setScene(profileScreen.getScene());
         } catch (IOException ex) {
             pageOpenError(ex);
         }

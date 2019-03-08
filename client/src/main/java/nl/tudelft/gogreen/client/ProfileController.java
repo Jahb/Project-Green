@@ -1,5 +1,6 @@
 package nl.tudelft.gogreen.client;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
@@ -7,13 +8,17 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.control.SelectionMode;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Circle;
@@ -21,16 +26,12 @@ import javafx.util.Callback;
 
 public class ProfileController implements Initializable {
 	@FXML
-	private ImageView backButton;
-	@FXML
 	private Circle profileCircle;
 	@FXML
 	private ListView<ListItem> friendsList = new ListView<ListItem>();
 
-	// scene switching via button
-	public void GotoMenu(ActionEvent event2) throws Exception {
-		Main.openMainScreen();
-	}
+	protected IconButton backButton;
+
 
 	//Added profile picture within circle
 	@FXML
@@ -41,12 +42,6 @@ public class ProfileController implements Initializable {
 	Circle achievementCircle2;
 	@FXML
 	Circle achievementCircle3;
-
-	ListItem a = new ListItem("friend1","/achievementImage.png");
-	ListItem b = new ListItem("friend2","/achievementImage.png");
-	ListItem c = new ListItem("friend3","/achievementImage.png");
-
-
 
 
 	private final ObservableList<ListItem> items = FXCollections.observableArrayList();
@@ -81,7 +76,7 @@ public class ProfileController implements Initializable {
 							Image img = new Image(getClass().getResource("/" + item.getImageLocation()).toExternalForm());
 							ImageView imgview = new ImageView(img);
 							imgview.setFitHeight(90);
-							imgview.setFitWidth(90);
+							imgview.setFitWidth(100);
 							setGraphic(imgview);
 							setText(item.getName());
 						}
@@ -91,5 +86,24 @@ public class ProfileController implements Initializable {
 			}
 		});
 		friendsList.setItems(items);
+	}
+
+
+	public Scene getScene() throws IOException {
+		URL url = Main.class.getResource("/ProfileGUI.fxml");
+		System.out.println(url);
+		AnchorPane root = FXMLLoader.load(url);
+		BorderPane buttonPane = (BorderPane) root.getChildren().get(3);
+		addBackButton(buttonPane);
+		Scene leaderboardScene = new Scene(root, Main.getWidth(), Main.getHeight());
+		return leaderboardScene;
+	}
+
+	private void addBackButton(BorderPane root){
+		backButton= new IconButton("Back",100 ,100 );
+		root.setLeft(backButton.getStackPane());
+		backButton.setOnClick(event ->{
+			Main.openMainScreen();
+		});
 	}
 }
