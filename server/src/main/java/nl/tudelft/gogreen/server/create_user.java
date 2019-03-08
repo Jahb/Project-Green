@@ -33,7 +33,7 @@ public class create_user {
 
             } else {
 
-                username = "'" + username + "'";
+
                 System.out.print("Insert your password: ");
                 String password = scanner.next();
                 boolean created = false;
@@ -57,7 +57,7 @@ public class create_user {
             String hashed = BCrypt.hashpw(password, BCrypt.gensalt());
             String hashpass = "'" + hashed + "'";
 
-            PreparedStatement user = conn.prepareStatement("insert into user_table values ( " +  id + "," + username + ", " + hashpass + ");");
+            PreparedStatement user = conn.prepareStatement("insert into user_table values ( " +  id + ",'" + username + "', " + hashpass + ");");
             user.execute();
             PreparedStatement obj = conn.prepareStatement("insert into objective values (" + id + ", NULL);");
             obj.execute();

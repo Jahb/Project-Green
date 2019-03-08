@@ -1,6 +1,6 @@
 package nl.tudelft.gogreen.server;
 
 
-public class events_mainTest {
+public class join_eventTest {
 
 }
