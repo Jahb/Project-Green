@@ -50,4 +50,20 @@ public class events_main {
         }
     }
 
+    public static int getEventId(String event_name,Connection conn){
+        try {
+            PreparedStatement getEventId = conn.prepareStatement("select event_id from event where event_name = '"+ event_name +"';");
+            ResultSet rs0 = getEventId.executeQuery();
+            int id = 0;
+            while (rs0.next()) {
+                id = rs0.getInt(1);
+            }
+            return id;
+        }
+        catch(Exception exception){
+            System.out.println("Error!");
+            return 0;
+        }
+    }
+
 }
