@@ -110,8 +110,8 @@ public class AddActivityButton {
 			background.setPrefWidth(width - 2);
 			background.setPrefHeight(height);
 
-//			icon = new ImageView("Icon" + name + ".png");
-			icon = new ImageView("IconHelp.png");
+			System.out.println("Icon" + name + ".png");
+			icon = new ImageView("Icon" + name + ".png");
 			icon.setFitWidth(40);
 			icon.setFitHeight(40);
 			icon.setX(x + width - 40);
@@ -153,8 +153,8 @@ public class AddActivityButton {
 					.setBackground(new Background(new BackgroundFill(Color.WHITE, new CornerRadii(25), Insets.EMPTY)));
 			subBackground.setVisible(false);
 			if (name.equals("Food")) {
-				addSubCategoryButton("Help", subButtonSize);
-				addSubCategoryButton("Help", subButtonSize);
+				addSubCategoryButton("Vegetarian", subButtonSize);
+				addSubCategoryButton("Localproduce", subButtonSize);
 				addSubCategoryButton("Help", subButtonSize);
 			}
 			if (name.equals("Transport")) {
