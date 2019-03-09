@@ -45,7 +45,17 @@ public class events_main {
         }
     }
 
-
+    public static void leave_event(String username, String eventName, Connection conn){
+        try{
+            int id = new_feature.getId(username,conn);
+            PreparedStatement leave = conn.prepareStatement("delete from event_participants where participant = " + id + " and event_id = (select event_id from event where event_name = '" + eventName + "');");
+            leave.execute();
+        }
+        catch (Exception exception){
+            System.out.println("An error has occurred!");
+        }
+    }
+    
     public static int getMaxId(Connection conn){
         try {
             PreparedStatement getMaxId = conn.prepareStatement("select event_id from event order by event_id desc limit 1;");
