@@ -5,6 +5,7 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ResourceBundle;
+import java.util.Scanner;
 
 public class events_main {
     private static ResourceBundle resource =  ResourceBundle.getBundle("db");
@@ -20,6 +21,11 @@ public class events_main {
             int option;
             String name;
 
+            while (!loop) {
+                System.out.print("Enter an option: ");
+                Scanner scanner = new Scanner(System.in);
+                option = scanner.nextInt();
+            }
         }
         catch (Exception exception){
             System.out.println("An error has occurred!");
