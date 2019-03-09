@@ -33,6 +33,18 @@ public class events_main {
         }
     }
 
+    public static void join_event(String username, String eventName, Connection conn){
+        try{
+            int id = new_feature.getId(username,conn);
+            PreparedStatement join = conn.prepareStatement("insert into event_participants values( (select event_id from event where event_name ='" + eventName + "'), " + id + ");");
+            join.execute();
+        }
+        catch (Exception exception){
+
+            System.out.println("An error has occurred!");
+        }
+    }
+
 
     public static int getMaxId(Connection conn){
         try {

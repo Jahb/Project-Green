@@ -1,6 +1,7 @@
 package nl.tudelft.gogreen.server;
 
 
-public class log_inTest {
+public class leave_eventTest {
+
 
 }
