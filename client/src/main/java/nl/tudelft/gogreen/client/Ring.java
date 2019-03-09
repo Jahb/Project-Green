@@ -50,7 +50,8 @@ public class Ring {
     private Circle innerCircle = new Circle();
     private Circle outerCircle = new Circle();
     private ArrayList<RingSegment> segments = new ArrayList<RingSegment>();
-    private int centerx, centery;
+    private int centerx;
+    private int centery;
 
     public void setX(int x) {
         centerx = x;

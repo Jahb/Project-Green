@@ -17,6 +17,7 @@ public class IconButton extends ImageView {
 
         layoutBox = new Rectangle(width, height);
         layoutBox.setFill(new Color(0, 0, 0, 0));
+        layoutBox.setMouseTransparent(true);
         clickBox = new Rectangle();
         double min = Math.min(layoutBox.getWidth(), layoutBox.getHeight());
         double padding = min / 16;
@@ -25,6 +26,7 @@ public class IconButton extends ImageView {
         clickBox.setArcHeight(min - padding * 2);
         clickBox.setArcWidth(min - padding * 2);
         clickBox.setFill(color);
+        clickBox.setId(name);
 
         icon = new ImageView("Icon" + name + ".png");
         icon.setFitWidth(min);
@@ -105,7 +107,7 @@ public class IconButton extends ImageView {
      * @param handler This is passed on to the event handler. This is usually a Lambda expression.
      */
     public void setOnClick(EventHandler<MouseEvent> handler) {
-        clickBox.addEventHandler(MouseEvent.MOUSE_RELEASED, handler);
+        clickBox.addEventHandler(MouseEvent.MOUSE_PRESSED, handler);
     }
 
 }

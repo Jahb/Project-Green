@@ -4,8 +4,10 @@ import java.io.IOException;
 import java.net.URL;
 
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.TextArea;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.StackPane;
@@ -21,6 +23,7 @@ public class MainScreen {
 
 	private Ring ring;
 	private TextArea helpText;
+	private AddActivityButton activityButton = new AddActivityButton();
 
 	/**
 	 * Creates a scene for MainScreen.
@@ -30,14 +33,14 @@ public class MainScreen {
 		System.out.println(url);
 		StackPane root = FXMLLoader.load(url);
 //		System.out.println(root);
-		
+
 		BorderPane baseLayer = (BorderPane) root.getChildren().get(0);
 		AnchorPane mainRingPane = (AnchorPane) baseLayer.getCenter();
-		
+
 		AnchorPane overlayLayer = (AnchorPane) root.getChildren().get(1);
 		BorderPane buttonsPanel = (BorderPane) overlayLayer.getChildren().get(1);
 		helpText = (TextArea) overlayLayer.getChildren().get(0);
-		
+
 		addMainRing(mainRingPane);
 		addIconButtons(buttonsPanel);
 		addActivityButton(overlayLayer);
@@ -45,7 +48,15 @@ public class MainScreen {
 		ring.startAnimation();
 		helpText.setVisible(false);
 		overlayLayer.setPickOnBounds(false);
-		return new Scene(root, Main.getWidth(), Main.getHeight());
+		Scene scene = new Scene(root, Main.getWidth(), Main.getHeight());
+		scene.addEventHandler(MouseEvent.MOUSE_PRESSED, event -> {
+			Node node = event.getPickResult().getIntersectedNode();
+			if (node != null && !activityButton.contains(node) && !(node.getId() + "").equals("Add")) 
+				activityButton.setVisible(false);
+			
+
+		});
+		return scene;
 	}
 
 	private void addMainRing(AnchorPane anchorPane) {
@@ -55,12 +66,12 @@ public class MainScreen {
 		ring.addSegment(15, Color.GREEN);
 		anchorPane.getChildren().add(ring.getPane());
 
-		anchorPane	.widthProperty().addListener((obs, oldVal, newVal) -> ring.setX(newVal.intValue() >> 1));
+		anchorPane.widthProperty().addListener((obs, oldVal, newVal) -> ring.setX(newVal.intValue() >> 1));
 	}
-	
+
 	private void addActivityButton(AnchorPane anchorPane) {
-		AddActivityButton activityButton = new AddActivityButton();
-		anchorPane.getChildren().add(0,activityButton.getPane());
+		activityButton = new AddActivityButton();
+		anchorPane.getChildren().add(0, activityButton.getPane());
 	}
 
 	private void addIconButtons(BorderPane root) {
@@ -77,8 +88,7 @@ public class MainScreen {
 		});
 
 		addButton.setOnClick(event -> {
-			// TODO - this event is called when addButton is clicked
-
+			activityButton.setVisible(true);
 		});
 		leaderboardButton.setOnClick(event -> {
 			Main.openLeaderboardScreen();

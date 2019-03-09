@@ -1,15 +1,18 @@
 package nl.tudelft.gogreen.client;
 
+import java.util.HashSet;
+
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.Node;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
-import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
@@ -23,12 +26,19 @@ public class AddActivityButton {
 				new BackgroundFill(new Color(1, 1, 1, .8), new CornerRadii(60, 60, 0, 0, false), Insets.EMPTY)));
 		backgroundPane.setPrefWidth(600.0 * 31 / 32);
 		backgroundPane.setPrefHeight(200);
+		backgroundPane.setOnMousePressed(event -> {
+			foodButton.subBackground.setVisible(false);
+			transportButton.subBackground.setVisible(false);
+			energyButton.subBackground.setVisible(false);
+			habitButton.subBackground.setVisible(false);
+		});
 //		backgroundPane.setLayoutX(0);
 
 		text = new Text("Record new GREEN activity");
 		text.setX(50);
 		text.setY(35);
 		text.setFont(Font.font("Calibri", FontWeight.BOLD, 23));
+		text.setMouseTransparent(true);
 
 		activityButtonPane.getChildren().add(backgroundPane);
 		activityButtonPane.getChildren().add(text);
@@ -36,28 +46,52 @@ public class AddActivityButton {
 		activityButtonPane.setPrefWidth(200);
 		activityButtonPane.setLayoutX(500 - 600.0 * 31 / 64);
 		activityButtonPane.setLayoutY(720 - 200 - 75);
+		activityButtonPane.setVisible(false);
 
-		CategoryButton foodButton = new CategoryButton("Food", CategoryButtonType.LEFT, 0);
-		CategoryButton transportButton = new CategoryButton("Transport", CategoryButtonType.CENTER, 1);
-		CategoryButton energyButton = new CategoryButton("Energy", CategoryButtonType.CENTER, 2);
-		CategoryButton habitButton = new CategoryButton("Habit", CategoryButtonType.RIGHT, 3);
+		foodButton = new CategoryButton("Food", CategoryButtonCornerType.LEFT, 0);
+		transportButton = new CategoryButton("Transport", CategoryButtonCornerType.CENTER, 1);
+		energyButton = new CategoryButton("Energy", CategoryButtonCornerType.CENTER, 2);
+		habitButton = new CategoryButton("Habit", CategoryButtonCornerType.RIGHT, 3);
 
 		foodButton.addNodes(activityButtonPane);
 		transportButton.addNodes(activityButtonPane);
 		energyButton.addNodes(activityButtonPane);
 		habitButton.addNodes(activityButtonPane);
+
+		allNodes.add(activityButtonPane);
+		allNodes.add(text);
+		allNodes.add(backgroundPane);
 	}
 
 	private AnchorPane activityButtonPane;
 	private Pane backgroundPane;
 	private Text text;
 
+	CategoryButton foodButton;
+	CategoryButton transportButton;
+	CategoryButton energyButton;
+	CategoryButton habitButton;
+
+	private HashSet<Node> allNodes = new HashSet<Node>(31);
+
+	public boolean contains(Node node) {
+		return allNodes.contains(node);
+	}
+
 	public Pane getPane() {
 		return activityButtonPane;
 	}
 
+	public void setVisible(boolean visible) {
+		activityButtonPane.setVisible(visible);
+		foodButton.subBackground.setVisible(false);
+		transportButton.subBackground.setVisible(false);
+		energyButton.subBackground.setVisible(false);
+		habitButton.subBackground.setVisible(false);
+	}
+
 	private class CategoryButton {
-		protected CategoryButton(String name, CategoryButtonType type, int index) {
+		protected CategoryButton(String name, CategoryButtonCornerType type, int index) {
 
 			final int width = 125;
 			final int height = 70;
@@ -66,9 +100,9 @@ public class AddActivityButton {
 
 			background = new Pane();
 			CornerRadii cornerRadii = new CornerRadii(0);
-			if (type == CategoryButtonType.LEFT)
+			if (type == CategoryButtonCornerType.LEFT)
 				cornerRadii = new CornerRadii(20, 0, 0, 0, false);
-			if (type == CategoryButtonType.RIGHT)
+			if (type == CategoryButtonCornerType.RIGHT)
 				cornerRadii = new CornerRadii(0, 20, 0, 0, false);
 			background.setBackground(new Background(new BackgroundFill(IconButton.color, cornerRadii, Insets.EMPTY)));
 			background.setLayoutX(x);
@@ -96,17 +130,49 @@ public class AddActivityButton {
 			background.setOnMouseEntered(event -> mouseOver(true));
 			background.setOnMouseExited(event -> mouseOver(false));
 
-			subbackground = new HBox(5);
-			subbackground.setAlignment(Pos.CENTER_LEFT);
-			subbackground.setPrefHeight(55);
-			subbackground.setPrefWidth(2*45+10);
-			subbackground.setLayoutX(x+20);
-			subbackground.setLayoutY(y-50);
-			subbackground.setPadding(new Insets(5));
-			subbackground.setBackground(
-					new Background(new BackgroundFill(Color.WHITE, new CornerRadii(25), Insets.EMPTY)));
-			addSubCategoryButton("Help", 40);
-			addSubCategoryButton("Help", 40);
+			background.addEventHandler(MouseEvent.MOUSE_PRESSED, event -> {
+				foodButton.subBackground.setVisible(false);
+				transportButton.subBackground.setVisible(false);
+				energyButton.subBackground.setVisible(false);
+				habitButton.subBackground.setVisible(false);
+				
+				subBackground.setVisible(true);
+			});
+
+			final int subButtonSize = 40;
+			final int subPadding = 5;
+			final int subBoxWidth = 3 * (subButtonSize + subPadding) + subPadding;
+			subBackground = new HBox(5);
+			subBackground.setAlignment(Pos.CENTER_LEFT);
+			subBackground.setPrefHeight(subButtonSize + 2 * subPadding);
+			subBackground.setPrefWidth(subBoxWidth);
+			subBackground.setLayoutX(x + width - (subBoxWidth) + 5);
+			subBackground.setLayoutY(y - subButtonSize);
+			subBackground.setPadding(new Insets(5));
+			subBackground
+					.setBackground(new Background(new BackgroundFill(Color.WHITE, new CornerRadii(25), Insets.EMPTY)));
+			subBackground.setVisible(false);
+			if (name.equals("Food")) {
+				addSubCategoryButton("Help", subButtonSize);
+				addSubCategoryButton("Help", subButtonSize);
+				addSubCategoryButton("Help", subButtonSize);
+			}
+			if (name.equals("Transport")) {
+				addSubCategoryButton("Help", subButtonSize);
+				addSubCategoryButton("Help", subButtonSize);
+				addSubCategoryButton("Help", subButtonSize);
+			}
+			if (name.equals("Energy")) {
+				addSubCategoryButton("Help", subButtonSize);
+				addSubCategoryButton("Help", subButtonSize);
+				addSubCategoryButton("Help", subButtonSize);
+			}
+			if (name.equals("Habit")) {
+				addSubCategoryButton("Help", subButtonSize);
+				addSubCategoryButton("Help", subButtonSize);
+				addSubCategoryButton("Help", subButtonSize);
+			}
+
 		}
 
 		private void mouseOver(boolean mouseOver) {
@@ -133,7 +199,7 @@ public class AddActivityButton {
 
 		private void addSubCategoryButton(String name, int size) {
 			IconButton button = new IconButton(name, size, size);
-			subbackground.getChildren().add(button.getStackPane());
+			subBackground.getChildren().add(button.getStackPane());
 		}
 
 		private boolean mouseOver = false;
@@ -142,15 +208,21 @@ public class AddActivityButton {
 		private Text name;
 		private ImageView icon;
 
-		HBox subbackground;
+		private HBox subBackground;
 
 		public void addNodes(AnchorPane anchorPane) {
-			anchorPane.getChildren().addAll(background, icon, name, subbackground);
+			anchorPane.getChildren().addAll(background, icon, name, subBackground);
+			allNodes.add(background);
+			allNodes.add(icon);
+			allNodes.add(name);
+			allNodes.add(subBackground);
+			// TODO add IconButtons
 		}
 
 	}
 
-	enum CategoryButtonType {
+	private enum CategoryButtonCornerType {
 		LEFT, CENTER, RIGHT;
 	}
+
 }
