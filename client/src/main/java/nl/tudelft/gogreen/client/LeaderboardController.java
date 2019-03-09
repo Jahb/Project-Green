@@ -49,15 +49,10 @@ public class LeaderboardController implements Initializable {
 
     @FXML
     private ListView<ListItem> leaderboardList = new ListView<ListItem>();
-    private final ObservableList<ListItem> items = FXCollections.observableArrayList();
+    public final ObservableList<ListItem> items = FXCollections.observableArrayList();
 
     //method for adding pictures and text to ListView
     public void initialize(URL location, ResourceBundle resources) {
-
-        Image profileImg = new Image("/logo.png");
-        Image achievementImg = new Image("/achievementImage.png");
-
-
         items.clear();
         items.add(new ListItem("profile1", "achievementImage.png", 3000));
         items.add(new ListItem("profile2", "achievementImage.png", 420));
@@ -80,7 +75,14 @@ public class LeaderboardController implements Initializable {
 
                         }
                     }
+
                 };
+                cell.setOnMouseReleased((MouseEvent event) -> {
+                    if (cell.isEmpty()) {
+                        event.consume();
+                    }
+                    else Main.openProfileScreen();
+                });
                 return cell;
             }
         });
@@ -97,13 +99,20 @@ public class LeaderboardController implements Initializable {
     }
     private void addTimeframeButtons (VBox root){
         dayButton = new IconButton("Add",450 ,100 );
-        weekButton = new IconButton("Add",450 ,100 );
+        weekButton = new IconButton("Deny",450 ,100 );
         monthButton = new IconButton("Add",450 ,100 );
         overallButton = new IconButton("Add",450 ,100 );
         root.getChildren().addAll(dayButton.getStackPane(),
                 weekButton.getStackPane(),
                 monthButton.getStackPane(),
                 overallButton.getStackPane());
+
+        weekButton.setOnClick(event ->{
+            clearList();
+        });
+    }
+    private void clearList(){
+      leaderboardList.getItems().clear();
     }
 }
 
