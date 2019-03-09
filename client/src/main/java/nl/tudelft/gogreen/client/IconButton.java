@@ -15,14 +15,12 @@ public class IconButton extends ImageView {
     public IconButton(String name, int width, int height) {
         this.name = name;
 
-        layoutBox = new Rectangle(width, height);
-        layoutBox.setFill(new Color(0, 0, 0, 0));
-        layoutBox.setMouseTransparent(true);
+        
         clickBox = new Rectangle();
-        double min = Math.min(layoutBox.getWidth(), layoutBox.getHeight());
-        double padding = min / 16;
-        clickBox.setWidth(layoutBox.getWidth() - padding * 2);
-        clickBox.setHeight(layoutBox.getHeight() - padding * 2);
+        final double min = Math.min(width, height);
+        final double padding = min / 16;
+        clickBox.setWidth(width - padding * 2);
+        clickBox.setHeight(height - padding * 2);
         clickBox.setArcHeight(min - padding * 2);
         clickBox.setArcWidth(min - padding * 2);
         clickBox.setFill(color);
@@ -37,6 +35,10 @@ public class IconButton extends ImageView {
         clickBox.setOnMouseReleased(event -> mousePress(false));
         clickBox.setOnMouseEntered(event -> mouseOver(true));
         clickBox.setOnMouseExited(event -> mouseOver(false));
+        
+        layoutBox = new StackPane(clickBox, icon);
+        layoutBox.setPickOnBounds(false);
+        layoutBox.setPrefSize(width, height);
     }
 
     private void mouseOver(boolean mouseOver) {
@@ -56,12 +58,15 @@ public class IconButton extends ImageView {
             clickBox.setFill(color);
     }
 
-    protected String name;
-    private Rectangle layoutBox;
+    private String name;
+    private StackPane layoutBox;
     private Rectangle clickBox;
     private ImageView icon;
     private boolean mouseOver;
 
+    String getName() {
+    	return name;
+    }
 
     /**
      * setX is used when the button is added to an AnchorPane.
@@ -69,12 +74,7 @@ public class IconButton extends ImageView {
      * @param x x being x-coordinate of the top-left corner of the layoutBox.
      */
     public void setX(int x) {
-        double min = Math.min(layoutBox.getWidth(), layoutBox.getHeight());
-        double padding = min / 32;
-
-        layoutBox.setX(x);
-        clickBox.setX(layoutBox.getX() + padding);
-        icon.setX(layoutBox.getX() + (layoutBox.getWidth() - min) / 2);
+    	layoutBox.setLayoutX(x);
     }
 
     /**
@@ -83,12 +83,7 @@ public class IconButton extends ImageView {
      * @param y y being y-coordinate of the top-left corner of the layoutBox.
      */
     public void setY(int y) {
-        double min = Math.min(layoutBox.getWidth(), layoutBox.getHeight());
-        double padding = min / 32;
-
-        layoutBox.setY(y);
-        clickBox.setY(layoutBox.getY() + padding);
-        icon.setY(layoutBox.getY() + (layoutBox.getHeight() - min) / 2);
+    	layoutBox.setLayoutY(y);
     }
 
     /**
@@ -97,8 +92,7 @@ public class IconButton extends ImageView {
      * in such a way that you only need to add the all containing StackPane.
      */
     public StackPane getStackPane() {
-        StackPane ret = new StackPane(layoutBox, clickBox, icon);
-        return ret;
+        return layoutBox;
     }
 
     /**

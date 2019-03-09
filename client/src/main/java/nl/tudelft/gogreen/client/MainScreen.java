@@ -2,6 +2,7 @@ package nl.tudelft.gogreen.client;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.function.Consumer;
 
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
@@ -17,13 +18,13 @@ import javafx.scene.paint.Color;
  * MainScreen object.
  *
  * @author Kamron Geijsen
- * @version 4.20
+ * @version 4.20.19
  */
 public class MainScreen {
 
 	private Ring ring;
 	private TextArea helpText;
-	private AddActivityButton activityButton = new AddActivityButton();
+	private AddActivityButton activityButton;
 
 	/**
 	 * Creates a scene for MainScreen.
@@ -32,7 +33,6 @@ public class MainScreen {
 		URL url = Main.class.getResource("/MainScreen.fxml");
 		System.out.println(url);
 		StackPane root = FXMLLoader.load(url);
-//		System.out.println(root);
 
 		BorderPane baseLayer = (BorderPane) root.getChildren().get(0);
 		AnchorPane mainRingPane = (AnchorPane) baseLayer.getCenter();
@@ -48,12 +48,12 @@ public class MainScreen {
 		ring.startAnimation();
 		helpText.setVisible(false);
 		overlayLayer.setPickOnBounds(false);
+		buttonsPanel.setPickOnBounds(false);
 		Scene scene = new Scene(root, Main.getWidth(), Main.getHeight());
 		scene.addEventHandler(MouseEvent.MOUSE_PRESSED, event -> {
 			Node node = event.getPickResult().getIntersectedNode();
-			if (node != null && !activityButton.contains(node) && !(node.getId() + "").equals("Add")) 
+			if (node != null && !activityButton.contains(node) && !(node.getId() + "").equals("Add"))
 				activityButton.setVisible(false);
-			
 
 		});
 		return scene;
@@ -66,11 +66,12 @@ public class MainScreen {
 		ring.addSegment(15, Color.GREEN);
 		anchorPane.getChildren().add(ring.getPane());
 
-		anchorPane.widthProperty().addListener((obs, oldVal, newVal) -> ring.setX(newVal.intValue() >> 1));
+		anchorPane.widthProperty().addListener((obs, oldVal, newVal) -> ring.setX(newVal.intValue() / 2));
 	}
 
 	private void addActivityButton(AnchorPane anchorPane) {
 		activityButton = new AddActivityButton();
+		activityButton.setHandler(handler);
 		anchorPane.getChildren().add(0, activityButton.getPane());
 	}
 
@@ -94,5 +95,10 @@ public class MainScreen {
 			Main.openLeaderboardScreen();
 		});
 	}
+
+	private Consumer<String> handler = (name) -> {
+		// TODO handler for each subcategory
+		System.out.println("Do executions for [" + name + "]");
+	};
 
 }
