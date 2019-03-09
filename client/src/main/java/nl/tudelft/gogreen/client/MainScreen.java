@@ -44,6 +44,7 @@ public class MainScreen {
 
 		ring.startAnimation();
 		helpText.setVisible(false);
+		overlayLayer.setPickOnBounds(false);
 		return new Scene(root, Main.getWidth(), Main.getHeight());
 	}
 
