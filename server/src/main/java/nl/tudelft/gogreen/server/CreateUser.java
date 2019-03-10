@@ -11,6 +11,13 @@ import java.util.ResourceBundle;
 public class CreateUser {
     private static ResourceBundle resource = ResourceBundle.getBundle("db");
 
+    /**
+     * Method to create a user
+     * @param username The name of the user
+     * @param password Hash of the password of the user
+     * @return returns true if user is created else exception
+     * @throws Exception raised when error accessing the database
+     */
 
     public static boolean create_user(String username, String password) throws Exception {
         Connection conn = DriverManager.getConnection(
@@ -49,7 +56,12 @@ public class CreateUser {
         return true;
     }
 
-
+    /**
+     * Method which returns the  
+     * @param conn
+     * @return
+     * @throws Exception
+     */
     public static int getMaxId(Connection conn) throws Exception {
 
         PreparedStatement stmt0 = conn.prepareStatement("select user_id " +
