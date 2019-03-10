@@ -1,7 +1,7 @@
 # Meeting 3
 **Chairman:** Pablo Rodrigo 
 
-**Secretary:**   
+**Secretary:** Jahson O'Dwyer Wha Binda
 
 ## Opening
 
