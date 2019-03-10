@@ -11,8 +11,8 @@ variables:
   GRADLE_OPTS: "-Dorg.gradle.daemon=false"
 
 before_script:
-- export GRADLE_USER_HOME=`pwd`/.gradle
-- chmod +x ./gradlew
+  - export GRADLE_USER_HOME=`pwd`/.gradle
+  - chmod +x ./gradlew
 
 build:
   stage: build

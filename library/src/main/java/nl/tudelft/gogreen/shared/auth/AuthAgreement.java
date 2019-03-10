@@ -21,6 +21,13 @@ public class AuthAgreement {
     }
 
     /**
+     * Blame Jackson.
+     */
+    private AuthAgreement(){
+
+    }
+
+    /**
      *  Whether the auth was a success.
      * @return Whether the user is now authenticated.
      */

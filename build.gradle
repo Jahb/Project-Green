@@ -6,12 +6,12 @@
  */
 
 plugins {
+    id 'jacoco'
     id 'idea'
     id 'eclipse'
     id 'checkstyle'
     id 'com.github.johnrengelman.shadow' version '4.0.4' apply false
     id 'java'
-
 }
 
 allprojects {
@@ -21,6 +21,11 @@ allprojects {
     group "nl.tudelft.gogreen"
     sourceCompatibility = targetCompatibility = 1.8
 
+    javadoc {
+        destinationDir = file("${rootProject.projectDir}build/javadoc")
+        options.addBooleanOption('html5', true)
+
+    }
 }
 
 subprojects {
@@ -29,9 +34,25 @@ subprojects {
     apply plugin: 'com.github.johnrengelman.shadow'
     apply plugin: 'checkstyle'
     apply plugin: 'java'
+    apply plugin: 'jacoco'
 
     checkstyle {
         configFile rootProject.file('CSE1105.checkstyle.xml')
+        checkstyleTest.enabled = false
     }
 }
 
+
+task codeCoverageReport(type: JacocoReport) {
+    executionData fileTree(project.rootDir.absolutePath).include("**/build/jacoco/*.exec")
+
+    reports {
+        xml.enabled = true
+        xml.destination = file("${buildDir}/reports/jacoco/report.xml")
+        html.enabled = true
+        html.destination = file("${buildDir}/reports/jacoco/report.html")
+        csv.enabled = false
+    }
+}
+
+codeCoverageReport.dependsOn(subprojects*.test)
