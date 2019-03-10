@@ -1,5 +1,9 @@
 package nl.tudelft.gogreen.client;
 
+import java.io.IOException;
+import java.net.URL;
+import java.util.function.Consumer;
+
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Scene;
@@ -7,12 +11,7 @@ import javafx.scene.control.TextArea;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
-
-import java.io.IOException;
-import java.net.URL;
-import java.util.function.Consumer;
 
 /**
  * MainScreen object.
@@ -26,18 +25,20 @@ public class MainScreen {
     private TextArea helpText;
     private AddActivityButton activityButton;
 
+    
+    AnchorPane overlayPane;
     /**
      * Creates a scene for MainScreen.
      */
     public Scene getScene() throws IOException {
         URL url = Main.class.getResource("/MainScreen.fxml");
         System.out.println(url);
-        StackPane root = FXMLLoader.load(url);
+        AnchorPane root = FXMLLoader.load(url);
 
         BorderPane baseLayer = (BorderPane) root.getChildren().get(0);
         AnchorPane mainRingPane = (AnchorPane) baseLayer.getCenter();
 
-        AnchorPane overlayLayer = (AnchorPane) root.getChildren().get(1);
+        AnchorPane overlayLayer = overlayPane=(AnchorPane) root.getChildren().get(1);
         BorderPane buttonsPanel = (BorderPane) overlayLayer.getChildren().get(1);
         helpText = (TextArea) overlayLayer.getChildren().get(0);
 
@@ -47,14 +48,19 @@ public class MainScreen {
 
         ring.startAnimation();
         helpText.setVisible(false);
+        overlayLayer.setPrefSize(1000, 720);
+        
         overlayLayer.setPickOnBounds(false);
         buttonsPanel.setPickOnBounds(false);
         Scene scene = new Scene(root, Main.getWidth(), Main.getHeight());
         scene.addEventHandler(MouseEvent.MOUSE_PRESSED, event -> {
             Node node = event.getPickResult().getIntersectedNode();
-            if (node != null && !activityButton.contains(node) &&
-                    !(node.getId() + "").equals("Add"))
-                activityButton.setVisible(false);
+            if (node != null && !activityButton.contains(node))
+                if(!(node.getId() + "").equals("Add"))
+                    activityButton.close();
+//                else
+//                    if(activityButton.isVisible())
+//                        activityButton.close();
 
         });
         return scene;
@@ -67,8 +73,7 @@ public class MainScreen {
         ring.addSegment(15, Color.GREEN);
         anchorPane.getChildren().add(ring.getPane());
 
-        anchorPane.widthProperty().addListener((obs, oldVal, newVal) ->
-                ring.setX(newVal.intValue() / 2));
+        anchorPane.widthProperty().addListener((obs, oldVal, newVal) -> ring.setX(newVal.intValue() / 2));
     }
 
     private void addActivityButton(AnchorPane anchorPane) {
@@ -86,15 +91,22 @@ public class MainScreen {
         root.setCenter(addButton.getStackPane());
         root.setRight(helpButton.getStackPane());
 
-        helpButton.setOnClick(event -> helpText.setVisible(!helpText.isVisible()));
+        helpButton.setOnClick(event -> {
+            helpText.setVisible(!helpText.isVisible());
+        });
 
-        addButton.setOnClick(event -> activityButton.setVisible(true));
-        leaderboardButton.setOnClick(event -> Main.openLeaderboardScreen());
+        addButton.setOnClick(event -> {
+            activityButton.open();
+        });
+        leaderboardButton.setOnClick(event -> {
+            Main.openLeaderboardScreen();
+        });
     }
 
     private Consumer<String> handler = (name) -> {
         // TODO handler for each subcategory
         System.out.println("Do executions for [" + name + "]");
+        
     };
 
 }

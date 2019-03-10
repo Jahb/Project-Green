@@ -1,42 +1,58 @@
 package nl.tudelft.gogreen.client;
 
+import java.util.HashSet;
+import java.util.function.Consumer;
+
+import javafx.animation.TranslateTransition;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.*;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundFill;
+import javafx.scene.layout.CornerRadii;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
-
-import java.util.HashSet;
-import java.util.function.Consumer;
+import javafx.util.Duration;
 
 /**
  * AddActivityButton GUI object.
- *
+ * 
  * @author Kamron Geijsen
- * @version 1.1
+ * @version 1.2.3
  */
-class AddActivityButton {
+public class AddActivityButton {
 
     private Consumer<String> handler;
 
     private AnchorPane activityButtonPane;
+    private Pane backgroundPane;
+    private Text text;
+
+    private Rectangle animationOverlay;
 
     private CategoryButton foodButton;
     private CategoryButton transportButton;
     private CategoryButton energyButton;
     private CategoryButton habitButton;
 
-    private HashSet<Node> allNodes = new HashSet<>(31);
+    private TranslateTransition slideUp;
+    private TranslateTransition stayPut;
 
-    AddActivityButton() {
+    private HashSet<Node> allNodes = new HashSet<Node>(31);
 
-        activityButtonPane = new AnchorPane();
-        Pane backgroundPane = new Pane();
+    /**
+     * Initialises an AddActivityButton.
+     */
+    public AddActivityButton() {
+        backgroundPane = new Pane();
         CornerRadii cr = new CornerRadii(60, 60, 0, 0, false);
         BackgroundFill bf = new BackgroundFill(new Color(1, 1, 1, .8), cr, Insets.EMPTY);
         backgroundPane.setBackground(new Background(bf));
@@ -49,19 +65,25 @@ class AddActivityButton {
             energyButton.subBackground.setVisible(false);
             habitButton.subBackground.setVisible(false);
         });
+        backgroundPane.setLayoutY(00);
 
-        Text text = new Text("Record new GREEN activity");
+        text = new Text("Record new GREEN activity");
         text.setX(50);
         text.setY(35);
         text.setFont(Font.font("Calibri", FontWeight.BOLD, 23));
         text.setMouseTransparent(true);
+        text.setVisible(false);// TODO
 
-        activityButtonPane.getChildren().add(backgroundPane);
-        activityButtonPane.getChildren().add(text);
-        activityButtonPane.setPrefWidth((double) (600 * 15 / 16));
+        animationOverlay = new Rectangle(0, 0, 600.0 * 31 / 32, 200);
+        animationOverlay.setMouseTransparent(true);
+        animationOverlay.setFill(Color.color(238d / 256, 238d / 256, 238d / 256));
+
+        activityButtonPane = new AnchorPane(backgroundPane, text);
+
+        activityButtonPane.setPrefWidth(600 * 15 / 16);
         activityButtonPane.setPrefWidth(200);
         activityButtonPane.setLayoutX(500 - 600.0 * 31 / 64);
-        activityButtonPane.setLayoutY(720 - 200 - 75);
+        activityButtonPane.setLayoutY(720 - 75);
         activityButtonPane.setVisible(false);
 
         foodButton = new CategoryButton("Food", CategoryButtonCornerType.LEFT, 0);
@@ -73,30 +95,60 @@ class AddActivityButton {
         transportButton.addNodes(activityButtonPane);
         energyButton.addNodes(activityButtonPane);
         habitButton.addNodes(activityButtonPane);
+        activityButtonPane.getChildren().add(animationOverlay);
+
+        slideUp = new TranslateTransition(Duration.millis(200), activityButtonPane);
+        stayPut = new TranslateTransition(Duration.millis(200), animationOverlay);
+        slideUp.setByY(-200);
+        stayPut.setByY(200);
 
         allNodes.add(activityButtonPane);
         allNodes.add(text);
         allNodes.add(backgroundPane);
+        allNodes.add(animationOverlay);
     }
 
-    boolean contains(Node node) {
+    public boolean contains(Node node) {
         return allNodes.contains(node);
     }
 
-    void setHandler(Consumer<String> handler) {
+    public void setHandler(Consumer<String> handler) {
         this.handler = handler;
     }
 
-    Pane getPane() {
+    public Pane getPane() {
         return activityButtonPane;
     }
 
-    void setVisible(boolean visible) {
-        activityButtonPane.setVisible(visible);
+    /**
+     * Starts the open animation of the AddActivityButton.
+     */
+    public void open() {
+        if (activityButtonPane.isVisible()) {
+            close();
+            return;
+        }
+        activityButtonPane.setVisible(true);
         foodButton.subBackground.setVisible(false);
         transportButton.subBackground.setVisible(false);
         energyButton.subBackground.setVisible(false);
         habitButton.subBackground.setVisible(false);
+
+        activityButtonPane.setTranslateY(0);
+        animationOverlay.setTranslateY(0);
+        animationOverlay.setVisible(true);
+        slideUp.playFromStart();
+        stayPut.playFromStart();
+        stayPut.setOnFinished(event -> animationOverlay.setVisible(false));
+    }
+
+    /**
+     * Hides the AddActivityButton.
+     */
+    public void close() {
+        activityButtonPane.setVisible(false);
+        activityButtonPane.setTranslateY(0);
+        animationOverlay.setTranslateY(0);
     }
 
     private class CategoryButton {
@@ -109,12 +161,12 @@ class AddActivityButton {
 
         private HBox subBackground;
 
-        CategoryButton(String name, CategoryButtonCornerType type, int index) {
+        protected CategoryButton(String name, CategoryButtonCornerType type, int index) {
 
             final int width = 125;
-            final int height = 70;
+            final int height = 80;
             final int x = 40 + index * width;
-            final int y = 50;
+            final int y = 35;
 
             background = new Pane();
             CornerRadii cornerRadii = new CornerRadii(0);
@@ -226,7 +278,7 @@ class AddActivityButton {
             subBackground.getChildren().add(button.getStackPane());
         }
 
-        void addNodes(AnchorPane anchorPane) {
+        public void addNodes(AnchorPane anchorPane) {
             anchorPane.getChildren().addAll(background, icon, name, subBackground);
             allNodes.add(background);
             allNodes.add(icon);
@@ -237,7 +289,7 @@ class AddActivityButton {
     }
 
     private enum CategoryButtonCornerType {
-        LEFT, CENTER, RIGHT
+        LEFT, CENTER, RIGHT;
     }
 
 }
