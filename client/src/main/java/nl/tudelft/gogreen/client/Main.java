@@ -24,7 +24,6 @@ public class Main extends Application {
     private static Stage stage;
     private static MainScreen mainScreen = new MainScreen();
     private static ProfileController profileScreen = new ProfileController();
-    private static LoginScreen loginScreen = new LoginScreen();
     private static LeaderboardController leaderboardScreen = new LeaderboardController();
 
 
@@ -51,7 +50,7 @@ public class Main extends Application {
     }
 
     /**
-     * Method that changes scene to LoginScreen.
+     * Method that changes scene to Login Screen.
      */
     public static void openLoginScreen() {
         try {

@@ -12,10 +12,15 @@ public class IconButton extends ImageView {
     static Color colorMouseOver = new Color(.32, .92, .52, 1);
     static Color colorMouseDown = new Color(.25, .90, .45, 1);
 
-    public IconButton(String name, int width, int height) {
+    private String name;
+    private StackPane layoutBox;
+    private Rectangle clickBox;
+    private boolean mouseOver;
+
+    IconButton(String name, int width, int height) {
         this.name = name;
 
-        
+
         clickBox = new Rectangle();
         final double min = Math.min(width, height);
         final double padding = min / 16;
@@ -26,7 +31,7 @@ public class IconButton extends ImageView {
         clickBox.setFill(color);
         clickBox.setId(name);
 
-        icon = new ImageView("Icon" + name + ".png");
+        ImageView icon = new ImageView("Icon" + name + ".png");
         icon.setFitWidth(min);
         icon.setFitHeight(min);
         icon.setMouseTransparent(true);
@@ -35,7 +40,7 @@ public class IconButton extends ImageView {
         clickBox.setOnMouseReleased(event -> mousePress(false));
         clickBox.setOnMouseEntered(event -> mouseOver(true));
         clickBox.setOnMouseExited(event -> mouseOver(false));
-        
+
         layoutBox = new StackPane(clickBox, icon);
         layoutBox.setPickOnBounds(false);
         layoutBox.setPrefSize(width, height);
@@ -58,14 +63,8 @@ public class IconButton extends ImageView {
             clickBox.setFill(color);
     }
 
-    private String name;
-    private StackPane layoutBox;
-    private Rectangle clickBox;
-    private ImageView icon;
-    private boolean mouseOver;
-
-    String getName() {
-    	return name;
+    public String getName() {
+        return name;
     }
 
     /**
@@ -74,7 +73,7 @@ public class IconButton extends ImageView {
      * @param x x being x-coordinate of the top-left corner of the layoutBox.
      */
     public void setX(int x) {
-    	layoutBox.setLayoutX(x);
+        layoutBox.setLayoutX(x);
     }
 
     /**
@@ -83,7 +82,7 @@ public class IconButton extends ImageView {
      * @param y y being y-coordinate of the top-left corner of the layoutBox.
      */
     public void setY(int y) {
-    	layoutBox.setLayoutY(y);
+        layoutBox.setLayoutY(y);
     }
 
     /**
@@ -96,11 +95,10 @@ public class IconButton extends ImageView {
     }
 
     /**
-     * Sets the handler as for what the button needs to execute when it is pressed
-     *
+     * Sets the handler as for what the button needs to execute when it is pressed.
      * @param handler This is passed on to the event handler. This is usually a Lambda expression.
      */
-    public void setOnClick(EventHandler<MouseEvent> handler) {
+    void setOnClick(EventHandler<MouseEvent> handler) {
         clickBox.addEventHandler(MouseEvent.MOUSE_PRESSED, handler);
     }
 

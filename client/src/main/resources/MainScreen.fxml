@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.*?>
 <?import javafx.scene.shape.*?>
 <?import javafx.scene.text.*?>
 <?import javafx.scene.image.*?>
@@ -20,8 +21,11 @@
                <left>
                   <ImageView fitHeight="65.0" fitWidth="191.0" pickOnBounds="true" preserveRatio="true" BorderPane.alignment="CENTER">
                      <image>
-                        <Image url="@Project%20Green%20Logo.png" />
+                        <Image url="@TemporaryLogo.png" />
                      </image>
+                     <BorderPane.margin>
+                        <Insets />
+                     </BorderPane.margin>
                   </ImageView>
                </left>
                <right>

@@ -5,8 +5,6 @@ import com.mashape.unirest.http.Unirest;
 import com.mashape.unirest.http.exceptions.UnirestException;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import nl.tudelft.gogreen.shared.auth.AuthAgreement;
 import nl.tudelft.gogreen.shared.auth.UserAuth;
@@ -21,22 +19,14 @@ public class MainController {
     private TextField passwordField;
     @FXML
     private TextField userField;
-    @FXML
-    private Button frgtPass;
-    @FXML
-    private Button loginButton;
-    @FXML
-    private Button registerButton;
-    @FXML
-    private Label loginLabel;
 
 
     /**
      * Switches to Main Menu After a Successful Login.
      *
-     * @param event
-     * @throws UnirestException
-     * @throws IOException
+     * @param event UserEvent like a click.
+     * @throws UnirestException Possible Exception Throw.
+     * @throws IOException Possible Exception Throw.
      */
     public void Login(ActionEvent event) throws UnirestException, IOException {
         String un = userField.getText();
