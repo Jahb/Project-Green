@@ -25,6 +25,40 @@ public class events_main {
                 System.out.print("Enter an option: ");
                 Scanner scanner = new Scanner(System.in);
                 option = scanner.nextInt();
+
+                switch (option) {
+                    case 1:
+
+                        System.out.print("Enter an event name: ");
+                        name = scanner.next();
+
+                        create_event(username,new_feature.getId(username,conn),name , conn );
+                        loop = true;
+                        break;
+                    case 2:
+                        System.out.print("Enter event name you want to delete: ");
+                        name = scanner.next();
+
+                        delete_event(username,name , conn );
+                        loop = true;
+                        break;
+                    case 3:
+                        System.out.print("Enter event name: ");
+                        name = scanner.next();
+
+                        join_event(username,name , conn );
+                        loop = true;
+                        break;
+                    case 4:
+                        System.out.print("Enter event name: ");
+                        name = scanner.next();
+
+                        leave_event(username,name , conn );
+                        loop = true;
+                        break;
+                    default:
+                        System.out.println("Option not available, please try again!");
+                }
             }
         }
         catch (Exception exception){
