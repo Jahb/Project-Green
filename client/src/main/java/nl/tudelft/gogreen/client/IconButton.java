@@ -101,7 +101,7 @@ public class IconButton extends ImageView {
      * @param handler This is passed on to the event handler. This is usually a Lambda expression.
      */
     void setOnClick(EventHandler<MouseEvent> handler) {
-        clickBox.addEventHandler(MouseEvent.MOUSE_PRESSED, handler);
+        clickBox.addEventHandler(MouseEvent.MOUSE_CLICKED, handler);
     }
 
     /**

@@ -24,6 +24,7 @@
     -fx-graphic-text-gap: 20;
     -fx-font-size:25;
     -fx-font-weight: bold;
+    -fx-cell-size: 115;
 }
 .list-view {
     -fx-border-color: gray ;

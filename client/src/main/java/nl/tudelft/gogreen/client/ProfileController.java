@@ -25,8 +25,9 @@ import javafx.scene.shape.Circle;
 import javafx.util.Callback;
 
 public class ProfileController implements Initializable {
+
 	@FXML
-	private Circle profileCircle;
+	private ImageView profileImage;
 	@FXML
 	private ListView<ListItem> friendsList = new ListView<ListItem>();
 
@@ -56,7 +57,6 @@ public class ProfileController implements Initializable {
 
 		Image profileImg = new Image("/logo.png");
 		Image achievementImg = new Image("/achievementImage.png");
-		profileCircle.setFill(new ImagePattern(profileImg));
 		achievementCircle1.setFill(new ImagePattern(achievementImg));
 		achievementCircle2.setFill(new ImagePattern(achievementImg));
 		achievementCircle3.setFill(new ImagePattern(achievementImg));
@@ -94,9 +94,9 @@ public class ProfileController implements Initializable {
 		URL url = Main.class.getResource("/ProfileGUI.fxml");
 		System.out.println(url);
 		AnchorPane root = FXMLLoader.load(url);
-		BorderPane buttonPane = (BorderPane) root.getChildren().get(3);
+		BorderPane buttonPane = (BorderPane) root.getChildren().get(4);
 		IconButton.addBackButton(buttonPane);
-		BorderPane bottomPane = (BorderPane) root.getChildren().get(4);
+		BorderPane bottomPane = (BorderPane) root.getChildren().get(5);
 		addLowerButtons(bottomPane);
 		Scene leaderboardScene = new Scene(root, Main.getWidth(), Main.getHeight());
 		return leaderboardScene;

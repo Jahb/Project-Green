@@ -11,26 +11,41 @@
 
 <AnchorPane prefHeight="720.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="nl.tudelft.gogreen.client.ProfileController">
    <children>
+      <Pane layoutX="93.0" layoutY="100.0" prefHeight="200.0" prefWidth="565.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="300.0" AnchorPane.topAnchor="115.0">
+         <children>
+            <ImageView fx:id="profileImage" fitHeight="200.0" fitWidth="318.0" layoutX="6.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@ButtonProfile.png" />
+               </image>
+            </ImageView>
+            <Label alignment="CENTER" layoutX="247.0" layoutY="12.0" prefHeight="66.0" prefWidth="277.0" text="Username">
+               <font>
+                  <Font size="25.0" />
+               </font>
+            </Label>
+         </children>
+      </Pane>
       <Circle fx:id="achievementCircle1" fill="#50E476" layoutX="101.0" layoutY="396.0" radius="56.0" stroke="BLACK" strokeType="INSIDE" />
       <Circle fx:id="achievementCircle2" fill="#50E476" layoutX="252.0" layoutY="396.0" radius="56.0" stroke="BLACK" strokeType="INSIDE" />
       <Circle fx:id="achievementCircle3" fill="#50E476" layoutX="406.0" layoutY="396.0" radius="56.0" stroke="BLACK" strokeType="INSIDE" />
-      <BorderPane prefHeight="100.0" prefWidth="635.0" AnchorPane.leftAnchor="5.0" AnchorPane.topAnchor="5.0" />
-      <BorderPane layoutX="1.0" layoutY="520.0" prefHeight="150.0" prefWidth="630.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="365.0" />
-      <ListView fx:id="friendsList" layoutX="888.0" layoutY="102.0" prefHeight="646.0" prefWidth="365.0" stylesheets="ListStyle.css" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="100.0" />
-      <Circle fx:id="profileCircle" fill="#50E476" layoutX="196.0" layoutY="177.0" radius="127.0" stroke="BLACK" strokeType="INSIDE" AnchorPane.topAnchor="50.0" />
-      <AnchorPane layoutX="726.0" layoutY="5.0" prefHeight="100.0" prefWidth="365.0" style="-fx-background-color: #50E476;" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+      <BorderPane prefHeight="100.0" prefWidth="635.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="5.0">
+         <padding>
+            <Insets top="5.0" />
+         </padding></BorderPane>
+      <BorderPane layoutX="1.0" layoutY="520.0" prefHeight="115.0" prefWidth="630.0" style="-fx-background-color: lightgray" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="340.0">
+         <padding>
+            <Insets top="5.0" />
+         </padding>
+      </BorderPane>
+      <ListView fx:id="friendsList" layoutX="888.0" layoutY="102.0" prefHeight="646.0" prefWidth="340.0" stylesheets="ListStyle.css" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="115.0" />
+      <AnchorPane layoutX="726.0" layoutY="5.0" prefHeight="115.0" prefWidth="340.0" style="-fx-background-color: #50E476;" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
-            <Label alignment="CENTER" layoutX="160.0" layoutY="40.0" prefHeight="39.0" prefWidth="172.0" style="-fx-text-fill: white; -fx-font-weight:bold" text="Friends" AnchorPane.bottomAnchor="30.0" AnchorPane.leftAnchor="100.0" AnchorPane.rightAnchor="100.0">
+            <Label alignment="CENTER" layoutX="62.0" layoutY="29.0" prefHeight="58.0" prefWidth="176.0" style="-fx-text-fill: white;-fx-font-size: 40; -fx-font-weight:bold" text="Friends" AnchorPane.bottomAnchor="28.0" AnchorPane.leftAnchor="62.0" AnchorPane.rightAnchor="62.0">
                <font>
                   <Font size="28.0" />
                </font>
             </Label>
          </children>
       </AnchorPane>
-      <Label alignment="CENTER" layoutX="323.0" layoutY="50.0" prefHeight="66.0" prefWidth="277.0" text="Username">
-         <font>
-            <Font size="25.0" />
-         </font>
-      </Label>
    </children>
 </AnchorPane>
