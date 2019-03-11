@@ -60,9 +60,9 @@ public class LeaderboardController implements Initializable {
     public void initialize(URL location, ResourceBundle resources) {
         labelVbox.setMouseTransparent(true);
         items.clear();
-        items.add(new ListItem("profile1", "achievementImage.png", 3000));
-        items.add(new ListItem("profile2", "achievementImage.png", 420));
-        items.add(new ListItem("profile3", "achievementImage.png", 3));
+        items.add(new ListItem("profile1", "images/achievementImage.png", 3000));
+        items.add(new ListItem("profile2", "images/achievementImage.png", 420));
+        items.add(new ListItem("profile3", "images/achievementImage.png", 3));
         leaderboardList.setCellFactory(new Callback<ListView<ListItem>, ListCell<ListItem>>() {
 
             @Override

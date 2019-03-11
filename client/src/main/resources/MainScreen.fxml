@@ -21,7 +21,7 @@
                <left>
                   <ImageView fitHeight="65.0" fitWidth="191.0" pickOnBounds="true" preserveRatio="true" BorderPane.alignment="CENTER">
                      <image>
-                        <Image url="@TemporaryLogo.png" />
+                        <Image url="@images/TemporaryLogo.png" />
                      </image>
                      <BorderPane.margin>
                         <Insets />
@@ -31,7 +31,7 @@
                <right>
                   <ImageView fitHeight="75.0" fitWidth="115.0" pickOnBounds="true" preserveRatio="true" BorderPane.alignment="CENTER">
                      <image>
-                        <Image url="@ButtonProfile.png" />
+                        <Image url="@images/ButtonProfile.png" />
                      </image>
                   </ImageView>
                </right>

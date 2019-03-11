@@ -40,9 +40,9 @@ public class AchievementsController implements Initializable {
     //method for adding pictures and text to ListView
     public void initialize(URL location, ResourceBundle resources) {
         items.clear();
-        items.add(new ListItem("achievement1", "achievementImage.png", "2/10"));
-        items.add(new ListItem("achievement2", "achievementImage.png", "50/100"));
-        items.add(new ListItem("achievement3", "achievementImage.png", "Completed"));
+        items.add(new ListItem("achievement1", "images/achievementImage.png", "2/10"));
+        items.add(new ListItem("achievement2", "images/achievementImage.png", "50/100"));
+        items.add(new ListItem("achievement3", "images/achievementImage.png", "Completed"));
         achievementsList.setCellFactory(new Callback<ListView<ListItem>, ListCell<ListItem>>() {
 
             @Override

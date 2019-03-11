@@ -55,16 +55,16 @@ public class ProfileController implements Initializable {
 	@Override
 	public void initialize (URL location , ResourceBundle resources){
 
-		Image profileImg = new Image("/logo.png");
-		Image achievementImg = new Image("/achievementImage.png");
+		Image profileImg = new Image("images/logo.png");
+		Image achievementImg = new Image("images/achievementImage.png");
 		achievementCircle1.setFill(new ImagePattern(achievementImg));
 		achievementCircle2.setFill(new ImagePattern(achievementImg));
 		achievementCircle3.setFill(new ImagePattern(achievementImg));
 
 		items.clear();
-		items.add(new ListItem("profile1", "achievementImage.png"));
-		items.add(new ListItem("profile2", "achievementImage.png"));
-		items.add(new ListItem("profile3", "achievementImage.png"));
+		items.add(new ListItem("profile1", "images/achievementImage.png"));
+		items.add(new ListItem("profile2", "images/achievementImage.png"));
+		items.add(new ListItem("profile3", "images/achievementImage.png"));
 		friendsList.setCellFactory(new Callback<ListView<ListItem>, ListCell<ListItem>>(){
 
 			@Override
@@ -94,9 +94,9 @@ public class ProfileController implements Initializable {
 		URL url = Main.class.getResource("/ProfileGUI.fxml");
 		System.out.println(url);
 		AnchorPane root = FXMLLoader.load(url);
-		BorderPane buttonPane = (BorderPane) root.getChildren().get(4);
+		BorderPane buttonPane = (BorderPane) root.getChildren().get(0);
 		IconButton.addBackButton(buttonPane);
-		BorderPane bottomPane = (BorderPane) root.getChildren().get(5);
+		BorderPane bottomPane = (BorderPane) root.getChildren().get(1);
 		addLowerButtons(bottomPane);
 		Scene leaderboardScene = new Scene(root, Main.getWidth(), Main.getHeight());
 		return leaderboardScene;

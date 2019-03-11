@@ -1,4 +1,4 @@
-package images;
+package nl.tudelft.gogreen.client;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -14,6 +14,7 @@ import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
+import nl.tudelft.gogreen.client.LeaderboardController;
 
 import java.io.IOException;
 
@@ -42,7 +43,7 @@ public class Main extends Application {
 
         stage = primaryStage;
         primaryStage.setTitle("Project Green: CO2 Reduction Tracker");
-        primaryStage.getIcons().add(new Image("/images/addButton.png"));
+        primaryStage.getIcons().add(new Image("images/addButton.png"));
 
         openLoginScreen();
         stage.show();

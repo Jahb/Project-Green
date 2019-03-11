@@ -12,13 +12,13 @@
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane fx:id="rootPane" prefHeight="400.0" prefWidth="600.0"  xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="nl.tudelft.gogreen.client.LeaderboardController">
+<AnchorPane fx:id="rootPane" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="nl.tudelft.gogreen.client.LeaderboardController">
    <children>
       <HBox alignment="TOP_CENTER" layoutY="10.0" prefHeight="290.0" prefWidth="577.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="10.0">
          <children>
             <ImageView fx:id="leaderboardHeader" fitHeight="420.0" fitWidth="480.0" pickOnBounds="true" preserveRatio="true">
                <image>
-                  <Image url="@ImageLeaderboard.png" />
+                  <Image url="@images/ImageLeaderboard.png" />
                </image>
                <HBox.margin>
                   <Insets />

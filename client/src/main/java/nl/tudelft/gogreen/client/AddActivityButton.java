@@ -181,7 +181,7 @@ public class AddActivityButton {
             background.setPrefWidth(width - 2);
             background.setPrefHeight(height);
 
-            icon = new ImageView("Icon" + name + ".png");
+            icon = new ImageView("images/Icon" + name + ".png");
             icon.setFitWidth(40);
             icon.setFitHeight(40);
             icon.setX(x + width - 40);

@@ -32,7 +32,7 @@ public class IconButton extends ImageView {
         clickBox.setFill(color);
         clickBox.setId(name);
 
-        ImageView icon = new ImageView("Icon" + name + ".png");
+        ImageView icon = new ImageView("images/Icon" + name + ".png");
         icon.setFitWidth(min);
         icon.setFitHeight(min);
         icon.setMouseTransparent(true);
@@ -109,7 +109,7 @@ public class IconButton extends ImageView {
      *
      * @param root
      */
-    protected static void addBackButton(BorderPane root) {
+    public static void addBackButton(BorderPane root) {
         IconButton backButton = new IconButton("Back", 100, 100);
         root.setLeft(backButton.getStackPane());
         backButton.setOnClick(event -> {
