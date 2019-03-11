@@ -25,6 +25,7 @@ public class Main extends Application {
     private static MainScreen mainScreen = new MainScreen();
     private static ProfileController profileScreen = new ProfileController();
     private static LeaderboardController leaderboardScreen = new LeaderboardController();
+    private static AchievementsController achievementsScreen = new AchievementsController();
 
 
     static int getWidth() {
@@ -101,8 +102,7 @@ public class Main extends Application {
      */
     public static void openAchievementsScreen() {
         try {
-            Parent root1 = FXMLLoader.load(Main.class.getResource("/SettingsGUI.fxml"));
-            stage.setScene(new Scene(root1, width, height));
+            stage.setScene(achievementsScreen.getScene());
         } catch (IOException ex) {
             pageOpenError(ex);
         }

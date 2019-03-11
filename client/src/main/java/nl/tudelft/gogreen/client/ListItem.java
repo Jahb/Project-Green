@@ -6,6 +6,7 @@ import javafx.scene.image.ImageView;
 public class ListItem {
      String text;
      String image;
+     String status;
      int score;
 
 
@@ -23,6 +24,8 @@ public class ListItem {
 
     public int getScore(){ return score;}
 
+    public String getStatus(){ return status;}
+
     public void setImageLocation(String img) {
         this.image = img;
     }
@@ -35,5 +38,10 @@ public class ListItem {
     public ListItem(final String text, String imageURL) {
         this.text=text;
         this.image=imageURL;
+    }
+    public ListItem(final String text, String imageURL, String status) {
+        this.text=text;
+        this.image=imageURL;
+        this.status=status;
     }
 }

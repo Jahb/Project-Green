@@ -32,6 +32,7 @@ public class ProfileController implements Initializable {
 
 	protected IconButton backButton;
 
+	protected IconButton achievementsButton;
 
 	//Added profile picture within circle
 	@FXML
@@ -94,16 +95,19 @@ public class ProfileController implements Initializable {
 		System.out.println(url);
 		AnchorPane root = FXMLLoader.load(url);
 		BorderPane buttonPane = (BorderPane) root.getChildren().get(3);
-		addBackButton(buttonPane);
+		IconButton.addBackButton(buttonPane);
+		BorderPane bottomPane = (BorderPane) root.getChildren().get(4);
+		addLowerButtons(bottomPane);
 		Scene leaderboardScene = new Scene(root, Main.getWidth(), Main.getHeight());
 		return leaderboardScene;
 	}
 
-	private void addBackButton(BorderPane root){
-		backButton= new IconButton("Back",100 ,100 );
-		root.setLeft(backButton.getStackPane());
-		backButton.setOnClick(event ->{
-			Main.openMainScreen();
+
+	private void addLowerButtons(BorderPane root){
+		achievementsButton= new IconButton("Achievements",100 ,100 );
+		root.setLeft(achievementsButton.getStackPane());
+		achievementsButton.setOnClick(event ->{
+			Main.openAchievementsScreen();
 		});
 	}
 }

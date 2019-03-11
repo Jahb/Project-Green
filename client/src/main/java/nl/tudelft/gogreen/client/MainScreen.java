@@ -11,6 +11,7 @@ import javafx.scene.control.TextArea;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 
 /**
@@ -33,7 +34,7 @@ public class MainScreen {
     public Scene getScene() throws IOException {
         URL url = Main.class.getResource("/MainScreen.fxml");
         System.out.println(url);
-        AnchorPane root = FXMLLoader.load(url);
+        StackPane root = FXMLLoader.load(url);
 
         BorderPane baseLayer = (BorderPane) root.getChildren().get(0);
         AnchorPane mainRingPane = (AnchorPane) baseLayer.getCenter();

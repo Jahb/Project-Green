@@ -3,6 +3,7 @@ package nl.tudelft.gogreen.client;
 import javafx.event.EventHandler;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
@@ -96,10 +97,23 @@ public class IconButton extends ImageView {
 
     /**
      * Sets the handler as for what the button needs to execute when it is pressed.
+     *
      * @param handler This is passed on to the event handler. This is usually a Lambda expression.
      */
     void setOnClick(EventHandler<MouseEvent> handler) {
         clickBox.addEventHandler(MouseEvent.MOUSE_PRESSED, handler);
     }
 
+    /**
+     * Creates back button on the left side of a BorderPane
+     *
+     * @param root
+     */
+    protected static void addBackButton(BorderPane root) {
+        IconButton backButton = new IconButton("Back", 100, 100);
+        root.setLeft(backButton.getStackPane());
+        backButton.setOnClick(event -> {
+            Main.openMainScreen();
+        });
+    }
 }
