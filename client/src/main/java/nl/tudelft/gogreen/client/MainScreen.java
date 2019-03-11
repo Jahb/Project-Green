@@ -34,7 +34,7 @@ public class MainScreen {
     public Scene getScene() throws IOException {
         URL url = Main.class.getResource("/MainScreen.fxml");
         System.out.println(url);
-        StackPane root = FXMLLoader.load(url);
+        AnchorPane root = FXMLLoader.load(url);
 
         BorderPane baseLayer = (BorderPane) root.getChildren().get(0);
         AnchorPane mainRingPane = (AnchorPane) baseLayer.getCenter();
