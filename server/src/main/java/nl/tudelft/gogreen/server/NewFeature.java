@@ -54,7 +54,7 @@ public class NewFeature {
         System.out.println("the username is: " + username);
         PreparedStatement getId = conn.prepareStatement("select user_id " +
                 "from user_table where username = ?;");
-        getId.setString(1,username);
+        getId.setString(1, username);
         ResultSet rs = getId.executeQuery();
         while (rs.next()) {
             id = rs.getInt(1);
@@ -63,15 +63,24 @@ public class NewFeature {
     }
 
 
-    private static void newStreak(int id, Connection conn) throws Exception {
-
-        PreparedStatement lastDayStreak = conn.prepareStatement("select date " +
-                "from streak where user_id = ?;");
-        lastDayStreak.setInt(1,id);
-        ResultSet rs = lastDayStreak.executeQuery();
-        String lastDay = null;
-        while (rs.next()) {
-            lastDay = rs.getString(1);
+    private static void newStreak(int id, Connection conn) {
+        try {
+            PreparedStatement lastDayStreak = conn.prepareStatement("select date from streak where user_id = " + id + ";");
+            ResultSet rs = lastDayStreak.executeQuery();
+            String lastDay = null;
+            while (rs.next()) {
+                lastDay = rs.getString(1);
+            }
+            System.out.println(isToday(lastDay));
+            if (!isToday(lastDay) && !isYesterday(lastDay)) {
+                PreparedStatement resetStreak = conn.prepareStatement("insert into streak values (" + id + ", current_date, 1);");
+                resetStreak.execute();
+            } else if (isYesterday(lastDay)) {
+                PreparedStatement addOneToStreak = conn.prepareStatement("update streak set number_of_days  = number_of_days + 1 where user_id = " + id + ";");
+                addOneToStreak.execute();
+            }
+        } catch (Exception exception) {
+            System.out.print("There has been an error accessing the database");
         }
 
     }

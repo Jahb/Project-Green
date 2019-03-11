@@ -22,11 +22,11 @@ public class EventsMain {
 
         int idEvent = getMaxId(conn);
         idCreator = NewFeature.getId(username, conn);
-        PreparedStatement createEvent = conn.prepareStatement("insert into event values(" +
-                idEvent + ", '" + eventName + "',  " + idCreator + ");");
+        PreparedStatement createEvent = conn.prepareStatement("insert into event values(?,?,?);");
+        createEvent.setInt(1,idEvent);
+        createEvent.setString(2,eventName);
+        createEvent.setInt(3,idCreator);
         createEvent.execute();
-
-
     }
 
     /**
@@ -41,8 +41,8 @@ public class EventsMain {
                                     Connection conn) throws Exception {
         //delete event
 
-        PreparedStatement delete = conn.prepareStatement("delete from event where " +
-                "event_name = '" + eventName + "';");
+        PreparedStatement delete = conn.prepareStatement("delete from event where event_name = ?;");
+        delete.setString(1,eventName);
         delete.execute();
 
     }
@@ -61,7 +61,9 @@ public class EventsMain {
         int id = NewFeature.getId(username, conn);
         PreparedStatement join = conn.prepareStatement("insert into event_participants " +
                 "values( (select event_id from event where" +
-                " event_name ='" + eventName + "'), " + id + ");");
+                " event_name =?), ?);");
+        join.setString(1,eventName);
+        join.setInt(2,id);
         join.execute();
 
     }
@@ -79,8 +81,10 @@ public class EventsMain {
 
         int id = NewFeature.getId(username, conn);
         PreparedStatement leave = conn.prepareStatement("delete from event_participants where " +
-                "participant = " + id + " and event_id = (select event_id from event where " +
-                "event_name = '" + eventName + "');");
+                "participant = ? and event_id = (select event_id from event where " +
+                "event_name = ?);");
+        leave.setInt(1,id);
+        leave.setString(2,eventName);
         leave.execute();
     }
 
@@ -96,7 +100,8 @@ public class EventsMain {
 
 
         PreparedStatement getId = conn.prepareStatement("select event_id " +
-                "from event where event_name = '" + eventName + "';");
+                "from event where event_name = ?;");
+        getId.setString(1,eventName);
         ResultSet rs = getId.executeQuery();
         while (rs.next()) {
             id = rs.getInt(1);
@@ -132,7 +137,8 @@ public class EventsMain {
      */
     public static void deleteAllAtendance(int id, Connection conn) throws Exception {
         PreparedStatement delAttendance = conn.prepareStatement("delete from event_participants " +
-                "where participant = + " + id + ";");
+                "where participant = + ?;");
+        delAttendance.setInt(1,id);
         delAttendance.execute();
     }
 
@@ -145,7 +151,8 @@ public class EventsMain {
      */
     public static void deleteAllEvents(int id, Connection conn) throws Exception {
         PreparedStatement delEvent = conn.prepareStatement("delete from event" +
-                " where event_creator = + " + id + ";");
+                " where event_creator = + ?;");
+        delEvent.setInt(1,id);
         delEvent.execute();
     }
 

@@ -10,12 +10,10 @@ import java.util.ResourceBundle;
 public class Main {
     private static ResourceBundle resource = ResourceBundle.getBundle("db");
 
+
+
     public static void main(String[] args) throws Exception {
+        Connection conn = DriverManager.getConnection(resource.getString("Postgresql.datasource.url"), resource.getString("Postgresql.datasource.username"), resource.getString("Postgresql.datasource.password"));
         SpringApplication.run(Main.class, args);
-        Connection conn = DriverManager.getConnection(
-                resource.getString("Postgresql.datasource.url"),
-                resource.getString("Postgresql.datasource.username"),
-                resource.getString("Postgresql.datasource.password"));
-        CreateUser.create_user("vlad", "vladyy");
     }
 }
