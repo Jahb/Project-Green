@@ -53,12 +53,27 @@ public class NewFeature {
 
         System.out.println("the username is: " + username);
         PreparedStatement getId = conn.prepareStatement("select user_id " +
-                "from user_table where username = '" + username + "';");
+                "from user_table where username = ?;");
+        getId.setString(1,username);
         ResultSet rs = getId.executeQuery();
         while (rs.next()) {
             id = rs.getInt(1);
         }
         return id;
+    }
+
+
+    private static void newStreak(int id, Connection conn) throws Exception {
+
+        PreparedStatement lastDayStreak = conn.prepareStatement("select date " +
+                "from streak where user_id = ?;");
+        lastDayStreak.setInt(1,id);
+        ResultSet rs = lastDayStreak.executeQuery();
+        String lastDay = null;
+        while (rs.next()) {
+            lastDay = rs.getString(1);
+        }
+
     }
 
 
