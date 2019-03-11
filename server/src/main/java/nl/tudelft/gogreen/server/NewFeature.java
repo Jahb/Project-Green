@@ -62,6 +62,23 @@ public class NewFeature {
     }
 
 
+    private static void newStreak(int id, Connection conn) {
+        try {
+            PreparedStatement lastDayStreak = conn.prepareStatement("select date from streak where user_id = " + id + ";");
+            ResultSet rs = lastDayStreak.executeQuery();
+            String lastDay = null;
+            while (rs.next()) {
+                lastDay = rs.getString(1);
+            }
+            System.out.println(isToday(lastDay));
+            
+        } catch (Exception exception) {
+            System.out.print("There has been an error accessing the database");
+        }
+
+    }
+
+
     /**
      * Method which given a certain day, checks if this one is the current day.
      *
