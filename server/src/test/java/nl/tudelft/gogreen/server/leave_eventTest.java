@@ -56,7 +56,9 @@ public class leave_eventTest {
 
 
 
-            PreparedStatement getEvent = conn.prepareStatement("select participant from event_participants where event_id = " + event_id + "and participant = " +id_participant+";");
+            PreparedStatement getEvent = conn.prepareStatement("select participant from event_participants where event_id =? and participant =?;");
+            getEvent.setInt(1,event_id);
+            getEvent.setInt(2,id_participant);
             ResultSet rs = getEvent.executeQuery();
             int id = -1;
 
