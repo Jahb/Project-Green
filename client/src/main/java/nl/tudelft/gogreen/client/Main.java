@@ -43,6 +43,7 @@ public class Main extends Application {
         stage = primaryStage;
         primaryStage.setTitle("Project Green: CO2 Reduction Tracker");
         primaryStage.getIcons().add(new Image("/addButton.png"));
+
         openLoginScreen();
         stage.show();
 
