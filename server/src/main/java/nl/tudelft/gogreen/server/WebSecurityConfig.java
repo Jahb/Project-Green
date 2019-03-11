@@ -1,7 +1,6 @@
 package nl.tudelft.gogreen.server;
 
 import nl.tudelft.gogreen.server.auth.AuthHandler;
-import nl.tudelft.gogreen.server.auth.User;
 import nl.tudelft.gogreen.server.auth.VerifyUser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
@@ -15,7 +14,6 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -49,11 +47,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         public Authentication authenticate(Authentication authentication) throws AuthenticationException {
             String name = authentication.getName();
             String pass = authentication.getCredentials().toString();
-            System.out.println(name);
-            System.out.println(pass);
-            User u = VerifyUser.findUser(name);
-            if (u == null) return null;
-            boolean check = BCrypt.checkpw(pass, u.getPassword());
+            boolean check = false;
+            try {
+                check = VerifyUser.logIn(name,pass);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
             if (!check) return null;
             List<GrantedAuthority> auths = new ArrayList<>();
             if (name.equals("admin")) {

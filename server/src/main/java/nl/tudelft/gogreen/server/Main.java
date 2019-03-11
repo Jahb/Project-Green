@@ -6,6 +6,6 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class Main {
     public static void main(String[] args) throws Exception {
         SpringApplication.run(Main.class, args);
-        DBmain.initial_menu("paul","paul");
+        //DBmain.initial_menu("paul","paul");
     }
 }

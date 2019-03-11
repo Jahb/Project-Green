@@ -1,9 +1,8 @@
 package nl.tudelft.gogreen.server.auth;
 
-import org.springframework.security.crypto.bcrypt.BCrypt;
-
-import java.util.HashMap;
-import java.util.Map;
+import nl.tudelft.gogreen.server.CreateUser;
+import nl.tudelft.gogreen.server.LogIn;
+import sun.rmi.runtime.Log;
 
 public class VerifyUser {
     /**
@@ -12,13 +11,10 @@ public class VerifyUser {
      * @param username the user to find
      * @return The requested user, or null if the user does not exist
      */
-    public static User findUser(String username) {
-        String pw = users.get(username);
-        if (pw == null) return null;
-        return new User(username, pw);
-    }
+    public static boolean logIn(String username, String password) throws Exception {
 
-    private static Map<String, String> users = new HashMap<>();
+        return LogIn.log_in(username, password);
+    }
 
 
     /**
@@ -28,9 +24,7 @@ public class VerifyUser {
      * @param password the password
      * @return a boolean whether the user is added (and thus didnt exist)
      */
-    public static boolean addNewUser(String username, String password) {
-        if (users.containsKey(username)) return false;
-        users.put(username, BCrypt.hashpw(password, BCrypt.gensalt()));
-        return true;
+    public static boolean addNewUser(String username, String password) throws Exception {
+        return CreateUser.create_user(username, password);
     }
 }
