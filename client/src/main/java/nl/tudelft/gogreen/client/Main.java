@@ -1,4 +1,4 @@
-package nl.tudelft.gogreen.client;
+package images;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -42,7 +42,7 @@ public class Main extends Application {
 
         stage = primaryStage;
         primaryStage.setTitle("Project Green: CO2 Reduction Tracker");
-        primaryStage.getIcons().add(new Image("/addButton.png"));
+        primaryStage.getIcons().add(new Image("/images/addButton.png"));
 
         openLoginScreen();
         stage.show();
