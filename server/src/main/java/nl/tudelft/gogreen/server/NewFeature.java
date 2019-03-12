@@ -1,9 +1,11 @@
 
+
 package nl.tudelft.gogreen.server;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -13,7 +15,11 @@ import java.util.ResourceBundle;
 import static java.sql.DriverManager.getConnection;
 
 
+
+
+
 public class NewFeature {
+
 
 
     private static ResourceBundle resource = ResourceBundle.getBundle("db");
@@ -60,6 +66,116 @@ public class NewFeature {
             id = rs.getInt(1);
         }
         return id;
+    }
+    private static int getCategory(String feature, Connection conn) {
+        try {
+
+            PreparedStatement getcategoryId = conn.prepareStatement("select category from features where feature_name = '" + feature + "';");
+            ResultSet rs = getcategoryId.executeQuery();
+
+            int category = -1;
+
+            while (rs.next()) {
+                category = rs.getInt(1);
+            }
+
+            return category;
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return -1;
+    }
+
+    private static void actualizingUserLog(int id, String feature, int points, Connection conn) {
+        try {
+            //actualize user points, join with features table to know which category the feature is and add to total + current_date
+            int category = getCategory(feature, conn);
+
+            PreparedStatement getLastDay = conn.prepareStatement("select date from user_history order by date desc limit 1;");
+            ResultSet rs = getLastDay.executeQuery();
+
+            String LastDate = null;
+            while (rs.next()) {
+                LastDate = rs.getString(1);
+            }
+
+            if (LastDate == null || !isToday(LastDate)) {
+                switch (category) {
+
+                    case 1:
+                        PreparedStatement createc1 =
+                                conn.prepareStatement("insert into user_history values (" + id + ",current_date," + points + ",0,0,0," + points + ");");
+                        createc1.execute();
+                        break;
+
+                    case 2:
+                        PreparedStatement createc2 =
+                                conn.prepareStatement("insert into user_history values (" + id + ",current_date,0," + points + ",0,0," + points + ");");
+                        createc2.execute();
+                        break;
+
+                    case 3:
+                        PreparedStatement createc3 =
+                                conn.prepareStatement("insert into user_history values (" + id + ",current_date,0,0," + points + ",0," + points + ");");
+                        createc3.execute();
+                        break;
+
+                    case 4:
+                        PreparedStatement createc4 =
+                                conn.prepareStatement("insert into user_history values (" + id + ",current_date,0,0,0," + points + "," + points + ");");
+                        createc4.execute();
+                        break;
+
+
+                }
+
+            } else {
+                switch (category) {
+
+                    case 1:
+
+                        PreparedStatement updatec1_history =
+                                conn.prepareStatement("update user_history set c1 = c1 +" + points +
+                                        " where user_id = " + id + "and date = current_date;");
+                        updatec1_history.execute();
+
+                        break;
+
+                    case 2:
+
+                        PreparedStatement updatec2_history =
+                                conn.prepareStatement("update user_history set c2 = c2 +" + points +
+                                        " where user_id = " + id + "and date = current_date;");
+                        updatec2_history.execute();
+
+                        break;
+
+                    case 3:
+                        PreparedStatement updatec3_history =
+                                conn.prepareStatement("update user_history set c3 = c3 +" + points +
+                                        " where user_id = " + id + "and date = current_date;");
+                        updatec3_history.execute();
+                        break;
+
+                    case 4:
+                        PreparedStatement updatec4_history =
+                                conn.prepareStatement("update user_history set c4 = c4 +" + points +
+                                        " where user_id = " + id + "and date = current_date;");
+                        updatec4_history.execute();
+
+                        break;
+                }
+
+                PreparedStatement hupdatectotal =
+                        conn.prepareStatement(resource.getString("update_total_user_history"));
+                hupdatectotal.execute();
+
+
+            }
+        } catch (Exception exception) {
+            System.out.println("Error!");
+        }
     }
 
 
