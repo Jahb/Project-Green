@@ -197,7 +197,8 @@ public class NewFeature {
 
     private static void actualizingfeatures(Connection conn, String feature) {
         try {
-            PreparedStatement getId = conn.prepareStatement("update features set access = access + 1 where feature_name = '" + feature + "' ;");
+            PreparedStatement getId = conn.prepareStatement("update features set access = access + 1 where feature_name = ? ;");
+            getId.setString(1,feature);
             getId.execute();
 
         } catch (Exception exception) {
