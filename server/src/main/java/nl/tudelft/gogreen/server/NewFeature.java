@@ -149,8 +149,9 @@ public class NewFeature {
                     case 1:
 
                         PreparedStatement updatec1_history =
-                                conn.prepareStatement("update user_history set c1 = c1 +" + points +
-                                        " where user_id = " + id + "and date = current_date;");
+                                conn.prepareStatement("update user_history set c1 = c1 + ? where user_id =? and date = current_date;");
+                        updatec1_history.setInt(1,points);
+                        updatec1_history.setInt(2,id);
                         updatec1_history.execute();
 
                         break;
@@ -158,23 +159,26 @@ public class NewFeature {
                     case 2:
 
                         PreparedStatement updatec2_history =
-                                conn.prepareStatement("update user_history set c2 = c2 +" + points +
-                                        " where user_id = " + id + "and date = current_date;");
+                                conn.prepareStatement("update user_history set c2 = c2 +? where user_id = ? and date = current_date;");
+                        updatec2_history.setInt(1,points);
+                        updatec2_history.setInt(2,id);
                         updatec2_history.execute();
 
                         break;
 
                     case 3:
                         PreparedStatement updatec3_history =
-                                conn.prepareStatement("update user_history set c3 = c3 +" + points +
-                                        " where user_id = " + id + "and date = current_date;");
+                                conn.prepareStatement("update user_history set c3 = c3 + ? where user_id =? and date = current_date;");
+                        updatec3_history.setInt(1,points);
+                        updatec3_history.setInt(2,id);
                         updatec3_history.execute();
                         break;
 
                     case 4:
                         PreparedStatement updatec4_history =
-                                conn.prepareStatement("update user_history set c4 = c4 +" + points +
-                                        " where user_id = " + id + "and date = current_date;");
+                                conn.prepareStatement("update user_history set c4 = c4 + ? where user_id =? and date = current_date;");
+                        updatec4_history.setInt(1,points);
+                        updatec4_history.setInt(2,id);
                         updatec4_history.execute();
 
                         break;
