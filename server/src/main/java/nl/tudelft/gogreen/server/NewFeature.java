@@ -38,8 +38,8 @@ public class NewFeature {
                 resource.getString("Postgresql.datasource.username"),
                 resource.getString("Postgresql.datasource.password"));
         int id = getId(username, conn);
-        //newStreak(id, conn);
-        //actualizingfeatures(conn, feature);
+        newStreak(id, conn);
+        actualizingfeatures(conn, feature);
         //addingToLog(id, conn, feature);
         //actualizingUserPoints(id, feature, 20, conn);
         //actualizingUserLog(id, feature, 20, conn);
@@ -195,6 +195,15 @@ public class NewFeature {
         }
     }
 
+    private static void actualizingfeatures(Connection conn, String feature) {
+        try {
+            PreparedStatement getId = conn.prepareStatement("update features set access = access + 1 where feature_name = '" + feature + "' ;");
+            getId.execute();
+
+        } catch (Exception exception) {
+            System.out.println("Error!");
+        }
+    }
 
     private static void newStreak(int id, Connection conn) {
         try {
