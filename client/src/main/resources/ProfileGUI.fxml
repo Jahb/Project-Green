@@ -35,7 +35,7 @@
             <Image url="@images/ButtonProfile.png" />
          </image>
       </ImageView>
-      <Label layoutX="25.0" layoutY="283.0" prefHeight="40.0" prefWidth="200.0" text="Recently Achieved:" AnchorPane.leftAnchor="25.0">
+      <Label alignment="CENTER" layoutX="25.0" layoutY="283.0" prefHeight="45.0" prefWidth="260.0" style="-fx-background-color:#50E476;-fx-font-weight: bold" text="Recently Achieved:" textFill="WHITE" AnchorPane.leftAnchor="25.0">
          <font>
             <Font size="20.0" />
          </font>
@@ -45,7 +45,7 @@
             <Font size="25.0" />
          </font>
       </Text>
-      <VBox layoutX="121.0" layoutY="338.0" prefHeight="228.0" prefWidth="266.0" spacing="15.0" AnchorPane.leftAnchor="110.0">
+      <VBox layoutX="121.0" layoutY="338.0" prefHeight="228.0" prefWidth="243.0" spacing="15.0" AnchorPane.leftAnchor="110.0">
          <children>
             <Label prefHeight="66.0" prefWidth="268.0" text="Achievement 1">
                <font>
@@ -77,10 +77,11 @@
             <Insets />
          </opaqueInsets>
       </VBox>
-      <Label layoutX="399.0" layoutY="283.0" prefHeight="40.0" prefWidth="200.0" text="Recent Activity:">
+      <Label alignment="CENTER" layoutX="376.0" layoutY="283.0" prefHeight="45.0" prefWidth="260.0" style="-fx-background-color:#50E476;-fx-font-weight: bold" text="Recent Activity:" textFill="WHITE">
          <font>
             <Font size="20.0" />
          </font>
       </Label>
+      <ListView fx:id="activityList" layoutX="376.0" layoutY="338.0" prefHeight="228.0" prefWidth="260.0" stylesheets="SmallListStyle.css" />
    </children>
 </AnchorPane>

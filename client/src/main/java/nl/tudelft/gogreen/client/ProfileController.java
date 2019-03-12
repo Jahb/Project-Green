@@ -31,8 +31,6 @@ public class ProfileController implements Initializable {
 	@FXML
 	private ListView<ListItem> friendsList = new ListView<ListItem>();
 
-	protected IconButton backButton;
-
 	protected IconButton achievementsButton;
 
 	//Added profile picture within circle
@@ -44,12 +42,11 @@ public class ProfileController implements Initializable {
 	Circle achievementCircle2;
 	@FXML
 	Circle achievementCircle3;
-
-
-	private final ObservableList<ListItem> items = FXCollections.observableArrayList();
 	@FXML
+	ListView<String> activityList = new ListView();
+	private ObservableList <String> activities = FXCollections.observableArrayList();
 
-
+	private ObservableList<ListItem> items = FXCollections.observableArrayList();
 
 	//setting placeholder pictures
 	@Override
@@ -60,6 +57,11 @@ public class ProfileController implements Initializable {
 		achievementCircle1.setFill(new ImagePattern(achievementImg));
 		achievementCircle2.setFill(new ImagePattern(achievementImg));
 		achievementCircle3.setFill(new ImagePattern(achievementImg));
+
+		activities.add("17:05 - Ate a Vegetarian Meal");
+		activities.add("11:45 - Ate a Vegetarian Meal");
+		activities.add("13:05 - Ate a Vegetarian Meal");
+		activityList.setItems(activities);
 
 		items.clear();
 		items.add(new ListItem("profile1", "images/achievementImage.png"));
