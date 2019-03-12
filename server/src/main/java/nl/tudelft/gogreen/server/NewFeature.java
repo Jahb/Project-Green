@@ -70,7 +70,8 @@ public class NewFeature {
     private static int getCategory(String feature, Connection conn) {
         try {
 
-            PreparedStatement getcategoryId = conn.prepareStatement("select category from features where feature_name = '" + feature + "';");
+            PreparedStatement getcategoryId = conn.prepareStatement("select category from features where feature_name = ?;");
+            getcategoryId.setString(1,feature);
             ResultSet rs = getcategoryId.executeQuery();
 
             int category = -1;
@@ -105,25 +106,37 @@ public class NewFeature {
 
                     case 1:
                         PreparedStatement createc1 =
-                                conn.prepareStatement("insert into user_history values (" + id + ",current_date," + points + ",0,0,0," + points + ");");
+                                conn.prepareStatement("insert into user_history values (?,current_date,?,0,0,0,?);");
+                        createc1.setInt(1,id);
+                        createc1.setInt(2,points);
+                        createc1.setInt(3,points);
                         createc1.execute();
                         break;
 
                     case 2:
                         PreparedStatement createc2 =
-                                conn.prepareStatement("insert into user_history values (" + id + ",current_date,0," + points + ",0,0," + points + ");");
+                                conn.prepareStatement("insert into user_history values (?,current_date,0,?,0,0,?);");
+                        createc2.setInt(1,id);
+                        createc2.setInt(2,points);
+                        createc2.setInt(3,points);
                         createc2.execute();
                         break;
 
                     case 3:
                         PreparedStatement createc3 =
-                                conn.prepareStatement("insert into user_history values (" + id + ",current_date,0,0," + points + ",0," + points + ");");
+                                conn.prepareStatement("insert into user_history values (?,current_date,0,0,?,0,?);");
+                        createc3.setInt(1,id);
+                        createc3.setInt(2,points);
+                        createc3.setInt(3,points);
                         createc3.execute();
                         break;
 
                     case 4:
                         PreparedStatement createc4 =
-                                conn.prepareStatement("insert into user_history values (" + id + ",current_date,0,0,0," + points + "," + points + ");");
+                                conn.prepareStatement("insert into user_history values (?,current_date,0,0,0,?,?);");
+                        createc4.setInt(1,id);
+                        createc4.setInt(2,points);
+                        createc4.setInt(3,points);
                         createc4.execute();
                         break;
 
