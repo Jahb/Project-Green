@@ -206,6 +206,17 @@ public class NewFeature {
         }
     }
 
+    private static void addingToLog(int id, Connection conn, String feature) {
+        try {
+
+            PreparedStatement addToLog = conn.prepareStatement("insert into features_history values( " + id + ", current_date , (select feature_id from features where feature_name ='" + feature + "') );");
+            addToLog.execute();
+
+        } catch (Exception exception) {
+            System.out.println("Error!");
+        }
+    }
+
     private static void newStreak(int id, Connection conn) {
         try {
             PreparedStatement lastDayStreak = conn.prepareStatement("select date from streak where user_id = " + id + ";");
