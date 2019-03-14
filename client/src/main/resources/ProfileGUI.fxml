@@ -1,87 +1,90 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.image.*?>
-<?import javafx.geometry.*?>
-<?import javafx.scene.text.*?>
-<?import javafx.scene.shape.*?>
-<?import java.lang.*?>
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.*?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.*?>
-<?import javafx.scene.layout.AnchorPane?>
-
-<AnchorPane prefHeight="720.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="nl.tudelft.gogreen.client.ProfileController">
-   <children>
-      <BorderPane prefHeight="100.0" prefWidth="635.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="5.0">
-         <padding>
-            <Insets top="5.0" />
-         </padding></BorderPane>
-      <BorderPane layoutX="1.0" layoutY="520.0" prefHeight="115.0" prefWidth="630.0" style="-fx-background-color: lightgray" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="340.0">
-         <padding>
-            <Insets top="5.0" />
-         </padding>
-      </BorderPane>
-      <ListView fx:id="friendsList" layoutX="888.0" layoutY="102.0" prefHeight="646.0" prefWidth="340.0" stylesheets="ListStyle.css" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="115.0" />
-      <AnchorPane layoutX="726.0" layoutY="5.0" prefHeight="115.0" prefWidth="340.0" style="-fx-background-color: #50E476;" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-         <children>
-            <Label alignment="CENTER" layoutX="62.0" layoutY="29.0" prefHeight="58.0" prefWidth="176.0" style="-fx-text-fill: white;-fx-font-size: 40; -fx-font-weight:bold" text="Friends" AnchorPane.bottomAnchor="28.0" AnchorPane.leftAnchor="62.0" AnchorPane.rightAnchor="62.0">
-               <font>
-                  <Font size="28.0" />
-               </font>
-            </Label>
-         </children>
-      </AnchorPane>
-      <ImageView fx:id="profileImage" fitHeight="200.0" fitWidth="243.0" layoutX="34.0" layoutY="82.0" pickOnBounds="true" preserveRatio="true">
-         <image>
-            <Image url="@images/ButtonProfile.png" />
-         </image>
-      </ImageView>
-      <Label alignment="CENTER" layoutX="25.0" layoutY="283.0" prefHeight="45.0" prefWidth="260.0" style="-fx-background-color:#50E476;-fx-font-weight: bold" text="Recently Achieved:" textFill="WHITE" AnchorPane.leftAnchor="25.0">
+<?import javafx.scene.shape.Circle?>
+<?import javafx.scene.text.*?>
+<AnchorPane prefHeight="720.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="nl.tudelft.gogreen.client.ProfileController">
+   <BorderPane prefHeight="100.0" prefWidth="635.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="5.0">
+      <padding>
+         <Insets top="5.0"/>
+      </padding>
+   </BorderPane>
+   <BorderPane layoutX="1.0" layoutY="520.0" prefHeight="115.0" prefWidth="630.0"
+               style="-fx-background-color: lightgray" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0"
+               AnchorPane.rightAnchor="340.0">
+      <padding>
+         <Insets top="5.0"/>
+      </padding>
+   </BorderPane>
+   <ListView fx:id="friendsList" layoutX="888.0" layoutY="102.0" prefHeight="646.0" prefWidth="340.0"
+             stylesheets="ListStyle.css" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="0.0"
+             AnchorPane.topAnchor="115.0"/>
+   <AnchorPane layoutX="726.0" layoutY="5.0" prefHeight="115.0" prefWidth="340.0" style="-fx-background-color: #50E476;"
+               AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+      <Label alignment="CENTER" layoutX="62.0" layoutY="29.0" prefHeight="58.0" prefWidth="176.0"
+             style="-fx-text-fill: white;-fx-font-size: 40; -fx-font-weight:bold" text="Friends"
+             AnchorPane.bottomAnchor="28.0" AnchorPane.leftAnchor="62.0" AnchorPane.rightAnchor="62.0">
          <font>
-            <Font size="20.0" />
+            <Font size="28.0"/>
          </font>
       </Label>
-      <Text layoutX="283.0" layoutY="109.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Username" wrappingWidth="352.0">
+   </AnchorPane>
+   <ImageView fx:id="profileImage" fitHeight="200.0" fitWidth="243.0" layoutX="34.0" layoutY="82.0" pickOnBounds="true"
+              preserveRatio="true">
+      <Image url="@images/ButtonProfile.png"/>
+   </ImageView>
+   <Label alignment="CENTER" layoutX="25.0" layoutY="283.0" prefHeight="45.0" prefWidth="260.0"
+          style="-fx-background-color:#50E476;-fx-font-weight: bold" text="Recently Achieved:" textFill="WHITE"
+          AnchorPane.leftAnchor="25.0">
+      <font>
+         <Font size="20.0"/>
+      </font>
+   </Label>
+   <Text layoutX="283.0" layoutY="109.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Username" wrappingWidth="352.0">
+      <font>
+         <Font size="25.0"/>
+      </font>
+   </Text>
+   <VBox layoutX="121.0" layoutY="338.0" prefHeight="228.0" prefWidth="243.0" spacing="15.0"
+         AnchorPane.leftAnchor="110.0">
+      <Label prefHeight="66.0" prefWidth="268.0" text="Achievement 1">
          <font>
-            <Font size="25.0" />
-         </font>
-      </Text>
-      <VBox layoutX="121.0" layoutY="338.0" prefHeight="228.0" prefWidth="243.0" spacing="15.0" AnchorPane.leftAnchor="110.0">
-         <children>
-            <Label prefHeight="66.0" prefWidth="268.0" text="Achievement 1">
-               <font>
-                  <Font size="20.0" />
-               </font>
-            </Label>
-            <Label prefHeight="66.0" prefWidth="267.0" text="Achievement 2">
-               <VBox.margin>
-                  <Insets />
-               </VBox.margin>
-               <font>
-                  <Font size="20.0" />
-               </font>
-            </Label>
-            <Label prefHeight="66.0" prefWidth="269.0" text="Achievement 3">
-               <font>
-                  <Font size="20.0" />
-               </font>
-            </Label>
-         </children>
-      </VBox>
-      <VBox layoutX="27.0" layoutY="338.0" prefHeight="217.0" prefWidth="70.0" spacing="15.0" AnchorPane.leftAnchor="25.0">
-         <children>
-            <Circle fx:id="achievementCircle1" fill="#50E476" radius="33.0" stroke="BLACK" strokeType="INSIDE" />
-            <Circle fx:id="achievementCircle3" fill="#50E476" radius="33.0" stroke="BLACK" strokeType="INSIDE" />
-            <Circle fx:id="achievementCircle2" fill="#50E476" radius="33.0" stroke="BLACK" strokeType="INSIDE" />
-         </children>
-         <opaqueInsets>
-            <Insets />
-         </opaqueInsets>
-      </VBox>
-      <Label alignment="CENTER" layoutX="376.0" layoutY="283.0" prefHeight="45.0" prefWidth="260.0" style="-fx-background-color:#50E476;-fx-font-weight: bold" text="Recent Activity:" textFill="WHITE">
-         <font>
-            <Font size="20.0" />
+            <Font size="20.0"/>
          </font>
       </Label>
-      <ListView fx:id="activityList" layoutX="376.0" layoutY="338.0" prefHeight="228.0" prefWidth="260.0" stylesheets="SmallListStyle.css" />
-   </children>
+      <Label prefHeight="66.0" prefWidth="267.0" text="Achievement 2">
+         <VBox.margin>
+            <Insets/>
+         </VBox.margin>
+         <font>
+            <Font size="20.0"/>
+         </font>
+      </Label>
+      <Label prefHeight="66.0" prefWidth="269.0" text="Achievement 3">
+         <font>
+            <Font size="20.0"/>
+         </font>
+      </Label>
+   </VBox>
+   <VBox layoutX="27.0" layoutY="338.0" prefHeight="217.0" prefWidth="70.0" spacing="15.0" AnchorPane.leftAnchor="25.0">
+      <opaqueInsets>
+         <Insets/>
+      </opaqueInsets>
+      <Circle fx:id="achievementCircle1" fill="#50E476" radius="33.0" stroke="BLACK" strokeType="INSIDE"/>
+      <Circle fx:id="achievementCircle3" fill="#50E476" radius="33.0" stroke="BLACK" strokeType="INSIDE"/>
+      <Circle fx:id="achievementCircle2" fill="#50E476" radius="33.0" stroke="BLACK" strokeType="INSIDE"/>
+   </VBox>
+   <Label alignment="CENTER" layoutX="376.0" layoutY="283.0" prefHeight="45.0" prefWidth="260.0"
+          style="-fx-background-color:#50E476;-fx-font-weight: bold" text="Recent Activity:" textFill="WHITE">
+      <font>
+         <Font size="20.0"/>
+      </font>
+   </Label>
+   <ListView fx:id="activityList" layoutX="376.0" layoutY="338.0" prefHeight="228.0" prefWidth="260.0"
+             stylesheets="SmallListStyle.css"/>
 </AnchorPane>

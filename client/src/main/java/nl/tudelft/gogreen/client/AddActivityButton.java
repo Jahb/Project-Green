@@ -1,20 +1,12 @@
 package nl.tudelft.gogreen.client;
 
-import java.util.HashSet;
-import java.util.function.Consumer;
-
 import javafx.animation.TranslateTransition;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.Background;
-import javafx.scene.layout.BackgroundFill;
-import javafx.scene.layout.CornerRadii;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.Pane;
+import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
@@ -22,19 +14,24 @@ import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.util.Duration;
 
+import java.util.HashSet;
+import java.util.function.Consumer;
+
+//import javafx.scene.layout.*;
+
+//import javafx.scene.layout.*;
+
 /**
  * AddActivityButton GUI object.
- * 
+ *
  * @author Kamron Geijsen
  * @version 1.2.3
  */
-public class AddActivityButton {
+class AddActivityButton {
 
     private Consumer<String> handler;
 
     private AnchorPane activityButtonPane;
-    private Pane backgroundPane;
-    private Text text;
 
     private Rectangle animationOverlay;
 
@@ -46,13 +43,13 @@ public class AddActivityButton {
     private TranslateTransition slideUp;
     private TranslateTransition stayPut;
 
-    private HashSet<Node> allNodes = new HashSet<Node>(31);
+    private HashSet<Node> allNodes = new HashSet<>(31);
 
     /**
      * Initialises an AddActivityButton.
      */
-    public AddActivityButton() {
-        backgroundPane = new Pane();
+    AddActivityButton() {
+        Pane backgroundPane = new Pane();
         CornerRadii cr = new CornerRadii(60, 60, 0, 0, false);
         BackgroundFill bf = new BackgroundFill(new Color(1, 1, 1, .8), cr, Insets.EMPTY);
         backgroundPane.setBackground(new Background(bf));
@@ -65,9 +62,9 @@ public class AddActivityButton {
             energyButton.subBackground.setVisible(false);
             habitButton.subBackground.setVisible(false);
         });
-        backgroundPane.setLayoutY(00);
+        backgroundPane.setLayoutY(0);
 
-        text = new Text("Record new GREEN activity");
+        Text text = new Text("Record new GREEN activity");
         text.setX(50);
         text.setY(35);
         text.setFont(Font.font("Calibri", FontWeight.BOLD, 23));
@@ -80,7 +77,7 @@ public class AddActivityButton {
 
         activityButtonPane = new AnchorPane(backgroundPane, text);
 
-        activityButtonPane.setPrefWidth(600 * 15 / 16);
+        activityButtonPane.setPrefWidth((double)(600 * 15 / 16));
         activityButtonPane.setPrefWidth(200);
         activityButtonPane.setLayoutX(500 - 600.0 * 31 / 64);
         activityButtonPane.setLayoutY(720 - 75);
@@ -108,22 +105,22 @@ public class AddActivityButton {
         allNodes.add(animationOverlay);
     }
 
-    public boolean contains(Node node) {
+    boolean contains(Node node) {
         return allNodes.contains(node);
     }
 
-    public void setHandler(Consumer<String> handler) {
+    void setHandler(Consumer<String> handler) {
         this.handler = handler;
     }
 
-    public Pane getPane() {
+    Pane getPane() {
         return activityButtonPane;
     }
 
     /**
      * Starts the open animation of the AddActivityButton.
      */
-    public void open() {
+    void open() {
         if (activityButtonPane.isVisible()) {
             close();
             return;
@@ -145,7 +142,7 @@ public class AddActivityButton {
     /**
      * Hides the AddActivityButton.
      */
-    public void close() {
+    void close() {
         activityButtonPane.setVisible(false);
         activityButtonPane.setTranslateY(0);
         animationOverlay.setTranslateY(0);
@@ -161,7 +158,7 @@ public class AddActivityButton {
 
         private HBox subBackground;
 
-        protected CategoryButton(String name, CategoryButtonCornerType type, int index) {
+        CategoryButton(String name, CategoryButtonCornerType type, int index) {
 
             final int width = 125;
             final int height = 80;
@@ -278,7 +275,7 @@ public class AddActivityButton {
             subBackground.getChildren().add(button.getStackPane());
         }
 
-        public void addNodes(AnchorPane anchorPane) {
+        void addNodes(AnchorPane anchorPane) {
             anchorPane.getChildren().addAll(background, icon, name, subBackground);
             allNodes.add(background);
             allNodes.add(icon);
@@ -289,7 +286,7 @@ public class AddActivityButton {
     }
 
     private enum CategoryButtonCornerType {
-        LEFT, CENTER, RIGHT;
+        LEFT, CENTER, RIGHT
     }
 
 }

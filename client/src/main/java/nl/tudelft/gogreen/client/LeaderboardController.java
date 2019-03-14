@@ -2,15 +2,10 @@ package nl.tudelft.gogreen.client;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.image.Image;
@@ -19,26 +14,26 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
-import javafx.scene.paint.ImagePattern;
-import javafx.stage.Stage;
 import javafx.util.Callback;
 
 import java.io.IOException;
 import java.net.URL;
-import java.util.List;
 import java.util.ResourceBundle;
 
 public class LeaderboardController implements Initializable {
 
 
-    private IconButton dayButton;
-    private IconButton weekButton;
-    private IconButton monthButton;
-    private IconButton overallButton;
     @FXML
     private VBox labelVbox;
+    @FXML
+    private ListView<ListItem> leaderboardList = new ListView<>();
+    private final ObservableList<ListItem> items = FXCollections.observableArrayList();
 
-    //scene switching via button
+    /**
+     * Return the LeaderBoard GUI Scene.
+     * @return LeaderBoard Scene.
+     * @throws IOException An Exception
+     */
     public Scene getScene() throws IOException {
         URL url = Main.class.getResource("/LeaderboardGUI.fxml");
         System.out.println(url);
@@ -46,17 +41,15 @@ public class LeaderboardController implements Initializable {
         BorderPane topPane = (BorderPane) root.getChildren().get(2);
         IconButton.addBackButton(topPane);
         VBox buttonBox = (VBox) root.getChildren().get(3);
-        addTimeframeButtons(buttonBox);
-        Scene leaderboardScene = new Scene(root, Main.getWidth(), Main.getHeight());
-        return leaderboardScene;
+        addTimeFrameButtons(buttonBox);
+        return new Scene(root, Main.getWidth(), Main.getHeight());
     }
 
-    @FXML
-    private ListView<ListItem> leaderboardList = new ListView<ListItem>();
-    public final ObservableList<ListItem> items = FXCollections.observableArrayList();
-
-
-    //method for adding pictures and text to ListView
+    /**
+     * Initializes images for class.
+     * @param location Image URL
+     * @param resources ResourceBundle
+     */
     public void initialize(URL location, ResourceBundle resources) {
         labelVbox.setMouseTransparent(true);
         items.clear();
@@ -101,18 +94,16 @@ public class LeaderboardController implements Initializable {
     }
 
 
-    private void addTimeframeButtons(VBox root) {
-        dayButton = new IconButton("Empty", 450, 100);
-        weekButton = new IconButton("Empty", 450, 100);
-        monthButton = new IconButton("Empty", 450, 100);
-        overallButton = new IconButton("Empty", 450, 100);
+    private void addTimeFrameButtons(VBox root) {
+        IconButton dayButton = new IconButton("Empty", 450, 100);
+        IconButton weekButton = new IconButton("Empty", 450, 100);
+        IconButton monthButton = new IconButton("Empty", 450, 100);
+        IconButton overallButton = new IconButton("Empty", 450, 100);
         root.getChildren().addAll(dayButton.getStackPane(),
                 weekButton.getStackPane(),
                 monthButton.getStackPane(),
                 overallButton.getStackPane());
-        weekButton.setOnClick(event -> {
-            leaderboardList.setItems(null);
-        });
+        weekButton.setOnClick(event -> leaderboardList.setItems(null));
     }
 
 }

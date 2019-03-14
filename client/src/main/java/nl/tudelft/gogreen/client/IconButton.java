@@ -8,18 +8,16 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 
-public class IconButton extends ImageView {
+class IconButton extends ImageView {
     static Color color = new Color(.3, .9, .5, 1);
     static Color colorMouseOver = new Color(.32, .92, .52, 1);
     static Color colorMouseDown = new Color(.25, .90, .45, 1);
 
-    private String name;
     private StackPane layoutBox;
     private Rectangle clickBox;
     private boolean mouseOver;
 
     IconButton(String name, int width, int height) {
-        this.name = name;
 
 
         clickBox = new Rectangle();
@@ -64,34 +62,12 @@ public class IconButton extends ImageView {
             clickBox.setFill(color);
     }
 
-    public String getName() {
-        return name;
-    }
-
-    /**
-     * setX is used when the button is added to an AnchorPane.
-     *
-     * @param x x being x-coordinate of the top-left corner of the layoutBox.
-     */
-    public void setX(int x) {
-        layoutBox.setLayoutX(x);
-    }
-
-    /**
-     * setY is used when the button is added to an AnchorPane.
-     *
-     * @param y y being y-coordinate of the top-left corner of the layoutBox.
-     */
-    public void setY(int y) {
-        layoutBox.setLayoutY(y);
-    }
-
     /**
      * getStackPane is used when the button is added to any non-coordinate pane
      * It will stack the button elements (layoutBox, buttonBox and icon) correctly
      * in such a way that you only need to add the all containing StackPane.
      */
-    public StackPane getStackPane() {
+    StackPane getStackPane() {
         return layoutBox;
     }
 
@@ -105,15 +81,13 @@ public class IconButton extends ImageView {
     }
 
     /**
-     * Creates back button on the left side of a BorderPane
+     * Creates back button on the left side of a BorderPane.
      *
-     * @param root
+     * @param root The root BorderPane
      */
-    public static void addBackButton(BorderPane root) {
+    static void addBackButton(BorderPane root) {
         IconButton backButton = new IconButton("Back", 100, 100);
         root.setLeft(backButton.getStackPane());
-        backButton.setOnClick(event -> {
-            Main.openMainScreen();
-        });
+        backButton.setOnClick(event -> Main.openMainScreen());
     }
 }

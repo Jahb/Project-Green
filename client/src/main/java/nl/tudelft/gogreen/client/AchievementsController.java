@@ -10,10 +10,8 @@ import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.VBox;
 import javafx.util.Callback;
 
 import java.io.IOException;
@@ -22,22 +20,31 @@ import java.util.ResourceBundle;
 
 public class AchievementsController implements Initializable {
 
+    @FXML
+    private ListView<ListItem> achievementsList = new ListView<>();
+
+    private final ObservableList<ListItem> items = FXCollections.observableArrayList();
+
+    /**
+     * Returns the Achievements Scene.
+     *
+     * @return Achievements Scene.
+     * @throws IOException An Exception.
+     */
     public Scene getScene() throws IOException {
         URL url = Main.class.getResource("/AchievementsGUI.fxml");
         System.out.println(url);
         AnchorPane root = FXMLLoader.load(url);
         BorderPane topPane = (BorderPane) root.getChildren().get(1);
         IconButton.addBackButton(topPane);
-        Scene achievementsScene = new Scene(root, Main.getWidth(), Main.getHeight());
-        return achievementsScene;
+        return new Scene(root, Main.getWidth(), Main.getHeight());
     }
 
-    @FXML
-    private ListView<ListItem> achievementsList = new ListView<ListItem>();
-    public final ObservableList<ListItem> items = FXCollections.observableArrayList();
-
-
-    //method for adding pictures and text to ListView
+    /**
+     * Initialises List and adds images to it.
+     * @param location URL of images
+     * @param resources A ResourceBundle
+     */
     public void initialize(URL location, ResourceBundle resources) {
         items.clear();
         items.add(new ListItem("achievement1", "images/achievementImage.png", "2/10"));

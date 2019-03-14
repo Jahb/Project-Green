@@ -5,7 +5,6 @@ import com.google.gson.GsonBuilder;
 
 import com.mashape.unirest.http.ObjectMapper;
 import com.mashape.unirest.http.Unirest;
-
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -14,7 +13,6 @@ import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
-import nl.tudelft.gogreen.client.LeaderboardController;
 
 import java.io.IOException;
 
@@ -25,7 +23,7 @@ public class Main extends Application {
     private static Stage stage;
     private static MainScreen mainScreen = new MainScreen();
     private static ProfileController profileScreen = new ProfileController();
-    private static LeaderboardController leaderboardScreen = new LeaderboardController();
+    private static LeaderboardController leaderBoardScreen = new LeaderboardController();
     private static AchievementsController achievementsScreen = new AchievementsController();
 
 
@@ -55,7 +53,7 @@ public class Main extends Application {
     /**
      * Method that changes scene to Login Screen.
      */
-    public static void openLoginScreen() {
+    private static void openLoginScreen() {
         try {
             Parent root1 = FXMLLoader.load(Main.class.getResource("/Login.fxml"));
             stage.setScene(new Scene(root1));
@@ -67,7 +65,7 @@ public class Main extends Application {
     /**
      * Method that changes scene to MainScreen.
      */
-    public static void openMainScreen() {
+    static void openMainScreen() {
         try {
             stage.setScene(mainScreen.getScene());
             stage.setTitle("Go Green: MainScreen");
@@ -80,9 +78,9 @@ public class Main extends Application {
     /**
      * Method that changes scene to LeaderBoard.
      */
-    public static void openLeaderboardScreen() {
+    static void openLeaderboardScreen() {
         try {
-            stage.setScene(leaderboardScreen.getScene());
+            stage.setScene(leaderBoardScreen.getScene());
         } catch (IOException ex) {
             pageOpenError(ex);
         }
@@ -91,7 +89,7 @@ public class Main extends Application {
     /**
      * Method that changes scene to ProfileScreen.
      */
-    public static void openProfileScreen() {
+    static void openProfileScreen() {
         try {
             stage.setScene(profileScreen.getScene());
         } catch (IOException ex) {
@@ -102,7 +100,7 @@ public class Main extends Application {
     /**
      * Method that changes scene to the AchievementsScreen.
      */
-    public static void openAchievementsScreen() {
+    static void openAchievementsScreen() {
         try {
             stage.setScene(achievementsScreen.getScene());
         } catch (IOException ex) {
