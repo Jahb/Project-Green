@@ -1,6 +1,5 @@
 package nl.tudelft.gogreen.server;
 
-import org.junit.After;
 import org.junit.Test;
 
 import java.sql.Connection;
@@ -27,19 +26,6 @@ public class NFactualizingFeaturesTest {
         assertNotEquals(previous,actual);
         actual = actual- 1;
         assertEquals(previous,actual);
-
-    }
-    @After
-    public void restoreAccesses() throws Exception{
-
-
-            Connection conn = DriverManager.getConnection(resource.getString("Postgresql.datasource.url"),
-                    resource.getString("Postgresql.datasource.username"),
-                    resource.getString("Postgresql.datasource.password"));
-            PreparedStatement getId = conn.prepareStatement("update features " +
-                    "set access = access - 1 where feature_name = 'Vegetarian Meal' ;");
-            getId.execute();
-
 
     }
 

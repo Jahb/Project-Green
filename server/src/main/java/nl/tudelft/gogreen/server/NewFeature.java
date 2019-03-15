@@ -70,7 +70,7 @@ public class NewFeature {
      * @return Returns the mentioned category
      * @throws Exception Raised when an error occurs while accessing the database
      */
-    private static int getCategory(String feature, Connection conn) throws Exception {
+    public static int getCategory(String feature, Connection conn) throws Exception {
 
         PreparedStatement getcategoryId = conn.prepareStatement(resource.getString("qgetCategory"));
         getcategoryId.setString(1, feature);
@@ -96,7 +96,7 @@ public class NewFeature {
      * @param conn    Connection to the database
      * @throws Exception Raised when an error occurs while accessing the database
      */
-    private static void actualizingUserPoints(int id, String feature,
+    public static void actualizingUserPoints(int id, String feature,
                                               int points, Connection conn) throws Exception {
         //actualize user points, join with features table to know which category
         // the feature is and add to total
@@ -155,7 +155,7 @@ public class NewFeature {
      * @throws Exception Raised when an error occurs while accessing the database
      */
 
-    private static void actualizingUserLog(int id, String feature,
+    public static void actualizingUserLog(int id, String feature,
                                            int points, Connection conn) throws Exception {
 
         //actualize user points, join with features table to
@@ -268,7 +268,7 @@ public class NewFeature {
      * @param conn Connection to the database
      * @throws Exception Raised when an error occurs while accessing the database
      */
-    private static void actualizingFeatures(Connection conn, String feature) throws Exception{
+    public static void actualizingFeatures(Connection conn, String feature) throws Exception {
         PreparedStatement getId = conn.prepareStatement(resource.getString("qActualtizingFeatures"));
         getId.setString(1, feature);
         getId.execute();
@@ -301,10 +301,10 @@ public class NewFeature {
      * @param conn Connection to the database
      * @throws Exception Raised when an error occurs while accessing the database
      */
-    private static void newStreak(int id, Connection conn) throws Exception {
+    public static void newStreak(int id, Connection conn) throws Exception {
 
         PreparedStatement lastDayStreak = conn.prepareStatement(resource.getString("qSelectDate"));
-        lastDayStreak.setInt(1,id);
+        lastDayStreak.setInt(1, id);
         ResultSet rs = lastDayStreak.executeQuery();
         String lastDay = null;
         while (rs.next()) {
@@ -313,11 +313,11 @@ public class NewFeature {
         System.out.println(isToday(lastDay));
         if (!isToday(lastDay) && !isYesterday(lastDay)) {
             PreparedStatement resetStreak = conn.prepareStatement(resource.getString("qInsertStreak"));
-            resetStreak.setInt(1,id);
+            resetStreak.setInt(1, id);
             resetStreak.execute();
         } else if (isYesterday(lastDay)) {
             PreparedStatement addOneToStreak = conn.prepareStatement(resource.getString("qUpdateStreak"));
-            addOneToStreak.setInt(1,id);
+            addOneToStreak.setInt(1, id);
             addOneToStreak.execute();
         }
 

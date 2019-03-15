@@ -86,6 +86,8 @@ public class CreateUser {
         userpoints.setInt(5, 0);
         userpoints.setInt(6, 0);
         userpoints.execute();
+        PreparedStatement userHistory = conn.prepareStatement(resource.getString("qInsertHistory0"));
+        userHistory.setInt(1,id);
         return true;
     }
 
@@ -131,10 +133,13 @@ public class CreateUser {
         PreparedStatement delUserPoints = conn.prepareStatement("delete from user_points " +
                 "where user_id =" + id + "; ");
         delUserPoints.execute();
-        PreparedStatement delUserTable = conn.prepareStatement("delete from user_table " +
-                "where user_id =" + id + "; ");
+        PreparedStatement delUserHistory = conn.prepareStatement("delete from " +
+                "user_history where user_id =" + id + ";");
+        delUserHistory.execute();
         EventsMain.deleteAllEvents(id, conn);
         EventsMain.deleteAllAtendance(id, conn);
+        PreparedStatement delUserTable = conn.prepareStatement("delete from user_table " +
+                "where user_id =" + id + "; ");
         delUserTable.execute();
         return true;
     }
