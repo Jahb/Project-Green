@@ -34,36 +34,36 @@ public class CreateUser {
         String hashed = BCrypt.hashpw(password, BCrypt.gensalt());
         String hashpass = "'" + hashed + "'";
 
-        PreparedStatement user = conn.prepareStatement("qInsertUser");
+        PreparedStatement user = conn.prepareStatement(resource.getString("qInsertUser"));
         user.setInt(1, id);
         user.setString(2,username);
         user.setString(3,hashpass);
         user.execute();
-        PreparedStatement obj = conn.prepareStatement("qInsertObjective");
+        PreparedStatement obj = conn.prepareStatement(resource.getString("qInsertObjective"));
         obj.setInt(1, id);
         obj.setNull(2, Types.VARCHAR);
         obj.execute();
-        PreparedStatement hab1 = conn.prepareStatement("qInsertHabits");
+        PreparedStatement hab1 = conn.prepareStatement(resource.getString("qInsertHabits"));
         hab1.setInt(1, id);
         hab1.setString(2,"smoke");
         hab1.setBoolean(3,false);
         hab1.execute();
-        PreparedStatement hab2 = conn.prepareStatement("qInsertHabits2");
+        PreparedStatement hab2 = conn.prepareStatement(resource.getString("qInsertHabits2"));
         hab2.setInt(1, id);
         hab2.setString(2,"recycling person");
         hab2.setBoolean(3,false);
         hab2.execute();
-        PreparedStatement hab3 = conn.prepareStatement("qInsertHabits3");
+        PreparedStatement hab3 = conn.prepareStatement(resource.getString("qInsertHabits3"));
         hab3.setInt(1, id);
         hab3.setString(2,"use of recycle paper");
         hab3.setBoolean(3,false);
         hab3.execute();
-        PreparedStatement hab4 = conn.prepareStatement("qInsertHabits4");
+        PreparedStatement hab4 = conn.prepareStatement(resource.getString("qInsertHabits4"));
         hab4.setInt(1, id);
         hab4.setString(2,"eco-friendly clothes usage");
         hab4.setBoolean(3,false);
         hab4.execute();
-        PreparedStatement streak = conn.prepareStatement("qInsertStreakk");
+        PreparedStatement streak = conn.prepareStatement(resource.getString("qInsertStreakk"));
         DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
         Date date = new Date();
         String today = dateFormat.format(date);
@@ -71,7 +71,7 @@ public class CreateUser {
         streak.setDate(2, java.sql.Date.valueOf(today));
         streak.setInt(3,1);
         streak.execute();
-        PreparedStatement userpoints = conn.prepareStatement("qInsertUserPoints");
+        PreparedStatement userpoints = conn.prepareStatement(resource.getString("qInsertUserPoints"));
         userpoints.setInt(1, id);
         userpoints.setInt(2, 0);
         userpoints.setInt(3, 0);
@@ -91,7 +91,7 @@ public class CreateUser {
      */
     public static int getMaxId(Connection conn) throws Exception {
 
-        PreparedStatement stmt0 = conn.prepareStatement("qGetMaxId2");
+        PreparedStatement stmt0 = conn.prepareStatement(resource.getString("qGetMaxId2"));
         ResultSet rs0 = stmt0.executeQuery();
         int id = -1;
         while (rs0.next()) {
@@ -111,27 +111,27 @@ public class CreateUser {
      */
     public static boolean delete_user(int id, Connection conn) throws Exception {
 
-        PreparedStatement delObjective = conn.prepareStatement("qDeleteObjective");
+        PreparedStatement delObjective = conn.prepareStatement(resource.getString("qDeleteObjective"));
         delObjective.setInt(1,id);
         delObjective.execute();
 
-        PreparedStatement delHabits = conn.prepareStatement("qDeleteHabits");
+        PreparedStatement delHabits = conn.prepareStatement(resource.getString("qDeleteHabits"));
         delHabits.setInt(1,id);
         delHabits.execute();
 
-        PreparedStatement delStreak = conn.prepareStatement("qDeleteStreak");
+        PreparedStatement delStreak = conn.prepareStatement(resource.getString("qDeleteStreak"));
         delStreak.setInt(1,id);
         delStreak.execute();
 
-        PreparedStatement delUserPoints = conn.prepareStatement("qDeleteUserPoints");
+        PreparedStatement delUserPoints = conn.prepareStatement(resource.getString("qDeleteUserPoints"));
         delUserPoints.setInt(1,id);
         delUserPoints.execute();
 
-        PreparedStatement delUserTable = conn.prepareStatement("qDeleteUserTable");
+        PreparedStatement delUserTable = conn.prepareStatement(resource.getString("qDeleteUserTable"));
         delUserTable.setInt(1,id);
         delUserTable.execute();
 
-        PreparedStatement delUserHistory = conn.prepareStatement("qDeleteUserHistory");
+        PreparedStatement delUserHistory = conn.prepareStatement(resource.getString("qDeleteUserHistory"));
         delUserHistory.setInt(1,id);
         delUserHistory.execute();
 
