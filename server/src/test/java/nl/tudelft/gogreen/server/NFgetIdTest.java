@@ -12,7 +12,7 @@ import java.util.ResourceBundle;
 import static org.junit.Assert.assertEquals;
 
 
-public class new_featureTest {
+public class NFgetIdTest {
     private static ResourceBundle resource = ResourceBundle.getBundle("db");
 
 
