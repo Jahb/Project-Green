@@ -265,7 +265,8 @@ public class NewFeature {
 
     private static void newStreak(int id, Connection conn) throws Exception {
 
-        PreparedStatement lastDayStreak = conn.prepareStatement("select date from streak where user_id = " + id + ";");
+        PreparedStatement lastDayStreak = conn.prepareStatement("select date from streak where user_id = ?;");
+        lastDayStreak.setInt(1,id);
         ResultSet rs = lastDayStreak.executeQuery();
         String lastDay = null;
         while (rs.next()) {
@@ -273,10 +274,12 @@ public class NewFeature {
         }
         System.out.println(isToday(lastDay));
         if (!isToday(lastDay) && !isYesterday(lastDay)) {
-            PreparedStatement resetStreak = conn.prepareStatement("insert into streak values (" + id + ", current_date, 1);");
+            PreparedStatement resetStreak = conn.prepareStatement("insert into streak values (?, current_date, 1);");
+            resetStreak.setInt(1,id);
             resetStreak.execute();
         } else if (isYesterday(lastDay)) {
-            PreparedStatement addOneToStreak = conn.prepareStatement("update streak set number_of_days  = number_of_days + 1 where user_id = " + id + ";");
+            PreparedStatement addOneToStreak = conn.prepareStatement("update streak set number_of_days  = number_of_days + 1 where user_id = ?;");
+            addOneToStreak.setInt(1,id);
             addOneToStreak.execute();
         }
 
