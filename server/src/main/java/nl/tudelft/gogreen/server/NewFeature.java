@@ -268,7 +268,7 @@ public class NewFeature {
      * @param conn Connection to the database
      * @throws Exception Raised when an error occurs while accessing the database
      */
-    private static void actualizingfeatures(Connection conn, String feature) throws Exception{
+    private static void actualizingFeatures(Connection conn, String feature) throws Exception{
         PreparedStatement getId = conn.prepareStatement(resource.getString("qActualtizingFeatures"));
         getId.setString(1, feature);
         getId.execute();
