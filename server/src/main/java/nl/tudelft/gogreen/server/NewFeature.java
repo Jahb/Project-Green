@@ -108,32 +108,32 @@ public class NewFeature {
             case 1:
                 PreparedStatement updatec1 =
                         conn.prepareStatement(resource.getString("qactualizec1"));
-                updatec1.setInt(1,points);
-                updatec1.setInt(2,id);
+                updatec1.setInt(1, points);
+                updatec1.setInt(2, id);
                 updatec1.execute();
                 break;
 
             case 2:
                 PreparedStatement updatec2 =
                         conn.prepareStatement(resource.getString("qactualizec2"));
-                updatec2.setInt(1,points);
-                updatec2.setInt(2,points);
+                updatec2.setInt(1, points);
+                updatec2.setInt(2, points);
                 updatec2.execute();
                 break;
 
             case 3:
                 PreparedStatement updatec3 =
                         conn.prepareStatement(resource.getString("qactualizec3"));
-                updatec3.setInt(1,points);
-                updatec3.setInt(2,points);
+                updatec3.setInt(1, points);
+                updatec3.setInt(2, points);
                 updatec3.execute();
                 break;
 
             case 4:
                 PreparedStatement updatec4 =
                         conn.prepareStatement(resource.getString("qactualizec4"));
-                updatec4.setInt(1,points);
-                updatec4.setInt(2,points);
+                updatec4.setInt(1, points);
+                updatec4.setInt(2, points);
                 updatec4.execute();
                 break;
             default:
@@ -281,8 +281,9 @@ public class NewFeature {
 
     /**
      * Method to add to the log of activities for each user the new registered activity.
-     * @param id Id of the user which registered the activity
-     * @param conn Connection to the database
+     *
+     * @param id      Id of the user which registered the activity
+     * @param conn    Connection to the database
      * @param feature Activity which the user recorded
      * @throws Exception Raised when an error occurs while accessing the database
      */
@@ -298,7 +299,8 @@ public class NewFeature {
 
     /**
      * Method to actualize the streak of the given user.
-     * @param id Id of the user which registered the activity
+     *
+     * @param id   Id of the user which registered the activity
      * @param conn Connection to the database
      * @throws Exception Raised when an error occurs while accessing the database
      */

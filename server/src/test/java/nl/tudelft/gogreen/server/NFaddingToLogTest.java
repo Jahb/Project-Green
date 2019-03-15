@@ -8,5 +8,6 @@ public class NFaddingToLogTest {
 
     @Test
     public void addingToLog() {
+
     }
 }
