@@ -34,7 +34,7 @@ public class NewFeature {
                 resource.getString("Postgresql.datasource.password"));
         int id = getId(username, conn);
         newStreak(id, conn);
-        actualizingfeatures(conn, feature);
+        actualizingFeatures(conn, feature);
         addingToLog(id, conn, feature);
         actualizingUserPoints(id, feature, 20, conn);
         actualizingUserLog(id, feature, 20, conn);
@@ -62,6 +62,14 @@ public class NewFeature {
         return id;
     }
 
+    /**
+     * Method which returns the category of the given feature.
+     *
+     * @param feature for which we want to know its category
+     * @param conn    Connection to the database
+     * @return Returns the mentioned category
+     * @throws Exception Raised when an error occurs while accessing the database
+     */
     private static int getCategory(String feature, Connection conn) throws Exception {
 
         PreparedStatement getcategoryId = conn.prepareStatement(resource.getString("qgetCategory"));
@@ -79,6 +87,15 @@ public class NewFeature {
 
     }
 
+    /**
+     * Method which actualizes the user points when a new activity is registered.
+     *
+     * @param id      Id of the user which registered the activity
+     * @param feature Activity which the user recorded
+     * @param points  Amount of points awarded for the activity registered
+     * @param conn    Connection to the database
+     * @throws Exception Raised when an error occurs while accessing the database
+     */
     private static void actualizingUserPoints(int id, String feature,
                                               int points, Connection conn) throws Exception {
         //actualize user points, join with features table to know which category
@@ -127,6 +144,16 @@ public class NewFeature {
 
 
     }
+
+    /**
+     * Method which actualizes the log which log all daily user activities.
+     *
+     * @param id      Id of the user which registered the activity
+     * @param feature Activity which the user recorded
+     * @param points  Amount of points awarded for the activity registered
+     * @param conn    Connection to the database
+     * @throws Exception Raised when an error occurs while accessing the database
+     */
 
     private static void actualizingUserLog(int id, String feature,
                                            int points, Connection conn) throws Exception {
@@ -235,7 +262,12 @@ public class NewFeature {
 
     }
 
-    private static void actualizingfeatures(Connection conn, String feature) throws Exception {
+    /**
+     * Method which actualizes the total record of the activity to be registered.
+     *
+     * @param conn Connection to the database
+     * @throws Exception Raised when an error occurs while accessing the database
+     */
 
         PreparedStatement getId = conn.prepareStatement(resource.getString("qActualtizingFeatures"));
         getId.setString(1, feature);
@@ -251,9 +283,14 @@ public class NewFeature {
         addToLog.execute();
 
 
-
     }
 
+    /**
+     * Method to actualize the streak of the given user.
+     * @param id Id of the user which registered the activity
+     * @param conn Connection to the database
+     * @throws Exception Raised when an error occurs while accessing the database
+     */
     private static void newStreak(int id, Connection conn) throws Exception {
 
         PreparedStatement lastDayStreak = conn.prepareStatement(resource.getString("qSelectDate"));
