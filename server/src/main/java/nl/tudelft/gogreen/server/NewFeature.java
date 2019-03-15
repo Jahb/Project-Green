@@ -5,7 +5,6 @@ package nl.tudelft.gogreen.server;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -15,11 +14,7 @@ import java.util.ResourceBundle;
 import static java.sql.DriverManager.getConnection;
 
 
-
-
-
 public class NewFeature {
-
 
 
     private static ResourceBundle resource = ResourceBundle.getBundle("db");
@@ -40,9 +35,9 @@ public class NewFeature {
         int id = getId(username, conn);
         newStreak(id, conn);
         actualizingfeatures(conn, feature);
-        //addingToLog(id, conn, feature);
-        //actualizingUserPoints(id, feature, 20, conn);
-        //actualizingUserLog(id, feature, 20, conn);
+        addingToLog(id, conn, feature);
+        actualizingUserPoints(id, feature, 20, conn);
+        actualizingUserLog(id, feature, 20, conn);
         return feature;
     }
 
@@ -67,163 +62,230 @@ public class NewFeature {
         }
         return id;
     }
-    private static int getCategory(String feature, Connection conn) {
-        try {
 
-            PreparedStatement getcategoryId = conn.prepareStatement("select category from features where feature_name = ?;");
-            getcategoryId.setString(1,feature);
-            ResultSet rs = getcategoryId.executeQuery();
+    private static int getCategory(String feature, Connection conn) throws Exception {
 
-            int category = -1;
+        PreparedStatement getcategoryId = conn.prepareStatement("select category " +
+                "from features where feature_name = ?;");
+        getcategoryId.setString(1, feature);
+        ResultSet rs = getcategoryId.executeQuery();
 
-            while (rs.next()) {
-                category = rs.getInt(1);
-            }
+        int category = -1;
 
-            return category;
-
-        } catch (SQLException e) {
-            e.printStackTrace();
+        while (rs.next()) {
+            category = rs.getInt(1);
         }
-        return -1;
+
+        return category;
+
+
     }
 
-    private static void actualizingUserLog(int id, String feature, int points, Connection conn) {
-        try {
-            //actualize user points, join with features table to know which category the feature is and add to total + current_date
-            int category = getCategory(feature, conn);
+    private static void actualizingUserPoints(int id, String feature,
+                                              int points, Connection conn) throws Exception {
+        //actualize user points, join with features table to know which category
+        // the feature is and add to total
 
-            PreparedStatement getLastDay = conn.prepareStatement("select date from user_history order by date desc limit 1;");
-            ResultSet rs = getLastDay.executeQuery();
+        int category = getCategory(feature, conn);
 
-            String LastDate = null;
-            while (rs.next()) {
-                LastDate = rs.getString(1);
-            }
+        switch (category) {
 
-            if (LastDate == null || !isToday(LastDate)) {
-                switch (category) {
+            case 1:
+                PreparedStatement updatec1 =
+                        conn.prepareStatement("update user_points set c1 = c1 +" + points +
+                                " where user_id = " + id + ";");
+                updatec1.execute();
+                break;
 
-                    case 1:
-                        PreparedStatement createc1 =
-                                conn.prepareStatement("insert into user_history values (?,current_date,?,0,0,0,?);");
-                        createc1.setInt(1,id);
-                        createc1.setInt(2,points);
-                        createc1.setInt(3,points);
-                        createc1.execute();
-                        break;
+            case 2:
+                PreparedStatement updatec2 =
+                        conn.prepareStatement("update user_points set c2 = c2 +" + points +
+                                " where user_id = " + id + ";");
+                updatec2.execute();
+                break;
 
-                    case 2:
-                        PreparedStatement createc2 =
-                                conn.prepareStatement("insert into user_history values (?,current_date,0,?,0,0,?);");
-                        createc2.setInt(1,id);
-                        createc2.setInt(2,points);
-                        createc2.setInt(3,points);
-                        createc2.execute();
-                        break;
+            case 3:
+                PreparedStatement updatec3 =
+                        conn.prepareStatement("update user_points set c3 = c3 +" + points +
+                                " where user_id = " + id + ";");
+                updatec3.execute();
+                break;
 
-                    case 3:
-                        PreparedStatement createc3 =
-                                conn.prepareStatement("insert into user_history values (?,current_date,0,0,?,0,?);");
-                        createc3.setInt(1,id);
-                        createc3.setInt(2,points);
-                        createc3.setInt(3,points);
-                        createc3.execute();
-                        break;
-
-                    case 4:
-                        PreparedStatement createc4 =
-                                conn.prepareStatement("insert into user_history values (?,current_date,0,0,0,?,?);");
-                        createc4.setInt(1,id);
-                        createc4.setInt(2,points);
-                        createc4.setInt(3,points);
-                        createc4.execute();
-                        break;
-
-
-                }
-
-            } else {
-                switch (category) {
-
-                    case 1:
-
-                        PreparedStatement updatec1_history =
-                                conn.prepareStatement("update user_history set c1 = c1 + ? where user_id =? and date = current_date;");
-                        updatec1_history.setInt(1,points);
-                        updatec1_history.setInt(2,id);
-                        updatec1_history.execute();
-
-                        break;
-
-                    case 2:
-
-                        PreparedStatement updatec2_history =
-                                conn.prepareStatement("update user_history set c2 = c2 +? where user_id = ? and date = current_date;");
-                        updatec2_history.setInt(1,points);
-                        updatec2_history.setInt(2,id);
-                        updatec2_history.execute();
-
-                        break;
-
-                    case 3:
-                        PreparedStatement updatec3_history =
-                                conn.prepareStatement("update user_history set c3 = c3 + ? where user_id =? and date = current_date;");
-                        updatec3_history.setInt(1,points);
-                        updatec3_history.setInt(2,id);
-                        updatec3_history.execute();
-                        break;
-
-                    case 4:
-                        PreparedStatement updatec4_history =
-                                conn.prepareStatement("update user_history set c4 = c4 + ? where user_id =? and date = current_date;");
-                        updatec4_history.setInt(1,points);
-                        updatec4_history.setInt(2,id);
-                        updatec4_history.execute();
-
-                        break;
-                }
-
-                PreparedStatement hupdatectotal =
-                        conn.prepareStatement(resource.getString("update_total_user_history"));
-                hupdatectotal.execute();
-
-
-            }
-        } catch (Exception exception) {
-            System.out.println("Error!");
+            case 4:
+                PreparedStatement updatec4 =
+                        conn.prepareStatement("update user_points set c4 = c4 +" + points +
+                                " where user_id = " + id + ";");
+                updatec4.execute();
+                break;
+            default:
+                System.out.println("Wrong category");
         }
+        PreparedStatement updatectotal =
+                conn.prepareStatement(resource.getString("update_total_user_points"));
+
+
     }
 
-    private static void actualizingfeatures(Connection conn, String feature) {
-        try {
-            PreparedStatement getId = conn.prepareStatement("update features set access = access + 1 where feature_name = ? ;");
-            getId.setString(1,feature);
-            getId.execute();
+    private static void actualizingUserLog(int id, String feature,
+                                           int points, Connection conn) throws Exception {
 
-        } catch (Exception exception) {
-            System.out.println("Error!");
+        //actualize user points, join with features table to
+        // know which category the feature is and add to total + current_date
+        int category = getCategory(feature, conn);
+
+        PreparedStatement getLastDay = conn.prepareStatement("select date " +
+                "from user_history order by date desc limit 1;");
+        ResultSet rs = getLastDay.executeQuery();
+
+        String lastDate = null;
+        while (rs.next()) {
+            lastDate = rs.getString(1);
         }
+
+        if (lastDate == null || !isToday(lastDate)) {
+            switch (category) {
+
+                case 1:
+                    PreparedStatement createc1 = conn.prepareStatement("insert into user_history" +
+                            " values (?,current_date,?,0,0,0,?);");
+                    createc1.setInt(1, id);
+                    createc1.setInt(2, points);
+                    createc1.setInt(3, points);
+                    createc1.execute();
+                    break;
+
+                case 2:
+                    PreparedStatement createc2 =
+                            conn.prepareStatement("insert into user_history " +
+                                    "values (?,current_date,0,?,0,0,?);");
+                    createc2.setInt(1, id);
+                    createc2.setInt(2, points);
+                    createc2.setInt(3, points);
+                    createc2.execute();
+                    break;
+
+                case 3:
+                    PreparedStatement createc3 =
+                            conn.prepareStatement("insert into user_history " +
+                                    "values (?,current_date,0,0,?,0,?);");
+                    createc3.setInt(1, id);
+                    createc3.setInt(2, points);
+                    createc3.setInt(3, points);
+                    createc3.execute();
+                    break;
+
+                case 4:
+                    PreparedStatement createc4 =
+                            conn.prepareStatement("insert into user_history " +
+                                    "values (?,current_date,0,0,0,?,?);");
+                    createc4.setInt(1, id);
+                    createc4.setInt(2, points);
+                    createc4.setInt(3, points);
+                    createc4.execute();
+                    break;
+                default:
+                    System.out.println("Wrong category");
+
+            }
+
+        } else {
+            switch (category) {
+
+                case 1:
+
+                    PreparedStatement upd1History =
+                            conn.prepareStatement("update user_history " +
+                                    "set c1 = c1 + ? where user_id =? and date = current_date;");
+                    upd1History.setInt(1, points);
+                    upd1History.setInt(2, id);
+                    upd1History.execute();
+
+                    break;
+
+                case 2:
+
+                    PreparedStatement upd2History =
+                            conn.prepareStatement("update user_history " +
+                                    "set c2 = c2 +? where user_id = ? and date = current_date;");
+                    upd2History.setInt(1, points);
+                    upd2History.setInt(2, id);
+                    upd2History.execute();
+
+                    break;
+
+                case 3:
+                    PreparedStatement upd3History =
+                            conn.prepareStatement("update user_history " +
+                                    "set c3 = c3 + ? where user_id =? and date = current_date;");
+                    upd3History.setInt(1, points);
+                    upd3History.setInt(2, id);
+                    upd3History.execute();
+                    break;
+
+                case 4:
+                    PreparedStatement upd4History =
+                            conn.prepareStatement("update user_history " +
+                                    "set c4 = c4 + ? where user_id =? and date = current_date;");
+                    upd4History.setInt(1, points);
+                    upd4History.setInt(2, id);
+                    upd4History.execute();
+                    break;
+
+                default:
+                    System.out.println("Wrong category");
+
+            }
+
+            PreparedStatement hupdatectotal =
+                    conn.prepareStatement(resource.getString("update_total_user_history"));
+            hupdatectotal.execute();
+
+
+        }
+
     }
 
-    private static void newStreak(int id, Connection conn) {
-        try {
-            PreparedStatement lastDayStreak = conn.prepareStatement("select date from streak where user_id = " + id + ";");
-            ResultSet rs = lastDayStreak.executeQuery();
-            String lastDay = null;
-            while (rs.next()) {
-                lastDay = rs.getString(1);
-            }
-            System.out.println(isToday(lastDay));
-            if (!isToday(lastDay) && !isYesterday(lastDay)) {
-                PreparedStatement resetStreak = conn.prepareStatement("insert into streak values (" + id + ", current_date, 1);");
-                resetStreak.execute();
-            } else if (isYesterday(lastDay)) {
-                PreparedStatement addOneToStreak = conn.prepareStatement("update streak set number_of_days  = number_of_days + 1 where user_id = " + id + ";");
-                addOneToStreak.execute();
-            }
-        } catch (Exception exception) {
-            System.out.print("There has been an error accessing the database");
+    private static void actualizingfeatures(Connection conn, String feature) throws Exception {
+
+        PreparedStatement getId = conn.prepareStatement("update features " +
+                "set access = access + 1 where feature_name = ? ;");
+        getId.setString(1, feature);
+        getId.execute();
+
+
+    }
+
+    private static void addingToLog(int id, Connection conn, String feature) throws Exception {
+
+
+        PreparedStatement addToLog = conn.prepareStatement("insert " +
+                "into features_history " + "values( " + id + ", current_date ," +
+                " (select feature_id from features where feature_name ='" + feature + "') );");
+        addToLog.execute();
+
+
+    }
+
+    private static void newStreak(int id, Connection conn) throws Exception {
+
+        PreparedStatement lastDayStreak = conn.prepareStatement("select date " +
+                "from streak where user_id = ?;");
+        lastDayStreak.setInt(1, id);
+        ResultSet rs = lastDayStreak.executeQuery();
+
+        String lastDay = null;
+        while (rs.next()) {
+            lastDay = rs.getString(1);
+        }
+        System.out.println(isToday(lastDay));
+        if (!isToday(lastDay) && !isYesterday(lastDay)) {
+            PreparedStatement resetStreak = conn.prepareStatement("insert into streak " +
+                    "values (" + id + ", current_date, 1);");
+            resetStreak.execute();
+        } else if (isYesterday(lastDay)) {
+            PreparedStatement addOneToStreak = conn.prepareStatement("update streak " +
+                    "set number_of_days  = number_of_days + 1 where user_id = " + id + ";");
+            addOneToStreak.execute();
         }
 
     }
@@ -265,4 +327,5 @@ public class NewFeature {
 
         return day.equals(yesterday);
     }
+
 }

@@ -2,7 +2,11 @@ package nl.tudelft.gogreen.server;
 
 import org.springframework.security.crypto.bcrypt.BCrypt;
 
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.Types;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -30,7 +34,8 @@ public class CreateUser {
         String hashed = BCrypt.hashpw(password, BCrypt.gensalt());
         String hashpass = "'" + hashed + "'";
 
-        PreparedStatement user = conn.prepareStatement("insert into user_table values ( ?, ? ,?  );");
+        PreparedStatement user = conn.prepareStatement("insert into user_table " +
+                "values ( ?, ? ,?  );");
         user.setInt(1, id);
         user.setString(2,username);
         user.setString(3,hashpass);
