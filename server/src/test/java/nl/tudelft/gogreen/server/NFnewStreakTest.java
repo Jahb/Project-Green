@@ -11,7 +11,7 @@ import java.util.ResourceBundle;
 import static org.junit.Assert.assertEquals;
 
 
-public class new_feature4Test {
+public class NFnewStreakTest {
     private static ResourceBundle resource = ResourceBundle.getBundle("db");
 
 
