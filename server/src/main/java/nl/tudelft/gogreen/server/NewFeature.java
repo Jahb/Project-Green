@@ -141,6 +141,9 @@ public class NewFeature {
         }
         PreparedStatement updatectotal =
                 conn.prepareStatement(resource.getString("updatetotalpoints"));
+        updatectotal.setInt(1,points);
+        updatectotal.setInt(2,id);
+        updatectotal.execute();
 
 
     }
