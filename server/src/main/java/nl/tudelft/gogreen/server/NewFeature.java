@@ -256,35 +256,27 @@ public class NewFeature {
     }
 
     private static void addingToLog(int id, Connection conn, String feature) throws Exception {
-
-
+        PreparedStatement addToLog = conn.prepareStatement("insert into features_history values( " + id + ", current_date , (select feature_id from features where feature_name ='" + feature + "') );");
         addToLog.execute();
+
 
 
     }
 
     private static void newStreak(int id, Connection conn) throws Exception {
 
-        PreparedStatement lastDayStreak = conn.prepareStatement("select date " +
-                "from streak where user_id = ?;");
-        lastDayStreak.setInt(1, id);
+        PreparedStatement lastDayStreak = conn.prepareStatement("select date from streak where user_id = " + id + ";");
         ResultSet rs = lastDayStreak.executeQuery();
-
         String lastDay = null;
         while (rs.next()) {
             lastDay = rs.getString(1);
-            PreparedStatement addToLog = conn.prepareStatement("insert into features_history values( ?, current_date , (select feature_id from features where feature_name =?) );");
-            addToLog.setInt(1,id);
-            addToLog.setString(2,feature);
         }
         System.out.println(isToday(lastDay));
         if (!isToday(lastDay) && !isYesterday(lastDay)) {
-            PreparedStatement resetStreak = conn.prepareStatement("insert into streak " +
-                    "values (" + id + ", current_date, 1);");
+            PreparedStatement resetStreak = conn.prepareStatement("insert into streak values (" + id + ", current_date, 1);");
             resetStreak.execute();
         } else if (isYesterday(lastDay)) {
-            PreparedStatement addOneToStreak = conn.prepareStatement("update streak " +
-                    "set number_of_days  = number_of_days + 1 where user_id = " + id + ";");
+            PreparedStatement addOneToStreak = conn.prepareStatement("update streak set number_of_days  = number_of_days + 1 where user_id = " + id + ";");
             addOneToStreak.execute();
         }
 
