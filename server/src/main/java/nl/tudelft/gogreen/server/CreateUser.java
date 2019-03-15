@@ -34,42 +34,36 @@ public class CreateUser {
         String hashed = BCrypt.hashpw(password, BCrypt.gensalt());
         String hashpass = "'" + hashed + "'";
 
-        PreparedStatement user = conn.prepareStatement("insert into user_table " +
-                "values ( ?, ? ,?  );");
+        PreparedStatement user = conn.prepareStatement("qInsertUser");
         user.setInt(1, id);
         user.setString(2,username);
         user.setString(3,hashpass);
         user.execute();
-        PreparedStatement obj = conn.prepareStatement("insert into objective values (?, ?);");
+        PreparedStatement obj = conn.prepareStatement("qInsertObjective");
         obj.setInt(1, id);
         obj.setNull(2, Types.VARCHAR);
         obj.execute();
-        PreparedStatement hab1 = conn.prepareStatement("insert into initial_habits " +
-                "values (?,?,?);");
+        PreparedStatement hab1 = conn.prepareStatement("qInsertHabits");
         hab1.setInt(1, id);
         hab1.setString(2,"smoke");
         hab1.setBoolean(3,false);
         hab1.execute();
-        PreparedStatement hab2 = conn.prepareStatement("insert into initial_habits " +
-                "values (?,? ,?); ");
+        PreparedStatement hab2 = conn.prepareStatement("qInsertHabits2");
         hab2.setInt(1, id);
         hab2.setString(2,"recycling person");
         hab2.setBoolean(3,false);
         hab2.execute();
-        PreparedStatement hab3 = conn.prepareStatement("insert into initial_habits " +
-                "values(?,?,?);");
+        PreparedStatement hab3 = conn.prepareStatement("qInsertHabits3");
         hab3.setInt(1, id);
         hab3.setString(2,"use of recycle paper");
         hab3.setBoolean(3,false);
         hab3.execute();
-        PreparedStatement hab4 = conn.prepareStatement("insert into initial_habits " +
-                "values (?,?,?)");
+        PreparedStatement hab4 = conn.prepareStatement("qInsertHabits4");
         hab4.setInt(1, id);
         hab4.setString(2,"eco-friendly clothes usage");
         hab4.setBoolean(3,false);
         hab4.execute();
-        PreparedStatement streak = conn.prepareStatement("insert into streak " +
-                "values (?, ?,?);");
+        PreparedStatement streak = conn.prepareStatement("qInsertStreakk");
         DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
         Date date = new Date();
         String today = dateFormat.format(date);
@@ -77,8 +71,7 @@ public class CreateUser {
         streak.setDate(2, java.sql.Date.valueOf(today));
         streak.setInt(3,1);
         streak.execute();
-        PreparedStatement userpoints = conn.prepareStatement("insert into user_points " +
-                "values (?,?,?,?,?,?)");
+        PreparedStatement userpoints = conn.prepareStatement("qInsertUserPoints");
         userpoints.setInt(1, id);
         userpoints.setInt(2, 0);
         userpoints.setInt(3, 0);
