@@ -1,16 +1,13 @@
 plugins {
-    
+
 }
 
 dependencies {
     compile project(':library')
-    implementation 'com.google.code.gson:gson:2.8.5'
     compile 'com.mashape.unirest:unirest-java:1.4.9'
-    compile group: 'org.apache.httpcomponents', name: 'httpclient', version: '4.5.7'
+    implementation 'com.google.code.gson:gson:2.8.5'
 
 }
-
-
 
 
 shadowJar {
