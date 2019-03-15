@@ -6,11 +6,23 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.Types;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.ResourceBundle;
 
 public class CreateUser {
     private static ResourceBundle resource = ResourceBundle.getBundle("db");
 
+    /**
+     * Method to create a user.
+     *
+     * @param username The name of the user
+     * @param password  Unhashed password of the user
+     * @return returns true if user is created else exception
+     * @throws Exception raises when error accessing the database
+     */
 
     public static boolean create_user(String username, String password) throws Exception {
         Connection conn = DriverManager.getConnection(
@@ -23,33 +35,67 @@ public class CreateUser {
         String hashpass = "'" + hashed + "'";
 
         PreparedStatement user = conn.prepareStatement("insert into user_table " +
-                "values ( " + id + ",'" + username + "', " + hashpass + ");");
+                "values ( ?, ? ,?  );");
+        user.setInt(1, id);
+        user.setString(2,username);
+        user.setString(3,hashpass);
         user.execute();
-        PreparedStatement obj = conn.prepareStatement("insert into objective " +
-                "values (" + id + ", NULL);");
+        PreparedStatement obj = conn.prepareStatement("insert into objective values (?, ?);");
+        obj.setInt(1, id);
+        obj.setNull(2, Types.VARCHAR);
         obj.execute();
         PreparedStatement hab1 = conn.prepareStatement("insert into initial_habits " +
-                "values ( " + id + ", 'smoke', FALSE);");
+                "values (?,?,?);");
+        hab1.setInt(1, id);
+        hab1.setString(2,"smoke");
+        hab1.setBoolean(3,false);
         hab1.execute();
         PreparedStatement hab2 = conn.prepareStatement("insert into initial_habits " +
-                "values (" + id + ", 'recycling person', FALSE); ");
+                "values (?,? ,?); ");
+        hab2.setInt(1, id);
+        hab2.setString(2,"recycling person");
+        hab2.setBoolean(3,false);
         hab2.execute();
         PreparedStatement hab3 = conn.prepareStatement("insert into initial_habits " +
-                "values(" + id + ", 'use of recycle paper', FALSE);");
+                "values(?,?,?);");
+        hab3.setInt(1, id);
+        hab3.setString(2,"use of recycle paper");
+        hab3.setBoolean(3,false);
         hab3.execute();
         PreparedStatement hab4 = conn.prepareStatement("insert into initial_habits " +
-                "values (" + id + ", 'eco-friendly clothes usage', FALSE);");
+                "values (?,?,?)");
+        hab4.setInt(1, id);
+        hab4.setString(2,"eco-friendly clothes usage");
+        hab4.setBoolean(3,false);
         hab4.execute();
         PreparedStatement streak = conn.prepareStatement("insert into streak " +
-                "values (" + id + ", current_date  ,   1  );");
+                "values (?, ?,?);");
+        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        Date date = new Date();
+        String today = dateFormat.format(date);
+        streak.setInt(1, id);
+        streak.setDate(2, java.sql.Date.valueOf(today));
+        streak.setInt(3,1);
         streak.execute();
         PreparedStatement userpoints = conn.prepareStatement("insert into user_points " +
-                "values (" + id + ",  0  ,   0  ,   0  ,   0  ,   0  );");
+                "values (?,?,?,?,?,?)");
+        userpoints.setInt(1, id);
+        userpoints.setInt(2, 0);
+        userpoints.setInt(3, 0);
+        userpoints.setInt(4, 0);
+        userpoints.setInt(5, 0);
+        userpoints.setInt(6, 0);
         userpoints.execute();
         return true;
     }
 
-
+    /**
+     * Method which returns the next id for events available.
+     *
+     * @param conn Connection to the database
+     * @return returns the id
+     * @throws Exception raises when error accessing the database
+     */
     public static int getMaxId(Connection conn) throws Exception {
 
         PreparedStatement stmt0 = conn.prepareStatement("select user_id " +
@@ -61,35 +107,44 @@ public class CreateUser {
 
             id = id + 1;
         }
-
         return id;
-
-
     }
 
+    /**
+     * Method which deletes the user with given id.
+     * @param id of the user to be deleted
+     * @param conn Connection to the database
+     * @return Returns true if the user is correctly delete it
+     * @throws Exception raises when error accessing the database
+     */
     public static boolean delete_user(int id, Connection conn) throws Exception {
 
         PreparedStatement delObjective = conn.prepareStatement("delete from objective " +
                 "where user_id =" + id + ";");
+        delObjective.execute();
         PreparedStatement delHabits = conn.prepareStatement("delete from initial_habits " +
                 "where user_id =" + id + "; ");
+        delHabits.execute();
         PreparedStatement delStreak = conn.prepareStatement("delete from streak " +
                 "where user_id =" + id + "; ");
+        delStreak.execute();
         PreparedStatement delUserPoints = conn.prepareStatement("delete from user_points " +
                 "where user_id =" + id + "; ");
-        PreparedStatement delUser_table = conn.prepareStatement("delete from user_table " +
-                "where user_id =" + id + "; ");
-        delObjective.execute();
-        delHabits.execute();
-        delStreak.execute();
         delUserPoints.execute();
+        PreparedStatement delUserTable = conn.prepareStatement("delete from user_table " +
+                "where user_id =" + id + "; ");
         EventsMain.deleteAllEvents(id, conn);
         EventsMain.deleteAllAtendance(id, conn);
-        delUser_table.execute();
+        delUserTable.execute();
         return true;
-
     }
 
+    /**
+     * Method which deletes all current users of the database.
+     * @param conn Connection to the database
+     * @return  Returns true if all users are correctly delete it
+     * @throws Exception raises when error accessing the database
+     */
     public static boolean deleteAllUsers(Connection conn) throws Exception {
         boolean loop = true;
         int id = -1;

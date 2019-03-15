@@ -34,15 +34,11 @@ public class LogIn {
         }
         System.out.println("the password");
 
-
         if (dbpassword == null) {
             System.out.print("You are not registered, click this button to sign in!");
             return false;
         }
-
         return BCrypt.checkpw(password, dbpassword);
-
-
     }
 
 }

@@ -13,6 +13,7 @@ import java.util.ResourceBundle;
 import static org.junit.Assert.assertEquals;
 
 
+
 public class leave_eventTest {
     private static ResourceBundle resource = ResourceBundle.getBundle("db");
 
@@ -22,6 +23,7 @@ public class leave_eventTest {
         try {
 
             Connection conn = DriverManager.getConnection(resource.getString("Postgresql.datasource.url"), resource.getString("Postgresql.datasource.username"), resource.getString("Postgresql.datasource.password"));
+
             EventsMain.delete_event("test","karnaval",conn);
 
             int id_creator = NewFeature.getId("creator",conn);
@@ -29,6 +31,7 @@ public class leave_eventTest {
 
             CreateUser.delete_user(id_creator,conn);
             CreateUser.delete_user(id_participant,conn);
+
         }
         catch(Exception exception){
             System.out.println("Error!");
@@ -53,7 +56,9 @@ public class leave_eventTest {
 
 
 
-            PreparedStatement getEvent = conn.prepareStatement("select participant from event_participants where event_id = " + event_id + "and participant = " +id_participant+";");
+            PreparedStatement getEvent = conn.prepareStatement("select participant from event_participants where event_id =? and participant =?;");
+            getEvent.setInt(1,event_id);
+            getEvent.setInt(2,id_participant);
             ResultSet rs = getEvent.executeQuery();
             int id = -1;
 
@@ -62,8 +67,9 @@ public class leave_eventTest {
             }
             assertEquals(-1,id);
         }
+
         catch (Exception exception){
-            System.out.println(exception.getMessage());
+            System.out.println("Error!");
         }
     }
 
