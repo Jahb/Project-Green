@@ -109,36 +109,40 @@ public class CreateUser {
      * @return Returns true if the user is correctly delete it
      * @throws Exception raises when error accessing the database
      */
-    public static boolean delete_user(int id, Connection conn) throws Exception {
+    public static boolean delete_user(int id, Connection conn)  {
+try {
+    PreparedStatement delObjective = conn.prepareStatement(resource.getString("qDeleteObjective"));
+    delObjective.setInt(1, id);
+    delObjective.execute();
 
-        PreparedStatement delObjective = conn.prepareStatement(resource.getString("qDeleteObjective"));
-        delObjective.setInt(1,id);
-        delObjective.execute();
+    PreparedStatement delHabits = conn.prepareStatement(resource.getString("qDeleteHabits"));
+    delHabits.setInt(1, id);
+    delHabits.execute();
 
-        PreparedStatement delHabits = conn.prepareStatement(resource.getString("qDeleteHabits"));
-        delHabits.setInt(1,id);
-        delHabits.execute();
+    PreparedStatement delStreak = conn.prepareStatement(resource.getString("qDeleteStreak"));
+    delStreak.setInt(1, id);
+    delStreak.execute();
 
-        PreparedStatement delStreak = conn.prepareStatement(resource.getString("qDeleteStreak"));
-        delStreak.setInt(1,id);
-        delStreak.execute();
+    PreparedStatement delUserPoints = conn.prepareStatement(resource.getString("qDeleteUserPoints"));
+    delUserPoints.setInt(1, id);
+    delUserPoints.execute();
 
-        PreparedStatement delUserPoints = conn.prepareStatement(resource.getString("qDeleteUserPoints"));
-        delUserPoints.setInt(1,id);
-        delUserPoints.execute();
+    PreparedStatement delUserTable = conn.prepareStatement(resource.getString("qDeleteUserTable"));
+    delUserTable.setInt(1, id);
+    delUserTable.execute();
 
-        PreparedStatement delUserTable = conn.prepareStatement(resource.getString("qDeleteUserTable"));
-        delUserTable.setInt(1,id);
-        delUserTable.execute();
+    PreparedStatement delUserHistory = conn.prepareStatement(resource.getString("qDeleteUserHistory"));
+    delUserHistory.setInt(1, id);
+    delUserHistory.execute();
 
-        PreparedStatement delUserHistory = conn.prepareStatement(resource.getString("qDeleteUserHistory"));
-        delUserHistory.setInt(1,id);
-        delUserHistory.execute();
+    EventsMain.deleteAllEvents(id, conn);
+    EventsMain.deleteAllAtendance(id, conn);
 
-        EventsMain.deleteAllEvents(id, conn);
-        EventsMain.deleteAllAtendance(id, conn);
-
-        return true;
+    return true;
+} catch (Exception e){
+    System.out.print(e.getMessage());
+    return false;
+}
     }
 
     /**

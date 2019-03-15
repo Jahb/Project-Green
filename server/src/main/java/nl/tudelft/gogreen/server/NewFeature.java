@@ -313,8 +313,8 @@ public class NewFeature {
         while (rs.next()) {
             lastDay = rs.getString(1);
         }
-        System.out.println(isToday(lastDay));
-        if (!isToday(lastDay) && !isYesterday(lastDay)) {
+
+        if (lastDay == null || (!isToday(lastDay) && !isYesterday(lastDay))) {
             PreparedStatement resetStreak = conn.prepareStatement(resource.getString("qInsertStreak"));
             resetStreak.setInt(1, id);
             resetStreak.execute();
