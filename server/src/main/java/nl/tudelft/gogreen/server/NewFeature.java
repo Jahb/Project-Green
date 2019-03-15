@@ -286,9 +286,9 @@ public class NewFeature {
      */
 
     public static void addingToLog(int id, Connection conn, String feature) throws Exception {
-        PreparedStatement addToLog = conn.prepareStatement("insert into features_history " +
-                "values( " + id + ", current_date , (select feature_id from features " +
-                "where feature_name ='" + feature + "') );");
+        PreparedStatement addToLog = conn.prepareStatement("qAddingtoLog");
+        addToLog.setInt(1,id);
+        addToLog.setString(2,feature);
         addToLog.execute();
 
 
