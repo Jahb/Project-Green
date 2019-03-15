@@ -237,8 +237,7 @@ public class NewFeature {
 
     private static void actualizingfeatures(Connection conn, String feature) throws Exception {
 
-        PreparedStatement getId = conn.prepareStatement("update features " +
-                "set access = access + 1 where feature_name = ? ;");
+        PreparedStatement getId = conn.prepareStatement("qActualtizingFeatures");
         getId.setString(1, feature);
         getId.execute();
 
@@ -246,7 +245,7 @@ public class NewFeature {
     }
 
     private static void addingToLog(int id, Connection conn, String feature) throws Exception {
-        PreparedStatement addToLog = conn.prepareStatement("insert into features_history values( ?, current_date , (select feature_id from features where feature_name ='?') );");
+        PreparedStatement addToLog = conn.prepareStatement("qAddingtoLog");
         addToLog.setInt(1,id);
         addToLog.setString(2,feature);
         addToLog.execute();
@@ -257,7 +256,7 @@ public class NewFeature {
 
     private static void newStreak(int id, Connection conn) throws Exception {
 
-        PreparedStatement lastDayStreak = conn.prepareStatement("select date from streak where user_id = ?;");
+        PreparedStatement lastDayStreak = conn.prepareStatement("qSelectDate");
         lastDayStreak.setInt(1,id);
         ResultSet rs = lastDayStreak.executeQuery();
         String lastDay = null;
@@ -266,11 +265,11 @@ public class NewFeature {
         }
         System.out.println(isToday(lastDay));
         if (!isToday(lastDay) && !isYesterday(lastDay)) {
-            PreparedStatement resetStreak = conn.prepareStatement("insert into streak values (?, current_date, 1);");
+            PreparedStatement resetStreak = conn.prepareStatement("qInsertStreak");
             resetStreak.setInt(1,id);
             resetStreak.execute();
         } else if (isYesterday(lastDay)) {
-            PreparedStatement addOneToStreak = conn.prepareStatement("update streak set number_of_days  = number_of_days + 1 where user_id = ?;");
+            PreparedStatement addOneToStreak = conn.prepareStatement("qUpdateStreak");
             addOneToStreak.setInt(1,id);
             addOneToStreak.execute();
         }
