@@ -92,29 +92,33 @@ public class NewFeature {
 
             case 1:
                 PreparedStatement updatec1 =
-                        conn.prepareStatement("update user_points set c1 = c1 +" + points +
-                                " where user_id = " + id + ";");
+                        conn.prepareStatement("update user_points set c1 = c1 + ? where user_id = ?;");
+                updatec1.setInt(1,points);
+                updatec1.setInt(2,id);
                 updatec1.execute();
                 break;
 
             case 2:
                 PreparedStatement updatec2 =
-                        conn.prepareStatement("update user_points set c2 = c2 +" + points +
-                                " where user_id = " + id + ";");
+                        conn.prepareStatement("update user_points set c2 = c2 + ? where user_id = ?;");
+                updatec2.setInt(1,points);
+                updatec2.setInt(2,points);
                 updatec2.execute();
                 break;
 
             case 3:
                 PreparedStatement updatec3 =
-                        conn.prepareStatement("update user_points set c3 = c3 +" + points +
-                                " where user_id = " + id + ";");
+                        conn.prepareStatement("update user_points set c3 = c3 +? where user_id = ?;");
+                updatec3.setInt(1,points);
+                updatec3.setInt(2,points);
                 updatec3.execute();
                 break;
 
             case 4:
                 PreparedStatement updatec4 =
-                        conn.prepareStatement("update user_points set c4 = c4 +" + points +
-                                " where user_id = " + id + ";");
+                        conn.prepareStatement("update user_points set c4 = c4 +? where user_id = ?;");
+                updatec4.setInt(1,points);
+                updatec4.setInt(2,points);
                 updatec4.execute();
                 break;
             default:
