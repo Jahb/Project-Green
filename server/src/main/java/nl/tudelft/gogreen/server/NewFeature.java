@@ -258,9 +258,6 @@ public class NewFeature {
     private static void addingToLog(int id, Connection conn, String feature) throws Exception {
 
 
-        PreparedStatement addToLog = conn.prepareStatement("insert " +
-                "into features_history " + "values( " + id + ", current_date ," +
-                " (select feature_id from features where feature_name ='" + feature + "') );");
         addToLog.execute();
 
 
@@ -276,6 +273,9 @@ public class NewFeature {
         String lastDay = null;
         while (rs.next()) {
             lastDay = rs.getString(1);
+            PreparedStatement addToLog = conn.prepareStatement("insert into features_history values( ?, current_date , (select feature_id from features where feature_name =?) );");
+            addToLog.setInt(1,id);
+            addToLog.setString(2,feature);
         }
         System.out.println(isToday(lastDay));
         if (!isToday(lastDay) && !isYesterday(lastDay)) {
