@@ -95,8 +95,7 @@ public class EventsMain {
         int id = -1;
 
 
-        PreparedStatement getId = conn.prepareStatement("select event_id " +
-                "from event where event_name = ?;");
+        PreparedStatement getId = conn.prepareStatement("qGetEventId");
         getId.setString(1,eventName);
         ResultSet rs = getId.executeQuery();
         while (rs.next()) {
@@ -114,8 +113,7 @@ public class EventsMain {
 
     public static int getMaxId(Connection conn) throws Exception {
 
-        PreparedStatement getMaxId = conn.prepareStatement("select event_id from event " +
-                "order by event_id desc limit 1;");
+        PreparedStatement getMaxId = conn.prepareStatement("qGetMaxId");
         ResultSet rs0 = getMaxId.executeQuery();
         int id = 0;
         while (rs0.next()) {
@@ -132,8 +130,7 @@ public class EventsMain {
      * @throws Exception raises when an error occurs accessing
      */
     public static void deleteAllAtendance(int id, Connection conn) throws Exception {
-        PreparedStatement delAttendance = conn.prepareStatement("delete from event_participants " +
-                "where participant = + ?;");
+        PreparedStatement delAttendance = conn.prepareStatement("qDeleteAllAtendance");
         delAttendance.setInt(1,id);
         delAttendance.execute();
     }
@@ -146,8 +143,7 @@ public class EventsMain {
      * @throws Exception raises when an error occurs accessing
      */
     public static void deleteAllEvents(int id, Connection conn) throws Exception {
-        PreparedStatement delEvent = conn.prepareStatement("delete from event" +
-                " where event_creator = + ?;");
+        PreparedStatement delEvent = conn.prepareStatement("qDeleteAllEvents");
         delEvent.setInt(1,id);
         delEvent.execute();
     }

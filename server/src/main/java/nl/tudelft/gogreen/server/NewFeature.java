@@ -286,7 +286,7 @@ public class NewFeature {
      */
 
     public static void addingToLog(int id, Connection conn, String feature) throws Exception {
-        PreparedStatement addToLog = conn.prepareStatement("qAddingtoLog");
+        PreparedStatement addToLog = conn.prepareStatement(resource.getString("qAddingtoLog"));
         addToLog.setInt(1,id);
         addToLog.setString(2,feature);
         addToLog.execute();
