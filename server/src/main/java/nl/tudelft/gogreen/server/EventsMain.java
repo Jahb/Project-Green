@@ -22,7 +22,7 @@ public class EventsMain {
 
         int idEvent = getMaxId(conn);
         idCreator = NewFeature.getId(username, conn);
-        PreparedStatement createEvent = conn.prepareStatement("insert into event values(?,?,?);");
+        PreparedStatement createEvent = conn.prepareStatement("qInsertIntoEvent");
         createEvent.setInt(1,idEvent);
         createEvent.setString(2,eventName);
         createEvent.setInt(3,idCreator);
@@ -41,7 +41,7 @@ public class EventsMain {
                                     Connection conn) throws Exception {
         //delete event
 
-        PreparedStatement delete = conn.prepareStatement("delete from event where event_name = ?;");
+        PreparedStatement delete = conn.prepareStatement("qDeleteFromEvent");
         delete.setString(1,eventName);
         delete.execute();
 
@@ -59,9 +59,7 @@ public class EventsMain {
                                   Connection conn) throws Exception {
 
         int id = NewFeature.getId(username, conn);
-        PreparedStatement join = conn.prepareStatement("insert into event_participants " +
-                "values( (select event_id from event where" +
-                " event_name =?), ?);");
+        PreparedStatement join = conn.prepareStatement("qJoinEvent");
         join.setString(1,eventName);
         join.setInt(2,id);
         join.execute();
@@ -80,9 +78,7 @@ public class EventsMain {
                                    Connection conn) throws Exception {
 
         int id = NewFeature.getId(username, conn);
-        PreparedStatement leave = conn.prepareStatement("delete from event_participants where " +
-                "participant = ? and event_id = (select event_id from event where " +
-                "event_name = ?);");
+        PreparedStatement leave = conn.prepareStatement("qLeaveEvent");
         leave.setInt(1,id);
         leave.setString(2,eventName);
         leave.execute();
