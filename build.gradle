@@ -12,7 +12,6 @@ plugins {
     id 'checkstyle'
     id 'com.github.johnrengelman.shadow' version '4.0.4' apply false
     id 'java'
-    
 }
 
 allprojects {
