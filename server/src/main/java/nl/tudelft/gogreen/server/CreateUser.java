@@ -91,8 +91,7 @@ public class CreateUser {
      */
     public static int getMaxId(Connection conn) throws Exception {
 
-        PreparedStatement stmt0 = conn.prepareStatement("select user_id " +
-                "from user_table order by user_id desc limit 1;");
+        PreparedStatement stmt0 = conn.prepareStatement("qGetMaxId2");
         ResultSet rs0 = stmt0.executeQuery();
         int id = -1;
         while (rs0.next()) {
@@ -112,23 +111,33 @@ public class CreateUser {
      */
     public static boolean delete_user(int id, Connection conn) throws Exception {
 
-        PreparedStatement delObjective = conn.prepareStatement("delete from objective " +
-                "where user_id =" + id + ";");
+        PreparedStatement delObjective = conn.prepareStatement("qDeleteObjective");
+        delObjective.setInt(1,id);
         delObjective.execute();
-        PreparedStatement delHabits = conn.prepareStatement("delete from initial_habits " +
-                "where user_id =" + id + "; ");
+
+        PreparedStatement delHabits = conn.prepareStatement("qDeleteHabits");
+        delHabits.setInt(1,id);
         delHabits.execute();
-        PreparedStatement delStreak = conn.prepareStatement("delete from streak " +
-                "where user_id =" + id + "; ");
+
+        PreparedStatement delStreak = conn.prepareStatement("qDeleteStreak");
+        delStreak.setInt(1,id);
         delStreak.execute();
-        PreparedStatement delUserPoints = conn.prepareStatement("delete from user_points " +
-                "where user_id =" + id + "; ");
+
+        PreparedStatement delUserPoints = conn.prepareStatement("qDeleteUserPoints");
+        delUserPoints.setInt(1,id);
         delUserPoints.execute();
-        PreparedStatement delUserTable = conn.prepareStatement("delete from user_table " +
-                "where user_id =" + id + "; ");
+
+        PreparedStatement delUserTable = conn.prepareStatement("qDeleteUserTable");
+        delUserTable.setInt(1,id);
+        delUserTable.execute();
+
+        PreparedStatement delUserHistory = conn.prepareStatement("qDeleteUserHistory");
+        delUserHistory.setInt(1,id);
+        delUserHistory.execute();
+
         EventsMain.deleteAllEvents(id, conn);
         EventsMain.deleteAllAtendance(id, conn);
-        delUserTable.execute();
+
         return true;
     }
 
