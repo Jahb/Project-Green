@@ -53,8 +53,7 @@ public class NewFeature {
         int id = -1;
 
         System.out.println("the username is: " + username);
-        PreparedStatement getId = conn.prepareStatement("select user_id " +
-                "from user_table where username = ?;");
+        PreparedStatement getId = conn.prepareStatement(resource.getString("qgetId"));
         getId.setString(1, username);
         ResultSet rs = getId.executeQuery();
         while (rs.next()) {
@@ -65,8 +64,7 @@ public class NewFeature {
 
     private static int getCategory(String feature, Connection conn) throws Exception {
 
-        PreparedStatement getcategoryId = conn.prepareStatement("select category " +
-                "from features where feature_name = ?;");
+        PreparedStatement getcategoryId = conn.prepareStatement(resource.getString("qgetCategory"));
         getcategoryId.setString(1, feature);
         ResultSet rs = getcategoryId.executeQuery();
 
@@ -92,7 +90,7 @@ public class NewFeature {
 
             case 1:
                 PreparedStatement updatec1 =
-                        conn.prepareStatement("update user_points set c1 = c1 + ? where user_id = ?;");
+                        conn.prepareStatement(resource.getString("qactualizec1"));
                 updatec1.setInt(1,points);
                 updatec1.setInt(2,id);
                 updatec1.execute();
@@ -100,7 +98,7 @@ public class NewFeature {
 
             case 2:
                 PreparedStatement updatec2 =
-                        conn.prepareStatement("update user_points set c2 = c2 + ? where user_id = ?;");
+                        conn.prepareStatement(resource.getString("qactualizec2"));
                 updatec2.setInt(1,points);
                 updatec2.setInt(2,points);
                 updatec2.execute();
@@ -108,7 +106,7 @@ public class NewFeature {
 
             case 3:
                 PreparedStatement updatec3 =
-                        conn.prepareStatement("update user_points set c3 = c3 +? where user_id = ?;");
+                        conn.prepareStatement(resource.getString("qactualizec3"));
                 updatec3.setInt(1,points);
                 updatec3.setInt(2,points);
                 updatec3.execute();
@@ -116,7 +114,7 @@ public class NewFeature {
 
             case 4:
                 PreparedStatement updatec4 =
-                        conn.prepareStatement("update user_points set c4 = c4 +? where user_id = ?;");
+                        conn.prepareStatement(resource.getString("qactualizec4"));
                 updatec4.setInt(1,points);
                 updatec4.setInt(2,points);
                 updatec4.execute();
@@ -125,7 +123,7 @@ public class NewFeature {
                 System.out.println("Wrong category");
         }
         PreparedStatement updatectotal =
-                conn.prepareStatement(resource.getString("update_total_user_points"));
+                conn.prepareStatement(resource.getString("updatetotalpoints"));
 
 
     }
@@ -137,8 +135,7 @@ public class NewFeature {
         // know which category the feature is and add to total + current_date
         int category = getCategory(feature, conn);
 
-        PreparedStatement getLastDay = conn.prepareStatement("select date " +
-                "from user_history order by date desc limit 1;");
+        PreparedStatement getLastDay = conn.prepareStatement("qGetLastDay");
         ResultSet rs = getLastDay.executeQuery();
 
         String lastDate = null;
@@ -150,8 +147,7 @@ public class NewFeature {
             switch (category) {
 
                 case 1:
-                    PreparedStatement createc1 = conn.prepareStatement("insert into user_history" +
-                            " values (?,current_date,?,0,0,0,?);");
+                    PreparedStatement createc1 = conn.prepareStatement("qInsertHistory1");
                     createc1.setInt(1, id);
                     createc1.setInt(2, points);
                     createc1.setInt(3, points);
@@ -159,9 +155,7 @@ public class NewFeature {
                     break;
 
                 case 2:
-                    PreparedStatement createc2 =
-                            conn.prepareStatement("insert into user_history " +
-                                    "values (?,current_date,0,?,0,0,?);");
+                    PreparedStatement createc2 = conn.prepareStatement("qInsertHistory2");
                     createc2.setInt(1, id);
                     createc2.setInt(2, points);
                     createc2.setInt(3, points);
@@ -169,9 +163,7 @@ public class NewFeature {
                     break;
 
                 case 3:
-                    PreparedStatement createc3 =
-                            conn.prepareStatement("insert into user_history " +
-                                    "values (?,current_date,0,0,?,0,?);");
+                    PreparedStatement createc3 = conn.prepareStatement("qInsertHistory3");
                     createc3.setInt(1, id);
                     createc3.setInt(2, points);
                     createc3.setInt(3, points);
@@ -179,9 +171,7 @@ public class NewFeature {
                     break;
 
                 case 4:
-                    PreparedStatement createc4 =
-                            conn.prepareStatement("insert into user_history " +
-                                    "values (?,current_date,0,0,0,?,?);");
+                    PreparedStatement createc4 = conn.prepareStatement("qInsertHistory4");
                     createc4.setInt(1, id);
                     createc4.setInt(2, points);
                     createc4.setInt(3, points);
@@ -198,8 +188,7 @@ public class NewFeature {
                 case 1:
 
                     PreparedStatement upd1History =
-                            conn.prepareStatement("update user_history " +
-                                    "set c1 = c1 + ? where user_id =? and date = current_date;");
+                            conn.prepareStatement("qUpdateHistory1");
                     upd1History.setInt(1, points);
                     upd1History.setInt(2, id);
                     upd1History.execute();
@@ -209,8 +198,7 @@ public class NewFeature {
                 case 2:
 
                     PreparedStatement upd2History =
-                            conn.prepareStatement("update user_history " +
-                                    "set c2 = c2 +? where user_id = ? and date = current_date;");
+                            conn.prepareStatement("qUpdateHistory2");
                     upd2History.setInt(1, points);
                     upd2History.setInt(2, id);
                     upd2History.execute();
@@ -219,8 +207,7 @@ public class NewFeature {
 
                 case 3:
                     PreparedStatement upd3History =
-                            conn.prepareStatement("update user_history " +
-                                    "set c3 = c3 + ? where user_id =? and date = current_date;");
+                            conn.prepareStatement("qUpdateHistory3");
                     upd3History.setInt(1, points);
                     upd3History.setInt(2, id);
                     upd3History.execute();
@@ -228,8 +215,7 @@ public class NewFeature {
 
                 case 4:
                     PreparedStatement upd4History =
-                            conn.prepareStatement("update user_history " +
-                                    "set c4 = c4 + ? where user_id =? and date = current_date;");
+                            conn.prepareStatement("qUpdateHistory4");
                     upd4History.setInt(1, points);
                     upd4History.setInt(2, id);
                     upd4History.execute();
@@ -241,7 +227,7 @@ public class NewFeature {
             }
 
             PreparedStatement hupdatectotal =
-                    conn.prepareStatement(resource.getString("update_total_user_history"));
+                    conn.prepareStatement(resource.getString("updatetotalhistory"));
             hupdatectotal.execute();
 
 
