@@ -31,8 +31,8 @@ public class CreateUser {
                 resource.getString("Postgresql.datasource.password"));
         int id = getMaxId(conn);
         if (id == -1) id = 0;
-        String hashed = BCrypt.hashpw(password, BCrypt.gensalt());
-        String hashpass = "'" + hashed + "'";
+        String hashpass = BCrypt.hashpw(password, BCrypt.gensalt());
+
 
         PreparedStatement user = conn.prepareStatement("insert into user_table " +
                 "values ( ?, ? ,?  );");
