@@ -1,23 +1,42 @@
 package nl.tudelft.gogreen.client;
 
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
+class ListItem {
 
-public class ListItem {
-     String text;
-     ImageView image;
+    private String text;
+    private String image;
+    private String status;
+    private int score;
 
-
-    public void setText(String text) {
+    ListItem(final String text, String image) {
         this.text = text;
+        this.image = image;
     }
 
-    public void setImage(Image img) {
-        this.image.setImage(img);
+    ListItem(final String text, String image, int score) {
+        this.text = text;
+        this.image = image;
+        this.score = score;
     }
 
-    public ListItem(final String text, final String imageURL) {
+    ListItem(final String text, String image, String status) {
         this.text = text;
-        this.image = new ImageView(imageURL);
+        this.image = image;
+        this.status = status;
+    }
+
+    String getName() {
+        return text;
+    }
+
+    String getImageLocation() {
+        return image;
+    }
+
+    int getScore() {
+        return score;
+    }
+
+    String getStatus() {
+        return status;
     }
 }
