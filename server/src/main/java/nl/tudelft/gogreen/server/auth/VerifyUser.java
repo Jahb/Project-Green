@@ -2,7 +2,6 @@ package nl.tudelft.gogreen.server.auth;
 
 import nl.tudelft.gogreen.server.CreateUser;
 import nl.tudelft.gogreen.server.LogIn;
-import sun.rmi.runtime.Log;
 
 public class VerifyUser {
     /**
