@@ -34,42 +34,36 @@ public class CreateUser {
         String hashed = BCrypt.hashpw(password, BCrypt.gensalt());
         String hashpass = "'" + hashed + "'";
 
-        PreparedStatement user = conn.prepareStatement("insert into user_table " +
-                "values ( ?, ? ,?  );");
+        PreparedStatement user = conn.prepareStatement(resource.getString("qInsertUser"));
         user.setInt(1, id);
         user.setString(2,username);
         user.setString(3,hashpass);
         user.execute();
-        PreparedStatement obj = conn.prepareStatement("insert into objective values (?, ?);");
+        PreparedStatement obj = conn.prepareStatement(resource.getString("qInsertObjective"));
         obj.setInt(1, id);
         obj.setNull(2, Types.VARCHAR);
         obj.execute();
-        PreparedStatement hab1 = conn.prepareStatement("insert into initial_habits " +
-                "values (?,?,?);");
+        PreparedStatement hab1 = conn.prepareStatement(resource.getString("qInsertHabits"));
         hab1.setInt(1, id);
         hab1.setString(2,"smoke");
         hab1.setBoolean(3,false);
         hab1.execute();
-        PreparedStatement hab2 = conn.prepareStatement("insert into initial_habits " +
-                "values (?,? ,?); ");
+        PreparedStatement hab2 = conn.prepareStatement(resource.getString("qInsertHabits2"));
         hab2.setInt(1, id);
         hab2.setString(2,"recycling person");
         hab2.setBoolean(3,false);
         hab2.execute();
-        PreparedStatement hab3 = conn.prepareStatement("insert into initial_habits " +
-                "values(?,?,?);");
+        PreparedStatement hab3 = conn.prepareStatement(resource.getString("qInsertHabits3"));
         hab3.setInt(1, id);
         hab3.setString(2,"use of recycle paper");
         hab3.setBoolean(3,false);
         hab3.execute();
-        PreparedStatement hab4 = conn.prepareStatement("insert into initial_habits " +
-                "values (?,?,?)");
+        PreparedStatement hab4 = conn.prepareStatement(resource.getString("qInsertHabits4"));
         hab4.setInt(1, id);
         hab4.setString(2,"eco-friendly clothes usage");
         hab4.setBoolean(3,false);
         hab4.execute();
-        PreparedStatement streak = conn.prepareStatement("insert into streak " +
-                "values (?, ?,?);");
+        PreparedStatement streak = conn.prepareStatement(resource.getString("qInsertStreakk"));
         DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
         Date date = new Date();
         String today = dateFormat.format(date);
@@ -77,8 +71,7 @@ public class CreateUser {
         streak.setDate(2, java.sql.Date.valueOf(today));
         streak.setInt(3,1);
         streak.execute();
-        PreparedStatement userpoints = conn.prepareStatement("insert into user_points " +
-                "values (?,?,?,?,?,?)");
+        PreparedStatement userpoints = conn.prepareStatement(resource.getString("qInsertUserPoints"));
         userpoints.setInt(1, id);
         userpoints.setInt(2, 0);
         userpoints.setInt(3, 0);
@@ -98,8 +91,7 @@ public class CreateUser {
      */
     public static int getMaxId(Connection conn) throws Exception {
 
-        PreparedStatement stmt0 = conn.prepareStatement("select user_id " +
-                "from user_table order by user_id desc limit 1;");
+        PreparedStatement stmt0 = conn.prepareStatement(resource.getString("qGetMaxId2"));
         ResultSet rs0 = stmt0.executeQuery();
         int id = -1;
         while (rs0.next()) {
@@ -117,26 +109,40 @@ public class CreateUser {
      * @return Returns true if the user is correctly delete it
      * @throws Exception raises when error accessing the database
      */
-    public static boolean delete_user(int id, Connection conn) throws Exception {
+    public static boolean delete_user(int id, Connection conn)  {
+try {
+    PreparedStatement delObjective = conn.prepareStatement(resource.getString("qDeleteObjective"));
+    delObjective.setInt(1, id);
+    delObjective.execute();
 
-        PreparedStatement delObjective = conn.prepareStatement("delete from objective " +
-                "where user_id =" + id + ";");
-        delObjective.execute();
-        PreparedStatement delHabits = conn.prepareStatement("delete from initial_habits " +
-                "where user_id =" + id + "; ");
-        delHabits.execute();
-        PreparedStatement delStreak = conn.prepareStatement("delete from streak " +
-                "where user_id =" + id + "; ");
-        delStreak.execute();
-        PreparedStatement delUserPoints = conn.prepareStatement("delete from user_points " +
-                "where user_id =" + id + "; ");
-        delUserPoints.execute();
-        PreparedStatement delUserTable = conn.prepareStatement("delete from user_table " +
-                "where user_id =" + id + "; ");
-        EventsMain.deleteAllEvents(id, conn);
-        EventsMain.deleteAllAtendance(id, conn);
-        delUserTable.execute();
-        return true;
+    PreparedStatement delHabits = conn.prepareStatement(resource.getString("qDeleteHabits"));
+    delHabits.setInt(1, id);
+    delHabits.execute();
+
+    PreparedStatement delStreak = conn.prepareStatement(resource.getString("qDeleteStreak"));
+    delStreak.setInt(1, id);
+    delStreak.execute();
+
+    PreparedStatement delUserPoints = conn.prepareStatement(resource.getString("qDeleteUserPoints"));
+    delUserPoints.setInt(1, id);
+    delUserPoints.execute();
+
+    PreparedStatement delUserTable = conn.prepareStatement(resource.getString("qDeleteUserTable"));
+    delUserTable.setInt(1, id);
+    delUserTable.execute();
+
+    PreparedStatement delUserHistory = conn.prepareStatement(resource.getString("qDeleteUserHistory"));
+    delUserHistory.setInt(1, id);
+    delUserHistory.execute();
+
+    EventsMain.deleteAllEvents(id, conn);
+    EventsMain.deleteAllAtendance(id, conn);
+
+    return true;
+} catch (Exception e){
+    System.out.print(e.getMessage());
+    return false;
+}
     }
 
     /**
