@@ -20,9 +20,9 @@ public class leave_eventTest {
 
     @After
     public void delete() {
-        try {
+        try(Connection conn = DriverManager.getConnection(resource.getString("Postgresql.datasource.url"), resource.getString("Postgresql.datasource.username"), resource.getString("Postgresql.datasource.password"))) {
 
-            Connection conn = DriverManager.getConnection(resource.getString("Postgresql.datasource.url"), resource.getString("Postgresql.datasource.username"), resource.getString("Postgresql.datasource.password"));
+
 
             EventsMain.delete_event("test","karnaval",conn);
 
@@ -39,8 +39,7 @@ public class leave_eventTest {
     }
     @Test
     public void leave_eventTest() {
-        try {
-            Connection conn = DriverManager.getConnection(resource.getString("Postgresql.datasource.url"), resource.getString("Postgresql.datasource.username"), resource.getString("Postgresql.datasource.password"));
+        try(            Connection conn = DriverManager.getConnection(resource.getString("Postgresql.datasource.url"), resource.getString("Postgresql.datasource.username"), resource.getString("Postgresql.datasource.password"))) {
             CreateUser.create_user("creator","test");
             CreateUser.create_user("participant","test");
 

@@ -18,9 +18,9 @@ public class NFgetIdTest {
 
     @Before
     public void createOnlyUser() {
-        try {
+        try (Connection conn = DriverManager.getConnection(resource.getString("Postgresql.datasource.url"), resource.getString("Postgresql.datasource.username"), resource.getString("Postgresql.datasource.password"))){
 
-            Connection conn = DriverManager.getConnection(resource.getString("Postgresql.datasource.url"), resource.getString("Postgresql.datasource.username"), resource.getString("Postgresql.datasource.password"));
+
             CreateUser.deleteAllUsers(conn);
             CreateUser.create_user("paul","paul");
         } catch (Exception exception) {
@@ -30,8 +30,7 @@ public class NFgetIdTest {
 
     @Test
     public void getId() {
-        try {
-            Connection conn = DriverManager.getConnection(resource.getString("Postgresql.datasource.url"), resource.getString("Postgresql.datasource.username"), resource.getString("Postgresql.datasource.password"));
+        try(            Connection conn = DriverManager.getConnection(resource.getString("Postgresql.datasource.url"), resource.getString("Postgresql.datasource.username"), resource.getString("Postgresql.datasource.password"))) {
             assertEquals(0,NewFeature.getId("paul",conn));
 
         } catch (Exception exception) {
@@ -40,11 +39,11 @@ public class NFgetIdTest {
     }
     @After
     public void deleteUser() {
-        try {
+        try(            Connection conn = DriverManager.getConnection(resource.getString("Postgresql.datasource.url"),
+                resource.getString("Postgresql.datasource.username"),
+                resource.getString("Postgresql.datasource.password"))) {
 
-            Connection conn = DriverManager.getConnection(resource.getString("Postgresql.datasource.url"),
-                    resource.getString("Postgresql.datasource.username"),
-                    resource.getString("Postgresql.datasource.password"));
+
             int id = NewFeature.getId("paul", conn);
             CreateUser.delete_user(id, conn);
         } catch (Exception exception) {

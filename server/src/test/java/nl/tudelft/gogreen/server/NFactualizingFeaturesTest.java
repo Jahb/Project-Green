@@ -16,24 +16,26 @@ public class NFactualizingFeaturesTest {
     private static ResourceBundle resource = ResourceBundle.getBundle("db");
 
     @Test
-    public void actualizingFeaturesTest() throws Exception {
+    public void actualizingFeaturesTest() {
 
-        Connection conn = DriverManager.getConnection(resource.getString("Postgresql.datasource.url"),
-                resource.getString("Postgresql.datasource.username"), resource.getString("Postgresql.datasource.password"));
-        int previous = getAccess(conn);
-        NewFeature.actualizingFeatures(conn,"Vegetarian Meal");
-        int actual = getAccess(conn);
-        assertNotEquals(previous,actual);
-        actual = actual- 1;
-        assertEquals(previous,actual);
-
+        try (Connection conn = DriverManager.getConnection(resource.getString("Postgresql.datasource.url"),
+                resource.getString("Postgresql.datasource.username"), resource.getString("Postgresql.datasource.password"))) {
+            int previous = getAccess(conn);
+            NewFeature.actualizingFeatures(conn, "Vegetarian Meal");
+            int actual = getAccess(conn);
+            assertNotEquals(previous, actual);
+            actual = actual - 1;
+            assertEquals(previous, actual);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
-    public static int getAccess(Connection conn) throws  Exception{
+    public static int getAccess(Connection conn) throws Exception {
         PreparedStatement access = conn.prepareStatement(resource.getString("getAccesses"));
         ResultSet accessNumber = access.executeQuery();
         int number = -1;
-        while (accessNumber.next()){
+        while (accessNumber.next()) {
             number = accessNumber.getInt(1);
         }
         return number;

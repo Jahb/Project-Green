@@ -81,6 +81,7 @@ public class CreateUser {
         userpoints.execute();
         PreparedStatement userHistory = conn.prepareStatement(resource.getString("qInsertHistory0"));
         userHistory.setInt(1,id);
+        conn.close();
         return true;
     }
 

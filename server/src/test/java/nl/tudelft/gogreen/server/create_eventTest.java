@@ -19,11 +19,12 @@ public class create_eventTest {
 
     @After
     public void deleteEvent() {
-        try {
+        try(Connection conn = DriverManager.getConnection(resource.getString("Postgresql.datasource.url"), resource.getString("Postgresql.datasource.username"), resource.getString("Postgresql.datasource.password"))) {
 
-            Connection conn = DriverManager.getConnection(resource.getString("Postgresql.datasource.url"), resource.getString("Postgresql.datasource.username"), resource.getString("Postgresql.datasource.password"));
+
             PreparedStatement delete = conn.prepareStatement("delete from event where event_name = 'karnaval';");
             delete.execute();
+
         }
         catch(Exception exception){
             System.out.println("Error!");
@@ -31,8 +32,8 @@ public class create_eventTest {
     }
     @Test
     public void create_eventTest() {
-        try {
-            Connection conn = DriverManager.getConnection(resource.getString("Postgresql.datasource.url"), resource.getString("Postgresql.datasource.username"), resource.getString("Postgresql.datasource.password"));
+        try(Connection conn = DriverManager.getConnection(resource.getString("Postgresql.datasource.url"), resource.getString("Postgresql.datasource.username"), resource.getString("Postgresql.datasource.password"))) {
+
             CreateUser.create_user("test","test");
             int id = NewFeature.getId("test",conn);
             EventsMain.create_event("test", id,"karnaval", conn);
