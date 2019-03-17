@@ -22,10 +22,12 @@ public class EventsMain {
 
         int idEvent = getMaxId(conn);
         idCreator = NewFeature.getId(username, conn);
+        System.out.println("The idEvent is: " + idEvent + " and the eventName is: " + eventName + " and the idCreator is: " + idCreator);
         PreparedStatement createEvent = conn.prepareStatement(resource.getString("qInsertIntoEvent"));
         createEvent.setInt(1,idEvent);
         createEvent.setString(2,eventName);
         createEvent.setInt(3,idCreator);
+        System.out.println(createEvent.toString());
         createEvent.execute();
     }
 

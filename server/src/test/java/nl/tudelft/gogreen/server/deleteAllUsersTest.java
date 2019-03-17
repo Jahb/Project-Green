@@ -33,7 +33,7 @@ public class deleteAllUsersTest {
             assertEquals(0,count);
         }
         catch (Exception exception){
-            System.out.println("Error!");
+            System.out.println(exception.getMessage());
         }
     }
 

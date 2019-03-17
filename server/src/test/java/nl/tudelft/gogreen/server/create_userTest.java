@@ -28,7 +28,7 @@ public class create_userTest {
             int id = NewFeature.getId("paul", conn);
             CreateUser.delete_user(id, conn);
         } catch (Exception exception) {
-            System.out.println("Error!");
+            System.out.println(exception.getMessage());
         }
     }
 
@@ -47,7 +47,7 @@ public class create_userTest {
             }
             assertTrue(BCrypt.checkpw("paul", hash));
         } catch (Exception exception) {
-            System.out.println("Error!");
+            System.out.println(exception.getMessage());
         }
     }
 

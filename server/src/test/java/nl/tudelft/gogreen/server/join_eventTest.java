@@ -53,7 +53,7 @@ public class join_eventTest {
             assertEquals(id,event_id);
         }
         catch (Exception exception){
-            System.out.println("Error!");
+            System.out.println(exception.getMessage());
         }
     }
 
