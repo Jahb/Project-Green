@@ -79,6 +79,8 @@ public class CreateUser {
         userpoints.setInt(5, 0);
         userpoints.setInt(6, 0);
         userpoints.execute();
+        PreparedStatement userHistory = conn.prepareStatement(resource.getString("qInsertHistory0"));
+        userHistory.setInt(1,id);
         return true;
     }
 
@@ -109,8 +111,11 @@ public class CreateUser {
      * @return Returns true if the user is correctly delete it
      * @throws Exception raises when error accessing the database
      */
-    public static boolean delete_user(int id, Connection conn)  {
-try {
+    
+
+
+    public static boolean delete_user(int id, Connection conn) throws Exception {
+
     PreparedStatement delObjective = conn.prepareStatement(resource.getString("qDeleteObjective"));
     delObjective.setInt(1, id);
     delObjective.execute();
@@ -139,10 +144,7 @@ try {
     EventsMain.deleteAllAtendance(id, conn);
 
     return true;
-} catch (Exception e){
-    System.out.print(e.getMessage());
-    return false;
-}
+
     }
 
     /**
