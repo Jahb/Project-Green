@@ -16,7 +16,6 @@ public class MainController {
     private TextField userField;
 
 
-
     /**
      * Switches to Main Menu After a Successful Login.
      *
@@ -27,11 +26,19 @@ public class MainController {
         String pw = passwordField.getText();
 
 
-        if (API.getTestApi().login(un, pw)) {
+        if (API.current.login(un, pw)) {
 
             Main.openMainScreen();
         }
 
+    }
+
+    public void register() throws UnirestException {
+        String un = userField.getText();
+        String pw = passwordField.getText();
+        if (API.current.register(un, pw)) {
+            login();
+        }
     }
 
 }

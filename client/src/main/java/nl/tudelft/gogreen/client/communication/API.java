@@ -11,6 +11,11 @@ import java.util.Map;
 
 public class API {
 
+    private API() {
+        remapper.put("LocalProduce", "Local Product");
+        remapper.put("Vegetarian", "Vegetarian Meal");
+    }
+
     private String post(String url, Map<String, Object> params) throws UnirestException {
         String holder = Unirest.post(url).fields(params).asString().getBody();
         System.out.println(holder);
@@ -44,11 +49,39 @@ public class API {
         return holder.getData();
     }
 
+    public int addFeature(String featureName) throws UnirestException {
+        Map<String, Object> maps = new HashMap<>();
+        maps.put("feature", remap(featureName));
+        String res = this.post(baseUrl + "/feature/new", maps);
+        MessageHolder<Integer> holder = Main.gson.fromJson(res, new TypeToken<MessageHolder<Integer>>() {
+        }.getType());
+        System.out.println(holder.getData());
+        return holder.getData();
+    }
+
+    public int getTotal() {
+        String res = null;
+        try {
+            res = this.post(baseUrl + "/feature/total", new HashMap<>());
+        } catch (UnirestException e) {
+            e.printStackTrace();
+        }
+        MessageHolder<Integer> holder = Main.gson.fromJson(res, new TypeToken<MessageHolder<Integer>>() {
+        }.getType());
+        return holder.getData();
+    }
+
+    private Map<String, String> remapper = new HashMap<>();
+
+    private String remap(String feature) {
+        return remapper.get(feature);
+    }
 
 
     private String baseUrl;
 
     private API(String baseUrl) {
+        this();
         this.baseUrl = baseUrl;
     }
 
@@ -64,4 +97,5 @@ public class API {
         return api;
     }
 
+    public static API current = getTestApi();
 }
