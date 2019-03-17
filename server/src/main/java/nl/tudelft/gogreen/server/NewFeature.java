@@ -141,6 +141,9 @@ public class NewFeature {
         }
         PreparedStatement updatectotal =
                 conn.prepareStatement(resource.getString("updatetotalpoints"));
+        updatectotal.setInt(1,points);
+        updatectotal.setInt(2,id);
+        updatectotal.execute();
 
 
     }
@@ -286,9 +289,9 @@ public class NewFeature {
      */
 
     public static void addingToLog(int id, Connection conn, String feature) throws Exception {
-        PreparedStatement addToLog = conn.prepareStatement("insert into features_history " +
-                "values( " + id + ", current_date , (select feature_id from features " +
-                "where feature_name ='" + feature + "') );");
+        PreparedStatement addToLog = conn.prepareStatement(resource.getString("qAddingtoLog"));
+        addToLog.setInt(1,id);
+        addToLog.setString(2,feature);
         addToLog.execute();
 
 
@@ -310,8 +313,8 @@ public class NewFeature {
         while (rs.next()) {
             lastDay = rs.getString(1);
         }
-        System.out.println(isToday(lastDay));
-        if (!isToday(lastDay) && !isYesterday(lastDay)) {
+
+        if (lastDay == null || (!isToday(lastDay) && !isYesterday(lastDay))) {
             PreparedStatement resetStreak = conn.prepareStatement(resource.getString("qInsertStreak"));
             resetStreak.setInt(1, id);
             resetStreak.execute();
