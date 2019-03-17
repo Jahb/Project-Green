@@ -5,6 +5,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.TextField;
 import nl.tudelft.gogreen.client.communication.API;
 
+
 /**
  * Controller For MainControllerFXML.
  */
@@ -13,6 +14,7 @@ public class MainController {
     private TextField passwordField;
     @FXML
     private TextField userField;
+
 
 
     /**
@@ -26,7 +28,8 @@ public class MainController {
 
 
         if (API.getTestApi().login(un, pw)) {
-            login();
+
+            Main.openMainScreen();
         }
 
     }
