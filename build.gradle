@@ -13,7 +13,6 @@ plugins {
     id 'com.github.johnrengelman.shadow' version '4.0.4' apply false
     id 'java'
     id "io.freefair.lombok" version "3.1.4"
-
 }
 
 allprojects {

@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.shape.Rectangle?>
+<?import javafx.scene.text.Font?>
+<AnchorPane id="layeredMainScreen" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="720.0" minWidth="1000.0"
+            prefHeight="720.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/8"
+            xmlns:fx="http://javafx.com/fxml/1">
+   <BorderPane id="baseLayer" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
+               prefHeight="720.0" prefWidth="1000.0" style="-fx-background-color: #CCCCCC;"
+               AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"
+               AnchorPane.topAnchor="0.0">
+      <bottom>
+         <Pane prefHeight="150.0" prefWidth="1000.0" style="-fx-background-color: EEEEEE;"
+               BorderPane.alignment="CENTER"/>
+      </bottom>
+      <top>
+         <BorderPane prefHeight="75.0" prefWidth="1000.0" style="-fx-background-color: bbbbbb;"
+                     BorderPane.alignment="CENTER">
+            <left>
+               <ImageView fitHeight="65.0" fitWidth="191.0" pickOnBounds="true" preserveRatio="true"
+                          BorderPane.alignment="CENTER">
+                  <BorderPane.margin>
+                     <Insets/>
+                  </BorderPane.margin>
+                  <Image url="@images/TemporaryLogo.png"/>
+               </ImageView>
+            </left>
+            <right>
+               <ImageView fitHeight="75.0" fitWidth="115.0" pickOnBounds="true" preserveRatio="true"
+                          BorderPane.alignment="CENTER">
+                  <Image url="@images/ButtonProfile.png"/>
+               </ImageView>
+            </right>
+         </BorderPane>
+      </top>
+      <center>
+         <AnchorPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER"/>
+      </center>
+   </BorderPane>
+   <AnchorPane id="overlayLayer" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0"
+               AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+      <TextArea id="helpText" fx:id="helpText" editable="false" layoutX="431.0" layoutY="202.0" opacity="0.75"
+                prefHeight="412.0" prefWidth="569.0" promptText="How To Earn Points"
+                style="-fx-border-radius: 150 150 0 0; -fx-background-radius: 150 150 0 0;"
+                stylesheets="@MainScreenCSS.css"
+                text="Welcome to Project Green!&#10;&#10;The goal is simple earn points by&#10;doing various activities that reduce your&#10;CO2 emissions.&#10;&#10;Doing so earns you &quot;Green Points&quot;&#10;which in term fills your Ring. &#10;Try and compete with others using the app!&#10;Rings reset once a week.&#10;&#10;The aim is to get as many points and you can&#10; and the ring is initially set to a goal of 1000 points."
+                wrapText="true">
+         <font>
+            <Font size="19.0"/>
+         </font>
+      </TextArea>
+      <BorderPane id="buttonsPanel" layoutY="570.0" prefHeight="150.0" prefWidth="1000.0"
+                  AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+         <center>
+            <StackPane prefHeight="150.0" prefWidth="600.0" BorderPane.alignment="CENTER">
+               <Rectangle arcHeight="120.0" arcWidth="120.0" fill="#50e476" height="120.0" stroke="BLACK"
+                          strokeType="INSIDE" strokeWidth="0.0" width="500.0"/>
+            </StackPane>
+         </center>
+         <left>
+            <StackPane prefHeight="150.0" prefWidth="150.0" BorderPane.alignment="CENTER">
+               <Rectangle arcHeight="120.0" arcWidth="120.0" fill="#50e476" height="120.0" stroke="BLACK"
+                          strokeType="INSIDE" strokeWidth="0.0" width="120.0"/>
+            </StackPane>
+         </left>
+         <right>
+            <StackPane prefHeight="150.0" prefWidth="150.0" BorderPane.alignment="CENTER">
+               <Rectangle arcHeight="120.0" arcWidth="120.0" fill="#50e476" height="120.0" stroke="BLACK"
+                          strokeType="INSIDE" strokeWidth="0.0" width="120.0"/>
+            </StackPane>
+         </right>
+      </BorderPane>
+   </AnchorPane>
+</AnchorPane>

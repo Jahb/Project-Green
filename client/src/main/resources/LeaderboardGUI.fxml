@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.Font?>
+<AnchorPane fx:id="rootPane" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8"
+            xmlns:fx="http://javafx.com/fxml/1" fx:controller="nl.tudelft.gogreen.client.LeaderboardController">
+   <HBox alignment="TOP_CENTER" layoutY="10.0" prefHeight="290.0" prefWidth="577.0" AnchorPane.bottomAnchor="0.0"
+         AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="10.0">
+      <ImageView fx:id="leaderboardHeader" fitHeight="420.0" fitWidth="480.0" pickOnBounds="true"
+                 preserveRatio="true">
+         <HBox.margin>
+            <Insets/>
+         </HBox.margin>
+         <Image url="@images/ImageLeaderboard.png"/>
+      </ImageView>
+   </HBox>
+   <ListView fx:id="leaderboardList" layoutX="297.0" layoutY="113.0" prefHeight="286.0" prefWidth="304.0"
+             stylesheets="ListStyle.css" AnchorPane.bottomAnchor="1.0" AnchorPane.leftAnchor="500.0"
+             AnchorPane.rightAnchor="-1.0" AnchorPane.topAnchor="115.0"/>
+   <BorderPane prefHeight="115.0" prefWidth="608.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"
+               AnchorPane.topAnchor="0.0">
+      <padding>
+         <Insets top="5.0"/>
+      </padding>
+   </BorderPane>
+   <VBox alignment="TOP_CENTER" layoutX="9.0" layoutY="116.0" prefHeight="284.0" prefWidth="490.0" spacing="20.0"
+         AnchorPane.bottomAnchor="1.0" AnchorPane.leftAnchor="5.0" AnchorPane.topAnchor="115.0"/>
+   <VBox fx:id="labelVbox" alignment="TOP_CENTER" layoutX="19.0" layoutY="126.0" prefHeight="284.0" prefWidth="490.0"
+         spacing="20.0" AnchorPane.bottomAnchor="1.0" AnchorPane.leftAnchor="5.0" AnchorPane.topAnchor="115.0">
+      <Label fx:id="dayLabel" prefHeight="100.0" text="Daily" textFill="WHITE">
+         <font>
+            <Font size="50.0"/>
+         </font>
+      </Label>
+      <Label fx:id="weekLabel" prefHeight="100.0" prefWidth="161.0" text="Weekly" textFill="WHITE">
+         <font>
+            <Font size="50.0"/>
+         </font>
+      </Label>
+      <Label fx:id="monthLabel" prefHeight="100.0" text="Monthly" textFill="WHITE">
+         <font>
+            <Font size="50.0"/>
+         </font>
+      </Label>
+      <Label fx:id="overallLabel" prefHeight="100.0" text="Overall" textFill="WHITE">
+         <font>
+            <Font size="50.0"/>
+         </font>
+      </Label>
+   </VBox>
+
+</AnchorPane>
