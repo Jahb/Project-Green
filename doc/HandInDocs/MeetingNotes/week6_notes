@@ -7,29 +7,23 @@ Everyone present except Kamron
 
 
 Sprint Reflection:
-Jahson & Kamron- User wants to see his progress:
-MainScreen now has ring and working buttons.
-Seemed to have gone relatively smoothly
-Kamron- User wants to add activities:
-Graphics for adding made
-Vlad- User Wants to see position:
-Started making quiz
-Leaderboard skeleton made
-Vlad- User Wants to input his habits:
-Not fully implemented
-Design set
-Pablo & Paul- Developer wants to test Database
-Done no problems
-Julius- User wants authentication
-Done but new tests must be made
 
-What data needs to be retrieved?:
-Friends
-User Points
+Jahson & Kamron - Focused on reducing checkstyle:
+reduced to around 5
+Vlad- Working on profile:
+Mainly done
+Pablo & Paul- Developer wants to add any features + following functionalities
+Mainly done
+Julius- client-server communication
+Done ready to demo 2
 
 Tips from TA:
-Commit more frequently with smaller updates.
-Fix Folder setup and make them organised.
-Deadlines will probably be changed.
+Rename folders!!!!
+Good work GUI!
 
 What needs to be done for next week?:
+Jahson --> Two event pages( event searches + event page)
+Vlad --> follow button + search users + beautify menus + integrate graph
+Kamron --> make ring dynamic + adding other two rings + adding all activities and improvement ( as category look right now) + achievement images
+Julius --> Testing + commmunication for event + beautify organisational stuff
+pablo + paul --> following functionalities + testing + connecting graph to database + scoring roaster + adapt ring milestone
