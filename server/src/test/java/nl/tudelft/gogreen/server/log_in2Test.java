@@ -16,9 +16,9 @@ public class log_in2Test {
 
     @Before
     public void createUser(){
-        try
+        try(Connection conn = DriverManager.getConnection(resource.getString("Postgresql.datasource.url"), resource.getString("Postgresql.datasource.username"), resource.getString("Postgresql.datasource.password"));)
         {
-            Connection conn = DriverManager.getConnection(resource.getString("Postgresql.datasource.url"), resource.getString("Postgresql.datasource.username"), resource.getString("Postgresql.datasource.password"));
+
             CreateUser.create_user("'paul'","paul");
 
         }
@@ -31,9 +31,9 @@ public class log_in2Test {
 
     @After
     public void deleteUser() {
-        try {
+        try (Connection conn = DriverManager.getConnection(resource.getString("Postgresql.datasource.url"), resource.getString("Postgresql.datasource.username"), resource.getString("Postgresql.datasource.password"))){
 
-            Connection conn = DriverManager.getConnection(resource.getString("Postgresql.datasource.url"), resource.getString("Postgresql.datasource.username"), resource.getString("Postgresql.datasource.password"));
+
             int id = NewFeature.getId("paul",conn);
             CreateUser.delete_user(id, conn);
         }
@@ -43,8 +43,8 @@ public class log_in2Test {
     }
     @Test
     public void log_inTestNegativeScenario() {
-        try {
-            Connection conn = DriverManager.getConnection(resource.getString("Postgresql.datasource.url"), resource.getString("Postgresql.datasource.username"), resource.getString("Postgresql.datasource.password"));
+        try (Connection conn = DriverManager.getConnection(resource.getString("Postgresql.datasource.url"), resource.getString("Postgresql.datasource.username"), resource.getString("Postgresql.datasource.password"))){
+
             assertFalse(LogIn.log_in("paul","pa"));
         }
         catch (Exception exception){

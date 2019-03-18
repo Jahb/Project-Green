@@ -32,8 +32,8 @@ public class NFisTodayTest {
     }
     @Test
     public void isTodayTestNegativeScenario() {
-        try {
-            Connection conn = DriverManager.getConnection(resource.getString("Postgresql.datasource.url"), resource.getString("Postgresql.datasource.username"), resource.getString("Postgresql.datasource.password"));
+        try (Connection conn = DriverManager.getConnection(resource.getString("Postgresql.datasource.url"), resource.getString("Postgresql.datasource.username"), resource.getString("Postgresql.datasource.password"))){
+
             DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 
             // Create a calendar object with today date. Calendar is in java.util pakage.

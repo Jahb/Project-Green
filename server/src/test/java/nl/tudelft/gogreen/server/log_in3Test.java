@@ -15,8 +15,8 @@ public class log_in3Test {
 
     @Test
     public void log_inTestNull() {
-        try {
-            Connection conn = DriverManager.getConnection(resource.getString("Postgresql.datasource.url"), resource.getString("Postgresql.datasource.username"), resource.getString("Postgresql.datasource.password"));
+        try (Connection conn = DriverManager.getConnection(resource.getString("Postgresql.datasource.url"), resource.getString("Postgresql.datasource.username"), resource.getString("Postgresql.datasource.password"));){
+
             assertFalse(LogIn.log_in("brr","pa"));
         }
         catch (Exception exception){

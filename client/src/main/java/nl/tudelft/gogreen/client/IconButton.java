@@ -30,7 +30,7 @@ class IconButton extends ImageView {
         clickBox.setFill(color);
         clickBox.setId(name);
 
-        ImageView icon = new ImageView("images/Icon" + name + ".png");
+        ImageView icon = new ImageView("/images/Icon" + name + ".png");
         icon.setFitWidth(min);
         icon.setFitHeight(min);
         icon.setMouseTransparent(true);

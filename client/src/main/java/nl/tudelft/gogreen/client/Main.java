@@ -17,6 +17,7 @@ import javafx.stage.Stage;
 import java.io.IOException;
 
 public class Main extends Application {
+    public static Gson gson = new GsonBuilder().setPrettyPrinting().create();
 
     private static int width = 1000;
     private static int height = 720;
@@ -122,7 +123,6 @@ public class Main extends Application {
      */
     public static void main(String[] args) {
         Unirest.setObjectMapper(new ObjectMapper() {
-            private Gson gson = new GsonBuilder().setPrettyPrinting().create();
 
             @Override
             public <T> T readValue(String value, Class<T> valueType) {

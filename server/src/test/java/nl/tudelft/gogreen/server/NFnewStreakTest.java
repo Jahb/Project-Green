@@ -19,9 +19,9 @@ public class NFnewStreakTest {
 
     @Before
     public void createOnlyUser() {
-        try {
+        try(Connection conn = DriverManager.getConnection(resource.getString("Postgresql.datasource.url"), resource.getString("Postgresql.datasource.username"), resource.getString("Postgresql.datasource.password"))) {
 
-            Connection conn = DriverManager.getConnection(resource.getString("Postgresql.datasource.url"), resource.getString("Postgresql.datasource.username"), resource.getString("Postgresql.datasource.password"));
+
             CreateUser.deleteAllUsers(conn);
             CreateUser.create_user("coco","paul");
 
@@ -32,8 +32,7 @@ public class NFnewStreakTest {
 
     @Test
     public void main() {
-        try {
-            Connection conn = DriverManager.getConnection(resource.getString("Postgresql.datasource.url"), resource.getString("Postgresql.datasource.username"), resource.getString("Postgresql.datasource.password"));
+        try(            Connection conn = DriverManager.getConnection(resource.getString("Postgresql.datasource.url"), resource.getString("Postgresql.datasource.username"), resource.getString("Postgresql.datasource.password"))) {
             int id = NewFeature.getId("coco",conn);
 
             PreparedStatement deleteStreak = conn.prepareStatement(resource.getString("qDeleteStreak"));

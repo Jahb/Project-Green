@@ -31,8 +31,8 @@ public class CreateUser {
                 resource.getString("Postgresql.datasource.password"));
         int id = getMaxId(conn);
         if (id == -1) id = 0;
-        String hashed = BCrypt.hashpw(password, BCrypt.gensalt());
-        String hashpass = "'" + hashed + "'";
+        String hashpass = BCrypt.hashpw(password, BCrypt.gensalt());
+
 
         PreparedStatement user = conn.prepareStatement(resource.getString("qInsertUser"));
         user.setInt(1, id);
@@ -81,6 +81,7 @@ public class CreateUser {
         userpoints.execute();
         PreparedStatement userHistory = conn.prepareStatement(resource.getString("qInsertHistory0"));
         userHistory.setInt(1,id);
+        conn.close();
         return true;
     }
 
