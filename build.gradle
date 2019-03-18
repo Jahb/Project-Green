@@ -12,6 +12,7 @@ plugins {
     id 'checkstyle'
     id 'com.github.johnrengelman.shadow' version '4.0.4' apply false
     id 'java'
+    id "io.freefair.lombok" version "3.1.4"
 }
 
 allprojects {
@@ -40,19 +41,44 @@ subprojects {
         configFile rootProject.file('CSE1105.checkstyle.xml')
         checkstyleTest.enabled = false
     }
-}
+
+    dependencies{
+        compileOnly 'org.projectlombok:lombok:1.18.4'
+        annotationProcessor 'org.projectlombok:lombok:1.18.4'
+    }
 
 
-task codeCoverageReport(type: JacocoReport) {
-    executionData fileTree(project.rootDir.absolutePath).include("**/build/jacoco/*.exec")
-
-    reports {
-        xml.enabled = true
-        xml.destination = file("${buildDir}/reports/jacoco/report.xml")
-        html.enabled = true
-        html.destination = file("${buildDir}/reports/jacoco/report.html")
-        csv.enabled = false
+    jacocoTestReport {
+        additionalSourceDirs.from = files(sourceSets.main.allSource.srcDirs)
+        sourceDirectories.from = files(sourceSets.main.allSource.srcDirs)
+        classDirectories.from =  files(sourceSets.main.output)
+        reports {
+            html.enabled = true
+            xml.enabled = true
+            csv.enabled = false
+        }
     }
 }
 
-codeCoverageReport.dependsOn(subprojects*.test)
+
+task jacocoRootReport(type: JacocoReport) {
+    dependsOn = subprojects.test
+    additionalSourceDirs.from = files(subprojects.sourceSets.main.allSource.srcDirs)
+    sourceDirectories.from = files(subprojects.sourceSets.main.allSource.srcDirs)
+    classDirectories.from =  files(subprojects.sourceSets.main.output)
+    executionData.from = files(subprojects.jacocoTestReport.executionData)
+    reports {
+        html.enabled = true
+        xml.enabled = true
+        csv.enabled = false
+    }
+
+    onlyIf = {
+        true
+    }
+    doFirst {
+        executionData.from = files(executionData.findAll {
+            it.exists()
+        })
+    }
+}

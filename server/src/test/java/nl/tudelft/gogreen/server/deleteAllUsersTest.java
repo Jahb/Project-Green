@@ -18,9 +18,9 @@ public class deleteAllUsersTest {
 
     @Test
     public void deleteAllUsers() {
-        try {
+        try (Connection conn = DriverManager.getConnection(resource.getString("Postgresql.datasource.url"), resource.getString("Postgresql.datasource.username"), resource.getString("Postgresql.datasource.password"))){
 
-            Connection conn = DriverManager.getConnection(resource.getString("Postgresql.datasource.url"), resource.getString("Postgresql.datasource.username"), resource.getString("Postgresql.datasource.password"));
+
             CreateUser.deleteAllUsers(conn);
             PreparedStatement stmt = conn.prepareStatement("select count(*) from user_table");
             ResultSet rs = stmt.executeQuery();

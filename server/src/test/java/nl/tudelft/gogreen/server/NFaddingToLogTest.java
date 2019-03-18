@@ -21,9 +21,9 @@ public class NFaddingToLogTest {
     public void restoreLog() throws Exception{
 
 
-        Connection conn = DriverManager.getConnection(resource.getString("Postgresql.datasource.url"),
-                resource.getString("Postgresql.datasource.username"),
-                resource.getString("Postgresql.datasource.password"));
+//        Connection conn = DriverManager.getConnection(resource.getString("Postgresql.datasource.url"),
+//                resource.getString("Postgresql.datasource.username"),
+//                resource.getString("Postgresql.datasource.password"));
 
 
     }

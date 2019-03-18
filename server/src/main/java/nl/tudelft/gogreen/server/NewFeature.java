@@ -38,7 +38,20 @@ public class NewFeature {
         addingToLog(id, conn, feature);
         actualizingUserPoints(id, feature, 20, conn);
         actualizingUserLog(id, feature, 20, conn);
-        return feature;
+        int total = getTotal(id, conn);
+        conn.close();
+        return String.valueOf(total);
+    }
+
+    public static int getTotal(String username) throws Exception {
+        Connection conn = getConnection(
+                resource.getString("Postgresql.datasource.url"),
+                resource.getString("Postgresql.datasource.username"),
+                resource.getString("Postgresql.datasource.password"));
+        int id = getId(username, conn);
+        int total = getTotal(id, conn);
+        conn.close();
+        return total;
     }
 
     /**
@@ -97,7 +110,7 @@ public class NewFeature {
      * @throws Exception Raised when an error occurs while accessing the database
      */
     public static void actualizingUserPoints(int id, String feature,
-                                              int points, Connection conn) throws Exception {
+                                             int points, Connection conn) throws Exception {
         //actualize user points, join with features table to know which category
         // the feature is and add to total
 
@@ -141,8 +154,8 @@ public class NewFeature {
         }
         PreparedStatement updatectotal =
                 conn.prepareStatement(resource.getString("updatetotalpoints"));
-        updatectotal.setInt(1,points);
-        updatectotal.setInt(2,id);
+        updatectotal.setInt(1, points);
+        updatectotal.setInt(2, id);
         updatectotal.execute();
 
 
@@ -159,7 +172,7 @@ public class NewFeature {
      */
 
     public static void actualizingUserLog(int id, String feature,
-                                           int points, Connection conn) throws Exception {
+                                          int points, Connection conn) throws Exception {
 
         //actualize user points, join with features table to
         // know which category the feature is and add to total + current_date
@@ -258,7 +271,7 @@ public class NewFeature {
 
             PreparedStatement hupdatectotal =
                     conn.prepareStatement(resource.getString("updatetotalhistory"));
-            hupdatectotal.execute();
+            //hupdatectotal.execute();
 
 
         }
@@ -290,8 +303,12 @@ public class NewFeature {
 
     public static void addingToLog(int id, Connection conn, String feature) throws Exception {
         PreparedStatement addToLog = conn.prepareStatement(resource.getString("qAddingtoLog"));
-        addToLog.setInt(1,id);
-        addToLog.setString(2,feature);
+        addToLog.setInt(1, id);
+        PreparedStatement featureId = conn.prepareStatement(resource.getString("qFeatureId"));
+        featureId.setString(1, feature);
+        ResultSet results = featureId.executeQuery();
+        results.next();
+        addToLog.setInt(2, results.getInt(1));
         addToLog.execute();
 
 
@@ -324,6 +341,17 @@ public class NewFeature {
             addOneToStreak.execute();
         }
 
+    }
+
+    public static int getTotal(int id, Connection conn) throws Exception {
+        PreparedStatement OldUserPoints = conn.prepareStatement(resource.getString("qgetTotalUP"));
+        OldUserPoints.setInt(1, id);
+        ResultSet OUP = OldUserPoints.executeQuery();
+        int total = -1;
+        while (OUP.next()) {
+            total = OUP.getInt(1);
+        }
+        return total;
     }
 
 

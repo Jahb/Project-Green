@@ -17,9 +17,9 @@ public class events_mainTest {
 
     @Before
     public void createOnlyUser() {
-        try {
+        try (Connection conn = DriverManager.getConnection(resource.getString("Postgresql.datasource.url"), resource.getString("Postgresql.datasource.username"), resource.getString("Postgresql.datasource.password"))){
 
-            Connection conn = DriverManager.getConnection(resource.getString("Postgresql.datasource.url"), resource.getString("Postgresql.datasource.username"), resource.getString("Postgresql.datasource.password"));
+
             CreateUser.deleteAllUsers(conn);
             CreateUser.create_user("paul","paul");
 
@@ -30,8 +30,8 @@ public class events_mainTest {
 
     @Test
     public void getMaxId() {
-        try {
-            Connection conn = DriverManager.getConnection(resource.getString("Postgresql.datasource.url"), resource.getString("Postgresql.datasource.username"), resource.getString("Postgresql.datasource.password"));
+        try(Connection conn = DriverManager.getConnection(resource.getString("Postgresql.datasource.url"), resource.getString("Postgresql.datasource.username"), resource.getString("Postgresql.datasource.password"))) {
+
             assertEquals(0,EventsMain.getMaxId(conn));
         } catch (Exception exception) {
             System.out.println("Error!");

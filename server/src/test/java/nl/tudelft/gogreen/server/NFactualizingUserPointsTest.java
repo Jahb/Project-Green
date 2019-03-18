@@ -17,19 +17,21 @@ public class NFactualizingUserPointsTest {
     private static ResourceBundle resource = ResourceBundle.getBundle("db");
 
     @Test
-    public void actualizingUserPoints() throws Exception{
-        Connection conn = DriverManager.getConnection(resource.getString("Postgresql.datasource.url"),
-                resource.getString("Postgresql.datasource.username"), resource.getString("Postgresql.datasource.password"));
-        int id = NewFeature.getId("MJ",conn);
-        NewFeature.actualizingUserPoints(id,"Vegetarian Meal", 20, conn);
-        int oldTotal = getTotal(id,conn);
-        NewFeature.actualizingUserPoints(id,"Vegetarian Meal", 20, conn);
-        int newTotal = getTotal(id,conn);
+    public void actualizingUserPoints(){
+        try(Connection conn = DriverManager.getConnection(resource.getString("Postgresql.datasource.url"),
+                resource.getString("Postgresql.datasource.username"), resource.getString("Postgresql.datasource.password"))) {
+            int id = NewFeature.getId("MJ", conn);
+            NewFeature.actualizingUserPoints(id, "Vegetarian Meal", 20, conn);
+            int oldTotal = getTotal(id, conn);
+            NewFeature.actualizingUserPoints(id, "Vegetarian Meal", 20, conn);
+            int newTotal = getTotal(id, conn);
 
-        assertNotEquals(oldTotal,newTotal);
-        oldTotal += 20;
-        assertEquals(oldTotal,newTotal);
-
+            assertNotEquals(oldTotal, newTotal);
+            oldTotal += 20;
+            assertEquals(oldTotal, newTotal);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
     }
 
     @Before
