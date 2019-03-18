@@ -1,5 +1,7 @@
 package nl.tudelft.gogreen.client;
 
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.animation.TranslateTransition;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
@@ -18,6 +20,7 @@ import javafx.scene.text.Text;
 import javafx.util.Duration;
 
 import javax.tools.Tool;
+import java.lang.reflect.Field;
 import java.util.HashSet;
 import java.util.function.Consumer;
 
@@ -277,6 +280,9 @@ class AddActivityButton {
             allNodes.add(button.getStackPane().getChildren().get(1));
             subBackground.getChildren().add(button.getStackPane());
             Tooltip tooltip = new Tooltip(name);
+            hackTooltipStartTiming(tooltip);
+            tooltip.setStyle("-fx-background-color:#52EA7F; -fx-font-weight:bold; -fx-text-color:white;" +
+                    "-fx-font-size:20");
             Tooltip.install(button.getStackPane(),tooltip);
         }
 
@@ -294,4 +300,21 @@ class AddActivityButton {
         LEFT, CENTER, RIGHT
     }
 
+    //this makes it so the tooltips show instantly
+    public static void hackTooltipStartTiming(Tooltip tooltip) {
+        try {
+            Field fieldBehavior = tooltip.getClass().getDeclaredField("BEHAVIOR");
+            fieldBehavior.setAccessible(true);
+            Object objBehavior = fieldBehavior.get(tooltip);
+
+            Field fieldTimer = objBehavior.getClass().getDeclaredField("activationTimer");
+            fieldTimer.setAccessible(true);
+            Timeline objTimer = (Timeline) fieldTimer.get(objBehavior);
+
+            objTimer.getKeyFrames().clear();
+            objTimer.getKeyFrames().add(new KeyFrame(new Duration(5)));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 }
