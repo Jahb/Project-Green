@@ -6,7 +6,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 <AnchorPane prefHeight="367.0" prefWidth="625.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="nl.tudelft.gogreen.client.MainController">
+            fx:controller="nl.tudelft.gogreen.client.LoginController">
     <AnchorPane layoutY="-1.0" prefHeight="162.0" prefWidth="625.0" style="-fx-background-color: #49d36c;"
                 stylesheets="@Login.css" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"
                 AnchorPane.topAnchor="0.0">

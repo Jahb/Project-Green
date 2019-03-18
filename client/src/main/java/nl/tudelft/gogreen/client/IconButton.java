@@ -11,7 +11,7 @@ import javafx.scene.shape.Rectangle;
 class IconButton extends ImageView {
     static Color color = new Color(.3, .9, .5, 1);
     static Color colorMouseOver = new Color(.32, .92, .52, 1);
-    static Color colorMouseDown = new Color(.25, .90, .45, 1);
+    static Color colorMouseDown = new Color(.25, .87, .45, 1);
 
     private StackPane layoutBox;
     private Rectangle clickBox;

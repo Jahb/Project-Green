@@ -65,7 +65,8 @@ public class LeaderboardController implements Initializable {
                     protected void updateItem(ListItem item, boolean bool) {
                         super.updateItem(item, bool);
                         if (item != null && !bool) {
-                            Image img = new Image(getClass().getResource("/" + item.getImageLocation()).toExternalForm());
+                            Image img = new Image(getClass()
+                                    .getResource("/" + item.getImageLocation()).toExternalForm());
                             ImageView imgview = new ImageView(img);
                             imgview.setFitHeight(90);
                             imgview.setFitWidth(90);

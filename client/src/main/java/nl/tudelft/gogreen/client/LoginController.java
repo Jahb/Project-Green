@@ -11,7 +11,7 @@ import nl.tudelft.gogreen.shared.auth.UserAuth;
 /**
  * Controller For MainControllerFXML.
  */
-public class MainController {
+public class LoginController {
     @FXML
     private TextField passwordField;
     @FXML

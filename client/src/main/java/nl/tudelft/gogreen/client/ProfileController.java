@@ -39,7 +39,6 @@ public class ProfileController implements Initializable {
     //setting placeholder pictures
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-
         Image achievementImg = new Image("images/achievementImage.png");
         achievementCircle1.setFill(new ImagePattern(achievementImg));
         achievementCircle2.setFill(new ImagePattern(achievementImg));
@@ -81,6 +80,7 @@ public class ProfileController implements Initializable {
 
     /**
      * Returns ProfileGUI Scene.
+     *
      * @return ProfileGUI Scene
      * @throws IOException IO Exception may be thrown
      */
