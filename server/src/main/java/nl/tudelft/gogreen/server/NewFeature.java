@@ -271,7 +271,7 @@ public class NewFeature {
 
             PreparedStatement hupdatectotal =
                     conn.prepareStatement(resource.getString("updatetotalhistory"));
-            hupdatectotal.execute();
+            //hupdatectotal.execute();
 
 
         }
@@ -304,7 +304,11 @@ public class NewFeature {
     public static void addingToLog(int id, Connection conn, String feature) throws Exception {
         PreparedStatement addToLog = conn.prepareStatement(resource.getString("qAddingtoLog"));
         addToLog.setInt(1, id);
-        //addToLog.setString(2,feature);
+        PreparedStatement featureId = conn.prepareStatement(resource.getString("qFeatureId"));
+        featureId.setString(1, feature);
+        ResultSet results = featureId.executeQuery();
+        results.next();
+        addToLog.setInt(2, results.getInt(1));
         addToLog.execute();
 
 
