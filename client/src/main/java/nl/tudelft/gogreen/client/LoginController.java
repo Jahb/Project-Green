@@ -1,5 +1,7 @@
 package nl.tudelft.gogreen.client;
 
+import com.jfoenix.controls.JFXPasswordField;
+import com.jfoenix.controls.JFXTextField;
 import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.Unirest;
 import com.mashape.unirest.http.exceptions.UnirestException;
@@ -13,9 +15,9 @@ import nl.tudelft.gogreen.shared.auth.UserAuth;
  */
 public class LoginController {
     @FXML
-    private TextField passwordField;
+    private JFXPasswordField passwordField;
     @FXML
-    private TextField userField;
+    private JFXTextField userField;
 
 
     /**

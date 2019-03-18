@@ -1,9 +1,11 @@
 package nl.tudelft.gogreen.client;
 
 import javafx.animation.TranslateTransition;
+import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
+import javafx.scene.control.Tooltip;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 
@@ -15,6 +17,7 @@ import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.util.Duration;
 
+import javax.tools.Tool;
 import java.util.HashSet;
 import java.util.function.Consumer;
 
@@ -269,11 +272,12 @@ class AddActivityButton {
         private void addSubCategoryButton(String name) {
             IconButton button = new IconButton(name, 40, 40);
             button.setOnClick(event -> handler.accept(name));
-
             allNodes.add(button.getStackPane());
             allNodes.add(button.getStackPane().getChildren().get(0));
             allNodes.add(button.getStackPane().getChildren().get(1));
             subBackground.getChildren().add(button.getStackPane());
+            Tooltip tooltip = new Tooltip(name);
+            Tooltip.install(button.getStackPane(),tooltip);
         }
 
         void addNodes(AnchorPane anchorPane) {

@@ -7,6 +7,9 @@ dependencies {
     implementation 'com.google.code.gson:gson:2.8.5'
     compile 'com.mashape.unirest:unirest-java:1.4.9'
     compile group: 'org.apache.httpcomponents', name: 'httpclient', version: '4.5.7'
+    // https://mvnrepository.com/artifact/com.jfoenix/jfoenix
+    compile group: 'com.jfoenix', name: 'jfoenix', version: '1.5.0'
+
 
 }
 

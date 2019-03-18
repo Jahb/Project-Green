@@ -5,11 +5,7 @@
     -fx-background-color: whitesmoke;
 }
 .list-view .list-cell:filled:hover {
-    -fx-background-color: #50E476;
-    -fx-text-fill: white;
-}
-.list-view .list-cell:filled:selected {
-    -fx-background-color: #50E476;
+    -fx-background-color: #52EA7F;
     -fx-text-fill: white;
 }
 

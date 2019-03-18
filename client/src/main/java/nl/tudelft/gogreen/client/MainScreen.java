@@ -1,5 +1,7 @@
 package nl.tudelft.gogreen.client;
 
+import com.jfoenix.controls.JFXSnackbar;
+import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Scene;
@@ -21,6 +23,7 @@ import java.util.function.Consumer;
  */
 public class MainScreen {
 
+    private JFXSnackbar confirmationText;
     private Ring ring;
     private TextArea helpText;
     private AddActivityButton activityButton;

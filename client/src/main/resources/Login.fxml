@@ -5,6 +5,8 @@
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
+<?import com.jfoenix.controls.JFXPasswordField?>
+<?import com.jfoenix.controls.JFXTextField?>
 <AnchorPane prefHeight="367.0" prefWidth="625.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1"
             fx:controller="nl.tudelft.gogreen.client.LoginController">
     <AnchorPane layoutY="-1.0" prefHeight="162.0" prefWidth="625.0" style="-fx-background-color: #49d36c;"
@@ -15,18 +17,18 @@
             <Image url="@images/TemporaryLogo.png"/>
         </ImageView>
     </AnchorPane>
-    <TextField fx:id="userField" layoutX="363.0" layoutY="184.0" promptText="Insert Username"
-               AnchorPane.rightAnchor="38.0" AnchorPane.topAnchor="184.0">
+    <JFXTextField style="-jfx-unfocus-color: lightgray; -jfx-focus-color:gray" fx:id="userField" layoutX="363.0" layoutY="184.0" promptText="Insert Username"
+                  AnchorPane.rightAnchor="38.0" AnchorPane.topAnchor="184.0">
         <font>
             <Font size="18.0"/>
         </font>
-    </TextField>
-    <PasswordField fx:id="passwordField" layoutX="363.0" layoutY="247.0" promptText="Insert Password"
-                   AnchorPane.rightAnchor="38.0" AnchorPane.topAnchor="247.0">
+    </JFXTextField>
+    <JFXPasswordField style="-jfx-unfocus-color: lightgray; -jfx-focus-color:gray" fx:id="passwordField" layoutX="363.0" layoutY="247.0" promptText="Insert Password"
+                      AnchorPane.rightAnchor="38.0" AnchorPane.topAnchor="247.0">
         <font>
             <Font size="18.0"/>
         </font>
-    </PasswordField>
+    </JFXPasswordField>
     <Button id="button" fx:id="loginButton" layoutX="364.0" layoutY="314.0" mnemonicParsing="false" onAction="#login"
             prefHeight="39.0" prefWidth="95.0" stylesheets="@Login.css" text="Login" textFill="WHITE"
             AnchorPane.rightAnchor="166.0" AnchorPane.topAnchor="314.0">

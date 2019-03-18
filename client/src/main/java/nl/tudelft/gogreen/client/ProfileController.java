@@ -1,5 +1,7 @@
 package nl.tudelft.gogreen.client;
 
+
+import com.jfoenix.controls.JFXListCell;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -23,11 +25,11 @@ import java.util.ResourceBundle;
 public class ProfileController implements Initializable {
 
     @FXML
-    Circle achievementCircle1;
+    ImageView achievementImage1;
     @FXML
-    Circle achievementCircle2;
+    ImageView achievementImage2;
     @FXML
-    Circle achievementCircle3;
+    ImageView achievementImage3;
     @FXML
     ListView<String> activityList = new ListView<>();
     @FXML
@@ -40,9 +42,6 @@ public class ProfileController implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         Image achievementImg = new Image("images/achievementImage.png");
-        achievementCircle1.setFill(new ImagePattern(achievementImg));
-        achievementCircle2.setFill(new ImagePattern(achievementImg));
-        achievementCircle3.setFill(new ImagePattern(achievementImg));
 
         activities.add("17:05 - Ate a Vegetarian Meal");
         activities.add("11:45 - Ate a Vegetarian Meal");
@@ -57,9 +56,9 @@ public class ProfileController implements Initializable {
 
             @Override
             public ListCell<ListItem> call(ListView<ListItem> arg0) {
-                return new ListCell<ListItem>() {
+                return new JFXListCell<ListItem>() {
                     @Override
-                    protected void updateItem(ListItem item, boolean bool) {
+                    public void updateItem(ListItem item, boolean bool) {
                         super.updateItem(item, bool);
                         if (item != null) {
                             Image img = new Image(getClass()
