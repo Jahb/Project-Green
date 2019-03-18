@@ -300,7 +300,10 @@ class AddActivityButton {
         LEFT, CENTER, RIGHT
     }
 
-    //this makes it so the tooltips show instantly
+    /**
+     *  this makes it so the tooltips show instantly
+     * @param tooltip
+     */
     public static void hackTooltipStartTiming(Tooltip tooltip) {
         try {
             Field fieldBehavior = tooltip.getClass().getDeclaredField("BEHAVIOR");
@@ -312,7 +315,7 @@ class AddActivityButton {
             Timeline objTimer = (Timeline) fieldTimer.get(objBehavior);
 
             objTimer.getKeyFrames().clear();
-            objTimer.getKeyFrames().add(new KeyFrame(new Duration(5)));
+            objTimer.getKeyFrames().add(new KeyFrame(new Duration(0)));
         } catch (Exception e) {
             e.printStackTrace();
         }
