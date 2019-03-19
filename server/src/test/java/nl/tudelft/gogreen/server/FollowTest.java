@@ -11,7 +11,7 @@ import java.util.ResourceBundle;
 import static junit.framework.TestCase.assertTrue;
 
 
-public class isFollowingTest {
+public class FollowTest {
     private static ResourceBundle resource = ResourceBundle.getBundle("db");
 
     @Before
@@ -20,7 +20,6 @@ public class isFollowingTest {
             CreateUser.deleteAllUsers(conn);
             CreateUser.create_user("paul", "paul");
             CreateUser.create_user("pablo", "pablo");
-            Following.Follow(NewFeature.getId("paul",conn), NewFeature.getId("pablo",conn));
         }
         catch(Exception e){
             System.out.println(e.getMessage());
@@ -30,6 +29,9 @@ public class isFollowingTest {
     @Test
     public void isFollowing() {
         try (Connection conn = DriverManager.getConnection(resource.getString("Postgresql.datasource.url"), resource.getString("Postgresql.datasource.username"), resource.getString("Postgresql.datasource.password"))) {
+
+            Following.Follow(NewFeature.getId("paul",conn), NewFeature.getId("pablo",conn));
+
             boolean result = Following.isFollowing(0,1,conn);
 
             assertTrue(result);
@@ -44,6 +46,7 @@ public class isFollowingTest {
         try (Connection conn = DriverManager.getConnection(resource.getString("Postgresql.datasource.url"), resource.getString("Postgresql.datasource.username"), resource.getString("Postgresql.datasource.password"))) {
             CreateUser.delete_user(NewFeature.getId("paul",conn),conn);
             CreateUser.delete_user(NewFeature.getId("pablo",conn),conn);
+            Following.deleteAllFollows(0,conn);
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
