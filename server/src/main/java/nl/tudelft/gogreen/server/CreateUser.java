@@ -146,7 +146,7 @@ public class CreateUser {
         EventsMain.deleteAllAtendance(id, conn);
         EventsMain.deleteAllEvents(id, conn);
 
-
+        Following.deleteAllFollows(id, conn);
 
         PreparedStatement delUserTable = conn.prepareStatement(resource.getString("qDeleteUserTable"));
         delUserTable.setInt(1, id);

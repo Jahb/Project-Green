@@ -128,7 +128,7 @@ public class NewFeature {
 
             case 2:
                 PreparedStatement updatec2 =
-                        conn.prepareStatement(resource.getString("qactualizec2"));
+                    conn.prepareStatement(resource.getString("qactualizec2"));
                 updatec2.setInt(1, points);
                 updatec2.setInt(2, points);
                 updatec2.execute();
