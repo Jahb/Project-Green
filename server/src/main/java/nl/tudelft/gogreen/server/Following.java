@@ -18,7 +18,12 @@ public class Following {
                 resource.getString("Postgresql.datasource.username"),
                 resource.getString("Postgresql.datasource.password"));
 
-        
+        if (!isFollowing(id1, id2, conn)) {
+            PreparedStatement follow = conn.prepareStatement(resource.getString("qFolllow"));
+            follow.setInt(1, id1);
+            follow.setInt(2, id2);
+            follow.execute();
+        }
 
     }
 
