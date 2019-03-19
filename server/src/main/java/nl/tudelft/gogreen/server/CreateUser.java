@@ -135,7 +135,9 @@ public class CreateUser {
         delUserPoints.setInt(1, id);
         delUserPoints.execute();
 
-
+        PreparedStatement delFeaturesHistory = conn.prepareStatement(resource.getString("qDeleteFeaturesHistory"));
+        delFeaturesHistory.setInt(1, id);
+        delFeaturesHistory.execute();
 
         PreparedStatement delUserHistory = conn.prepareStatement(resource.getString("qDeleteUserHistory"));
         delUserHistory.setInt(1, id);
