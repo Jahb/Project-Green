@@ -117,6 +117,8 @@ public class CreateUser {
 
     public static boolean delete_user(int id, Connection conn) throws Exception {
 
+
+
         PreparedStatement delObjective = conn.prepareStatement(resource.getString("qDeleteObjective"));
         delObjective.setInt(1, id);
         delObjective.execute();
@@ -139,8 +141,10 @@ public class CreateUser {
         delUserHistory.setInt(1, id);
         delUserHistory.execute();
 
-        EventsMain.deleteAllEvents(id, conn);
         EventsMain.deleteAllAtendance(id, conn);
+        EventsMain.deleteAllEvents(id, conn);
+
+
 
         PreparedStatement delUserTable = conn.prepareStatement(resource.getString("qDeleteUserTable"));
         delUserTable.setInt(1, id);

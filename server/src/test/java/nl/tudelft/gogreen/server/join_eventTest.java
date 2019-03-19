@@ -22,10 +22,15 @@ public class join_eventTest {
         try(Connection conn = DriverManager.getConnection(resource.getString("Postgresql.datasource.url"), resource.getString("Postgresql.datasource.username"), resource.getString("Postgresql.datasource.password"))) {
 
 
+            int id_creator = NewFeature.getId("creator",conn);
+            CreateUser.delete_user(id_creator,conn);
+
+            int id_participant = NewFeature.getId("participant",conn);
+            CreateUser.delete_user(id_participant,conn);
             EventsMain.delete_event("test","karnaval",conn);
         }
         catch(Exception exception){
-            System.out.println("Error!");
+            System.out.println(exception.getMessage());
         }
     }
     @Test
@@ -43,6 +48,8 @@ public class join_eventTest {
             int event_id = EventsMain.getEventId("karnaval",conn);
 
             EventsMain.join_event("participant","karnaval",conn);
+
+
 
             PreparedStatement getEvent = conn.prepareStatement("select event_id from event_participants where participant = " + id_participant + ";");
             ResultSet rs = getEvent.executeQuery();

@@ -68,8 +68,9 @@ public class NFaddingToLogTest {
                 resource.getString("Postgresql.datasource.username"),
                 resource.getString("Postgresql.datasource.password"))){
             CreateUser.delete_user(NewFeature.getId("Leo",conn),conn);
-        }
 
+
+        }
 
 
     }
