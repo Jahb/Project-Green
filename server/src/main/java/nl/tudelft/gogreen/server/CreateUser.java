@@ -37,7 +37,7 @@ public class CreateUser {
         PreparedStatement user = conn.prepareStatement(resource.getString("qInsertUser"));
         user.setInt(1, id);
         user.setString(2, username);
-        user.setString(3, hashed);
+        user.setString(3, hashpass);
         user.execute();
         PreparedStatement obj = conn.prepareStatement(resource.getString("qInsertObjective"));
         obj.setInt(1, id);

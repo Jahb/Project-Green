@@ -5,8 +5,6 @@ import org.junit.Test;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.util.ResourceBundle;
 
 import static org.junit.Assert.assertEquals;
@@ -22,9 +20,9 @@ public class NFactualizingUserPointsTest {
                 resource.getString("Postgresql.datasource.username"), resource.getString("Postgresql.datasource.password"))) {
             int id = NewFeature.getId("MJ", conn);
             NewFeature.actualizingUserPoints(id, "Vegetarian Meal", 20, conn);
-            int oldTotal = getTotal(id, conn);
+            int oldTotal = NewFeature.getTotal("MJ");
             NewFeature.actualizingUserPoints(id, "Vegetarian Meal", 20, conn);
-            int newTotal = getTotal(id, conn);
+            int newTotal = NewFeature.getTotal("MJ");
 
             assertNotEquals(oldTotal, newTotal);
             oldTotal += 20;
@@ -43,14 +41,5 @@ public class NFactualizingUserPointsTest {
 
     }
 
-    public static int getTotal(int id, Connection conn) throws  Exception{
-        PreparedStatement OldUserPoints = conn.prepareStatement(resource.getString("qgetTotalUP"));
-        OldUserPoints.setInt(1,id);
-        ResultSet OUP = OldUserPoints.executeQuery();
-        int total = -1;
-        while (OUP.next()){
-            total = OUP.getInt(1);
-        }
-        return total;
-    }
+
 }
