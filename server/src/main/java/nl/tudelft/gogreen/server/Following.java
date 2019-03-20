@@ -19,10 +19,26 @@ public class Following {
                 resource.getString("Postgresql.datasource.password"));
 
         if (!isFollowing(id1, id2, conn)) {
-            PreparedStatement follow = conn.prepareStatement(resource.getString("qFolllow"));
+            PreparedStatement follow = conn.prepareStatement(resource.getString("qFollow"));
             follow.setInt(1, id1);
             follow.setInt(2, id2);
             follow.execute();
+        }
+
+    }
+
+    public static void Unfollow(int id1, int id2) throws Exception {
+
+        Connection conn = getConnection(
+                resource.getString("Postgresql.datasource.url"),
+                resource.getString("Postgresql.datasource.username"),
+                resource.getString("Postgresql.datasource.password"));
+
+        if (isFollowing(id1, id2, conn)) {
+            PreparedStatement unfollow = conn.prepareStatement(resource.getString("qUnfollow"));
+            unfollow.setInt(1, id1);
+            unfollow.setInt(2, id2);
+            unfollow.execute();
         }
 
     }
@@ -49,6 +65,20 @@ public class Following {
         delFollowers.setInt(1, id1);
         delFollowers.setInt(2, id1);
         delFollowers.execute();
+    }
+
+    public static void showAllFollowing(int id1, Connection conn) throws Exception {
+
+        PreparedStatement showFollowing = conn.prepareStatement(resource.getString("qShowFollowing"));
+        showFollowing.setInt(1, id1);
+        showFollowing.execute();
+    }
+
+    public static void showAllFollowers(int id1, Connection conn) throws Exception {
+
+        PreparedStatement showFollowers = conn.prepareStatement(resource.getString("qShowFollowers"));
+        showFollowers.setInt(1, id1);
+        showFollowers.execute();
     }
 
 }
