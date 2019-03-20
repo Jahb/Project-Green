@@ -73,6 +73,12 @@ public class Following {
         showFollowing.setInt(1, id1);
         showFollowing.execute();
     }
-    
+
+    public static void showAllFollowers(int id1, Connection conn) throws Exception {
+
+        PreparedStatement showFollowers = conn.prepareStatement(resource.getString("qShowFollowers"));
+        showFollowers.setInt(1, id1);
+        showFollowers.execute();
+    }
 
 }
