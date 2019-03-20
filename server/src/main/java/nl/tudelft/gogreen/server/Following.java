@@ -19,10 +19,26 @@ public class Following {
                 resource.getString("Postgresql.datasource.password"));
 
         if (!isFollowing(id1, id2, conn)) {
-            PreparedStatement follow = conn.prepareStatement(resource.getString("qFolllow"));
+            PreparedStatement follow = conn.prepareStatement(resource.getString("qFollow"));
             follow.setInt(1, id1);
             follow.setInt(2, id2);
             follow.execute();
+        }
+
+    }
+
+    public static void Unfollow(int id1, int id2) throws Exception {
+
+        Connection conn = getConnection(
+                resource.getString("Postgresql.datasource.url"),
+                resource.getString("Postgresql.datasource.username"),
+                resource.getString("Postgresql.datasource.password"));
+
+        if (isFollowing(id1, id2, conn)) {
+            PreparedStatement unfollow = conn.prepareStatement(resource.getString("qUnfollow"));
+            unfollow.setInt(1, id1);
+            unfollow.setInt(2, id2);
+            unfollow.execute();
         }
 
     }
