@@ -8,7 +8,9 @@ import javafx.scene.Scene;
 import javafx.scene.control.TextArea;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.Border;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
 
 import java.io.IOException;
@@ -41,12 +43,15 @@ public class MainScreen {
 
         BorderPane baseLayer = (BorderPane) root.getChildren().get(0);
         AnchorPane mainRingPane = (AnchorPane) baseLayer.getCenter();
+        BorderPane topPane = (BorderPane) baseLayer.getTop();
+        HBox topButtons = (HBox) topPane.getRight();
 
         AnchorPane overlayLayer = (AnchorPane) root.getChildren().get(1);
         BorderPane buttonsPanel = (BorderPane) overlayLayer.getChildren().get(1);
         helpText = (TextArea) overlayLayer.getChildren().get(0);
 
         addMainRing(mainRingPane);
+        addTopMenuButtons(topButtons);
         addIconButtons(buttonsPanel);
         addActivityButton(overlayLayer);
 
@@ -96,6 +101,19 @@ public class MainScreen {
 
         addButton.setOnClick(event -> activityButton.open());
         leaderboardButton.setOnClick(event -> Main.openLeaderboardScreen());
+    }
+
+    /**
+     * Method which adds button to HBox on TopRight of MainScreen.
+     *
+     * @param hbox A Hbox Container.
+     */
+    private void addTopMenuButtons(HBox hbox) {
+        IconButton eventButton = new IconButton("Event", 70, 70);
+        BorderPane root = (BorderPane) hbox.getChildren().get(1);
+        root.setCenter(eventButton.getStackPane());
+
+        eventButton.setOnClick(event -> Main.openEventScreen());
     }
 
 }

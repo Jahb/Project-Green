@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.shape.*?>
 <?import javafx.scene.image.*?>
 <?import javafx.scene.text.*?>
 <?import java.lang.*?>
@@ -8,23 +9,23 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane prefHeight="720.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="nl.tudelft.gogreen.client.eventController">
+<AnchorPane prefHeight="720.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="nl.tudelft.gogreen.client.EventController">
    <children>
-      <AnchorPane prefHeight="200.0" prefWidth="1000.0" style="-fx-background-color: #50e476;" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+      <AnchorPane prefHeight="188.0" prefWidth="1000.0" style="-fx-background-color: #50e476;" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
-            <Text fill="WHITE" layoutX="512.0" layoutY="184.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Browse Events:">
+            <Text fill="WHITE" layoutX="470.0" layoutY="176.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Browse Events:">
                <font>
                   <Font name="System Bold Italic" size="62.0" />
                </font>
             </Text>
-            <Text fill="WHITE" layoutY="184.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Your Events">
+            <Text fill="WHITE" layoutX="14.0" layoutY="176.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Your Events:">
                <font>
                   <Font name="System Bold Italic" size="62.0" />
                </font>
             </Text>
          </children>
       </AnchorPane>
-      <AnchorPane prefHeight="59.0" prefWidth="1000.0" style="-fx-background-color: #38ba5c;">
+      <AnchorPane prefHeight="59.0" prefWidth="1000.0" style="-fx-background-color: #38ba5c;" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
             <Text fill="WHITE" layoutX="421.0" layoutY="88.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Events">
                <font>
@@ -38,11 +39,30 @@
             </ImageView>
          </children>
       </AnchorPane>
-      <AnchorPane layoutY="200.0" prefHeight="521.0" prefWidth="424.0" style="-fx-background-color: lightgray;">
+      <BorderPane fx:id="buttonpane" prefHeight="112.0" prefWidth="123.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0" />
+      <AnchorPane layoutY="192.0" prefHeight="369.0" prefWidth="375.0" style="-fx-background-color: lightgray;" AnchorPane.leftAnchor="0.0">
          <children>
-            <ListView layoutX="11.0" layoutY="7.0" prefHeight="490.0" prefWidth="368.0" />
+            <ListView fx:id="eventList" layoutX="12.0" layoutY="12.0" prefHeight="345.0" prefWidth="351.0" AnchorPane.bottomAnchor="12.0" />
          </children>
       </AnchorPane>
-      <ListView layoutX="498.0" layoutY="209.0" prefHeight="490.0" prefWidth="437.0" AnchorPane.bottomAnchor="22.0" AnchorPane.rightAnchor="65.0" AnchorPane.topAnchor="209.0" />
+      <ListView fx:id="fullEventList" layoutX="432.0" layoutY="212.0" prefHeight="491.0" prefWidth="556.0" AnchorPane.bottomAnchor="19.0" AnchorPane.rightAnchor="27.0" AnchorPane.topAnchor="212.0" />
+      <AnchorPane layoutY="561.0" prefHeight="158.0" prefWidth="378.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0">
+         <children>
+            <BorderPane layoutY="45.0" prefHeight="159.0" prefWidth="171.0">
+               <center>
+                  <Circle fill="#50e476" radius="77.0" stroke="TRANSPARENT" strokeType="INSIDE" BorderPane.alignment="CENTER" />
+               </center></BorderPane>
+            <AnchorPane layoutX="171.0" layoutY="45.0" prefHeight="159.0" prefWidth="131.0">
+               <children>
+                  <Text fill="#50e476" layoutX="-14.0" layoutY="70.0" strokeType="OUTSIDE" strokeWidth="0.0" text=" Create New  Event" textAlignment="CENTER" wrappingWidth="203.216796875">
+                     <font>
+                        <Font name="System Bold" size="35.0" />
+                     </font>
+                  </Text>
+               </children>
+            </AnchorPane>
+         </children>
+      </AnchorPane>
+      <AnchorPane layoutX="375.0" layoutY="191.0" prefHeight="534.0" prefWidth="15.0" style="-fx-background-color: #50e476;" AnchorPane.bottomAnchor="0.0" AnchorPane.topAnchor="191.0" />
    </children>
 </AnchorPane>
