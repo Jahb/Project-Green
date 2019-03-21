@@ -7,6 +7,8 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Scene;
+import javafx.scene.chart.LineChart;
+import javafx.scene.chart.XYChart;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.image.Image;
@@ -23,7 +25,8 @@ import java.util.ResourceBundle;
 
 public class LeaderboardController implements Initializable {
 
-
+    @FXML
+    private LineChart <?,?> scoreChart;
     @FXML
     private VBox labelVbox;
     @FXML
@@ -42,7 +45,6 @@ public class LeaderboardController implements Initializable {
         BorderPane topPane = (BorderPane) root.getChildren().get(2);
         IconButton.addBackButton(topPane);
         VBox buttonBox = (VBox) root.getChildren().get(3);
-        addTimeFrameButtons(buttonBox);
         return new Scene(root, Main.getWidth(), Main.getHeight());
     }
 
@@ -52,6 +54,9 @@ public class LeaderboardController implements Initializable {
      * @param resources ResourceBundle
      */
     public void initialize(URL location, ResourceBundle resources) {
+        XYChart.Series series = new XYChart.Series();
+
+
         labelVbox.setMouseTransparent(true);
         items.clear();
         items.add(new ListItem("profile1", "images/achievementImage.png", 3000));
@@ -96,17 +101,7 @@ public class LeaderboardController implements Initializable {
     }
 
 
-    private void addTimeFrameButtons(VBox root) {
-        IconButton dayButton = new IconButton("Empty", 450, 100);
-        IconButton weekButton = new IconButton("Empty", 450, 100);
-        IconButton monthButton = new IconButton("Empty", 450, 100);
-        IconButton overallButton = new IconButton("Empty", 450, 100);
-        root.getChildren().addAll(dayButton.getStackPane(),
-                weekButton.getStackPane(),
-                monthButton.getStackPane(),
-                overallButton.getStackPane());
-        weekButton.setOnClick(event -> leaderboardList.setItems(null));
-    }
+
 
 }
 

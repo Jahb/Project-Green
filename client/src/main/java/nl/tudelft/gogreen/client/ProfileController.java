@@ -24,6 +24,7 @@ import java.util.ResourceBundle;
 
 public class ProfileController implements Initializable {
 
+
     @FXML
     ImageView achievementImage1;
     @FXML
