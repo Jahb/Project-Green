@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.image.*?>
+<?import javafx.scene.text.*?>
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane prefHeight="720.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="nl.tudelft.gogreen.client.eventController">
+   <children>
+      <AnchorPane prefHeight="200.0" prefWidth="1000.0" style="-fx-background-color: #50e476;" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <children>
+            <Text fill="WHITE" layoutX="512.0" layoutY="184.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Browse Events:">
+               <font>
+                  <Font name="System Bold Italic" size="62.0" />
+               </font>
+            </Text>
+            <Text fill="WHITE" layoutY="184.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Your Events">
+               <font>
+                  <Font name="System Bold Italic" size="62.0" />
+               </font>
+            </Text>
+         </children>
+      </AnchorPane>
+      <AnchorPane prefHeight="59.0" prefWidth="1000.0" style="-fx-background-color: #38ba5c;">
+         <children>
+            <Text fill="WHITE" layoutX="421.0" layoutY="88.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Events">
+               <font>
+                  <Font name="System Bold" size="88.0" />
+               </font>
+            </Text>
+            <ImageView fitHeight="110.0" fitWidth="110.0" layoutX="311.0" layoutY="2.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@images/IconEvent.png" />
+               </image>
+            </ImageView>
+         </children>
+      </AnchorPane>
+      <AnchorPane layoutY="200.0" prefHeight="521.0" prefWidth="424.0" style="-fx-background-color: lightgray;">
+         <children>
+            <ListView layoutX="11.0" layoutY="7.0" prefHeight="490.0" prefWidth="368.0" />
+         </children>
+      </AnchorPane>
+      <ListView layoutX="498.0" layoutY="209.0" prefHeight="490.0" prefWidth="437.0" AnchorPane.bottomAnchor="22.0" AnchorPane.rightAnchor="65.0" AnchorPane.topAnchor="209.0" />
+   </children>
+</AnchorPane>
