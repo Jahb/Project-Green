@@ -93,11 +93,11 @@ public class Following {
     }
 
     public static int countAllFollowing(int id1, Connection conn) throws Exception {
-        return showAllFollowing(id1,conn).size();
+        return showAllFollowing(id1, conn).size();
     }
 
     public static int countAllFollowers(int id1, Connection conn) throws Exception {
-        return showAllFollowers(id1,conn).size();
+        return showAllFollowers(id1, conn).size();
     }
 
 }
