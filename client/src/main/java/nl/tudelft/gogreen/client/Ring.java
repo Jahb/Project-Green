@@ -36,13 +36,13 @@ public class Ring {
         innerCircle.setCenterX(centerX);
         innerCircle.setCenterY(centerY);
         innerCircle.setRadius(innerRadius);
-        innerCircle.setFill(Color.LIGHTGRAY);
+        //innerCircle.setFill(Color.LIGHTGRAY);
         innerCircle.setStroke(Color.BLACK);
 
         outerCircle.setCenterX(centerX);
         outerCircle.setCenterY(centerY);
         outerCircle.setRadius(outerRadius);
-        outerCircle.setFill(Color.GRAY);
+        outerCircle.setFill(Color.WHITE);
         outerCircle.setStroke(Color.BLACK);
     }
 

@@ -16,12 +16,12 @@
 
 <AnchorPane id="layeredMainScreen" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="720.0" minWidth="1000.0" prefHeight="720.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <BorderPane id="baseLayer" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1000.0" style="-fx-background-color: #CCCCCC;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+      <BorderPane id="baseLayer" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1000.0" style="-fx-background-image: url(&quot;images/background.jpg&quot;); -fx-background-position: center center; -fx-background-repeat: no-repeat;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <bottom>
             <Pane prefHeight="150.0" prefWidth="1000.0" style="-fx-background-color: EEEEEE;" BorderPane.alignment="CENTER" />
          </bottom>
          <top>
-            <BorderPane prefHeight="75.0" prefWidth="1000.0" style="-fx-background-color: bbbbbb;" BorderPane.alignment="CENTER">
+            <BorderPane prefHeight="75.0" prefWidth="1000.0" style="-fx-background-color: white;" BorderPane.alignment="CENTER">
                <left>
                   <ImageView fitHeight="65.0" fitWidth="191.0" pickOnBounds="true" preserveRatio="true" BorderPane.alignment="CENTER">
                      <BorderPane.margin>
