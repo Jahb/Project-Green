@@ -80,11 +80,16 @@ public class Following {
         return result;
     }
 
-    public static void showAllFollowers(int id1, Connection conn) throws Exception {
+    public static ArrayList showAllFollowers(int id1, Connection conn) throws Exception {
 
         PreparedStatement showFollowers = conn.prepareStatement(resource.getString("qShowFollowers"));
         showFollowers.setInt(1, id1);
-        showFollowers.execute();
+        ArrayList result = new ArrayList();
+        ResultSet rs = showFollowers.executeQuery();
+        while (rs.next()) {
+            result.add(rs.getInt(1));
+        }
+        return result;
     }
 
 }
