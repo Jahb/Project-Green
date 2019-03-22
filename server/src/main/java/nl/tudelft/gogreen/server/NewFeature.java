@@ -271,7 +271,7 @@ public class NewFeature {
 
             PreparedStatement hupdatectotal =
                     conn.prepareStatement(resource.getString("updatetotalhistory"));
-            //hupdatectotal.execute();
+           // hupdatectotal.execute();
 
 
         }
