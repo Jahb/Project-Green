@@ -6,10 +6,7 @@ import org.junit.Test;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
-import java.util.ArrayList;
 import java.util.ResourceBundle;
-
-import static junit.framework.TestCase.assertTrue;
 
 
 public class showFollowingTest {
