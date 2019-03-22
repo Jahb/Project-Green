@@ -6,8 +6,10 @@ import org.junit.Test;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.util.ArrayList;
 import java.util.ResourceBundle;
 
+import static junit.framework.TestCase.assertTrue;
 
 
 public class showFollowersTest {
@@ -36,7 +38,11 @@ public class showFollowersTest {
             Following.Follow(id2,id1);
             Following.Follow(id3,id1);
 
-            Following.showAllFollowers(id1,conn);
+            ArrayList test = new ArrayList();
+            test.add(1);
+            test.add(2);
+
+            assertTrue(Following.showAllFollowers(id1,conn).equals(test));
 
         }
         catch(Exception e){
