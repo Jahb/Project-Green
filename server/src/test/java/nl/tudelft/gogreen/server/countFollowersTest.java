@@ -6,13 +6,12 @@ import org.junit.Test;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
-import java.util.ArrayList;
 import java.util.ResourceBundle;
 
 import static junit.framework.TestCase.assertTrue;
 
 
-public class showFollowersTest {
+public class countFollowersTest {
     private static ResourceBundle resource = ResourceBundle.getBundle("db");
 
     @Before
@@ -38,12 +37,9 @@ public class showFollowersTest {
             Following.Follow(id2,id1);
             Following.Follow(id3,id1);
 
-            ArrayList test = new ArrayList();
-            test.add(1);
-            test.add(2);
-
-            assertTrue(Following.showAllFollowers(id1,conn).equals(test));
-
+            int number = Following.countAllFollowers(id1,conn);
+            System.out.print(number);
+            assertTrue(number == 2);
         }
         catch(Exception e){
             System.out.println(e.getMessage());
@@ -61,8 +57,7 @@ public class showFollowersTest {
             CreateUser.delete_user(id2,conn);
             CreateUser.delete_user(id3,conn);
 
-            Following.deleteAllFollows(id2,conn);
-            Following.deleteAllFollows(id3,conn);
+            Following.deleteAllFollows(id1,conn);
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
