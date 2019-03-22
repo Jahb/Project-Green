@@ -3,6 +3,7 @@ package nl.tudelft.gogreen.server;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.util.ArrayList;
 import java.util.ResourceBundle;
 
 import static java.sql.DriverManager.getConnection;
@@ -67,11 +68,16 @@ public class Following {
         delFollowers.execute();
     }
 
-    public static void showAllFollowing(int id1, Connection conn) throws Exception {
+    public static ArrayList showAllFollowing(int id1, Connection conn) throws Exception {
 
         PreparedStatement showFollowing = conn.prepareStatement(resource.getString("qShowFollowing"));
         showFollowing.setInt(1, id1);
-        showFollowing.execute();
+        ArrayList result = new ArrayList();
+        ResultSet rs = showFollowing.executeQuery();
+        while (rs.next()) {
+            result.add(rs.getInt(1));
+        }
+        return result;
     }
 
     public static void showAllFollowers(int id1, Connection conn) throws Exception {
