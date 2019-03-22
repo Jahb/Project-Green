@@ -11,7 +11,7 @@ import java.util.ResourceBundle;
 import static junit.framework.TestCase.assertTrue;
 
 
-public class countFollowingTest {
+public class countFollowersTest {
     private static ResourceBundle resource = ResourceBundle.getBundle("db");
 
     @Before
@@ -34,10 +34,11 @@ public class countFollowingTest {
             int id1 = NewFeature.getId("paul",conn);
             int id2 = NewFeature.getId("pablo",conn);
             int id3 = NewFeature.getId("coco",conn);
-            Following.Follow(id1,id2);
-            Following.Follow(id1,id3);
+            Following.Follow(id2,id1);
+            Following.Follow(id3,id1);
 
-            int number = Following.countAllFollowing(id1,conn);
+            int number = Following.countAllFollowers(id1,conn);
+            System.out.print(number);
             assertTrue(number == 2);
         }
         catch(Exception e){
