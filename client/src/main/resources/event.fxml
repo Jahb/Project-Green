@@ -1,15 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.shape.*?>
-<?import javafx.scene.image.*?>
-<?import javafx.scene.text.*?>
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
+<?import com.jfoenix.controls.JFXDatePicker?>
+<?import com.jfoenix.controls.JFXTextArea?>
+<?import com.jfoenix.controls.JFXTextField?>
+<?import com.jfoenix.controls.JFXTimePicker?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.shape.Circle?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
 
-<AnchorPane prefHeight="720.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="nl.tudelft.gogreen.client.EventController">
+<AnchorPane prefHeight="720.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="nl.tudelft.gogreen.client.EventController">
    <children>
       <AnchorPane prefHeight="188.0" prefWidth="1000.0" style="-fx-background-color: #50e476;" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
@@ -64,5 +68,22 @@
          </children>
       </AnchorPane>
       <AnchorPane layoutX="375.0" layoutY="191.0" prefHeight="534.0" prefWidth="15.0" style="-fx-background-color: #50e476;" AnchorPane.bottomAnchor="0.0" AnchorPane.topAnchor="191.0" />
+      <AnchorPane layoutX="92.0" layoutY="119.0" prefHeight="587.0" prefWidth="408.0" style="-fx-background-color: whitesmoke; -fx-background-radius: 50; -fx-border-color: #50e476; -fx-border-width: 10; -fx-border-radius: 40;" AnchorPane.bottomAnchor="14.0" AnchorPane.leftAnchor="92.0">
+         <children>
+            <BorderPane layoutX="55.0" layoutY="430.0" prefHeight="110.0" prefWidth="110.0" />
+            <BorderPane layoutX="265.0" layoutY="430.0" prefHeight="110.0" prefWidth="110.0" />
+            <JFXTextField layoutX="55.0" layoutY="123.0" prefHeight="31.0" prefWidth="320.0" promptText="Event Name" />
+            <JFXDatePicker defaultColor="#50e476" layoutX="55.0" layoutY="176.0" prefHeight="31.0" prefWidth="320.0" promptText="Event Date" />
+            <JFXTextArea layoutX="55.0" layoutY="286.0" prefHeight="110.0" prefWidth="320.0" promptText="Event Description" />
+            <JFXTimePicker defaultColor="#50e476" layoutX="55.0" layoutY="226.0" prefHeight="31.0" prefWidth="320.0" promptText="Event Time" />
+            <Text fill="#50e476" layoutX="47.0" layoutY="81.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Enter Event Details Below">
+               <font>
+                  <Font name="System Bold Italic" size="28.0" />
+               </font>
+            </Text>
+            <Circle fill="#50e476" layoutX="110.0" layoutY="485.0" radius="55.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" />
+            <Circle fill="#50e476" layoutX="320.0" layoutY="485.0" radius="55.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" />
+         </children>
+      </AnchorPane>
    </children>
 </AnchorPane>

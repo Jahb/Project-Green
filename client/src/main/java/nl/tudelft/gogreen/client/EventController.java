@@ -36,6 +36,17 @@ public class EventController {
         IconButton newEventButton = new IconButton("Add", 154, 154);
         newEvenBPane.setCenter(newEventButton.getStackPane());
 
+        //Adding Accept and BackButton in New Event Pane
+        AnchorPane addEventPane = (AnchorPane) root.getChildren().get(8);
+        BorderPane acceptButton = (BorderPane) addEventPane.getChildren().get(0);
+        BorderPane cancelButton = (BorderPane) addEventPane.getChildren().get(1);
+
+        IconButton acceptIcon = new IconButton("Confirm", 110, 110);
+        IconButton cancelIcon = new IconButton("Deny", 110, 110);
+        acceptButton.setCenter(acceptIcon.getStackPane());
+        cancelButton.setCenter(cancelIcon.getStackPane());
+
+
         return new Scene(root, Main.getWidth(), Main.getHeight());
     }
 
