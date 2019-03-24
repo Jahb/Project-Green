@@ -16,6 +16,8 @@ public class EventController {
     public ListView eventList;
     @FXML
     public ListView fullEventList;
+    @FXML
+    public AnchorPane createEvent;
 
     /**
      * Returns ProfileGUI Scene.
@@ -26,7 +28,9 @@ public class EventController {
     public Scene getScene() throws IOException {
         URL url = Main.class.getResource("/event.fxml");
         System.out.println(url);
-        AnchorPane root = FXMLLoader.load(url);
+        FXMLLoader loader = new FXMLLoader(url);
+        loader.getController();
+        AnchorPane root = loader.load();
         BorderPane buttonPane = (BorderPane) root.getChildren().get(2);
         IconButton.addBackButton(buttonPane);
 
@@ -36,15 +40,22 @@ public class EventController {
         IconButton newEventButton = new IconButton("Add", 154, 154);
         newEvenBPane.setCenter(newEventButton.getStackPane());
 
+        createEvent = (AnchorPane) root.getChildren().get(7);
+        newEventButton.setOnClick(event -> createEvent.setVisible(true));
+
         //Adding Accept and BackButton in New Event Pane
-        AnchorPane addEventPane = (AnchorPane) root.getChildren().get(8);
-        BorderPane acceptButton = (BorderPane) addEventPane.getChildren().get(0);
-        BorderPane cancelButton = (BorderPane) addEventPane.getChildren().get(1);
+        BorderPane acceptButton = (BorderPane) createEvent.getChildren().get(0);
+        BorderPane cancelButton = (BorderPane) createEvent.getChildren().get(1);
 
         IconButton acceptIcon = new IconButton("Confirm", 110, 110);
         IconButton cancelIcon = new IconButton("Deny", 110, 110);
         acceptButton.setCenter(acceptIcon.getStackPane());
         cancelButton.setCenter(cancelIcon.getStackPane());
+
+        cancelIcon.setOnClick(event -> createEvent.setVisible(false));
+        //Create Event Button
+        acceptIcon.setOnClick(event -> System.out.println("TODO Create event"));
+        acceptIcon.setOnClick(event -> createEvent.setVisible(false));
 
 
         return new Scene(root, Main.getWidth(), Main.getHeight());
