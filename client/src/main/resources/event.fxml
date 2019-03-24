@@ -44,14 +44,14 @@
          </children>
       </AnchorPane>
       <BorderPane fx:id="buttonpane" prefHeight="112.0" prefWidth="123.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0" />
-      <AnchorPane layoutY="192.0" prefHeight="369.0" prefWidth="375.0" style="-fx-background-color: lightgray;" AnchorPane.bottomAnchor="159.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="192.0">
+      <AnchorPane layoutY="192.0" prefHeight="369.0" prefWidth="375.0" style="-fx-background-color: lightgray;" AnchorPane.bottomAnchor="159.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="625.0" AnchorPane.topAnchor="192.0">
          <children>
-            <JFXListView layoutX="14.0" layoutY="22.0" prefHeight="325.0" prefWidth="344.0" AnchorPane.bottomAnchor="22.0" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="17.0" AnchorPane.topAnchor="22.0" />
+            <JFXListView fx:id="eventList" layoutX="14.0" layoutY="22.0" prefHeight="325.0" prefWidth="344.0" AnchorPane.bottomAnchor="22.0" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="17.0" AnchorPane.topAnchor="22.0" />
          </children>
       </AnchorPane>
       <AnchorPane layoutX="390.0" layoutY="193.0" prefHeight="529.0" prefWidth="610.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="390.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="193.0">
          <children>
-            <JFXListView layoutX="33.0" layoutY="29.0" prefHeight="465.0" prefWidth="544.0" AnchorPane.bottomAnchor="33.0" AnchorPane.leftAnchor="33.0" AnchorPane.rightAnchor="33.0" AnchorPane.topAnchor="29.0" />
+            <JFXListView fx:id="fullEventList" layoutX="33.0" layoutY="29.0" prefHeight="465.0" prefWidth="544.0" AnchorPane.bottomAnchor="33.0" AnchorPane.leftAnchor="33.0" AnchorPane.rightAnchor="33.0" AnchorPane.topAnchor="29.0" />
          </children>
       </AnchorPane>
       <AnchorPane layoutY="561.0" prefHeight="171.0" prefWidth="378.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0">
