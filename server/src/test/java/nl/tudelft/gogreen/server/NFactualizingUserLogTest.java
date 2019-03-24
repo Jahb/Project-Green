@@ -4,10 +4,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
+import java.sql.*;
 import java.util.ResourceBundle;
 
 import static org.junit.Assert.assertEquals;
@@ -23,24 +20,24 @@ public class NFactualizingUserLogTest {
                 resource.getString("Postgresql.datasource.username"), resource.getString("Postgresql.datasource.password"))) {
             int id = NewFeature.getId("MJ", conn);
             NewFeature.actualizingUserLog(id, "Vegetarian Meal", 20, conn);
-            int oldTotal = getTotal(id, "current_date", conn);
+            int oldTotal = getTotal(id,  conn);
             NewFeature.actualizingUserLog(id, "Vegetarian Meal", 20, conn);
-            int newTotal = getTotal(id, "current_date", conn);
+            int newTotal = getTotal(id,  conn);
 
             NewFeature.actualizingUserLog(id, "Usage of Bike", 20, conn);
-            int oldTotal2 = getTotal(id, "current_date", conn);
+            int oldTotal2 = getTotal(id,  conn);
             NewFeature.actualizingUserLog(id, "Usage of Bike", 20, conn);
-            int newTotal2 = getTotal(id, "current_date", conn);
+            int newTotal2 = getTotal(id,  conn);
 
             NewFeature.actualizingUserLog(id, "Lower Temperature", 20, conn);
-            int oldTotal3 =getTotal(id, "current_date", conn);
+            int oldTotal3 =getTotal(id,  conn);
             NewFeature.actualizingUserLog(id, "Lower Temperature", 20, conn);
-            int newTotal3 = getTotal(id, "current_date", conn);
+            int newTotal3 = getTotal(id,  conn);
 
             NewFeature.actualizingUserLog(id, "Recycling", 20, conn);
-            int oldTotal4 = getTotal(id, "current_date", conn);
+            int oldTotal4 = getTotal(id,  conn);
             NewFeature.actualizingUserLog(id, "Recycling", 20, conn);
-            int newTotal4 = getTotal(id, "current_date", conn);
+            int newTotal4 = getTotal(id,  conn);
 
             assertNotEquals(oldTotal, newTotal);
             assertNotEquals(oldTotal2, newTotal2);
@@ -78,13 +75,13 @@ public class NFactualizingUserLogTest {
         }
     }
 
-    public static int getTotal(int id, String date, Connection conn) {
+    public static int getTotal(int id, Connection conn) {
         int total = -1;
         try {
-
+            java.sql.Date date  =  getCurrentDatetime();
             PreparedStatement getTotal = conn.prepareStatement("select total from user_history where user_id = ? and date = ?");
             getTotal.setInt(1,id);
-            getTotal.setString(2, date );
+            getTotal.setDate(2, date );
             ResultSet rs = getTotal.executeQuery();
 
             while(rs.next()){
@@ -96,6 +93,10 @@ public class NFactualizingUserLogTest {
             return total;
         }
 
+    }
+    public static java.sql.Date getCurrentDatetime() {
+        java.util.Date today = new java.util.Date();
+        return new java.sql.Date(today.getTime());
     }
 }
 
