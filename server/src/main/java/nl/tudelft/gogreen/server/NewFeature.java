@@ -185,7 +185,7 @@ public class NewFeature {
         while (rs.next()) {
             lastDate = rs.getString(1);
         }
-
+        System.out.println("last Date is: " + lastDate);
         if (lastDate == null || !isToday(lastDate)) {
             switch (category) {
 
