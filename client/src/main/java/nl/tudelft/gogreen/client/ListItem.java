@@ -1,5 +1,9 @@
 package nl.tudelft.gogreen.client;
 
+import javafx.beans.Observable;
+import javafx.util.Callback;
+
+
 class ListItem {
 
     private String text;
@@ -27,6 +31,7 @@ class ListItem {
     String getName() {
         return text;
     }
+
 
     String getImageLocation() {
         return image;

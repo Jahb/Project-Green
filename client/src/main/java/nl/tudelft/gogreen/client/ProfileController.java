@@ -100,5 +100,8 @@ public class ProfileController implements Initializable {
         IconButton achievementsButton = new IconButton("Achievements", 100, 100);
         root.setLeft(achievementsButton.getStackPane());
         achievementsButton.setOnClick(event -> Main.openAchievementsScreen());
+        IconButton leaderboardButton = new IconButton("Leaderboard", 100, 100);
+        root.setRight(leaderboardButton.getStackPane());
+        leaderboardButton.setOnClick(event -> Main.openLeaderboardScreen());
     }
 }

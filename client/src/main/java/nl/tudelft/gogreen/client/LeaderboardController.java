@@ -1,5 +1,6 @@
 package nl.tudelft.gogreen.client;
 
+import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXListCell;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -26,9 +27,9 @@ import java.util.ResourceBundle;
 public class LeaderboardController implements Initializable {
 
     @FXML
-    private LineChart <?,?> scoreChart;
+    private JFXButton timeframeButton;
     @FXML
-    private VBox labelVbox;
+    private LineChart <?,?> scoreChart;
     @FXML
     private ListView<ListItem> leaderboardList = new ListView<>();
     private final ObservableList<ListItem> items = FXCollections.observableArrayList();
@@ -44,7 +45,6 @@ public class LeaderboardController implements Initializable {
         AnchorPane root = FXMLLoader.load(url);
         BorderPane topPane = (BorderPane) root.getChildren().get(2);
         IconButton.addBackButton(topPane);
-        VBox buttonBox = (VBox) root.getChildren().get(3);
         return new Scene(root, Main.getWidth(), Main.getHeight());
     }
 
@@ -54,16 +54,51 @@ public class LeaderboardController implements Initializable {
      * @param resources ResourceBundle
      */
     public void initialize(URL location, ResourceBundle resources) {
-        XYChart.Series series = new XYChart.Series();
+        XYChart.Series monthly = new XYChart.Series();
+        XYChart.Series weekly = new XYChart.Series();
 
+        weekly.getData().add(new XYChart.Data("2", 24));
+        weekly.getData().add(new XYChart.Data("8", 15));
+        weekly.getData().add(new XYChart.Data("16", 28));
+        weekly.getData().add(new XYChart.Data("18", 21));
+        scoreChart.getData().addAll(weekly);
 
-        labelVbox.setMouseTransparent(true);
+        monthly.getData().add(new XYChart.Data("1", 23));
+        monthly.getData().add(new XYChart.Data("5", 13));
+        monthly.getData().add(new XYChart.Data("10", 19));
+        monthly.getData().add(new XYChart.Data("15", 25));
+
+        UpdateableListViewSkin<ListItem> skin = new UpdateableListViewSkin<>(this.leaderboardList);
+        this.leaderboardList.setSkin(skin);
+
+        timeframeButton.setOnMouseClicked((MouseEvent event) -> {
+            if(timeframeButton.getText().equals("View Monthly Data")) {
+                timeframeButton.setText("View Weekly Data");
+                items.clear();
+                items.add(new ListItem("profile4", "images/achievementImage.png", 3000));
+                items.add(new ListItem("profile712847", "images/achievementImage.png", 3000));
+                ((UpdateableListViewSkin) leaderboardList.getSkin()).refresh();
+                scoreChart.getData().clear();
+                scoreChart.getData().addAll(monthly);
+            }
+            else{
+                timeframeButton.setText("View Monthly Data");
+                items.clear();
+                items.add(new ListItem("profile1", "images/achievementImage.png", 3000));
+                items.add(new ListItem("profile2", "images/achievementImage.png", 420));
+                items.add(new ListItem("profile3", "images/achievementImage.png", 3));
+                ((UpdateableListViewSkin) leaderboardList.getSkin()).refresh();
+                scoreChart.getData().clear();
+                scoreChart.getData().addAll(weekly);
+            }
+        });
+
         items.clear();
         items.add(new ListItem("profile1", "images/achievementImage.png", 3000));
         items.add(new ListItem("profile2", "images/achievementImage.png", 420));
         items.add(new ListItem("profile3", "images/achievementImage.png", 3));
-        leaderboardList.setCellFactory(new Callback<ListView<ListItem>, ListCell<ListItem>>() {
 
+        leaderboardList.setCellFactory(new Callback<ListView<ListItem>, ListCell<ListItem>>() {
             @Override
             public ListCell<ListItem> call(ListView<ListItem> arg0) {
                 JFXListCell<ListItem> cell = new JFXListCell<ListItem>() {
@@ -86,7 +121,7 @@ public class LeaderboardController implements Initializable {
                     }
                 };
                 cell.setEditable(true);
-                cell.setOnMouseReleased((MouseEvent event) -> {
+                cell.setOnMouseClicked((MouseEvent event) -> {
                     if (cell.isEmpty()) {
                         event.consume();
                     } else Main.openProfileScreen();
@@ -99,7 +134,6 @@ public class LeaderboardController implements Initializable {
         leaderboardList.setItems(items);
 
     }
-
 
 
 
