@@ -43,10 +43,11 @@ public class NFnewStreakTest {
             NewFeature.newStreak(id,conn);
 
             PreparedStatement updateStreakDate = conn.prepareStatement(resource.getString("qupdateStreakDate"));
-            String date = getYesterday().toString();
-           // updateStreakDate.setDate(1, (new java.sql.Date( date.getTime())));
+            java.util.Date date =  getYesterday();
+            java.sql.Date date2 = 
+            updateStreakDate.setDate(1, (new java.sql.Date( date)));
 
-            //updateStreakDate.execute();
+            updateStreakDate.execute();
 
             PreparedStatement returnNumberDays = conn.prepareStatement(resource.getString("qReturnDays"));
             ResultSet rs = returnNumberDays.executeQuery();
@@ -71,7 +72,7 @@ public class NFnewStreakTest {
             System.out.println("Error!");
         }
     }
-    public static java.util.Date getYesterday() {
+    public static java.util.Date  getYesterday() {
         DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 
         // Create a calendar object with today date. Calendar is in java.util pakage.
@@ -84,6 +85,11 @@ public class NFnewStreakTest {
         java.util.Date yesterdayDate =  calendar.getTime();
 
         return yesterdayDate;
+    }
+
+    private static java.sql.Date convertUtilToSql(java.util.Date uDate) {
+        java.sql.Date sDate = new java.sql.Date(uDate.getTime());
+        return sDate;
     }
 
 }
