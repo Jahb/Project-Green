@@ -1,12 +1,11 @@
 package nl.tudelft.gogreen.server;
 
 import nl.tudelft.gogreen.shared.MessageHolder;
+import org.postgresql.util.PSQLException;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController()
 @RequestMapping("/feature")
@@ -16,8 +15,8 @@ public class FeatureController {
     public MessageHolder<Integer> addNew(@RequestParam String feature) throws Exception {
         getUserObject();
         System.out.printf("%s: %s",  getUserObject(), feature);
-        String f = NewFeature.adding_feature( getUserObject(), feature);
-        return new MessageHolder<>("Nice!", Integer.parseInt(f));
+        String feat = NewFeature.adding_feature( getUserObject(), feature);
+        return new MessageHolder<>("Nice!", Integer.parseInt(feat));
     }
 
     @PostMapping("/total")
@@ -38,4 +37,9 @@ public class FeatureController {
         return username;
     }
 
+    @ExceptionHandler(PSQLException.class)
+    @ResponseStatus(HttpStatus.UNAUTHORIZED)
+    public MessageHolder<Integer> exceptions(){
+        return new MessageHolder<>("There was an error?", -1);
+    }
 }

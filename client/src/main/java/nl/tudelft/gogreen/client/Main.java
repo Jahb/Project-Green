@@ -1,10 +1,5 @@
 package nl.tudelft.gogreen.client;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-
-import com.mashape.unirest.http.ObjectMapper;
-import com.mashape.unirest.http.Unirest;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -13,11 +8,11 @@ import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
+import nl.tudelft.gogreen.client.communication.API;
 
 import java.io.IOException;
 
 public class Main extends Application {
-    public static Gson gson = new GsonBuilder().setPrettyPrinting().create();
 
     private static int width = 1000;
     private static int height = 720;
@@ -122,18 +117,7 @@ public class Main extends Application {
      * @param args Program arguments
      */
     public static void main(String[] args) {
-        Unirest.setObjectMapper(new ObjectMapper() {
-
-            @Override
-            public <T> T readValue(String value, Class<T> valueType) {
-                return gson.fromJson(value, valueType);
-            }
-
-            @Override
-            public String writeValue(Object value) {
-                return gson.toJson(value);
-            }
-        });
+        API.initAPI();
 
         launch(args);
     }

@@ -1,4 +1,5 @@
 package nl.tudelft.gogreen.server;
+
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
@@ -9,7 +10,6 @@ import java.util.ResourceBundle;
 @SpringBootApplication
 public class Main {
     private static ResourceBundle resource = ResourceBundle.getBundle("db");
-
 
 
     public static void main(String[] args) throws Exception {
