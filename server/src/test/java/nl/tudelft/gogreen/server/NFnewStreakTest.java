@@ -33,31 +33,29 @@ public class NFnewStreakTest {
 
     @Test
     public void main() {
-        try(            Connection conn = DriverManager.getConnection(resource.getString("Postgresql.datasource.url"), resource.getString("Postgresql.datasource.username"), resource.getString("Postgresql.datasource.password"))) {
+        try( Connection conn = DriverManager.getConnection(resource.getString("Postgresql.datasource.url"), resource.getString("Postgresql.datasource.username"), resource.getString("Postgresql.datasource.password"))) {
+
             int id = NewFeature.getId("coco",conn);
 
-            PreparedStatement deleteStreak = conn.prepareStatement(resource.getString("qDeleteStreak"));
-            deleteStreak.setInt(1,id);
 
-            deleteStreak.execute();
-            NewFeature.newStreak(id,conn);
 
-            PreparedStatement updateStreakDate = conn.prepareStatement(resource.getString("qupdateStreakDate"));
+            PreparedStatement updateStreakDate = conn.prepareStatement(resource.getString("qInsertStreakDate"));
             java.util.Date date =  getYesterday();
             java.sql.Date date2 = convertUtilToSql(date);
             updateStreakDate.setDate(1,  date2);
 
             updateStreakDate.execute();
-
-            PreparedStatement returnNumberDays = conn.prepareStatement(resource.getString("qReturnDays"));
-            ResultSet rs = returnNumberDays.executeQuery();
-            int days = 0;
+            NewFeature.newStreak(id,conn);
+            PreparedStatement returnDate = conn.prepareStatement(resource.getString("qReturnDate"));
+            returnDate.setInt(1,id);
+            ResultSet rs = returnDate.executeQuery();
+            Date Date = null;
             while (rs.next()) {
-                days = rs.getInt(1);
+                Date = rs.getDate(1);
             }
+            System.out.println("The date that should be: " + date2 + " and the actual dates is: " + Date);
+            assertTrue(Date.toString().equals(date2.toString()));
 
-           // assertTrue(days == 2);
-            assertTrue(true);
         } catch (Exception exception) {
             System.out.println(exception.getMessage());
         }

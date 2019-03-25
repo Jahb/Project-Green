@@ -1,5 +1,3 @@
-
-
 package nl.tudelft.gogreen.server;
 
 import java.sql.Connection;
@@ -327,17 +325,20 @@ public class NewFeature {
 
         PreparedStatement lastDayStreak = conn.prepareStatement(resource.getString("qSelectDate"));
         lastDayStreak.setInt(1, id);
+
         ResultSet rs = lastDayStreak.executeQuery();
         String lastDay = null;
+
         while (rs.next()) {
             lastDay = rs.getString(1);
         }
-
+        System.out.println("the day is: " + lastDay);
         if (lastDay == null || (!isToday(lastDay) && !isYesterday(lastDay))) {
             PreparedStatement resetStreak = conn.prepareStatement(resource.getString("qInsertStreak"));
             resetStreak.setInt(1, id);
             resetStreak.execute();
         } else if (isYesterday(lastDay)) {
+
             PreparedStatement addOneToStreak = conn.prepareStatement(resource.getString("qUpdateStreak"));
             addOneToStreak.setInt(1, id);
             addOneToStreak.execute();
