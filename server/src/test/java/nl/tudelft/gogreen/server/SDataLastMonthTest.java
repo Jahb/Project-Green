@@ -24,41 +24,42 @@ public class SDataLastMonthTest {
             e.getMessage();
         }
     }
+
     @Test
     public void getLastMonthData() {
 
         try (Connection conn = DriverManager.getConnection(resource.getString("Postgresql.datasource.url"), resource.getString("Postgresql.datasource.username"), resource.getString("Postgresql.datasource.password"))) {
             int id = NewFeature.getId("Russell", conn);
-            Float[] AllData = Statistics.getLastMonthData(id);
-            Float totalPoints = AllData[AllData.length-2];
+            float[] AllData = Statistics.getLastMonthData(id);
+            float totalPoints = AllData[AllData.length - 2];
 
             PreparedStatement insertData = conn.prepareStatement(resource.getString("qInsertMonthData"));
-            insertData.setInt(1,id);
+            insertData.setInt(1, id);
             insertData.execute();
 
-            Float[] AllData2 = Statistics.getLastMonthData(id);
-            Float totalPoints2 = AllData2[AllData2.length-2];
+            float[] AllData2 = Statistics.getLastMonthData(id);
+            float totalPoints2 = AllData2[AllData2.length - 2];
 
-            assertNotEquals(totalPoints,totalPoints2);
+            assertNotEquals(totalPoints, totalPoints2);
 
             totalPoints += 20;
 
-            assertEquals(totalPoints,totalPoints2);
-            Float value1 = (Float.valueOf("20")) / (Float.valueOf("30"));
-            assertEquals(AllData2[AllData2.length-2],  Float.valueOf("20"));
-            assertEquals(AllData2[AllData2.length-1], value1);
+            assertEquals(totalPoints, totalPoints2, 0.1);
+            float value1 = 20f / 30f;
+            assertEquals(AllData2[AllData2.length - 2], 20f, 0.1);
+            assertEquals(AllData2[AllData2.length - 1], value1, 0.1);
 
 
         } catch (Exception e) {
             System.out.println("lol" + e.getCause());
         }
     }
+
     @After
-    public void deleteUser(){
+    public void deleteUser() {
         try (Connection conn = DriverManager.getConnection(resource.getString("Postgresql.datasource.url"), resource.getString("Postgresql.datasource.username"), resource.getString("Postgresql.datasource.password"))) {
-            CreateUser.delete_user(NewFeature.getId("Russell", conn),conn);
-        }
-        catch (Exception e){
+            CreateUser.delete_user(NewFeature.getId("Russell", conn), conn);
+        } catch (Exception e) {
             System.out.println(e.getMessage());
         }
     }

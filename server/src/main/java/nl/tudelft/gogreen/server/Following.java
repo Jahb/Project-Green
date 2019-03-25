@@ -25,6 +25,7 @@ public class Following {
             follow.setInt(2, id2);
             follow.execute();
         }
+        conn.close();
 
     }
 
@@ -41,7 +42,7 @@ public class Following {
             unfollow.setInt(2, id2);
             unfollow.execute();
         }
-
+        conn.close();
     }
 
     public static boolean isFollowing(int id1, int id2, Connection conn) throws Exception {
@@ -68,11 +69,11 @@ public class Following {
         delFollowers.execute();
     }
 
-    public static ArrayList showAllFollowing(int id1, Connection conn) throws Exception {
+    public static ArrayList<Integer> showAllFollowing(int id1, Connection conn) throws Exception {
 
         PreparedStatement showFollowing = conn.prepareStatement(resource.getString("qShowFollowing"));
         showFollowing.setInt(1, id1);
-        ArrayList result = new ArrayList();
+        ArrayList<Integer> result = new ArrayList<>();
         ResultSet rs = showFollowing.executeQuery();
         while (rs.next()) {
             result.add(rs.getInt(1));
@@ -80,11 +81,11 @@ public class Following {
         return result;
     }
 
-    public static ArrayList showAllFollowers(int id1, Connection conn) throws Exception {
+    public static ArrayList<Integer> showAllFollowers(int id1, Connection conn) throws Exception {
 
         PreparedStatement showFollowers = conn.prepareStatement(resource.getString("qShowFollowers"));
         showFollowers.setInt(1, id1);
-        ArrayList result = new ArrayList();
+        ArrayList<Integer> result = new ArrayList<>();
         ResultSet rs = showFollowers.executeQuery();
         while (rs.next()) {
             result.add(rs.getInt(1));

@@ -20,14 +20,14 @@ public class Statistics {
      * @return returns the data in the form of array of Floats
      * @throws Exception raised if an error occurs accessing the database
      */
-    public static Float[] getLastWeekData(int id) throws Exception {
+    public static float[] getLastWeekData(int id) throws Exception {
 
         Connection conn = getConnection(
                 resource.getString("Postgresql.datasource.url"),
                 resource.getString("Postgresql.datasource.username"),
                 resource.getString("Postgresql.datasource.password"));
 
-        Float[] data = getLastData(id, 7, conn);
+        float[] data = getLastData(id, 7, conn);
         conn.close();
         return data;
 
@@ -43,14 +43,14 @@ public class Statistics {
      * @return returns the data in the form of array of Floats
      * @throws Exception raised if an error occurs accessing the database
      */
-    public static Float[] getLastMonthData(int id) throws Exception {
+    public static float[] getLastMonthData(int id) throws Exception {
 
         Connection conn = getConnection(
                 resource.getString("Postgresql.datasource.url"),
                 resource.getString("Postgresql.datasource.username"),
                 resource.getString("Postgresql.datasource.password"));
 
-        Float[] data = getLastData(id, 30, conn);
+        float[] data = getLastData(id, 30, conn);
         conn.close();
         return data;
     }
@@ -64,14 +64,14 @@ public class Statistics {
      * @return returns the data in the form of array of Floats
      * @throws Exception raised if an error occurs accessing the database
      */
-    public static Float[] getLastYearData(int id) throws Exception {
+    public static float[] getLastYearData(int id) throws Exception {
 
         Connection conn = getConnection(
                 resource.getString("Postgresql.datasource.url"),
                 resource.getString("Postgresql.datasource.username"),
                 resource.getString("Postgresql.datasource.password"));
 
-        Float[] data = getLastData(id, 365, conn);
+        float[] data = getLastData(id, 365, conn);
         conn.close();
         return data;
     }
@@ -85,17 +85,17 @@ public class Statistics {
      * @return returns the data in the form of array of Floats
      * @throws Exception raised if an error occurs accessing the database
      */
-    public static Float[] getLastData(int id, int days, Connection conn) throws Exception {
+    public static float[] getLastData(int id, int days, Connection conn) throws Exception {
 
-        Float[] result = new Float[days + 2];
-        Float total = Float.valueOf("0");
+        float[] result = new float[days + 2];
+        float total = 0.0f;
         PreparedStatement gettingWeekData = conn.prepareStatement(resource.getString("qGetData"));
         gettingWeekData.setInt(2, id);
         for (int i = 0; i < days; i++) {
             gettingWeekData.setInt(1, i);
 
             ResultSet dayData = gettingWeekData.executeQuery();
-            Float totalPointsDay = Float.valueOf("0");
+            float totalPointsDay = 0.0f;
             while (dayData.next()) {
                 totalPointsDay = (float) (dayData.getInt(1));
             }

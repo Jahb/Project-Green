@@ -29,8 +29,8 @@ public class SDataLastYearTest {
 
         try (Connection conn = DriverManager.getConnection(resource.getString("Postgresql.datasource.url"), resource.getString("Postgresql.datasource.username"), resource.getString("Postgresql.datasource.password"))) {
             int id = NewFeature.getId("Russell", conn);
-            Float[] AllData = Statistics.getLastYearData(id);
-            Float totalPoints = AllData[AllData.length-2];
+            float[] AllData = Statistics.getLastYearData(id);
+            float totalPoints = AllData[AllData.length-2];
 
             PreparedStatement insertData = conn.prepareStatement(resource.getString("qInsertYearData"));
             insertData.setInt(1,id);
@@ -39,18 +39,18 @@ public class SDataLastYearTest {
             insertData2.setInt(1,id);
             insertData2.execute();
 
-            Float[] AllData2 = Statistics.getLastYearData(id);
-            Float totalPoints2 = AllData2[AllData2.length-2];
+            float[] AllData2 = Statistics.getLastYearData(id);
+            float totalPoints2 = AllData2[AllData2.length-2];
 
             assertNotEquals(totalPoints,totalPoints2);
 
             totalPoints += 20;
 
-            assertEquals(totalPoints,totalPoints2);
+            assertEquals(totalPoints,totalPoints2,0.1);
 
-            Float value1 = (Float.valueOf("20")) / (Float.valueOf("365"));
-            assertEquals(AllData2[AllData2.length-2],  Float.valueOf("20"));
-            assertEquals(AllData2[AllData2.length-1], value1);
+            float value1 = 20f/365f;
+            assertEquals(AllData2[AllData2.length-2],  20,0.1);
+            assertEquals(AllData2[AllData2.length-1], value1, 0.1);
 
         } catch (Exception e) {
             System.out.println(e.getMessage());
