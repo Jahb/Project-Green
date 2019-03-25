@@ -27,9 +27,7 @@ public class Statistics {
                 resource.getString("Postgresql.datasource.username"),
                 resource.getString("Postgresql.datasource.password"));
 
-        Float[] data = getLastData(id, 7, conn);
-        conn.close();
-        return data;
+        return getLastData(id, 7, conn);
 
 
     }
@@ -50,9 +48,7 @@ public class Statistics {
                 resource.getString("Postgresql.datasource.username"),
                 resource.getString("Postgresql.datasource.password"));
 
-        Float[] data = getLastData(id, 30, conn);
-        conn.close();
-        return data;
+        return getLastData(id, 30, conn);
     }
 
     /**
@@ -71,16 +67,14 @@ public class Statistics {
                 resource.getString("Postgresql.datasource.username"),
                 resource.getString("Postgresql.datasource.password"));
 
-        Float[] data = getLastData(id, 365, conn);
-        conn.close();
-        return data;
+        return getLastData(id, 365, conn);
     }
 
     /**
      * Helper function which gets the retrospective data of the given days.
      *
      * @param id   id of the user
-     * @param days Number of days you want data to be retrieved
+     * @param days    Number of days you want data to be retrieved
      * @param conn Connection to the database
      * @return returns the data in the form of array of Floats
      * @throws Exception raised if an error occurs accessing the database
