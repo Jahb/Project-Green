@@ -45,7 +45,8 @@ public class NFnewStreakTest {
             PreparedStatement updateStreakDate = conn.prepareStatement(resource.getString("qupdateStreakDate"));
             String date = getYesterday().toString();
            // updateStreakDate.setDate(1, (new java.sql.Date( date.getTime())));
-            updateStreakDate.execute();
+
+            //updateStreakDate.execute();
 
             PreparedStatement returnNumberDays = conn.prepareStatement(resource.getString("qReturnDays"));
             ResultSet rs = returnNumberDays.executeQuery();
