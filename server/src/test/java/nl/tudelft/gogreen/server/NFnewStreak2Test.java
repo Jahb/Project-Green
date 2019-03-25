@@ -5,16 +5,16 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.sql.*;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.util.ResourceBundle;
 
 import static junit.framework.TestCase.assertTrue;
 
 
-public class NFnewStreakTest {
+public class NFnewStreak2Test {
     private static ResourceBundle resource = ResourceBundle.getBundle("db");
 
 
@@ -36,17 +36,12 @@ public class NFnewStreakTest {
         try(            Connection conn = DriverManager.getConnection(resource.getString("Postgresql.datasource.url"), resource.getString("Postgresql.datasource.username"), resource.getString("Postgresql.datasource.password"))) {
             int id = NewFeature.getId("coco",conn);
 
-            PreparedStatement deleteStreak = conn.prepareStatement(resource.getString("qDeleteStreak"));
-            deleteStreak.setInt(1,id);
 
-            deleteStreak.execute();
             NewFeature.newStreak(id,conn);
 
-            PreparedStatement updateStreakDate = conn.prepareStatement(resource.getString("qupdateStreakDate"));
-            String date = getYesterday().toString();
-           // updateStreakDate.setDate(1, (new java.sql.Date( date.getTime())));
-
-            //updateStreakDate.execute();
+            PreparedStatement updateStreakPoints = conn.prepareStatement(resource.getString("qUpdateStreak"));
+            updateStreakPoints.setInt(1,id);
+            updateStreakPoints.execute();
 
             PreparedStatement returnNumberDays = conn.prepareStatement(resource.getString("qReturnDays"));
             ResultSet rs = returnNumberDays.executeQuery();
@@ -55,8 +50,8 @@ public class NFnewStreakTest {
                 days = rs.getInt(1);
             }
 
-           // assertTrue(days == 2);
-            assertTrue(true);
+            assertTrue(days == 2);
+
         } catch (Exception exception) {
             System.out.println(exception.getMessage());
         }
@@ -70,20 +65,6 @@ public class NFnewStreakTest {
         } catch (Exception exception) {
             System.out.println("Error!");
         }
-    }
-    public static java.util.Date getYesterday() {
-        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-
-        // Create a calendar object with today date. Calendar is in java.util pakage.
-        Calendar calendar = Calendar.getInstance();
-
-        /* Move calendar to yesterday */
-        calendar.add(Calendar.DATE, -1);
-
-        // Get current date of calendar which point to the yesterday now
-        java.util.Date yesterdayDate =  calendar.getTime();
-
-        return yesterdayDate;
     }
 
 }

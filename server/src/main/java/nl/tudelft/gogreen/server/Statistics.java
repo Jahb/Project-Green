@@ -50,9 +50,11 @@ public class Statistics {
                 resource.getString("Postgresql.datasource.username"),
                 resource.getString("Postgresql.datasource.password"));
 
+
         float[] data = getLastData(id, 30, conn);
         conn.close();
         return data;
+
     }
 
     /**

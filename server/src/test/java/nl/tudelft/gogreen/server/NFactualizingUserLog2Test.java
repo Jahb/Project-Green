@@ -10,7 +10,7 @@ import java.util.ResourceBundle;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
 
-public class NFactualizingUserLogTest {
+public class NFactualizingUserLog2Test {
 
     private static ResourceBundle resource = ResourceBundle.getBundle("db");
 
@@ -20,18 +20,18 @@ public class NFactualizingUserLogTest {
                 resource.getString("Postgresql.datasource.username"), resource.getString("Postgresql.datasource.password"))) {
             int id = NewFeature.getId("MJ", conn);
 
+            NewFeature.actualizingUserLog(id, "Usage of Bike", 20, conn);
+            int oldTotal2 = getTotal(id,  conn);
+            NewFeature.actualizingUserLog(id, "Usage of Bike", 20, conn);
+            int newTotal2 = getTotal(id,  conn);
 
-            System.out.println("MJ -----");
-            NewFeature.actualizingUserLog(id, "Vegetarian Meal", 20, conn);
-            System.out.println("1st done");
-            int oldTotal = getTotal(id,  conn);
-            System.out.println("2nd done");
-            NewFeature.actualizingUserLog(id, "Vegetarian Meal", 20, conn);
-            int newTotal = getTotal(id,  conn);
 
-            assertNotEquals(oldTotal, newTotal);
-            oldTotal += 20;
-            assertEquals(oldTotal, newTotal);
+            assertNotEquals(oldTotal2, newTotal2);
+
+
+            oldTotal2 += 20;
+
+            assertEquals(oldTotal2, newTotal2);
 
         }catch (Exception e){
             e.printStackTrace();
@@ -39,20 +39,18 @@ public class NFactualizingUserLogTest {
     }
 
     @Before
-    public void createUsers() throws Exception {
+    public void createOnlyUser() throws Exception {
 
             CreateUser.create_user("MJ","MJ");
-
 
 
 
     }
 
     @After
-    public void deleteUser() {
+    public void deleteUser() throws Exception{
         try(Connection conn = DriverManager.getConnection(resource.getString("Postgresql.datasource.url"), resource.getString("Postgresql.datasource.username"), resource.getString("Postgresql.datasource.password"))) {
             CreateUser.delete_user(NewFeature.getId("MJ",conn),conn);
-
         }
         catch(Exception e){
             System.out.println(e.getMessage());
@@ -62,7 +60,7 @@ public class NFactualizingUserLogTest {
     public static int getTotal(int id, Connection conn) {
         int total = -1;
         try {
-            java.sql.Date date  =  getCurrentDatetime();
+            Date date  =  getCurrentDatetime();
             PreparedStatement getTotal = conn.prepareStatement("select total from user_history where user_id = ? and date = ?");
             getTotal.setInt(1,id);
             getTotal.setDate(2, date );
@@ -78,9 +76,9 @@ public class NFactualizingUserLogTest {
         }
 
     }
-    public static java.sql.Date getCurrentDatetime() {
+    public static Date getCurrentDatetime() {
         java.util.Date today = new java.util.Date();
-        return new java.sql.Date(today.getTime());
+        return new Date(today.getTime());
     }
 }
 

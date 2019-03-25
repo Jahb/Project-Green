@@ -185,7 +185,7 @@ public class NewFeature {
         while (rs.next()) {
             lastDate = rs.getString(1);
         }
-
+        System.out.println("last Date is: " + lastDate);
         if (lastDate == null || !isToday(lastDate)) {
             switch (category) {
 
@@ -271,7 +271,9 @@ public class NewFeature {
 
             PreparedStatement hupdatectotal =
                     conn.prepareStatement(resource.getString("updatetotalhistory"));
-           // hupdatectotal.execute();
+            hupdatectotal.setInt(1, points);
+            hupdatectotal.setInt(2, id);
+            hupdatectotal.execute();
 
 
         }
