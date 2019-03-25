@@ -44,7 +44,7 @@
          </children>
       </AnchorPane>
       <BorderPane fx:id="buttonpane" prefHeight="112.0" prefWidth="123.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0" />
-      <AnchorPane layoutY="192.0" prefHeight="369.0" prefWidth="375.0" style="-fx-background-color: lightgray;" AnchorPane.bottomAnchor="159.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="625.0" AnchorPane.topAnchor="192.0">
+      <AnchorPane layoutY="192.0" prefHeight="369.0" prefWidth="375.0" style="-fx-background-color: lightgray;" AnchorPane.bottomAnchor="159.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="192.0">
          <children>
             <JFXListView fx:id="eventList" layoutX="14.0" layoutY="22.0" prefHeight="325.0" prefWidth="344.0" AnchorPane.bottomAnchor="22.0" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="17.0" AnchorPane.topAnchor="22.0" />
          </children>
