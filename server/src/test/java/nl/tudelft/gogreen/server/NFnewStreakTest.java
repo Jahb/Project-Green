@@ -44,8 +44,8 @@ public class NFnewStreakTest {
 
             PreparedStatement updateStreakDate = conn.prepareStatement(resource.getString("qupdateStreakDate"));
             java.util.Date date =  getYesterday();
-            java.sql.Date date2 = 
-            updateStreakDate.setDate(1, (new java.sql.Date( date)));
+            java.sql.Date date2 = convertUtilToSql(date);
+            updateStreakDate.setDate(1,  date2);
 
             updateStreakDate.execute();
 
