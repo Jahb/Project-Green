@@ -43,10 +43,13 @@ public class HTTPTest {
                 resource.getString("Postgresql.datasource.username"),
                 resource.getString("Postgresql.datasource.password"));
         int id = NewFeature.getId("test", conn);
-        CreateUser.delete_user(id, conn);
+        if (id != -1)
+            CreateUser.delete_user(id, conn);
         this.mockMvc.perform(post("/user/new")
                 .param("username", "test").param("password", "kees")).andDo(print()).andExpect(status().isOk());
         this.mockMvc.perform(post("/login").param("username", "test").param("password", "kees")).andDo(print()).andExpect(status().isOk());
+        this.mockMvc.perform(post("/feature/new").param("feature", "Vegetarian Meal")).andDo(print()).andExpect(status().isUnauthorized());
+        this.mockMvc.perform(post("/feature/total")).andDo(print()).andExpect(status().isOk());
     }
 
 
