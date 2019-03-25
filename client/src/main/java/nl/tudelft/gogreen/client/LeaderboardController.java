@@ -75,21 +75,21 @@ public class LeaderboardController implements Initializable {
             if(timeframeButton.getText().equals("View Monthly Data")) {
                 timeframeButton.setText("View Weekly Data");
                 items.clear();
-                items.add(new ListItem("profile4", "images/achievementImage.png", 3000));
-                items.add(new ListItem("profile712847", "images/achievementImage.png", 3000));
+                items.add(new ListItem("profile4", "images/buttonProfile.png", 3000));
+                items.add(new ListItem("profile712847", "images/buttonProfile.png", 3000));
                 ((UpdateableListViewSkin) leaderboardList.getSkin()).refresh();
                 scoreChart.getData().clear();
                 scoreChart.getData().addAll(monthly);
             }
             else{
-                timeframeButton.setText("View Monthly Data");
-                items.clear();
-                items.add(new ListItem("profile1", "images/achievementImage.png", 3000));
-                items.add(new ListItem("profile2", "images/achievementImage.png", 420));
-                items.add(new ListItem("profile3", "images/achievementImage.png", 3));
-                ((UpdateableListViewSkin) leaderboardList.getSkin()).refresh();
-                scoreChart.getData().clear();
-                scoreChart.getData().addAll(weekly);
+                    timeframeButton.setText("View Monthly Data");
+                    items.clear();
+                    items.add(new ListItem("profile1", "images/achievementImage.png", 3000));
+                    items.add(new ListItem("profile2", "images/achievementImage.png", 420));
+                    items.add(new ListItem("profile3", "images/achievementImage.png", 3));
+                    ((UpdateableListViewSkin) leaderboardList.getSkin()).refresh();
+                    scoreChart.getData().clear();
+                    scoreChart.getData().addAll(weekly);
             }
         });
 

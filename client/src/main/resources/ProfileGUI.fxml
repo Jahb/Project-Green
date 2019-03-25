@@ -56,7 +56,7 @@
       </Label>
       <AnchorPane layoutX="25.0" layoutY="340.0" prefHeight="241.0" prefWidth="260.0" style="-fx-border-width: 1; -fx-border-color: lightgray;-fx-border-radius: 20 20 20 20;" AnchorPane.bottomAnchor="140.0">
          <children>
-            <VBox layoutX="2.0" layoutY="35.0" prefHeight="220.0" prefWidth="67.0" spacing="15.0" AnchorPane.bottomAnchor="7.0" AnchorPane.leftAnchor="1.0" AnchorPane.topAnchor="7.0">
+            <VBox layoutX="2.0" layoutY="10.0" prefHeight="227.0" prefWidth="73.0" spacing="15.0" AnchorPane.bottomAnchor="9.0" AnchorPane.leftAnchor="1.0" AnchorPane.rightAnchor="186.0" AnchorPane.topAnchor="9.0">
                <opaqueInsets>
                   <Insets />
                </opaqueInsets>
