@@ -24,10 +24,11 @@ public class Ring {
 
     /**
      * Constructor for Ring Class.
+     * 
      * @param innerRadius Radius of inner Circle
      * @param outerRadius Radius of outer Circle
-     * @param centerX X Co-Ord of center of Circle
-     * @param centerY Y Co-Ord of center of Circle
+     * @param centerX     X coordinate of center of Circle
+     * @param centerY     Y coordinate of center of Circle
      */
     public Ring(int innerRadius, int outerRadius, int centerX, int centerY) {
         this.centerX = centerX;
@@ -67,26 +68,38 @@ public class Ring {
             rs.arc.setCenterX(cord);
     }
 
+    void setSegmentValue(int segment, double newValue) throws ArrayIndexOutOfBoundsException {
+        segments.get(segment).delta = newValue - segments.get(segment).percentage;
+    }
+
     void startAnimation() {
+//        if (System.nanoTime() - timerStart > 3000_000_000d) {
         timerStart = System.nanoTime();
         timer.start();
+//        }
     }
 
     private AnimationTimer timer = new AnimationTimer() {
 
         @Override
         public void handle(long time) {
-            double progress = (time - timerStart) / 38_000_000d;
+            double progress = (time - timerStart) / 30_000_000d;
             double startAngle = 0;
 
             if (progress > 100)
                 timer.stop();
+            
 
             for (RingSegment rs : segments) {
                 rs.arc.setStartAngle(90 + startAngle);
-                double animationLength = Math.min(progress / rs.percentage, 1);
-                rs.arc.setLength(smoothFormula(animationLength) * rs.percentage * -3.6);
-
+                double animationLength = Math.max(-1, Math.min(progress / rs.delta, 1));
+                rs.arc.setLength((rs.percentage + smoothFormula(animationLength) * rs.delta) * -3.6);
+                
+                if(animationLength == 1 || animationLength == -1) {
+                    rs.percentage += rs.delta;
+                    rs.delta = 0;
+                }
+                
                 startAngle += rs.arc.getLength();
             }
         }
@@ -121,10 +134,11 @@ public class Ring {
 
         protected Color color;
         double percentage;
+        double delta;
         Arc arc;
 
         RingSegment(Ring ring, double percentage, Color color) {
-            this.percentage = percentage;
+            this.delta = percentage;
             this.color = color;
 
             arc = new Arc();
