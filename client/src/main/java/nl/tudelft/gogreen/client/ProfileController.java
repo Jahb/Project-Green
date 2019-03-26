@@ -2,6 +2,7 @@ package nl.tudelft.gogreen.client;
 
 
 import com.jfoenix.controls.JFXListCell;
+import com.jfoenix.controls.JFXTextField;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -14,6 +15,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Circle;
 import javafx.util.Callback;
@@ -25,6 +27,8 @@ import java.util.ResourceBundle;
 public class ProfileController implements Initializable {
 
 
+    @FXML
+    private JFXTextField followField;
     @FXML
     ImageView achievementImage1;
     @FXML
@@ -42,7 +46,6 @@ public class ProfileController implements Initializable {
     //setting placeholder pictures
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        Image achievementImg = new Image("images/achievementImage.png");
 
         activities.add("17:05 - Ate a Vegetarian Meal");
         activities.add("11:45 - Ate a Vegetarian Meal");
@@ -91,17 +94,20 @@ public class ProfileController implements Initializable {
         BorderPane buttonPane = (BorderPane) root.getChildren().get(0);
         IconButton.addBackButton(buttonPane);
         BorderPane bottomPane = (BorderPane) root.getChildren().get(1);
-        addLowerButtons(bottomPane);
+        BorderPane searchPane = (BorderPane) root.getChildren().get(2);
+        addIconButtons(bottomPane, searchPane);
         return new Scene(root, Main.getWidth(), Main.getHeight());
     }
 
 
-    private void addLowerButtons(BorderPane root) {
+    private void addIconButtons(BorderPane root, BorderPane root1) {
         IconButton achievementsButton = new IconButton("Achievements", 100, 100);
         root.setLeft(achievementsButton.getStackPane());
         achievementsButton.setOnClick(event -> Main.openAchievementsScreen());
         IconButton leaderboardButton = new IconButton("Leaderboard", 100, 100);
         root.setRight(leaderboardButton.getStackPane());
         leaderboardButton.setOnClick(event -> Main.openLeaderboardScreen());
+        IconButton followerAddButton = new IconButton("Add", 50, 50);
+        root1.setRight(followerAddButton.getStackPane());
     }
 }
