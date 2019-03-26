@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXTextField?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ListView?>
@@ -24,34 +25,39 @@
             <Insets top="5.0" />
          </padding>
       </BorderPane>
-      <ListView fx:id="friendsList" layoutX="888.0" layoutY="102.0" prefHeight="646.0" prefWidth="340.0" stylesheets="ListStyle.css" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="115.0" />
-      <AnchorPane layoutX="726.0" layoutY="5.0" prefHeight="115.0" prefWidth="340.0" style="-fx-background-color: #50E476; -fx-background-radius: 10 10 10 10" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+      <BorderPane fx:id="searchPane" layoutX="660.0" layoutY="63.0" prefHeight="50.0" prefWidth="340.0" AnchorPane.topAnchor="67.0">
+         <left>
+            <JFXTextField fx:id="followField" prefHeight="34.0" prefWidth="280.0" promptText="Follow a new user:" style="-jfx-unfocus-color: lightgray; -jfx-focus-color:gray" BorderPane.alignment="CENTER" />
+         </left>
+      </BorderPane>
+      <ListView fx:id="friendsList" layoutX="888.0" layoutY="102.0" prefHeight="600.0" prefWidth="340.0" stylesheets="ListStyle.css" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="120.0" />
+      <AnchorPane layoutX="726.0" layoutY="5.0" prefHeight="50.0" prefWidth="340.0" style="-fx-background-color: #50E476; -fx-background-radius: 10 10 10 10" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="5.0">
          <children>
-            <Label alignment="CENTER" layoutX="62.0" layoutY="29.0" prefHeight="58.0" prefWidth="176.0" style="-fx-text-fill: white;-fx-font-size: 40; -fx-font-weight:bold" text="Friends" AnchorPane.bottomAnchor="28.0" AnchorPane.leftAnchor="62.0" AnchorPane.rightAnchor="62.0">
+            <Label alignment="CENTER" layoutX="61.0" layoutY="4.0" prefHeight="60.0" prefWidth="176.0" style="-fx-text-fill: white;-fx-font-size: 40; -fx-font-weight:bold" text="Following" AnchorPane.bottomAnchor="4.0" AnchorPane.leftAnchor="61.0" AnchorPane.rightAnchor="63.0">
                <font>
                   <Font size="28.0" />
                </font>
             </Label>
          </children>
       </AnchorPane>
-      <ImageView fx:id="profileImage" fitHeight="200.0" fitWidth="243.0" layoutX="34.0" layoutY="82.0" pickOnBounds="true" preserveRatio="true">
+      <ImageView fx:id="profileImage" fitHeight="161.0" fitWidth="216.0" layoutX="14.0" layoutY="113.0" pickOnBounds="true" preserveRatio="true" AnchorPane.topAnchor="105.0">
          <image>
             <Image url="@images/ButtonProfile.png" />
          </image>
       </ImageView>
       <Label alignment="CENTER" layoutX="25.0" layoutY="283.0" prefHeight="40.0" prefWidth="260.0" style="-fx-background-color:#50E476;-fx-font-weight: bold; -fx-border-radius: 20 20 20 20;  -fx-background-radius: 20 20 20 20;" text="Recently Achieved:" textFill="WHITE" AnchorPane.leftAnchor="25.0">
          <font>
-            <Font size="24.0" />
+            <Font size="22.0" />
          </font>
       </Label>
-      <Text layoutX="283.0" layoutY="109.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Username" wrappingWidth="352.0" AnchorPane.leftAnchor="285.0">
+      <Text layoutX="285.0" layoutY="115.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Username" wrappingWidth="398.0" AnchorPane.leftAnchor="230.0" AnchorPane.topAnchor="65.0">
          <font>
             <Font size="25.0" />
          </font>
       </Text>
       <Label alignment="CENTER" layoutX="376.0" layoutY="283.0" prefHeight="40.0" prefWidth="260.0" style="-fx-background-color:#50E476;-fx-font-weight: bold; -fx-border-radius: 20 20 20 20;  -fx-background-radius: 20 20 20 20;" text="Recent Activity:" textFill="WHITE">
          <font>
-            <Font size="24.0" />
+            <Font size="22.0" />
          </font>
       </Label>
       <AnchorPane layoutX="25.0" layoutY="340.0" prefHeight="241.0" prefWidth="260.0" style="-fx-border-width: 1; -fx-border-color: lightgray;-fx-border-radius: 20 20 20 20;" AnchorPane.bottomAnchor="140.0">
@@ -103,10 +109,35 @@
          </children>
       </AnchorPane>
       <ListView fx:id="activityList" layoutX="376.0" layoutY="338.0" prefHeight="240.0" prefWidth="260.0" stylesheets="SmallListStyle.css" AnchorPane.bottomAnchor="140.0" />
-      <JFXButton fx:id="followButton" layoutX="277.0" layoutY="135.0" mnemonicParsing="false" prefHeight="52.0" prefWidth="260.0" style="-fx-font-size: 24; -fx-text-fill: white; -fx-background-color:#50E476;-fx-font-weight: bold;   -fx-background-radius: 30 30 30 30;" text="Follow User" AnchorPane.leftAnchor="277.0" AnchorPane.topAnchor="135.0">
+      <JFXButton fx:id="followButton" layoutX="441.0" layoutY="150.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="195.0" style="-fx-font-size: 22; -fx-text-fill: white; -fx-background-color:#50E476;-fx-font-weight: bold;   -fx-background-radius: 30 30 30 30;" text="Follow User" AnchorPane.leftAnchor="441.0" AnchorPane.topAnchor="150.0">
          <font>
-            <Font size="24.0" />
+            <Font size="22.0" />
          </font>
       </JFXButton>
+      <JFXButton fx:id="showFollowersButton" layoutX="441.0" layoutY="216.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="195.0" style="-fx-font-size: 22; -fx-text-fill: white; -fx-background-color:#50E476;-fx-font-weight: bold;   -fx-background-radius: 30 30 30 30;" text="Show Followers" />
+      <AnchorPane layoutX="202.0" layoutY="151.0" prefHeight="115.0" prefWidth="227.0" style="-fx-border-width: 1; -fx-border-radius: 10 10 10 10;-fx-border-color: lightgray;">
+         <children>
+            <Text layoutX="2.0" layoutY="20.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Overall:" wrappingWidth="195.00000774860382" AnchorPane.leftAnchor="5.0" AnchorPane.topAnchor="5.0">
+               <font>
+                  <Font name="System Bold" size="16.0" />
+               </font>
+            </Text>
+            <Text layoutX="2.0" layoutY="63.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Daily average:" wrappingWidth="195.00000774860382" AnchorPane.leftAnchor="5.0" AnchorPane.topAnchor="55.0">
+               <font>
+                  <Font name="System Bold" size="16.0" />
+               </font>
+            </Text>
+            <Text fx:id="overallPoints" layoutX="6.0" layoutY="54.0" strokeType="OUTSIDE" strokeWidth="0.0" text="157787 points" wrappingWidth="195.00000774860382" AnchorPane.leftAnchor="5.0" AnchorPane.topAnchor="25.0">
+               <font>
+                  <Font name="System Bold" size="16.0" />
+               </font>
+            </Text>
+            <Text fx:id="dailyPoints" layoutX="6.0" layoutY="99.0" strokeType="OUTSIDE" strokeWidth="0.0" text="865 points" wrappingWidth="195.00000774860382" AnchorPane.leftAnchor="5.0" AnchorPane.topAnchor="75.0">
+               <font>
+                  <Font name="System Bold" size="16.0" />
+               </font>
+            </Text>
+         </children></AnchorPane>
+      <Label alignment="CENTER" layoutX="200.0" layoutY="110.0" prefHeight="33.0" prefWidth="227.0" style="-fx-font-size: 22 ;-fx-background-color:#50E476;-fx-font-weight: bold; -fx-border-radius: 20 20 20 20;  -fx-background-radius: 20 20 20 20;" text="CO2 Savings:" textFill="WHITE" />
    </children>
 </AnchorPane>
