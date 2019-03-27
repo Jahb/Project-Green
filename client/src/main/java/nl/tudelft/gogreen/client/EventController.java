@@ -182,7 +182,10 @@ public class EventController implements Initializable {
             if (event != null && !empty) {
                 eventName.setText(event.getLabel());
                 setGraphic(listCell);
-                String hoverText = "Date:\n" + getItem().getDate() + "\n\nStart Time:\n" + getItem().getTime() + "\n\nDescription: \n" + getItem().getDescription();
+
+                String hoverText = "Date:\n" + getItem().getDate() +
+                        "\n\nStart Time:\n" + getItem().getTime() +
+                        "\n\nDescription: \n" + getItem().getDescription();
                 Tooltip.install(this.eventName, new Tooltip(hoverText));
 
             }
