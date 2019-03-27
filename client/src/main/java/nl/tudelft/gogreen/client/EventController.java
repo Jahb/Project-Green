@@ -1,34 +1,34 @@
 package nl.tudelft.gogreen.client;
 
+import static javafx.scene.layout.Priority.ALWAYS;
+
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.ListCell;
-import javafx.scene.control.ListView;
-import javafx.scene.layout.*;
+import javafx.scene.control.*;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.Pane;
 
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-import static javafx.scene.layout.Priority.ALWAYS;
-
 public class EventController implements Initializable {
 
     @FXML
-    public ListView eventList;
+    public ListView<EventItem> eventList;
     @FXML
-    public ListView fullEventList;
+    public ListView<EventItem> fullEventList;
     @FXML
     public AnchorPane createEvent;
 
-    ObservableList<String> allEvents = FXCollections.observableArrayList();
-    ObservableList<String> userEvents = FXCollections.observableArrayList();
+    private ObservableList<EventItem> allEvents = FXCollections.observableArrayList();
+    private ObservableList<EventItem> userEvents = FXCollections.observableArrayList();
 
 
     /**
@@ -83,7 +83,18 @@ public class EventController implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
 
-        allEvents.addAll("Hippy Bullshit At the Park", "Going to the beach to pick up trash and shit", "Lonely dudes who just wanna go green");
+        EventItem event1 = new EventItem("Hippy Bullshit At the Park",
+                "We do it at the park",
+                "12:45am");
+        EventItem event2 = new EventItem("Going to the beach to pick up trash and shit",
+                "IDK lets go green",
+                "13:40pm");
+        EventItem event3 = new EventItem("Lonely dudes who just wanna go green",
+                "We sad and want some tree GFs",
+                "11:14pm");
+
+
+        allEvents.addAll(event1, event2, event3);
         fullEventList.setItems(allEvents);
         fullEventList.setCellFactory(param -> new Cell(userEvents));
 
@@ -92,40 +103,76 @@ public class EventController implements Initializable {
 
     }
 
-    static class Cell extends ListCell<String> {
+    /**
+     * Helper Class that creates and Event object which stores a Label and a Description.
+     * Can be removed if believed to be inefficent.
+     */
+    private class EventItem {
+        private String label;
+        private String description;
+        private String time;
 
-        HBox cell = new HBox();
-        Label label = new Label("");
+        EventItem(String label, String description, String time) {
+            this.label = label;
+            this.description = description;
+            this.time = time;
+        }
+
+        public String getLabel() {
+            return this.label;
+        }
+
+        public String getDescription() {
+            return this.description;
+        }
+
+        public String getTime() {
+            return this.time;
+        }
+    }
+
+    /**
+     * Helper Class for Cells in both listViews.
+     */
+    class Cell extends ListCell<EventItem> {
+
+        HBox listCell = new HBox();
+        Label eventName = new Label();
         Button button;
         Pane pane = new Pane();
 
-        public Cell() {
+        private Cell() {
             super();
-            cell.getChildren().addAll(label, pane, button = new Button("Leave Event"));
+            listCell.getChildren().addAll(eventName, pane, button = new Button("Leave Event"));
+            button.setId("button");
             button.setOnAction(event -> leaveEvent());
-            cell.setHgrow(pane, ALWAYS);
+            HBox.setHgrow(pane, ALWAYS);
+
         }
 
-        public Cell(ObservableList<String> events) {
+        private Cell(ObservableList<EventItem> events) {
             super();
-            cell.getChildren().addAll(label, pane, button = new Button("Join Event"));
+            listCell.getChildren().addAll(eventName, pane, button = new Button("Join Event"));
             button.setOnAction(event -> joinEvent(events));
-            cell.setHgrow(pane, ALWAYS);
+            button.setId("button");
+            HBox.setHgrow(pane, ALWAYS);
 
         }
 
-        public void updateItem(String name, boolean empty) {
-            super.updateItem(name, empty);
+        public void updateItem(EventItem event, boolean empty) {
+            super.updateItem(event, empty);
             setText(null);
             setGraphic(null);
 
-            if (name != null && !empty) {
-                label.setText(name);
-                setGraphic(cell);
+            if (event != null && !empty) {
+                eventName.setText(event.getLabel());
+                setGraphic(listCell);
+                String hoverText = "Start Time: " + getItem().getTime() + "\nDescription: \n" + getItem().getDescription();
+                Tooltip.install(this, new Tooltip(hoverText));
             }
         }
 
-        private void joinEvent(ObservableList<String> events) {
+        private void joinEvent(ObservableList<EventItem> events) {
             //TODO for event join
             events.add(getItem());
         }

@@ -2,6 +2,7 @@
     -fx-background-color: #50e476;
     -fx-background-radius: 5em;
     -fx-font-weight: bold;
+    -fx-text-fill: white;
 }
 .button:hover{
     -fx-background-color: #52eb85;

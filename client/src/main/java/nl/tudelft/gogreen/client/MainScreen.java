@@ -1,14 +1,11 @@
 package nl.tudelft.gogreen.client;
 
-
-import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.TextArea;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.Border;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
@@ -46,8 +43,8 @@ public class MainScreen {
         HBox topButtons = (HBox) topPane.getRight();
 
         AnchorPane overlayLayer = (AnchorPane) root.getChildren().get(1);
-        BorderPane buttonsPanel = (BorderPane) overlayLayer.getChildren().get(1);
         helpText = (TextArea) overlayLayer.getChildren().get(0);
+        BorderPane buttonsPanel = (BorderPane) overlayLayer.getChildren().get(1);
 
         addMainRing(mainRingPane);
         addTopMenuButtons(topButtons);
