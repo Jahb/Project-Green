@@ -11,3 +11,10 @@
 .button:pressed{
     -fx-background-color: #38ba5c;
 }
+
+.tooltip {
+    -fx-text-fill: white;
+    -fx-background-color: #50e476;
+    -fx-font-size: 1em;
+    -fx-font-weight: bold;
+}

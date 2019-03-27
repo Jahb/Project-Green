@@ -65,11 +65,16 @@ public class EventController implements Initializable {
         cancelButton.setCenter(cancelIcon.getStackPane());
 
         cancelIcon.setOnClick(event -> createEvent.setVisible(false));
-        //Create Event Button
-        acceptIcon.setOnClick(event -> System.out.println("TODO Create event"));
+        acceptIcon.setOnClick(event -> addNewEvent());
         acceptIcon.setOnClick(event -> createEvent.setVisible(false));
 
         return new Scene(root, Main.getWidth(), Main.getHeight());
+    }
+
+    private void addNewEvent() {
+        //TODO for adding event to DataBase
+        System.out.println("Adding Event");
+        //Not sure if this help but a new EventItem Object should be created
     }
 
     /**
@@ -83,15 +88,19 @@ public class EventController implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
 
+        //Dummy data for the allEvents List.
         EventItem event1 = new EventItem("Hippy Bullshit At the Park",
                 "We do it at the park",
-                "12:45am");
+                "12:45am",
+                "10/12/2019");
         EventItem event2 = new EventItem("Going to the beach to pick up trash and shit",
                 "IDK lets go green",
-                "13:40pm");
+                "13:40pm",
+                "5/2/2018");
         EventItem event3 = new EventItem("Lonely dudes who just wanna go green",
                 "We sad and want some tree GFs",
-                "11:14pm");
+                "11:14pm",
+                "1/1/2020");
 
 
         allEvents.addAll(event1, event2, event3);
@@ -111,23 +120,29 @@ public class EventController implements Initializable {
         private String label;
         private String description;
         private String time;
+        private String date;
 
-        EventItem(String label, String description, String time) {
+        private EventItem(String label, String description, String time, String date) {
             this.label = label;
             this.description = description;
             this.time = time;
+            this.date = date;
         }
 
-        public String getLabel() {
+        private String getLabel() {
             return this.label;
         }
 
-        public String getDescription() {
+        private String getDescription() {
             return this.description;
         }
 
-        public String getTime() {
+        private String getTime() {
             return this.time;
+        }
+
+        private String getDate() {
+            return this.date;
         }
     }
 
@@ -167,8 +182,9 @@ public class EventController implements Initializable {
             if (event != null && !empty) {
                 eventName.setText(event.getLabel());
                 setGraphic(listCell);
-                String hoverText = "Start Time: " + getItem().getTime() + "\nDescription: \n" + getItem().getDescription();
-                Tooltip.install(this, new Tooltip(hoverText));
+                String hoverText = "Date:\n" + getItem().getDate() + "\n\nStart Time:\n" + getItem().getTime() + "\n\nDescription: \n" + getItem().getDescription();
+                Tooltip.install(this.eventName, new Tooltip(hoverText));
+
             }
         }
 
@@ -183,6 +199,5 @@ public class EventController implements Initializable {
         }
 
     }
-
 
 }
