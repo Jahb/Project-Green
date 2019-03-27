@@ -90,13 +90,14 @@ public class MainScreen {
     private void addIconButtons(BorderPane root) {
         IconButton leaderboardButton = new IconButton("Leaderboard", 150, 150);
         IconButton addButton = new IconButton("Add", 600, 150);
-        IconButton helpButton = new IconButton("Help", 150, 150);
+        IconButton eventButton = new IconButton("Event", 150, 150);
+
 
         root.setLeft(leaderboardButton.getStackPane());
         root.setCenter(addButton.getStackPane());
-        root.setRight(helpButton.getStackPane());
+        root.setRight(eventButton.getStackPane());
 
-        helpButton.setOnClick(event -> helpText.setVisible(!helpText.isVisible()));
+        eventButton.setOnClick(event -> Main.openEventScreen());
 
         addButton.setOnClick(event -> activityButton.open());
         leaderboardButton.setOnClick(event -> Main.openLeaderboardScreen());
@@ -108,11 +109,11 @@ public class MainScreen {
      * @param hbox A Hbox Container.
      */
     private void addTopMenuButtons(HBox hbox) {
-        IconButton eventButton = new IconButton("Event", 70, 70);
+        IconButton helpButton = new IconButton("Help", 70, 70);
         BorderPane root = (BorderPane) hbox.getChildren().get(1);
-        root.setCenter(eventButton.getStackPane());
+        root.setCenter(helpButton.getStackPane());
 
-        eventButton.setOnClick(event -> Main.openEventScreen());
+        helpButton.setOnClick(event -> helpText.setVisible(!helpText.isVisible()));
     }
 
 }
