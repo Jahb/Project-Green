@@ -31,7 +31,9 @@
             <Font size="18.0" />
         </font>
     </Button>
-    <Button id="button" fx:id="registerButton" layoutX="492.0" layoutY="314.0" mnemonicParsing="false" prefHeight="39.0" prefWidth="95.0" stylesheets="@Common.css" text="Register" textFill="WHITE" AnchorPane.rightAnchor="38.0" AnchorPane.topAnchor="314.0">
+    <Button id="button" fx:id="registerButton" layoutX="492.0" layoutY="314.0" mnemonicParsing="false" prefHeight="39.0"
+            prefWidth="95.0" stylesheets="@Login.css" text="Register" textFill="WHITE" AnchorPane.rightAnchor="38.0" onAction="#register"
+            AnchorPane.topAnchor="314.0">
         <font>
             <Font size="18.0" />
         </font>

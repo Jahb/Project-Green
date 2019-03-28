@@ -1,5 +1,6 @@
 package nl.tudelft.gogreen.client;
 
+import com.mashape.unirest.http.exceptions.UnirestException;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Scene;
@@ -9,6 +10,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
+import nl.tudelft.gogreen.client.communication.API;
 
 import java.io.IOException;
 import java.net.URL;
@@ -26,9 +28,14 @@ public class MainScreen {
     private TextArea helpText;
     private AddActivityButton activityButton;
     // TODO handler for each subcategory
-    private Consumer<String> handler = name -> System.out.println("EXE [" + name + "]");
-    // TODO handler for each ring category
-    private Consumer<String> ringHandler = name -> System.out.println("EXE [" + name + "]");
+    private Consumer<String> handler = name -> {
+        try {
+            int res = API.current.addFeature(name);
+            Main.openMainScreen();
+        } catch (UnirestException e) {
+            e.printStackTrace();
+        }
+    };
 
 
     /**
@@ -71,10 +78,13 @@ public class MainScreen {
 
     private void addMainRing(AnchorPane anchorPane) {
         ring = new Ring((int) (150 * .75), 150, Main.getHeight() / 2, 200);
-        ring.addSegment(38, Color.LIME, "Food");
-        ring.addSegment(20, Color.YELLOW, "Energy");
-        ring.addSegment(15, Color.GREEN, "Transport");
-        ring.setHandler(ringHandler);
+//        ring.addSegment(38, Color.LIME);
+//        ring.addSegment(20, Color.YELLOW);
+//        ring.addSegment(15, Color.GREEN);
+        float calc = ((float) API.current.getTotal() / 1000);
+        int i = (int) (calc * 100);
+        System.out.println(i);
+        ring.addSegment(i, Color.LIME);
         anchorPane.getChildren().add(ring.getPane());
 
         anchorPane.widthProperty()

@@ -5,10 +5,10 @@ Julius de Jeu
 <img src="https://voidcorp.nl/images/julius.jpg"  width="120">
 
 Paul Stepanov
-![Paul Stepanov](/doc/images/cvpoza.png)`
+<img src="/doc/images/cvpoza.png"  width="120">
 
 Pablo Rodrigo 
-![Pablo Rodrigo](/doc/images/PabloRodrigo.jpg)
+<img src="/doc/images/PabloRodrigo.jpg"  width="120">
 
 Vlad Florea
 <img src="/doc/images/22d61c22-5ff1-4183-8bf7-37117d17b57a.jpg"  width="120">
