@@ -27,6 +27,8 @@ public class MainScreen {
     private AddActivityButton activityButton;
     // TODO handler for each subcategory
     private Consumer<String> handler = name -> System.out.println("EXE [" + name + "]");
+    // TODO handler for each ring category
+    private Consumer<String> ringHandler = name -> System.out.println("EXE [" + name + "]");
 
 
     /**
@@ -69,9 +71,10 @@ public class MainScreen {
 
     private void addMainRing(AnchorPane anchorPane) {
         ring = new Ring((int) (150 * .75), 150, Main.getHeight() / 2, 200);
-        ring.addSegment(38, Color.LIME);
-        ring.addSegment(20, Color.YELLOW);
-        ring.addSegment(15, Color.GREEN);
+        ring.addSegment(38, Color.LIME, "Food");
+        ring.addSegment(20, Color.YELLOW, "Energy");
+        ring.addSegment(15, Color.GREEN, "Transport");
+        ring.setHandler(ringHandler);
         anchorPane.getChildren().add(ring.getPane());
 
         anchorPane.widthProperty()

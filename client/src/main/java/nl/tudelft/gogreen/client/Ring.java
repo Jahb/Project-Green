@@ -1,8 +1,12 @@
 package nl.tudelft.gogreen.client;
 
+import java.util.ArrayList;
+import java.util.function.Consumer;
+
 import javafx.animation.AnimationTimer;
 import javafx.animation.FillTransition;
 import javafx.animation.Transition;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
@@ -10,8 +14,6 @@ import javafx.scene.shape.Arc;
 import javafx.scene.shape.ArcType;
 import javafx.scene.shape.Circle;
 import javafx.util.Duration;
-
-import java.util.ArrayList;
 
 public class Ring {
 
@@ -21,6 +23,7 @@ public class Ring {
     private int centerX;
     private int centerY;
     private long timerStart;
+    private Consumer<String> handler;
 
     /**
      * Constructor for Ring Class.
@@ -43,12 +46,16 @@ public class Ring {
         outerCircle.setCenterX(centerX);
         outerCircle.setCenterY(centerY);
         outerCircle.setRadius(outerRadius);
-        outerCircle.setFill(Color.WHITE);
+        outerCircle.setFill(Color.GRAY);
         outerCircle.setStroke(Color.BLACK);
     }
 
-    void addSegment(int percentage, Color color) {
-        segments.add(new RingSegment(this, percentage, color));
+    void addSegment(int percentage, Color color, String name) {
+        segments.add(new RingSegment(this, percentage, color, name));
+    }
+    
+    void setHandler(Consumer<String> handler) {
+        this.handler = handler;
     }
 
     Pane getPane() {
@@ -99,7 +106,7 @@ public class Ring {
                     rs.percentage += rs.delta;
                     rs.delta = 0;
                 }
-                
+//                rs.cutArc.;
                 startAngle += rs.arc.getLength();
             }
         }
@@ -133,13 +140,15 @@ public class Ring {
     class RingSegment {
 
         protected Color color;
+        protected String name;
         double percentage;
         double delta;
         Arc arc;
 
-        RingSegment(Ring ring, double percentage, Color color) {
+        RingSegment(Ring ring, double percentage, Color color, String name) {
             this.delta = percentage;
             this.color = color;
+            this.name = name;
 
             arc = new Arc();
 
@@ -178,6 +187,8 @@ public class Ring {
                 mouseEnter.jumpTo(Duration.millis(200));
                 mouseExit.playFromStart();
             });
+            
+            arc.addEventFilter(MouseEvent.MOUSE_PRESSED, event -> handler.accept(name));
         }
     }
 
