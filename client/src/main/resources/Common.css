@@ -2,6 +2,7 @@
     -fx-background-color: #50e476;
     -fx-background-radius: 5em;
     -fx-font-weight: bold;
+    -fx-text-fill: white;
 }
 .button:hover{
     -fx-background-color: #52eb85;
@@ -9,4 +10,11 @@
 }
 .button:pressed{
     -fx-background-color: #38ba5c;
+}
+
+.tooltip {
+    -fx-text-fill: white;
+    -fx-background-color: #50e476;
+    -fx-font-size: 1em;
+    -fx-font-weight: bold;
 }
