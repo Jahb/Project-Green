@@ -1,8 +1,12 @@
 package nl.tudelft.gogreen.client;
 
+import java.util.ArrayList;
+import java.util.function.Consumer;
+
 import javafx.animation.AnimationTimer;
 import javafx.animation.FillTransition;
 import javafx.animation.Transition;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
@@ -10,8 +14,6 @@ import javafx.scene.shape.Arc;
 import javafx.scene.shape.ArcType;
 import javafx.scene.shape.Circle;
 import javafx.util.Duration;
-
-import java.util.ArrayList;
 
 public class Ring {
 
@@ -21,13 +23,15 @@ public class Ring {
     private int centerX;
     private int centerY;
     private long timerStart;
+    private Consumer<String> handler;
 
     /**
      * Constructor for Ring Class.
+     * 
      * @param innerRadius Radius of inner Circle
      * @param outerRadius Radius of outer Circle
-     * @param centerX X Co-Ord of center of Circle
-     * @param centerY Y Co-Ord of center of Circle
+     * @param centerX     X coordinate of center of Circle
+     * @param centerY     Y coordinate of center of Circle
      */
     public Ring(int innerRadius, int outerRadius, int centerX, int centerY) {
         this.centerX = centerX;
@@ -42,12 +46,16 @@ public class Ring {
         outerCircle.setCenterX(centerX);
         outerCircle.setCenterY(centerY);
         outerCircle.setRadius(outerRadius);
-        outerCircle.setFill(Color.WHITE);
+        outerCircle.setFill(Color.GRAY);
         outerCircle.setStroke(Color.BLACK);
     }
 
-    void addSegment(int percentage, Color color) {
-        segments.add(new RingSegment(this, percentage, color));
+    void addSegment(int percentage, Color color, String name) {
+        segments.add(new RingSegment(this, percentage, color, name));
+    }
+    
+    void setHandler(Consumer<String> handler) {
+        this.handler = handler;
     }
 
     Pane getPane() {
@@ -67,26 +75,38 @@ public class Ring {
             rs.arc.setCenterX(cord);
     }
 
+    void setSegmentValue(int segment, double newValue) throws ArrayIndexOutOfBoundsException {
+        segments.get(segment).delta = newValue - segments.get(segment).percentage;
+    }
+
     void startAnimation() {
+//        if (System.nanoTime() - timerStart > 3000_000_000d) {
         timerStart = System.nanoTime();
         timer.start();
+//        }
     }
 
     private AnimationTimer timer = new AnimationTimer() {
 
         @Override
         public void handle(long time) {
-            double progress = (time - timerStart) / 38_000_000d;
+            double progress = (time - timerStart) / 30_000_000d;
             double startAngle = 0;
 
             if (progress > 100)
                 timer.stop();
+            
 
             for (RingSegment rs : segments) {
                 rs.arc.setStartAngle(90 + startAngle);
-                double animationLength = Math.min(progress / rs.percentage, 1);
-                rs.arc.setLength(smoothFormula(animationLength) * rs.percentage * -3.6);
-
+                double animationLength = Math.max(-1, Math.min(progress / rs.delta, 1));
+                rs.arc.setLength((rs.percentage + smoothFormula(animationLength) * rs.delta) * -3.6);
+                
+                if(animationLength == 1 || animationLength == -1) {
+                    rs.percentage += rs.delta;
+                    rs.delta = 0;
+                }
+//                rs.cutArc.;
                 startAngle += rs.arc.getLength();
             }
         }
@@ -120,12 +140,15 @@ public class Ring {
     class RingSegment {
 
         protected Color color;
+        protected String name;
         double percentage;
+        double delta;
         Arc arc;
 
-        RingSegment(Ring ring, double percentage, Color color) {
-            this.percentage = percentage;
+        RingSegment(Ring ring, double percentage, Color color, String name) {
+            this.delta = percentage;
             this.color = color;
+            this.name = name;
 
             arc = new Arc();
 
@@ -164,6 +187,8 @@ public class Ring {
                 mouseEnter.jumpTo(Duration.millis(200));
                 mouseExit.playFromStart();
             });
+            
+            arc.addEventFilter(MouseEvent.MOUSE_PRESSED, event -> handler.accept(name));
         }
     }
 

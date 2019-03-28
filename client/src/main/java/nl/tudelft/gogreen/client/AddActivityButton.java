@@ -3,7 +3,6 @@ package nl.tudelft.gogreen.client;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.animation.TranslateTransition;
-import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
@@ -19,14 +18,10 @@ import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.util.Duration;
 
-import javax.tools.Tool;
 import java.lang.reflect.Field;
 import java.util.HashSet;
 import java.util.function.Consumer;
 
-//import javafx.scene.layout.*;
-
-//import javafx.scene.layout.*;
 
 /**
  * AddActivityButton GUI object.
@@ -232,18 +227,18 @@ class AddActivityButton {
                 addSubCategoryButton("Help");
             }
             if (name.equals("Transport")) {
-                addSubCategoryButton("Help");
-                addSubCategoryButton("Help");
+                addSubCategoryButton("Bike");
+                addSubCategoryButton("Publictransport");
                 addSubCategoryButton("Help");
             }
             if (name.equals("Energy")) {
-                addSubCategoryButton("Help");
+                addSubCategoryButton("Solarpanel");
                 addSubCategoryButton("Help");
                 addSubCategoryButton("Help");
             }
             if (name.equals("Habit")) {
-                addSubCategoryButton("Help");
-                addSubCategoryButton("Help");
+                addSubCategoryButton("Recycle");
+                addSubCategoryButton("NoSmoking");
                 addSubCategoryButton("Help");
             }
 
