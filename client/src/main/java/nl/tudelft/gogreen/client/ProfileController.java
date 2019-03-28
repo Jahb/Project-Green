@@ -21,6 +21,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Circle;
+import javafx.scene.text.Text;
 import javafx.util.Callback;
 
 import java.io.IOException;
@@ -29,6 +30,11 @@ import java.util.ResourceBundle;
 
 public class ProfileController implements Initializable {
 
+
+    @FXML
+    private Text dailyPoints;
+    @FXML
+    private Text overallPoints;
     @FXML
     private Label followLabel;
     @FXML
@@ -56,6 +62,9 @@ public class ProfileController implements Initializable {
         UpdateableListViewSkin<ListItem> skin = new UpdateableListViewSkin<>(this.friendsList);
         this.friendsList.setSkin(skin);
 
+        /**
+         * list switching functionality
+         */
         showFollowersButton.setOnMouseClicked((MouseEvent event) -> {
             if(followLabel.getText().equals("Following")) {
                 items.clear();
@@ -139,4 +148,6 @@ public class ProfileController implements Initializable {
         IconButton followerAddButton = new IconButton("Add", 50, 50);
         root1.setRight(followerAddButton.getStackPane());
     }
+
+
 }

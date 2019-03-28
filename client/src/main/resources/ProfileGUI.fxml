@@ -60,9 +60,31 @@
             <Font size="22.0" />
          </font>
       </Label>
-      <AnchorPane layoutX="25.0" layoutY="348.0" prefHeight="245.0" prefWidth="260.0" style="-fx-border-width: 1; -fx-border-color: lightgray;-fx-border-radius: 20 20 20 20;" AnchorPane.bottomAnchor="127.0">
+      <AnchorPane layoutX="25.0" layoutY="348.0" prefHeight="240.0" prefWidth="260.0" style="-fx-border-width: 1; -fx-border-color: lightgray;-fx-border-radius: 20 20 20 20;" AnchorPane.bottomAnchor="127.0">
          <children>
-            <VBox layoutX="2.0" layoutY="10.0" prefHeight="227.0" prefWidth="73.0" spacing="15.0" AnchorPane.bottomAnchor="9.0" AnchorPane.leftAnchor="1.0" AnchorPane.rightAnchor="186.0" AnchorPane.topAnchor="9.0">
+            <VBox layoutX="74.0" layoutY="11.0" prefHeight="221.0" prefWidth="185.0" spacing="15.0" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="73.0">
+               <children>
+                  <Label fx:id="achievementLabel1" prefHeight="65.0" prefWidth="268.0" text="Achievement 1">
+                     <font>
+                        <Font name="System Bold" size="16.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="achievementLabel2" prefHeight="65.0" prefWidth="267.0" text="Achievement 2">
+                     <VBox.margin>
+                        <Insets />
+                     </VBox.margin>
+                     <font>
+                        <Font name="System Bold" size="16.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="achievementLabel3" prefHeight="65.0" prefWidth="243.0" text="Achievement 3">
+                     <font>
+                        <Font name="System Bold" size="16.0" />
+                     </font>
+                  </Label>
+               </children>
+            </VBox>
+            <VBox layoutX="7.0" layoutY="10.0" prefHeight="221.0" prefWidth="67.0" spacing="15.0" AnchorPane.bottomAnchor="8.0" AnchorPane.leftAnchor="6.0" AnchorPane.rightAnchor="188.0">
                <opaqueInsets>
                   <Insets />
                </opaqueInsets>
@@ -82,28 +104,6 @@
                         <Image url="@images/achievementImage.png" />
                      </image>
                   </ImageView>
-               </children>
-            </VBox>
-            <VBox layoutX="74.0" layoutY="11.0" prefHeight="221.0" prefWidth="185.0" spacing="15.0" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="73.0" AnchorPane.topAnchor="10.0">
-               <children>
-                  <Label prefHeight="70.0" prefWidth="268.0" text="Achievement 1">
-                     <font>
-                        <Font name="System Bold" size="16.0" />
-                     </font>
-                  </Label>
-                  <Label prefHeight="70.0" prefWidth="267.0" text="Achievement 2">
-                     <VBox.margin>
-                        <Insets />
-                     </VBox.margin>
-                     <font>
-                        <Font name="System Bold" size="16.0" />
-                     </font>
-                  </Label>
-                  <Label prefHeight="70.0" prefWidth="243.0" text="Achievement 3">
-                     <font>
-                        <Font name="System Bold" size="16.0" />
-                     </font>
-                  </Label>
                </children>
             </VBox>
          </children>

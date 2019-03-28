@@ -56,6 +56,7 @@ public class LeaderboardController implements Initializable {
     public void initialize(URL location, ResourceBundle resources) {
         XYChart.Series monthly = new XYChart.Series();
         XYChart.Series weekly = new XYChart.Series();
+        scoreChart.setLegendVisible(false);
 
         weekly.getData().add(new XYChart.Data("2", 24));
         weekly.getData().add(new XYChart.Data("8", 15));
