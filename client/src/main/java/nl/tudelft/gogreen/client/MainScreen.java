@@ -32,6 +32,13 @@ public class MainScreen {
         try {
             int res = API.current.addFeature(name);
 
+            float calc = ((float) API.current.getTotal() / 1000);
+            int i = (int) (calc * 100);
+            System.out.println(i);
+            ring.setSegmentValue(0, i);
+            ring.setSegmentValue(1, i);
+            ring.setSegmentValue(2, i);
+            ring.startAnimation();
         } catch (UnirestException e) {
             e.printStackTrace();
         }
@@ -86,9 +93,9 @@ public class MainScreen {
         float calc = ((float) API.current.getTotal() / 1000);
         int i = (int) (calc * 100);
         System.out.println(i);
-        ring.setSegmentValue(i, 0);
-        ring.setSegmentValue(i, 1);
-        ring.setSegmentValue(i, 2);
+        ring.setSegmentValue(0, i);
+        ring.setSegmentValue(1, i);
+        ring.setSegmentValue(2, i);
         anchorPane.getChildren().add(ring.getPane());
 
         anchorPane.widthProperty()
