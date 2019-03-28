@@ -30,7 +30,8 @@ import java.util.ResourceBundle;
 
 public class ProfileController implements Initializable {
 
-
+    @FXML
+    private JFXButton followUserButton;
     @FXML
     private Text dailyPoints;
     @FXML
@@ -40,7 +41,7 @@ public class ProfileController implements Initializable {
     @FXML
     private JFXButton showFollowersButton;
     @FXML
-    private JFXTextField followField;
+    public JFXTextField followField;
     @FXML
     ImageView achievementImage1;
     @FXML
@@ -116,6 +117,14 @@ public class ProfileController implements Initializable {
             }
         });
         friendsList.setItems(items);
+
+        /**
+         * adding a follow
+         */
+        followUserButton.setOnMouseClicked((MouseEvent event) -> {
+            String string = followField.getText();
+            System.out.print(string);
+        });
     }
 
 
@@ -145,9 +154,6 @@ public class ProfileController implements Initializable {
         IconButton leaderboardButton = new IconButton("Leaderboard", 100, 100);
         root.setRight(leaderboardButton.getStackPane());
         leaderboardButton.setOnClick(event -> Main.openLeaderboardScreen());
-        IconButton followerAddButton = new IconButton("Add", 50, 50);
-        root1.setRight(followerAddButton.getStackPane());
     }
-
 
 }

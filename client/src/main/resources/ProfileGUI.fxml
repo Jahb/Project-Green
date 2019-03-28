@@ -25,10 +25,16 @@
             <Insets top="5.0" />
          </padding>
       </BorderPane>
-      <BorderPane fx:id="searchPane" layoutX="660.0" layoutY="63.0" prefHeight="50.0" prefWidth="340.0" AnchorPane.topAnchor="67.0">
+      <BorderPane fx:id="searchPane" layoutX="660.0" layoutY="63.0" prefHeight="50.0" prefWidth="340.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="67.0">
          <left>
             <JFXTextField fx:id="followField" prefHeight="34.0" prefWidth="280.0" promptText="Follow a new user:" style="-jfx-unfocus-color: lightgray; -jfx-focus-color:gray" BorderPane.alignment="CENTER" />
          </left>
+         <right>
+            <JFXButton fx:id="followUserButton" minHeight="45.0" minWidth="45.0" mnemonicParsing="false" prefHeight="43.0" prefWidth="42.0" stylesheets="Common.css" text="+" BorderPane.alignment="CENTER">
+               <font>
+                  <Font name="System Bold" size="18.0" />
+               </font></JFXButton>
+         </right>
       </BorderPane>
       <ListView fx:id="friendsList" layoutX="888.0" layoutY="102.0" prefHeight="600.0" prefWidth="340.0" stylesheets="ListStyle.css" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="120.0" />
       <AnchorPane layoutX="726.0" layoutY="5.0" prefHeight="50.0" prefWidth="340.0" style="-fx-background-color: #50E476; -fx-background-radius: 10 10 10 10" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="5.0">
