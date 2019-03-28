@@ -31,12 +31,13 @@ public class MainScreen {
     private Consumer<String> handler = name -> {
         try {
             int res = API.current.addFeature(name);
-            Main.openMainScreen();
+
         } catch (UnirestException e) {
             e.printStackTrace();
         }
     };
-
+    //TODO handler for each ring category
+    private Consumer<String> ringHandler = name -> System.out.println("EXE [" + name + "]");
 
     /**
      * Creates a scene for MainScreen.
@@ -78,13 +79,16 @@ public class MainScreen {
 
     private void addMainRing(AnchorPane anchorPane) {
         ring = new Ring((int) (150 * .75), 150, Main.getHeight() / 2, 200);
-//        ring.addSegment(38, Color.LIME);
-//        ring.addSegment(20, Color.YELLOW);
-//        ring.addSegment(15, Color.GREEN);
+        ring.addSegment(0, Color.LIME, "Food");
+        ring.addSegment(0, Color.YELLOW, "Energy");
+        ring.addSegment(0, Color.GREEN, "Transport");
+        ring.setHandler(ringHandler);
         float calc = ((float) API.current.getTotal() / 1000);
         int i = (int) (calc * 100);
         System.out.println(i);
-        ring.addSegment(i, Color.LIME);
+        ring.setSegmentValue(i, 0);
+        ring.setSegmentValue(i, 1);
+        ring.setSegmentValue(i, 2);
         anchorPane.getChildren().add(ring.getPane());
 
         anchorPane.widthProperty()
