@@ -22,11 +22,14 @@ public class EventsMain {
 
         int idEvent = getMaxId(conn);
         idCreator = NewFeature.getId(username, conn);
+        System.out.println("The idEvent is: " + idEvent + " and the eventName is: " + eventName + " and the idCreator is: " + idCreator);
         PreparedStatement createEvent = conn.prepareStatement(resource.getString("qInsertIntoEvent"));
         createEvent.setInt(1,idEvent);
         createEvent.setString(2,eventName);
         createEvent.setInt(3,idCreator);
+        System.out.println(createEvent.toString());
         createEvent.execute();
+
     }
 
     /**
@@ -62,6 +65,7 @@ public class EventsMain {
         PreparedStatement join = conn.prepareStatement(resource.getString("qJoinEvent"));
         join.setString(1,eventName);
         join.setInt(2,id);
+        join.setInt(3,NewFeature.getId(username,conn));
         join.execute();
 
     }
@@ -143,6 +147,11 @@ public class EventsMain {
      * @throws Exception raises when an error occurs accessing
      */
     public static void deleteAllEvents(int id, Connection conn) throws Exception {
+
+
+        PreparedStatement delEventAttendance = conn.prepareStatement(resource.getString("qDeleteAllEventsAttendance"));
+        delEventAttendance.setInt(1,id);
+        delEventAttendance.execute();
         PreparedStatement delEvent = conn.prepareStatement(resource.getString("qDeleteAllEvents"));
         delEvent.setInt(1,id);
         delEvent.execute();
