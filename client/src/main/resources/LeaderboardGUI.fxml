@@ -1,56 +1,43 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import com.jfoenix.controls.JFXButton?>
 <?import javafx.geometry.Insets?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.image.Image?>
-<?import javafx.scene.image.ImageView?>
-<?import javafx.scene.layout.*?>
+<?import javafx.scene.chart.CategoryAxis?>
+<?import javafx.scene.chart.LineChart?>
+<?import javafx.scene.chart.NumberAxis?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.text.Font?>
-<AnchorPane fx:id="rootPane" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8"
-            xmlns:fx="http://javafx.com/fxml/1" fx:controller="nl.tudelft.gogreen.client.LeaderboardController">
-   <HBox alignment="TOP_CENTER" layoutY="10.0" prefHeight="290.0" prefWidth="577.0" AnchorPane.bottomAnchor="0.0"
-         AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="10.0">
-      <ImageView fx:id="leaderboardHeader" fitHeight="420.0" fitWidth="480.0" pickOnBounds="true"
-                 preserveRatio="true">
-         <HBox.margin>
-            <Insets/>
-         </HBox.margin>
-         <Image url="@images/ImageLeaderboard.png"/>
-      </ImageView>
-   </HBox>
-   <ListView fx:id="leaderboardList" layoutX="297.0" layoutY="113.0" prefHeight="286.0" prefWidth="304.0"
-             stylesheets="ListStyle.css" AnchorPane.bottomAnchor="1.0" AnchorPane.leftAnchor="500.0"
-             AnchorPane.rightAnchor="-1.0" AnchorPane.topAnchor="115.0"/>
-   <BorderPane prefHeight="115.0" prefWidth="608.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"
-               AnchorPane.topAnchor="0.0">
-      <padding>
-         <Insets top="5.0"/>
-      </padding>
-   </BorderPane>
-   <VBox alignment="TOP_CENTER" layoutX="9.0" layoutY="116.0" prefHeight="284.0" prefWidth="490.0" spacing="20.0"
-         AnchorPane.bottomAnchor="1.0" AnchorPane.leftAnchor="5.0" AnchorPane.topAnchor="115.0"/>
-   <VBox fx:id="labelVbox" alignment="TOP_CENTER" layoutX="19.0" layoutY="126.0" prefHeight="284.0" prefWidth="490.0"
-         spacing="20.0" AnchorPane.bottomAnchor="1.0" AnchorPane.leftAnchor="5.0" AnchorPane.topAnchor="115.0">
-      <Label fx:id="dayLabel" prefHeight="100.0" text="Daily" textFill="WHITE">
-         <font>
-            <Font size="50.0"/>
-         </font>
-      </Label>
-      <Label fx:id="weekLabel" prefHeight="100.0" prefWidth="161.0" text="Weekly" textFill="WHITE">
-         <font>
-            <Font size="50.0"/>
-         </font>
-      </Label>
-      <Label fx:id="monthLabel" prefHeight="100.0" text="Monthly" textFill="WHITE">
-         <font>
-            <Font size="50.0"/>
-         </font>
-      </Label>
-      <Label fx:id="overallLabel" prefHeight="100.0" text="Overall" textFill="WHITE">
-         <font>
-            <Font size="50.0"/>
-         </font>
-      </Label>
-   </VBox>
+
+<AnchorPane fx:id="rootPane" prefHeight="721.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="nl.tudelft.gogreen.client.LeaderboardController">
+   <children>
+      <HBox alignment="TOP_CENTER" layoutY="10.0" prefHeight="105.0" prefWidth="115.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="15.0">
+         <children>
+            <Label alignment="CENTER" prefHeight="90.0" prefWidth="320.0" style="-fx-font-size: 35; -fx-text-fill: white; -fx-background-color:#50E476;-fx-font-weight: bold;   -fx-background-radius: 45 45 45 45" text="Leaderboard">
+               <font>
+                  <Font name="System Bold" size="24.0" />
+               </font>
+            </Label>
+         </children>
+      </HBox>
+      <ListView fx:id="leaderboardList" layoutX="667.0" layoutY="173.0" prefHeight="547.0" prefWidth="332.0" stylesheets="ListStyle.css" AnchorPane.bottomAnchor="1.0" AnchorPane.leftAnchor="667.0" AnchorPane.rightAnchor="1.0" AnchorPane.topAnchor="173.0" />
+      <BorderPane prefHeight="115.0" prefWidth="608.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <padding>
+            <Insets top="5.0" />
+         </padding>
+      </BorderPane>
+      <LineChart fx:id="scoreChart" layoutY="198.0" prefHeight="354.0" prefWidth="660.0" AnchorPane.bottomAnchor="1.0" AnchorPane.leftAnchor="1.0" AnchorPane.topAnchor="115.0">
+        <xAxis>
+          <CategoryAxis label="Months" side="BOTTOM" fx:id="x" />
+        </xAxis>
+        <yAxis>
+          <NumberAxis fx:id="y" label="CO2 Reduction" side="LEFT" />
+        </yAxis>
+      </LineChart>
+      <JFXButton fx:id="timeframeButton" layoutX="666.0" layoutY="131.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="332.0" style="-fx-font-size: 24; -fx-text-fill: white; -fx-background-color:#50E476;-fx-font-weight: bold;   -fx-background-radius: 25 25 25 25" text="View Monthly Data" AnchorPane.topAnchor="115.0" />
+   </children>
 
 </AnchorPane>
