@@ -22,6 +22,7 @@ public class Main extends Application {
     private static ProfileController profileScreen = new ProfileController();
     private static LeaderboardController leaderBoardScreen = new LeaderboardController();
     private static AchievementsController achievementsScreen = new AchievementsController();
+    private static EventController EventController = new EventController();
 
 
     static int getWidth() {
@@ -78,6 +79,14 @@ public class Main extends Application {
     static void openLeaderboardScreen() {
         try {
             stage.setScene(leaderBoardScreen.getScene());
+        } catch (IOException ex) {
+            pageOpenError(ex);
+        }
+    }
+
+    static void openEventScreen() {
+        try {
+            stage.setScene(EventController.getScene());
         } catch (IOException ex) {
             pageOpenError(ex);
         }

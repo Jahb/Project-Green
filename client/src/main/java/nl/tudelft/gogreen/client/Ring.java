@@ -1,92 +1,148 @@
 package nl.tudelft.gogreen.client;
 
+import java.util.ArrayList;
+import java.util.function.Consumer;
+
 import javafx.animation.AnimationTimer;
 import javafx.animation.FillTransition;
 import javafx.animation.Transition;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Arc;
 import javafx.scene.shape.ArcType;
 import javafx.scene.shape.Circle;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
+import javafx.scene.text.Text;
 import javafx.util.Duration;
-
-import java.util.ArrayList;
 
 public class Ring {
 
     private Circle innerCircle = new Circle();
     private Circle outerCircle = new Circle();
     private ArrayList<RingSegment> segments = new ArrayList<>();
-    private int centerX;
-    private int centerY;
+    private int centerOffs;
     private long timerStart;
-
+    private Consumer<String> handler;
+    private String name;
+    private Text temporaryUsername = new Text();
+    private Pane textPane = new Pane();
+    private AnchorPane pane;
+    static final double MAXPOINTS = 1000;
     /**
      * Constructor for Ring Class.
+     * 
      * @param innerRadius Radius of inner Circle
      * @param outerRadius Radius of outer Circle
-     * @param centerX X Co-Ord of center of Circle
-     * @param centerY Y Co-Ord of center of Circle
+     * @param centerX     X coordinate of center of Circle
+     * @param centerY     Y coordinate of center of Circle
      */
-    public Ring(int innerRadius, int outerRadius, int centerX, int centerY) {
-        this.centerX = centerX;
-        this.centerY = centerY;
+    public Ring(int innerRadius, int outerRadius, int centerX, int centerY, String name) {
+    	this.name = name;
+    	centerOffs = outerRadius;
+    	
 
-        innerCircle.setCenterX(centerX);
-        innerCircle.setCenterY(centerY);
+        innerCircle.setCenterX(centerOffs);
+        innerCircle.setCenterY(centerOffs);
         innerCircle.setRadius(innerRadius);
         innerCircle.setFill(Color.LIGHTGRAY);
         innerCircle.setStroke(Color.BLACK);
 
-        outerCircle.setCenterX(centerX);
-        outerCircle.setCenterY(centerY);
+        outerCircle.setCenterX(centerOffs);
+        outerCircle.setCenterY(centerOffs);
         outerCircle.setRadius(outerRadius);
         outerCircle.setFill(Color.GRAY);
         outerCircle.setStroke(Color.BLACK);
-    }
-
-    void addSegment(int percentage, Color color) {
-        segments.add(new RingSegment(this, percentage, color));
-    }
-
-    Pane getPane() {
-        AnchorPane anchorPane = new AnchorPane();
-        anchorPane.getChildren().add(outerCircle);
+        
+        addSegment(0, Color.LIME, "Food");
+        addSegment(0, Color.YELLOW, "Energy");
+        addSegment(0, Color.GREEN, "Transport");
+        
+        textPane = new Pane(temporaryUsername);
+        textPane.setLayoutX(50);
+        textPane.setLayoutY(centerOffs*2+5);
+        textPane.setBackground(new Background(new BackgroundFill(new Color(1,1,1,.0), null, null)));
+        temporaryUsername.setFont(Font.font("Calibri", FontWeight.BOLD, 30));
+        temporaryUsername.setY(30);
+        
+        
+        pane = new AnchorPane();
+        pane.getChildren().add(outerCircle);
         for (RingSegment rs : segments)
-            rs.addNodes(anchorPane);
-        anchorPane.getChildren().add(innerCircle);
-        return anchorPane;
+            rs.addNodes(pane);
+        pane.getChildren().add(innerCircle);
+        pane.getChildren().add(textPane);
+        pane.setLayoutX(centerX-outerCircle.getRadius());
+        pane.setLayoutY(centerY-outerCircle.getRadius());
+        
     }
 
-    void setX(int cord) {
-        centerX = cord;
-        innerCircle.setCenterX(cord);
-        outerCircle.setCenterX(cord);
-        for (RingSegment rs : segments)
-            rs.arc.setCenterX(cord);
+    private void addSegment(int percentage, Color color, String name) {
+        segments.add(new RingSegment(this, percentage, color, name));
+    }
+    
+    public void setHandler(Consumer<String> handler) {
+        this.handler = handler;
     }
 
-    void startAnimation() {
+    public Pane getPane() {
+        return pane;
+    }
+
+    public void setX(int centerX) {
+        pane.setLayoutX(centerX-outerCircle.getRadius());
+    }
+    
+    public void setUsername(String username) {
+        temporaryUsername.setText(username);
+        System.out.println(temporaryUsername.getLayoutBounds().getWidth());
+//        temporaryUsername.setWrappingWidth(temporaryUsername.getLayoutBounds().getWidth()+30)
+        textPane.setLayoutX(centerOffs - temporaryUsername.getLayoutBounds().getWidth()/2);
+        textPane.setLayoutY(centerOffs - temporaryUsername.getLayoutBounds().getHeight()/2);
+        
+    }
+
+    public void setSegmentValues(double ... newValues) throws ArrayIndexOutOfBoundsException {
+    	for(int i = 0; i < newValues.length; i++) {
+    		segments.get(i).delta = newValues[i] - segments.get(i).points;
+    	}
+        
+    }
+    public String getName() {
+		return name;
+	}
+    public void startAnimation() {
+//        if (System.nanoTime() - timerStart > 3000_000_000d) {
         timerStart = System.nanoTime();
         timer.start();
+//        }
     }
 
     private AnimationTimer timer = new AnimationTimer() {
 
         @Override
         public void handle(long time) {
-            double progress = (time - timerStart) / 38_000_000d;
+            double progress = (time - timerStart) / (3_000_000_000d / MAXPOINTS);
             double startAngle = 0;
 
-            if (progress > 100)
+            if (progress > MAXPOINTS)
                 timer.stop();
+            
 
             for (RingSegment rs : segments) {
                 rs.arc.setStartAngle(90 + startAngle);
-                double animationLength = Math.min(progress / rs.percentage, 1);
-                rs.arc.setLength(smoothFormula(animationLength) * rs.percentage * -3.6);
-
+                double animationLength = Math.max(-1, Math.min(progress / rs.delta, 1));
+                rs.arc.setLength((rs.points + smoothFormula(animationLength) * rs.delta) * -360/MAXPOINTS);
+                
+                if(animationLength == 1 || animationLength == -1) {
+                    rs.points += rs.delta;
+                    rs.delta = 0;
+                }
+//                rs.cutArc.;
                 startAngle += rs.arc.getLength();
             }
         }
@@ -97,40 +153,40 @@ public class Ring {
     };
 
     private Color blend(Color c1) {
-        final double iRatio = 1d - 0.25;
+    	final double ratio = 0.25;
+        final double iRatio = 1d - ratio;
 
-        final double a1 = c1.getOpacity();
         final double r1 = c1.getRed();
         final double g1 = c1.getGreen();
         final double b1 = c1.getBlue();
 
-        final double a2 = Color.WHITE.getOpacity();
-        final double r2 = Color.WHITE.getRed();
-        final double g2 = Color.WHITE.getGreen();
-        final double b2 = Color.WHITE.getBlue();
+        final double r = Math.sqrt((r1 * r1 * iRatio) + (ratio));
+        final double g = Math.sqrt((g1 * g1 * iRatio) + (ratio));
+        final double b = Math.sqrt((b1 * b1 * iRatio) + (ratio));
 
-        final double a = (a1 * iRatio) + (a2 * 0.25);
-        final double r = Math.sqrt((r1 * r1 * iRatio) + (r2 * r2 * 0.25));
-        final double g = Math.sqrt((g1 * g1 * iRatio) + (g2 * g2 * 0.25));
-        final double b = Math.sqrt((b1 * b1 * iRatio) + (b2 * b2 * 0.25));
 
-        return new Color(r, g, b, a);
+        return new Color(r, g, b, 1);
     }
 
-    class RingSegment {
+    private class RingSegment {
 
         protected Color color;
-        double percentage;
+        protected String name;
+        protected String ringName;
+        double points;
+        double delta;
         Arc arc;
 
-        RingSegment(Ring ring, double percentage, Color color) {
-            this.percentage = percentage;
+        RingSegment(Ring ring, double percentage, Color color, String name) {
+            this.delta = percentage;
             this.color = color;
-
+            this.name = name;
+            ringName = ring.name;
+            
             arc = new Arc();
 
-            arc.setCenterX(ring.centerX);
-            arc.setCenterY(ring.centerY);
+            arc.setCenterX(ring.centerOffs);
+            arc.setCenterY(ring.centerOffs);
             arc.setRadiusX(ring.outerCircle.getRadius());
             arc.setRadiusY(ring.outerCircle.getRadius());
             arc.setStartAngle(90);
@@ -164,7 +220,11 @@ public class Ring {
                 mouseEnter.jumpTo(Duration.millis(200));
                 mouseExit.playFromStart();
             });
+            
+            arc.addEventFilter(MouseEvent.MOUSE_PRESSED, event -> handler.accept(ringName + ":" + name));
         }
     }
+
+	
 
 }

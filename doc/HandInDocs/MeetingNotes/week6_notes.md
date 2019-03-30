@@ -3,7 +3,7 @@ Chair: Paul Stepanov
 Secretary: Pablo Rodrigo Valero
 
 
-Everyone present except Kamron
+Everyone present except Kamron (Called in sick)
 
 
 Sprint Reflection:

@@ -1,19 +1,27 @@
 package nl.tudelft.gogreen.client;
 
+
+import com.jfoenix.controls.JFXButton;
+import com.jfoenix.controls.JFXListCell;
+import com.jfoenix.controls.JFXTextField;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Scene;
+import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Circle;
+import javafx.scene.text.Text;
 import javafx.util.Callback;
 
 import java.io.IOException;
@@ -23,11 +31,23 @@ import java.util.ResourceBundle;
 public class ProfileController implements Initializable {
 
     @FXML
-    Circle achievementCircle1;
+    private JFXButton followUserButton;
     @FXML
-    Circle achievementCircle2;
+    private Text dailyPoints;
     @FXML
-    Circle achievementCircle3;
+    private Text overallPoints;
+    @FXML
+    private Label followLabel;
+    @FXML
+    private JFXButton showFollowersButton;
+    @FXML
+    public JFXTextField followField;
+    @FXML
+    ImageView achievementImage1;
+    @FXML
+    ImageView achievementImage2;
+    @FXML
+    ImageView achievementImage3;
     @FXML
     ListView<String> activityList = new ListView<>();
     @FXML
@@ -40,10 +60,31 @@ public class ProfileController implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
 
-        Image achievementImg = new Image("images/achievementImage.png");
-        achievementCircle1.setFill(new ImagePattern(achievementImg));
-        achievementCircle2.setFill(new ImagePattern(achievementImg));
-        achievementCircle3.setFill(new ImagePattern(achievementImg));
+        UpdateableListViewSkin<ListItem> skin = new UpdateableListViewSkin<>(this.friendsList);
+        this.friendsList.setSkin(skin);
+
+        /**
+         * list switching functionality
+         */
+        showFollowersButton.setOnMouseClicked((MouseEvent event) -> {
+            if(followLabel.getText().equals("Following")) {
+                items.clear();
+                items.add(new ListItem("profile5", "images/buttonProfile.png"));
+                items.add(new ListItem("profile712847", "images/buttonProfile.png"));
+                ((UpdateableListViewSkin) friendsList.getSkin()).refresh();
+                followLabel.setText("Followers");
+                showFollowersButton.setText("Show Following");
+            }
+            else{
+                items.clear();
+                items.add(new ListItem("profile1", "images/achievementImage.png"));
+                items.add(new ListItem("profile2", "images/achievementImage.png"));
+                items.add(new ListItem("profile3", "images/achievementImage.png"));
+                ((UpdateableListViewSkin) friendsList.getSkin()).refresh();
+                followLabel.setText("Following");
+                showFollowersButton.setText("Show Followers");
+            }
+        });
 
         activities.add("17:05 - Ate a Vegetarian Meal");
         activities.add("11:45 - Ate a Vegetarian Meal");
@@ -58,9 +99,9 @@ public class ProfileController implements Initializable {
 
             @Override
             public ListCell<ListItem> call(ListView<ListItem> arg0) {
-                return new ListCell<ListItem>() {
+                return new JFXListCell<ListItem>() {
                     @Override
-                    protected void updateItem(ListItem item, boolean bool) {
+                    public void updateItem(ListItem item, boolean bool) {
                         super.updateItem(item, bool);
                         if (item != null) {
                             Image img = new Image(getClass()
@@ -76,11 +117,20 @@ public class ProfileController implements Initializable {
             }
         });
         friendsList.setItems(items);
+
+        /**
+         * adding a follow
+         */
+        followUserButton.setOnMouseClicked((MouseEvent event) -> {
+            String string = followField.getText();
+            System.out.print(string);
+        });
     }
 
 
     /**
      * Returns ProfileGUI Scene.
+     *
      * @return ProfileGUI Scene
      * @throws IOException IO Exception may be thrown
      */
@@ -91,14 +141,19 @@ public class ProfileController implements Initializable {
         BorderPane buttonPane = (BorderPane) root.getChildren().get(0);
         IconButton.addBackButton(buttonPane);
         BorderPane bottomPane = (BorderPane) root.getChildren().get(1);
-        addLowerButtons(bottomPane);
+        BorderPane searchPane = (BorderPane) root.getChildren().get(2);
+        addIconButtons(bottomPane, searchPane);
         return new Scene(root, Main.getWidth(), Main.getHeight());
     }
 
 
-    private void addLowerButtons(BorderPane root) {
+    private void addIconButtons(BorderPane root, BorderPane root1) {
         IconButton achievementsButton = new IconButton("Achievements", 100, 100);
         root.setLeft(achievementsButton.getStackPane());
         achievementsButton.setOnClick(event -> Main.openAchievementsScreen());
+        IconButton leaderboardButton = new IconButton("Leaderboard", 100, 100);
+        root.setRight(leaderboardButton.getStackPane());
+        leaderboardButton.setOnClick(event -> Main.openLeaderboardScreen());
     }
+
 }

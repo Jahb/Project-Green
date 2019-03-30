@@ -1,5 +1,6 @@
 package nl.tudelft.gogreen.client;
 
+import com.jfoenix.controls.JFXListCell;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -54,12 +55,13 @@ public class AchievementsController implements Initializable {
 
             @Override
             public ListCell<ListItem> call(ListView<ListItem> arg0) {
-                ListCell<ListItem> cell = new ListCell<ListItem>() {
+                JFXListCell<ListItem> cell = new JFXListCell<ListItem>() {
                     @Override
-                    protected void updateItem(ListItem item, boolean bool) {
+                    public void updateItem(ListItem item, boolean bool) {
                         super.updateItem(item, bool);
                         if (item != null && !bool) {
-                            Image img = new Image(getClass().getResource("/" + item.getImageLocation()).toExternalForm());
+                            Image img = new Image(getClass()
+                                    .getResource("/" + item.getImageLocation()).toExternalForm());
                             ImageView imgview = new ImageView(img);
                             imgview.setFitHeight(90);
                             imgview.setFitWidth(90);
