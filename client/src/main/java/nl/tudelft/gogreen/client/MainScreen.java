@@ -58,7 +58,7 @@ public class MainScreen {
         helpText = (TextArea) overlayLayer.getChildren().get(0);
         BorderPane buttonsPanel = (BorderPane) overlayLayer.getChildren().get(1);
 
-        addMainRing(mainRingPane);
+        addRings(mainRingPane);
         addTopMenuButtons(topButtons);
         addIconButtons(buttonsPanel);
         addActivityButton(overlayLayer);
@@ -79,21 +79,39 @@ public class MainScreen {
         return scene;
     }
 
-    private void addMainRing(AnchorPane anchorPane) {
-        ringMAIN = new Ring((int) (150 * .75), 150, Main.getHeight() / 2, 200, "MAIN");
+    private void addRings(AnchorPane anchorPane) {
+        ringMAIN = new Ring((int) (150 * .75), 150, Main.getWidth() / 2, 200, "MAIN");
         ringMAIN.setHandler(ringHandler);
         anchorPane.getChildren().add(ringMAIN.getPane());
+        
+        ringNEXT = new Ring((int) (90 * .75), 90, 120, 350, "NEXT");
+        ringNEXT.setHandler(ringHandler);
+        anchorPane.getChildren().add(ringNEXT.getPane());
+        
+        ringPREVIOUS = new Ring((int) (90 * .75), 90, Main.getWidth() - 120, 350, "PREVIOUS");
+        ringPREVIOUS.setHandler(ringHandler);
+        anchorPane.getChildren().add(ringPREVIOUS.getPane());
 
         anchorPane.widthProperty()
                 .addListener((obs, oldVal, newVal) -> {
                     ringMAIN.setX(newVal.intValue() / 2);
                 });
+        
+        updateRingValues();
 
     }
     private void updateRingValues() {
     	double[] valuesMAIN = API.current.getRingSegmentValues(ringMAIN.getName());
         ringMAIN.setSegmentValues(valuesMAIN);
         ringMAIN.startAnimation();
+        
+        double[] valuesNEXT = API.current.getRingSegmentValues(ringNEXT.getName());
+        ringNEXT.setSegmentValues(valuesNEXT);
+        ringNEXT.startAnimation();
+        
+        double[] valuesPREVIOUS = API.current.getRingSegmentValues(ringPREVIOUS.getName());
+        ringPREVIOUS.setSegmentValues(valuesPREVIOUS);
+        ringPREVIOUS.startAnimation();
     }
 
     private void addActivityButton(AnchorPane anchorPane) {

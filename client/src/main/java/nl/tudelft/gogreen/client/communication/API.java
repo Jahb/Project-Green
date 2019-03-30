@@ -115,7 +115,20 @@ public class API {
     }
 
 	public double[] getRingSegmentValues(String ringName) {
-		//TODO returns a list of [food, energy, transport] format, points out of 1000
-		return new double[] {20,60,10};
+		if(ringName.equals("MAIN")) {
+			//TODO returns a list of [food, energy, transport] format, points out of 1000 for MAIN ring
+			return new double[] {200,400,100};
+		}
+		
+		if(ringName.equals("NEXT")) {
+			//TODO returns a list of [food, energy, transport] format, points out of 1000 for NEXT ring
+			return new double[] {400,200,200};
+		}
+		
+		if(ringName.equals("PREVIOUS")) {
+			//TODO returns a list of [food, energy, transport] format, points out of 1000 for PREVIOUS ring
+			return new double[] {100,200,300};
+		}
+		return null;
 	}
 }
