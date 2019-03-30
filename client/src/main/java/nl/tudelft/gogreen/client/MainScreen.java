@@ -20,10 +20,12 @@ import java.util.function.Consumer;
  * MainScreen object.
  *
  * @author Kamron Geijsen
- * @version 4.20.19
+ * @version 4.20.21
  */
 public class MainScreen {
 
+	private Scene scene;
+	
     private Ring ringMAIN;
     private Ring ringPREVIOUS;
     private Ring ringNEXT;
@@ -48,6 +50,7 @@ public class MainScreen {
         URL url = Main.class.getResource("/MainScreen.fxml");
         System.out.println(url);
         AnchorPane root = FXMLLoader.load(url);
+        scene = new Scene(root, Main.getWidth(), Main.getHeight());
 
         BorderPane baseLayer = (BorderPane) root.getChildren().get(0);
         AnchorPane mainRingPane = (AnchorPane) baseLayer.getCenter();
@@ -69,7 +72,7 @@ public class MainScreen {
 
         overlayLayer.setPickOnBounds(false);
         buttonsPanel.setPickOnBounds(false);
-        Scene scene = new Scene(root, Main.getWidth(), Main.getHeight());
+        
         scene.addEventHandler(MouseEvent.MOUSE_PRESSED, event -> {
             Node node = event.getPickResult().getIntersectedNode();
             if (node != null && !activityButton.contains(node))
@@ -82,19 +85,24 @@ public class MainScreen {
     private void addRings(AnchorPane anchorPane) {
         ringMAIN = new Ring((int) (150 * .75), 150, Main.getWidth() / 2, 200, "MAIN");
         ringMAIN.setHandler(ringHandler);
+        ringMAIN.setUsername(API.current.getUsername());
         anchorPane.getChildren().add(ringMAIN.getPane());
         
         ringNEXT = new Ring((int) (90 * .75), 90, 120, 350, "NEXT");
         ringNEXT.setHandler(ringHandler);
+        ringNEXT.setUsername(API.current.getUsernameNEXT());
         anchorPane.getChildren().add(ringNEXT.getPane());
         
         ringPREVIOUS = new Ring((int) (90 * .75), 90, Main.getWidth() - 120, 350, "PREVIOUS");
         ringPREVIOUS.setHandler(ringHandler);
+        ringPREVIOUS.setUsername(API.current.getUsernamePREVIOUS());
         anchorPane.getChildren().add(ringPREVIOUS.getPane());
 
-        anchorPane.widthProperty()
+        scene.widthProperty()
                 .addListener((obs, oldVal, newVal) -> {
                     ringMAIN.setX(newVal.intValue() / 2);
+                    ringNEXT.setX(120);
+                    ringPREVIOUS.setX(newVal.intValue() - 120);
                 });
         
         updateRingValues();

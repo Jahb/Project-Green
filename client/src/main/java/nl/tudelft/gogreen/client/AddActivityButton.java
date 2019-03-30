@@ -53,7 +53,7 @@ class AddActivityButton {
     AddActivityButton() {
         Pane backgroundPane = new Pane();
         CornerRadii cr = new CornerRadii(60, 60, 0, 0, false);
-        BackgroundFill bf = new BackgroundFill(new Color(1, 1, 1, .8), cr, Insets.EMPTY);
+        BackgroundFill bf = new BackgroundFill(new Color(1, 1, 1, .95), cr, Insets.EMPTY);
         backgroundPane.setBackground(new Background(bf));
 
         backgroundPane.setPrefWidth(600.0 * 31 / 32);

@@ -8,11 +8,16 @@ import javafx.animation.FillTransition;
 import javafx.animation.Transition;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Arc;
 import javafx.scene.shape.ArcType;
 import javafx.scene.shape.Circle;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
+import javafx.scene.text.Text;
 import javafx.util.Duration;
 
 public class Ring {
@@ -24,6 +29,8 @@ public class Ring {
     private long timerStart;
     private Consumer<String> handler;
     private String name;
+    private Text temporaryUsername = new Text();
+    private Pane textPane = new Pane();
     private AnchorPane pane;
     static final double MAXPOINTS = 1000;
     /**
@@ -55,13 +62,23 @@ public class Ring {
         addSegment(0, Color.YELLOW, "Energy");
         addSegment(0, Color.GREEN, "Transport");
         
+        textPane = new Pane(temporaryUsername);
+        textPane.setLayoutX(50);
+        textPane.setLayoutY(centerOffs*2+5);
+        textPane.setBackground(new Background(new BackgroundFill(new Color(1,1,1,.0), null, null)));
+        temporaryUsername.setFont(Font.font("Calibri", FontWeight.BOLD, 30));
+        temporaryUsername.setY(30);
+        
+        
         pane = new AnchorPane();
         pane.getChildren().add(outerCircle);
         for (RingSegment rs : segments)
             rs.addNodes(pane);
         pane.getChildren().add(innerCircle);
+        pane.getChildren().add(textPane);
         pane.setLayoutX(centerX-outerCircle.getRadius());
         pane.setLayoutY(centerY-outerCircle.getRadius());
+        
     }
 
     private void addSegment(int percentage, Color color, String name) {
@@ -78,6 +95,15 @@ public class Ring {
 
     public void setX(int centerX) {
         pane.setLayoutX(centerX-outerCircle.getRadius());
+    }
+    
+    public void setUsername(String username) {
+        temporaryUsername.setText(username);
+        System.out.println(temporaryUsername.getLayoutBounds().getWidth());
+//        temporaryUsername.setWrappingWidth(temporaryUsername.getLayoutBounds().getWidth()+30)
+        textPane.setLayoutX(centerOffs - temporaryUsername.getLayoutBounds().getWidth()/2);
+        textPane.setLayoutY(centerOffs - temporaryUsername.getLayoutBounds().getHeight()/2);
+        
     }
 
     public void setSegmentValues(double ... newValues) throws ArrayIndexOutOfBoundsException {

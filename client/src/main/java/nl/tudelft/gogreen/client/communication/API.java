@@ -131,4 +131,19 @@ public class API {
 		}
 		return null;
 	}
+	
+	public String getUsernamePREVIOUS() {
+		//TODO returns the username of the 'previous' friend
+		return "Steve";
+	}
+	
+	public String getUsernameNEXT() {
+		//TODO returns the username of the 'next' friend
+		return "Emily";
+	}
+	
+	public String getUsername() {
+		//TODO returns the username of the user
+		return "Rob";
+	}
 }
