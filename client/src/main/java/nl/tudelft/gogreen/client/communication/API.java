@@ -113,4 +113,9 @@ public class API {
             }
         });
     }
+
+	public double[] getRingSegmentValues(String ringName) {
+		//TODO returns a list of [food, energy, transport] format, points out of 1000
+		return new double[] {20,60,10};
+	}
 }

@@ -24,21 +24,16 @@ import java.util.function.Consumer;
  */
 public class MainScreen {
 
-    private Ring ring;
+    private Ring ringMAIN;
+    private Ring ringPREVIOUS;
+    private Ring ringNEXT;
     private TextArea helpText;
     private AddActivityButton activityButton;
     // TODO handler for each subcategory
     private Consumer<String> handler = name -> {
         try {
             int res = API.current.addFeature(name);
-
-            float calc = ((float) API.current.getTotal() / 1000);
-            int i = (int) (calc * 100);
-            System.out.println(i);
-            ring.setSegmentValue(0, i);
-            ring.setSegmentValue(1, i);
-            ring.setSegmentValue(2, i);
-            ring.startAnimation();
+            updateRingValues();
         } catch (UnirestException e) {
             e.printStackTrace();
         }
@@ -68,7 +63,7 @@ public class MainScreen {
         addIconButtons(buttonsPanel);
         addActivityButton(overlayLayer);
 
-        ring.startAnimation();
+        
         helpText.setVisible(false);
         overlayLayer.setPrefSize(1000, 720);
 
@@ -85,21 +80,20 @@ public class MainScreen {
     }
 
     private void addMainRing(AnchorPane anchorPane) {
-        ring = new Ring((int) (150 * .75), 150, Main.getHeight() / 2, 200);
-        ring.addSegment(0, Color.LIME, "Food");
-        ring.addSegment(0, Color.YELLOW, "Energy");
-        ring.addSegment(0, Color.GREEN, "Transport");
-        ring.setHandler(ringHandler);
-        float calc = ((float) API.current.getTotal() / 1000);
-        int i = (int) (calc * 100);
-        System.out.println(i);
-        ring.setSegmentValue(0, i);
-        ring.setSegmentValue(1, i);
-        ring.setSegmentValue(2, i);
-        anchorPane.getChildren().add(ring.getPane());
+        ringMAIN = new Ring((int) (150 * .75), 150, Main.getHeight() / 2, 200, "MAIN");
+        ringMAIN.setHandler(ringHandler);
+        anchorPane.getChildren().add(ringMAIN.getPane());
 
         anchorPane.widthProperty()
-                .addListener((obs, oldVal, newVal) -> ring.setX(newVal.intValue() / 2));
+                .addListener((obs, oldVal, newVal) -> {
+                    ringMAIN.setX(newVal.intValue() / 2);
+                });
+
+    }
+    private void updateRingValues() {
+    	double[] valuesMAIN = API.current.getRingSegmentValues(ringMAIN.getName());
+        ringMAIN.setSegmentValues(valuesMAIN);
+        ringMAIN.startAnimation();
     }
 
     private void addActivityButton(AnchorPane anchorPane) {

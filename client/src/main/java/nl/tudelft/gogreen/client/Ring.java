@@ -24,7 +24,8 @@ public class Ring {
     private int centerY;
     private long timerStart;
     private Consumer<String> handler;
-
+    private String name;
+    private AnchorPane pane;
     /**
      * Constructor for Ring Class.
      * 
@@ -33,9 +34,10 @@ public class Ring {
      * @param centerX     X coordinate of center of Circle
      * @param centerY     Y coordinate of center of Circle
      */
-    public Ring(int innerRadius, int outerRadius, int centerX, int centerY) {
-        this.centerX = centerX;
-        this.centerY = centerY;
+    public Ring(int innerRadius, int outerRadius, int centerX, int centerY, String name) {
+    	this.name = name;
+    	this.centerX = centerX;
+    	this.centerY = centerY;
 
         innerCircle.setCenterX(centerX);
         innerCircle.setCenterY(centerY);
@@ -48,26 +50,30 @@ public class Ring {
         outerCircle.setRadius(outerRadius);
         outerCircle.setFill(Color.GRAY);
         outerCircle.setStroke(Color.BLACK);
+        
+        addSegment(0, Color.LIME, "Food");
+        addSegment(0, Color.YELLOW, "Energy");
+        addSegment(0, Color.GREEN, "Transport");
     }
 
-    void addSegment(int percentage, Color color, String name) {
+    private void addSegment(int percentage, Color color, String name) {
         segments.add(new RingSegment(this, percentage, color, name));
     }
     
-    void setHandler(Consumer<String> handler) {
+    public void setHandler(Consumer<String> handler) {
         this.handler = handler;
     }
 
-    Pane getPane() {
-        AnchorPane anchorPane = new AnchorPane();
-        anchorPane.getChildren().add(outerCircle);
+    public Pane getPane() {
+        pane = new AnchorPane();
+        pane.getChildren().add(outerCircle);
         for (RingSegment rs : segments)
-            rs.addNodes(anchorPane);
-        anchorPane.getChildren().add(innerCircle);
-        return anchorPane;
+            rs.addNodes(pane);
+        pane.getChildren().add(innerCircle);
+        return pane;
     }
 
-    void setX(int cord) {
+    public void setX(int cord) {
         centerX = cord;
         innerCircle.setCenterX(cord);
         outerCircle.setCenterX(cord);
@@ -75,11 +81,16 @@ public class Ring {
             rs.arc.setCenterX(cord);
     }
 
-    void setSegmentValue(int segment, double newValue) throws ArrayIndexOutOfBoundsException {
-        segments.get(segment).delta = newValue - segments.get(segment).percentage;
+    public void setSegmentValues(double ... newValues) throws ArrayIndexOutOfBoundsException {
+    	for(int i = 0; i < newValues.length; i++) {
+    		segments.get(i).delta = newValues[i] - segments.get(i).points;
+    	}
+        
     }
-
-    void startAnimation() {
+    public String getName() {
+		return name;
+	}
+    public void startAnimation() {
 //        if (System.nanoTime() - timerStart > 3000_000_000d) {
         timerStart = System.nanoTime();
         timer.start();
@@ -90,20 +101,20 @@ public class Ring {
 
         @Override
         public void handle(long time) {
-            double progress = (time - timerStart) / 30_000_000d;
+            double progress = (time - timerStart) / 3_000_000d;
             double startAngle = 0;
 
-            if (progress > 100)
+            if (progress > 1000)
                 timer.stop();
             
 
             for (RingSegment rs : segments) {
                 rs.arc.setStartAngle(90 + startAngle);
                 double animationLength = Math.max(-1, Math.min(progress / rs.delta, 1));
-                rs.arc.setLength((rs.percentage + smoothFormula(animationLength) * rs.delta) * -3.6);
+                rs.arc.setLength((rs.points + smoothFormula(animationLength) * rs.delta) * -.36);
                 
                 if(animationLength == 1 || animationLength == -1) {
-                    rs.percentage += rs.delta;
+                    rs.points += rs.delta;
                     rs.delta = 0;
                 }
 //                rs.cutArc.;
@@ -137,11 +148,11 @@ public class Ring {
         return new Color(r, g, b, a);
     }
 
-    class RingSegment {
+    private class RingSegment {
 
         protected Color color;
         protected String name;
-        double percentage;
+        double points;
         double delta;
         Arc arc;
 
@@ -191,5 +202,7 @@ public class Ring {
             arc.addEventFilter(MouseEvent.MOUSE_PRESSED, event -> handler.accept(name));
         }
     }
+
+	
 
 }
