@@ -14,6 +14,15 @@ public class CoolClimateAPI {
 
     private static ResourceBundle resource = ResourceBundle.getBundle("db");
 
+    public static void fetchApiData(){
+        VegetarianMeal();
+        LocalProduct();
+        UsageofBike();
+        UsageofPublicTransport();
+        LowerTemperature();
+        SolarPanels();
+    }
+
     public static void VegetarianMeal() {
 
         try {
