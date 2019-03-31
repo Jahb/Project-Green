@@ -143,9 +143,14 @@ public class CoolClimateAPI {
         }
     }
 
-    public static float LowerTemperature() {
+    public static void LowerTemperature() {
 
         try {
+            Connection conn = DriverManager.getConnection(
+                    resource.getString("Postgresql.datasource.url"),
+                    resource.getString("Postgresql.datasource.username"),
+                    resource.getString("Postgresql.datasource.password"));
+
             Map<String, String> params = getParams();
 
             String url = getUrl();
@@ -157,16 +162,23 @@ public class CoolClimateAPI {
             float save = 911 / 10 / 30; //grams of C02 saved by lowering temperature per day
             float result = holderNum * save; //result in grams per day
             System.out.println(result);
-            return result;
+            PreparedStatement insertAPI = conn.prepareStatement("update features set carbon_reduction = ? where feature_name = 'Lower Temperature'");
+            insertAPI.setFloat(1, result);
+            insertAPI.execute();
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
-        return -1;
+
     }
 
-    public static float SolarPanels() {
+    public static void SolarPanels() {
 
         try {
+            Connection conn = DriverManager.getConnection(
+                    resource.getString("Postgresql.datasource.url"),
+                    resource.getString("Postgresql.datasource.username"),
+                    resource.getString("Postgresql.datasource.password"));
+
             Map<String, String> params = getParams();
 
             String url = getUrl();
@@ -177,11 +189,14 @@ public class CoolClimateAPI {
             float holderNum = Float.parseFloat(holder) * 1000 * 1000; //transform from tones to grams
             float result = holderNum / 365; //transform from yearly to daily
 
-            return result;
+            PreparedStatement insertAPI = conn.prepareStatement("update features set carbon_reduction = ? where feature_name = 'Solar Panels'");
+            insertAPI.setFloat(1, result);
+            insertAPI.execute();
+
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
-        return -1;
+
     }
 
     public static float Recycling() {
