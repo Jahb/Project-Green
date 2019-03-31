@@ -17,7 +17,6 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.VBox;
 import javafx.util.Callback;
 
 import java.io.IOException;
@@ -29,13 +28,14 @@ public class LeaderboardController implements Initializable {
     @FXML
     private JFXButton timeframeButton;
     @FXML
-    private LineChart <?,?> scoreChart;
+    private LineChart<?, ?> scoreChart;
     @FXML
     private ListView<ListItem> leaderboardList = new ListView<>();
     private final ObservableList<ListItem> items = FXCollections.observableArrayList();
 
     /**
      * Return the LeaderBoard GUI Scene.
+     *
      * @return LeaderBoard Scene.
      * @throws IOException An Exception
      */
@@ -50,7 +50,8 @@ public class LeaderboardController implements Initializable {
 
     /**
      * Initializes images for class.
-     * @param location Image URL
+     *
+     * @param location  Image URL
      * @param resources ResourceBundle
      */
     public void initialize(URL location, ResourceBundle resources) {
@@ -73,7 +74,7 @@ public class LeaderboardController implements Initializable {
         this.leaderboardList.setSkin(skin);
 
         timeframeButton.setOnMouseClicked((MouseEvent event) -> {
-            if(timeframeButton.getText().equals("View Monthly Data")) {
+            if (timeframeButton.getText().equals("View Monthly Data")) {
                 timeframeButton.setText("View Weekly Data");
                 items.clear();
                 items.add(new ListItem("profile4", "images/buttonProfile.png", 3000));
@@ -81,16 +82,15 @@ public class LeaderboardController implements Initializable {
                 ((UpdateableListViewSkin) leaderboardList.getSkin()).refresh();
                 scoreChart.getData().clear();
                 scoreChart.getData().addAll(monthly);
-            }
-            else{
-                    timeframeButton.setText("View Monthly Data");
-                    items.clear();
-                    items.add(new ListItem("profile1", "images/achievementImage.png", 3000));
-                    items.add(new ListItem("profile2", "images/achievementImage.png", 420));
-                    items.add(new ListItem("profile3", "images/achievementImage.png", 3));
-                    ((UpdateableListViewSkin) leaderboardList.getSkin()).refresh();
-                    scoreChart.getData().clear();
-                    scoreChart.getData().addAll(weekly);
+            } else {
+                timeframeButton.setText("View Monthly Data");
+                items.clear();
+                items.add(new ListItem("profile1", "images/achievementImage.png", 3000));
+                items.add(new ListItem("profile2", "images/achievementImage.png", 420));
+                items.add(new ListItem("profile3", "images/achievementImage.png", 3));
+                ((UpdateableListViewSkin) leaderboardList.getSkin()).refresh();
+                scoreChart.getData().clear();
+                scoreChart.getData().addAll(weekly);
             }
         });
 
@@ -135,7 +135,6 @@ public class LeaderboardController implements Initializable {
         leaderboardList.setItems(items);
 
     }
-
 
 
 }

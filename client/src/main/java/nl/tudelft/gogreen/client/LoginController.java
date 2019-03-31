@@ -71,13 +71,22 @@ public class LoginController {
         Main.openLoginScreen();
     }
 
+    /**
+     * Toggles Visibility of Forgot Password Pane.
+     */
     public void frgtPassToggle() {
         frgtPassword.setVisible(!frgtPassword.isVisible());
         if (emailSent.isVisible()) {
             emailSent.setVisible(false);
         }
+        if (passwordWrong.isVisible()) {
+            passwordWrong.setVisible(false);
+        }
     }
 
+    /**
+     *  Method That is run once user clicks Send Email Button.
+     */
     public void sendEmail() {
         //TODO Forget Email method.
         System.out.println("Email Sent!");
