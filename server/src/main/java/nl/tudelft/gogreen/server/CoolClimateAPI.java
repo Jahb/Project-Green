@@ -40,7 +40,7 @@ public class CoolClimateAPI {
             float result = difference / 365 / 3;
             System.out.println(result);
             PreparedStatement insertAPI = conn.prepareStatement("update features set carbon_reduction = ? where feature_name = 'Vegetarian Meal'");
-            insertAPI.setFloat(1,result);
+            insertAPI.setFloat(1, result);
             insertAPI.execute();
         } catch (Exception e) {
             System.out.println(e.getMessage());
@@ -48,9 +48,15 @@ public class CoolClimateAPI {
 
     }
 
-    public static float LocalProduct() {
+    public static void LocalProduct() {
 
         try {
+
+            Connection conn = DriverManager.getConnection(
+                    resource.getString("Postgresql.datasource.url"),
+                    resource.getString("Postgresql.datasource.username"),
+                    resource.getString("Postgresql.datasource.password"));
+
             Map<String, String> params = getParams();
 
             String url = getUrl();
@@ -62,11 +68,12 @@ public class CoolClimateAPI {
             float holderNum = Float.parseFloat(holder) * 1000 * 1000;
             float result = holderNum / 365 / 3;
             System.out.println(result);
-            return result;
+            PreparedStatement insertAPI = conn.prepareStatement("update features set carbon_reduction = ? where feature_name = 'Local Product'");
+            insertAPI.setFloat(1, result);
+            insertAPI.execute();
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
-        return -1;
     }
 
     public static float UsageofBike() {
@@ -83,7 +90,7 @@ public class CoolClimateAPI {
             float holderNum = Float.parseFloat(holder) * 1000 * 1000;
             float result = holderNum / 365; //result in grams per day
             System.out.println(result);
-            return result;
+           
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
