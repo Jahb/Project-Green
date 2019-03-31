@@ -76,9 +76,14 @@ public class CoolClimateAPI {
         }
     }
 
-    public static float UsageofBike() {
+    public static void UsageofBike() {
 
         try {
+            Connection conn = DriverManager.getConnection(
+                    resource.getString("Postgresql.datasource.url"),
+                    resource.getString("Postgresql.datasource.username"),
+                    resource.getString("Postgresql.datasource.password"));
+
             Map<String, String> params = getParams();
 
             String url = getUrl();
@@ -90,11 +95,14 @@ public class CoolClimateAPI {
             float holderNum = Float.parseFloat(holder) * 1000 * 1000;
             float result = holderNum / 365; //result in grams per day
             System.out.println(result);
-           
+
+            PreparedStatement insertAPI = conn.prepareStatement("update features set carbon_reduction = ? where feature_name = 'usage of Bike'");
+            insertAPI.setFloat(1, result);
+            insertAPI.execute();
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
-        return -1;
+
     }
 
     public static float UsageofPublicTransport() {
