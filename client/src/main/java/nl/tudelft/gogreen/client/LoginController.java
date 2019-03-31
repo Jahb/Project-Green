@@ -15,6 +15,8 @@ public class LoginController {
     @FXML
     private TextField passwordField;
     @FXML
+    private TextField passwordField2;
+    @FXML
     private TextField userField;
     @FXML
     private AnchorPane frgtPassword;
@@ -22,6 +24,8 @@ public class LoginController {
     private AnchorPane emailSent;
     @FXML
     private Text passwordWrong;
+    @FXML
+    private Text passwordNotMatch;
 
     /**
      * Switches to Main Menu After a Successful Login.
@@ -50,9 +54,13 @@ public class LoginController {
     public void register() throws UnirestException {
         String un = userField.getText();
         String pw = passwordField.getText();
-        if (API.current.register(un, pw)) {
+        String pw2 = passwordField2.getText();
+        if (!pw.equals(pw2)) {
+            passwordNotMatch.setVisible(true);
+        } else if (API.current.register(un, pw)) {
             login();
         }
+
     }
 
     public void openRegister() {

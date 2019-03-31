@@ -51,7 +51,7 @@
                <Font size="18.0" />
             </font>
          </JFXPasswordField>
-         <JFXTextField fx:id="emailField" layoutX="57.0" layoutY="234.0" promptText="Insert E-mail" style="-jfx-unfocus-color: lightgray; -jfx-focus-color: gray; -fx-background-image: url('/images/IconUser.png'); -fx-background-repeat: no-repeat; -fx-background-position: right center;">
+         <JFXTextField fx:id="emailField" layoutX="57.0" layoutY="234.0" promptText="Insert E-mail" style="-jfx-unfocus-color: lightgray; -jfx-focus-color: gray; -fx-background-image: url('/images/IconEmail.png'); -fx-background-repeat: no-repeat; -fx-background-position: right center;">
             <font>
                <Font size="18.0" />
             </font>
@@ -61,6 +61,11 @@
                <Font size="18.0" />
             </font>
          </Button>
+         <Text fx:id="passwordNotMatch" fill="RED" layoutX="57.0" layoutY="218.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Passwords Do Not Match!" visible="false">
+            <font>
+               <Font name="System Italic" size="15.0" />
+            </font>
+         </Text>
       </children>
    </AnchorPane>
 </AnchorPane>
