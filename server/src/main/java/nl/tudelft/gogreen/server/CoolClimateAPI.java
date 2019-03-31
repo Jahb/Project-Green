@@ -105,7 +105,7 @@ public class CoolClimateAPI {
             float result = holderNum / 365; //result in grams per day
             System.out.println(result);
 
-            PreparedStatement insertAPI = conn.prepareStatement("update features set carbon_reduction = ? where feature_name = 'usage of Bike'");
+            PreparedStatement insertAPI = conn.prepareStatement("update features set carbon_reduction = ? where feature_name = 'Usage of Bike'");
             insertAPI.setFloat(1, result);
             insertAPI.execute();
         } catch (Exception e) {
@@ -114,9 +114,14 @@ public class CoolClimateAPI {
 
     }
 
-    public static float UsageofPublicTransport() {
+    public static void UsageofPublicTransport() {
 
         try {
+            Connection conn = DriverManager.getConnection(
+                    resource.getString("Postgresql.datasource.url"),
+                    resource.getString("Postgresql.datasource.username"),
+                    resource.getString("Postgresql.datasource.password"));
+
             Map<String, String> params = getParams();
 
             String url = getUrl();
@@ -125,16 +130,17 @@ public class CoolClimateAPI {
             String holder = XML.toJSONObject(Unirest.get(url).headers(params).asString().getBody()).getJSONObject("response").get("result_transport_total").toString();
             String holder1 = XML.toJSONObject(Unirest.get(url).headers(params).asString().getBody()).getJSONObject("response").get("input_takeaction_take_public_transportation_gco2bus").toString();
 
-
             float holderNum = Float.parseFloat(holder) * 1000 * 1000 / 365 / 100;
             float holderNum1 = Float.parseFloat(holder) * 6;
             float result = holderNum - holderNum1; //result in grams per day
             System.out.println("the total is: " + holderNum + " and the public transport one: " + holderNum1 + " and the result is: " + result);
-            return result;
+
+            PreparedStatement insertAPI = conn.prepareStatement("update features set carbon_reduction = ? where feature_name = 'Usage of Public Transport'");
+            insertAPI.setFloat(1, result);
+            insertAPI.execute();
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
-        return -1;
     }
 
     public static float LowerTemperature() {
