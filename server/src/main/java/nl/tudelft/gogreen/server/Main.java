@@ -15,6 +15,6 @@ public class Main {
         Connection conn = DriverManager.getConnection(resource.getString("Postgresql.datasource.url"), resource.getString("Postgresql.datasource.username"), resource.getString("Postgresql.datasource.password"));
         //SpringApplication.run(Main.class, args);
 
-        CoolClimateAPI.VegetarianMeal();
+        CoolClimateAPI.LocalProduct();
     }
 }
