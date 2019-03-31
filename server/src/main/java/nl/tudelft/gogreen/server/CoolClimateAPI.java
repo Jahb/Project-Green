@@ -120,6 +120,26 @@ public class CoolClimateAPI {
         return -1;
     }
 
+    public static float SolarPanels() {
+
+        try {
+            Map<String, String> params = getParams();
+
+            String url = getUrl();
+
+
+            String holder = XML.toJSONObject(Unirest.get(url).headers(params).asString().getBody()).getJSONObject("response").get("result_takeaction_purchase_green_electricity_kwhCO2yr").toString();
+
+            float holderNum = Float.parseFloat(holder) * 1000 * 1000; //transform from tones to grams
+            float result = holderNum / 365; //transform from yearly to daily
+            System.out.println(result);
+            return result;
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+        return -1;
+    }
+
     public static Map<String, String> getParams() {
         Map<String, String> params = new HashMap<>();
         params.put("accept", "application/json");
