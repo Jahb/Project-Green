@@ -5,9 +5,11 @@ import org.json.XML;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.ResourceBundle;
 
 public class CoolClimateAPI {
 
+    private static ResourceBundle resource = ResourceBundle.getBundle("db");
     public static float VegetarianMeal() {
 
         try {
@@ -132,6 +134,25 @@ public class CoolClimateAPI {
 
             float holderNum = Float.parseFloat(holder) * 1000 * 1000; //transform from tones to grams
             float result = holderNum / 365; //transform from yearly to daily
+
+            return result;
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+        return -1;
+    }
+    public static float Recycling() {
+
+        try {
+            Map<String, String> params = getParams();
+
+            String url = getUrl();
+
+
+            String holder = XML.toJSONObject(Unirest.get(url).headers(params).asString().getBody()).getJSONObject("response").get("result_watersewage").toString();
+
+            float holderNum = Float.parseFloat(holder) * 1000 * 1000; //transform from tones to grams
+            float result = holderNum / 365 / 3 ; //transform from yearly to daily
             System.out.println(result);
             return result;
         } catch (Exception e) {
