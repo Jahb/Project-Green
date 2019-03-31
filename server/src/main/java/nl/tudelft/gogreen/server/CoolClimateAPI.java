@@ -99,6 +99,27 @@ public class CoolClimateAPI {
         return -1;
     }
 
+    public static float LowerTemperature() {
+
+        try {
+            Map<String, String> params = getParams();
+
+            String url = getUrl();
+
+
+            String holder = XML.toJSONObject(Unirest.get(url).headers(params).asString().getBody()).getJSONObject("response").get("input_footprint_housing_electricity_kwh").toString();
+
+            float holderNum = Float.parseFloat(holder)/365; //grams saved per each kwH by lowering temperature
+            float save = 911/10/30; //grams of C02 saved by lowering temperature per day
+            float result = holderNum * save ; //result in grams per day
+            System.out.println(result);
+            return result;
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+        return -1;
+    }
+
     public static Map<String, String> getParams() {
         Map<String, String> params = new HashMap<>();
         params.put("accept", "application/json");
