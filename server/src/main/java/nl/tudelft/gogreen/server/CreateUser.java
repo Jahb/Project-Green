@@ -156,7 +156,7 @@ public class CreateUser {
 
     }
 
-    
+
     /**
      * Method which deletes all current users of the database.
      *
