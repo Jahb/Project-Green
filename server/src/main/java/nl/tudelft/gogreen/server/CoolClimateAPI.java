@@ -21,6 +21,7 @@ public class CoolClimateAPI {
         UsageofPublicTransport();
         LowerTemperature();
         SolarPanels();
+        Recycling();
     }
 
     public static void VegetarianMeal() {
@@ -199,9 +200,14 @@ public class CoolClimateAPI {
 
     }
 
-    public static float Recycling() {
+    public static void Recycling() {
 
         try {
+            Connection conn = DriverManager.getConnection(
+                    resource.getString("Postgresql.datasource.url"),
+                    resource.getString("Postgresql.datasource.username"),
+                    resource.getString("Postgresql.datasource.password"));
+
             Map<String, String> params = getParams();
 
             String url = getUrl();
@@ -212,11 +218,13 @@ public class CoolClimateAPI {
             float holderNum = Float.parseFloat(holder) * 1000 * 1000; //transform from tones to grams
             float result = holderNum / 365 / 3; //transform from yearly to daily
             System.out.println(result);
-            return result;
+            PreparedStatement insertAPI = conn.prepareStatement("update features set carbon_reduction = ? where feature_name = 'Recycling'");
+            insertAPI.setFloat(1, result);
+            insertAPI.execute();
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
-        return -1;
+
     }
 
     public static Map<String, String> getParams() {
