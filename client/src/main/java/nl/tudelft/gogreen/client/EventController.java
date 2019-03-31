@@ -1,7 +1,5 @@
 package nl.tudelft.gogreen.client;
 
-import static javafx.scene.layout.Priority.ALWAYS;
-
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -13,10 +11,13 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
+import nl.tudelft.gogreen.shared.EventItem;
 
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
+
+import static javafx.scene.layout.Priority.ALWAYS;
 
 public class EventController implements Initializable {
 
@@ -64,14 +65,13 @@ public class EventController implements Initializable {
         acceptButton.setCenter(acceptIcon.getStackPane());
         cancelButton.setCenter(cancelIcon.getStackPane());
 
-        cancelIcon.setOnClick(event -> createEvent.setVisible(false));
         acceptIcon.setOnClick(event -> addNewEvent());
-        acceptIcon.setOnClick(event -> createEvent.setVisible(false));
 
         return new Scene(root, Main.getWidth(), Main.getHeight());
     }
 
     private void addNewEvent() {
+        createEvent.setVisible(false);
         //TODO for adding event to DataBase
         System.out.println("Adding Event");
         //Not sure if this help but a new EventItem Object should be created
@@ -112,39 +112,6 @@ public class EventController implements Initializable {
 
     }
 
-    /**
-     * Helper Class that creates and Event object which stores a Label and a Description.
-     * Can be removed if believed to be inefficent.
-     */
-    private class EventItem {
-        private String label;
-        private String description;
-        private String time;
-        private String date;
-
-        private EventItem(String label, String description, String time, String date) {
-            this.label = label;
-            this.description = description;
-            this.time = time;
-            this.date = date;
-        }
-
-        private String getLabel() {
-            return this.label;
-        }
-
-        private String getDescription() {
-            return this.description;
-        }
-
-        private String getTime() {
-            return this.time;
-        }
-
-        private String getDate() {
-            return this.date;
-        }
-    }
 
     /**
      * Helper Class for Cells in both listViews.
@@ -180,7 +147,7 @@ public class EventController implements Initializable {
             setGraphic(null);
 
             if (event != null && !empty) {
-                eventName.setText(event.getLabel());
+                eventName.setText(event.getName());
                 setGraphic(listCell);
 
                 String hoverText = "Date:\n" + getItem().getDate() +

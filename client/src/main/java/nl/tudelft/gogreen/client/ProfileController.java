@@ -18,14 +18,17 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.paint.ImagePattern;
-import javafx.scene.shape.Circle;
 import javafx.scene.text.Text;
 import javafx.util.Callback;
+import nl.tudelft.gogreen.client.communication.Api;
 
 import java.io.IOException;
 import java.net.URL;
+import java.time.Duration;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
+import java.time.format.FormatStyle;
+import java.util.Map;
 import java.util.ResourceBundle;
 
 public class ProfileController implements Initializable {
@@ -63,38 +66,45 @@ public class ProfileController implements Initializable {
         UpdateableListViewSkin<ListItem> skin = new UpdateableListViewSkin<>(this.friendsList);
         this.friendsList.setSkin(skin);
 
-        /**
-         * list switching functionality
-         */
         showFollowersButton.setOnMouseClicked((MouseEvent event) -> {
-            if(followLabel.getText().equals("Following")) {
+            if (followLabel.getText().equals("Following")) {
+                Map<String, Integer> followers = Api.current.getFollowers();
                 items.clear();
-                items.add(new ListItem("profile5", "images/buttonProfile.png"));
-                items.add(new ListItem("profile712847", "images/buttonProfile.png"));
+                for (String st : followers.keySet()) {
+                    items.add(new ListItem(st, "images/buttonProfile.png"));
+                }
                 ((UpdateableListViewSkin) friendsList.getSkin()).refresh();
                 followLabel.setText("Followers");
                 showFollowersButton.setText("Show Following");
-            }
-            else{
+            } else {
                 items.clear();
-                items.add(new ListItem("profile1", "images/achievementImage.png"));
-                items.add(new ListItem("profile2", "images/achievementImage.png"));
-                items.add(new ListItem("profile3", "images/achievementImage.png"));
+                Map<String, Integer> followers = Api.current.getFollowing();
+                items.clear();
+                for (String st : followers.keySet()) {
+                    items.add(new ListItem(st, "images/buttonProfile.png"));
+                }
                 ((UpdateableListViewSkin) friendsList.getSkin()).refresh();
                 followLabel.setText("Following");
                 showFollowersButton.setText("Show Followers");
             }
         });
 
-        activities.add("17:05 - Ate a Vegetarian Meal");
-        activities.add("11:45 - Ate a Vegetarian Meal");
-        activities.add("13:05 - Ate a Vegetarian Meal");
+        overallPoints.setText(Integer.toString(Api.current.getTotal()));
+        dailyPoints.setText(Integer.toString(Api.current.getTotal()));
+
+        LocalTime yeet = LocalTime.now().minus(Duration.ofMinutes(1));
+
+        activities.add(yeet.format(DateTimeFormatter.ofLocalizedTime(FormatStyle.MEDIUM)) + " - Sometime this");
+        activities.add(yeet.minus(Duration.ofMinutes(1)).format(DateTimeFormatter.ofLocalizedTime(FormatStyle.MEDIUM)) + " - is going to be");
+        activities.add(yeet.minus(Duration.ofMinutes(2)).format(DateTimeFormatter.ofLocalizedTime(FormatStyle.MEDIUM)) + " - kept history");
         activityList.setItems(activities);
 
+        Map<String, Integer> followers = Api.current.getFollowing();
         items.clear();
-        items.add(new ListItem("profile1", "images/achievementImage.png"));
-        items.add(new ListItem("profile2", "images/achievementImage.png"));
-        items.add(new ListItem("profile3", "images/achievementImage.png"));
+        for (String st : followers.keySet()) {
+            items.add(new ListItem(st, "images/buttonProfile.png"));
+        }
+
         friendsList.setCellFactory(new Callback<ListView<ListItem>, ListCell<ListItem>>() {
 
             @Override
@@ -122,8 +132,8 @@ public class ProfileController implements Initializable {
          * adding a follow
          */
         followUserButton.setOnMouseClicked((MouseEvent event) -> {
-            String string = followField.getText();
-            System.out.print(string);
+            String username = followField.getText();
+            boolean res = Api.current.follow(username);
         });
     }
 

@@ -1,8 +1,13 @@
 package nl.tudelft.gogreen.server;
 
+import nl.tudelft.gogreen.shared.EventItem;
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.ResourceBundle;
 
 public class EventsMain {
@@ -11,25 +16,49 @@ public class EventsMain {
     /**
      * Method which creates an event with the given parameters.
      *
-     * @param username  name of the user
-     * @param idCreator id of the creator of the event
-     * @param eventName name of the new event
-     * @param conn      connection to the database
+     * @param username    name of the user
+     * @param eventName   name of the new event
+     * @param description description of the event
+     * @param date        the date of the event
+     * @param time        the time of the event
+     * @param conn        connection to the database
      * @throws Exception raises when an error occurs accessing
      */
-    public static void create_event(String username, int idCreator,
-                                    String eventName, Connection conn) throws Exception {
+    public static void create_event(String username,
+                                    String eventName, String description, String date, String time, Connection conn) throws Exception {
 
         int idEvent = getMaxId(conn);
-        idCreator = NewFeature.getId(username, conn);
+        int idCreator = NewFeature.getId(username, conn);
         System.out.println("The idEvent is: " + idEvent + " and the eventName is: " + eventName + " and the idCreator is: " + idCreator);
         PreparedStatement createEvent = conn.prepareStatement(resource.getString("qInsertIntoEvent"));
-        createEvent.setInt(1,idEvent);
-        createEvent.setString(2,eventName);
-        createEvent.setInt(3,idCreator);
+        createEvent.setInt(1, idEvent);
+        createEvent.setString(2, eventName);
+        createEvent.setInt(3, idCreator);
+        createEvent.setString(4, description);
+        createEvent.setString(5, date);
+        createEvent.setString(6, time);
         System.out.println(createEvent.toString());
         createEvent.execute();
+    }
 
+
+    /**
+     * This method gets a list of all events
+     *
+     * @param conn a valid sql connection
+     * @return A list of events
+     * @throws SQLException if the database has an error
+     */
+    public static List<EventItem> get_events(Connection conn) throws SQLException {
+        PreparedStatement events = conn.prepareStatement(resource.getString("qListAllEvents"));
+        ResultSet results = events.executeQuery();
+        List<EventItem> items = new ArrayList<>();
+        while (results.next()) {
+            items.add(new EventItem(results.getString("event_name"),
+                    results.getString("event_description"),
+                    results.getString("event_time"), results.getString("event_date")));
+        }
+        return items;
     }
 
     /**
@@ -45,7 +74,7 @@ public class EventsMain {
         //delete event
 
         PreparedStatement delete = conn.prepareStatement(resource.getString("qDeleteFromEvent"));
-        delete.setString(1,eventName);
+        delete.setString(1, eventName);
         delete.execute();
 
     }
@@ -63,9 +92,9 @@ public class EventsMain {
 
         int id = NewFeature.getId(username, conn);
         PreparedStatement join = conn.prepareStatement(resource.getString("qJoinEvent"));
-        join.setString(1,eventName);
-        join.setInt(2,id);
-        join.setInt(3,NewFeature.getId(username,conn));
+        join.setString(1, eventName);
+        join.setInt(2, id);
+        join.setInt(3, NewFeature.getId(username, conn));
         join.execute();
 
     }
@@ -83,15 +112,16 @@ public class EventsMain {
 
         int id = NewFeature.getId(username, conn);
         PreparedStatement leave = conn.prepareStatement(resource.getString("qLeaveEvent"));
-        leave.setInt(1,id);
-        leave.setString(2,eventName);
+        leave.setInt(1, id);
+        leave.setString(2, eventName);
         leave.execute();
     }
 
     /**
      * Method which returns the event id of the given event name.
+     *
      * @param eventName name of the event
-     * @param conn connection to the database
+     * @param conn      connection to the database
      * @return returns the id
      * @throws Exception raises when an error occurs accessing
      */
@@ -100,13 +130,14 @@ public class EventsMain {
 
 
         PreparedStatement getId = conn.prepareStatement(resource.getString("qGetEventId"));
-        getId.setString(1,eventName);
+        getId.setString(1, eventName);
         ResultSet rs = getId.executeQuery();
         while (rs.next()) {
             id = rs.getInt(1);
         }
         return id;
     }
+
     /**
      * Method which returns the next id available for an event.
      *
@@ -135,7 +166,7 @@ public class EventsMain {
      */
     public static void deleteAllAtendance(int id, Connection conn) throws Exception {
         PreparedStatement delAttendance = conn.prepareStatement(resource.getString("qDeleteAllAtendance"));
-        delAttendance.setInt(1,id);
+        delAttendance.setInt(1, id);
         delAttendance.execute();
     }
 
@@ -150,10 +181,10 @@ public class EventsMain {
 
 
         PreparedStatement delEventAttendance = conn.prepareStatement(resource.getString("qDeleteAllEventsAttendance"));
-        delEventAttendance.setInt(1,id);
+        delEventAttendance.setInt(1, id);
         delEventAttendance.execute();
         PreparedStatement delEvent = conn.prepareStatement(resource.getString("qDeleteAllEvents"));
-        delEvent.setInt(1,id);
+        delEvent.setInt(1, id);
         delEvent.execute();
     }
 

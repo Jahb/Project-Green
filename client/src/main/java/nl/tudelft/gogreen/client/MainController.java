@@ -3,7 +3,7 @@ package nl.tudelft.gogreen.client;
 import com.mashape.unirest.http.exceptions.UnirestException;
 import javafx.fxml.FXML;
 import javafx.scene.control.TextField;
-import nl.tudelft.gogreen.client.communication.API;
+import nl.tudelft.gogreen.client.communication.Api;
 
 
 /**
@@ -26,7 +26,7 @@ public class MainController {
         String pw = passwordField.getText();
 
 
-        if (API.current.login(un, pw)) {
+        if (Api.current.login(un, pw)) {
 
             Main.openMainScreen();
         }
@@ -36,7 +36,7 @@ public class MainController {
     public void register() throws UnirestException {
         String un = userField.getText();
         String pw = passwordField.getText();
-        if (API.current.register(un, pw)) {
+        if (Api.current.register(un, pw)) {
             login();
         }
     }

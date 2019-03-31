@@ -3,6 +3,7 @@ package nl.tudelft.gogreen.server;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
 
@@ -99,6 +100,20 @@ public class Following {
 
     public static int countAllFollowers(int id1, Connection conn) throws Exception {
         return showAllFollowers(id1, conn).size();
+    }
+
+    static String toUsername(int id, Connection conn) {
+        PreparedStatement getUsername;
+        try {
+            getUsername = conn.prepareStatement(resource.getString("getUsernameById"));
+            getUsername.setInt(1, id);
+            ResultSet res = getUsername.executeQuery();
+            res.next();
+            return res.getString("username");
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return "error";
     }
 
 }

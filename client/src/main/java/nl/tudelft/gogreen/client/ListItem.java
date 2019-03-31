@@ -1,9 +1,11 @@
 package nl.tudelft.gogreen.client;
 
-import javafx.beans.Observable;
-import javafx.util.Callback;
 
-
+/*
+ * Cursed ListItem?
+ * What does it do, how does it work?
+ * Nobody knows
+ */
 class ListItem {
 
     private String text;
