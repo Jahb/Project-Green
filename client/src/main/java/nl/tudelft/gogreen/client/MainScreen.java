@@ -24,8 +24,8 @@ import java.util.function.Consumer;
  */
 public class MainScreen {
 
-	private Scene scene;
-	
+    private Scene scene;
+
     private Ring ringMAIN;
     private Ring ringPREVIOUS;
     private Ring ringNEXT;
@@ -66,13 +66,13 @@ public class MainScreen {
         addIconButtons(buttonsPanel);
         addActivityButton(overlayLayer);
 
-        
+
         helpText.setVisible(false);
         overlayLayer.setPrefSize(1000, 720);
 
         overlayLayer.setPickOnBounds(false);
         buttonsPanel.setPickOnBounds(false);
-        
+
         scene.addEventHandler(MouseEvent.MOUSE_PRESSED, event -> {
             Node node = event.getPickResult().getIntersectedNode();
             if (node != null && !activityButton.contains(node))
@@ -87,12 +87,12 @@ public class MainScreen {
         ringMAIN.setHandler(ringHandler);
         ringMAIN.setUsername(API.current.getUsername());
         anchorPane.getChildren().add(ringMAIN.getPane());
-        
+
         ringNEXT = new Ring((int) (90 * .75), 90, 120, 350, "NEXT");
         ringNEXT.setHandler(ringHandler);
         ringNEXT.setUsername(API.current.getUsernameNEXT());
         anchorPane.getChildren().add(ringNEXT.getPane());
-        
+
         ringPREVIOUS = new Ring((int) (90 * .75), 90, Main.getWidth() - 120, 350, "PREVIOUS");
         ringPREVIOUS.setHandler(ringHandler);
         ringPREVIOUS.setUsername(API.current.getUsernamePREVIOUS());
@@ -104,19 +104,20 @@ public class MainScreen {
                     ringNEXT.setX(120);
                     ringPREVIOUS.setX(newVal.intValue() - 120);
                 });
-        
+
         updateRingValues();
 
     }
+
     private void updateRingValues() {
-    	double[] valuesMAIN = API.current.getRingSegmentValues(ringMAIN.getName());
+        double[] valuesMAIN = API.current.getRingSegmentValues(ringMAIN.getName());
         ringMAIN.setSegmentValues(valuesMAIN);
         ringMAIN.startAnimation();
-        
+
         double[] valuesNEXT = API.current.getRingSegmentValues(ringNEXT.getName());
         ringNEXT.setSegmentValues(valuesNEXT);
         ringNEXT.startAnimation();
-        
+
         double[] valuesPREVIOUS = API.current.getRingSegmentValues(ringPREVIOUS.getName());
         ringPREVIOUS.setSegmentValues(valuesPREVIOUS);
         ringPREVIOUS.startAnimation();
