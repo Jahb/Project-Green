@@ -235,7 +235,7 @@ public class Api {
     public String getUsernamePrevious() {
         int myTotal = getTotal();
         if (followDirty) {
-            followers = getFollowers();
+            followers = getFollowing();
             followDirty = false;
         }
         List<Map.Entry<String, Integer>> yeet =
@@ -255,7 +255,7 @@ public class Api {
     public String getUsernameNext() {
         int myTotal = getTotal();
         if (followDirty) {
-            followers = getFollowers();
+            followers = getFollowing();
             followDirty = false;
         }
         List<Map.Entry<String, Integer>> yeet =
