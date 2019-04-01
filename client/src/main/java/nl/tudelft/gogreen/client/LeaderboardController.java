@@ -17,8 +17,10 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.VBox;
 import javafx.util.Callback;
+import nl.tudelft.gogreen.client.communication.Api;
+import nl.tudelft.gogreen.shared.DateHolder;
+import nl.tudelft.gogreen.shared.DatePeriod;
 
 import java.io.IOException;
 import java.net.URL;
@@ -29,13 +31,17 @@ public class LeaderboardController implements Initializable {
     @FXML
     private JFXButton timeframeButton;
     @FXML
-    private LineChart <?,?> scoreChart;
+    private LineChart<Integer, Double> scoreChart;
     @FXML
     private ListView<ListItem> leaderboardList = new ListView<>();
     private final ObservableList<ListItem> items = FXCollections.observableArrayList();
 
+    private DatePeriod currentDatePeriod = DatePeriod.YEAR;
+
+
     /**
      * Return the LeaderBoard GUI Scene.
+     *
      * @return LeaderBoard Scene.
      * @throws IOException An Exception
      */
@@ -50,54 +56,67 @@ public class LeaderboardController implements Initializable {
 
     /**
      * Initializes images for class.
-     * @param location Image URL
+     *
+     * @param location  Image URL
      * @param resources ResourceBundle
      */
     public void initialize(URL location, ResourceBundle resources) {
-        XYChart.Series monthly = new XYChart.Series();
-        XYChart.Series weekly = new XYChart.Series();
+        XYChart.Series<Integer, Integer> monthly = new XYChart.Series<>();
+        XYChart.Series<Integer, Integer> weekly = new XYChart.Series<>();
         scoreChart.setLegendVisible(false);
 
-        weekly.getData().add(new XYChart.Data("2", 24));
-        weekly.getData().add(new XYChart.Data("8", 15));
-        weekly.getData().add(new XYChart.Data("16", 28));
-        weekly.getData().add(new XYChart.Data("18", 21));
-        scoreChart.getData().addAll(weekly);
+        weekly.getData().add(new XYChart.Data<>(1, 24));
+        weekly.getData().add(new XYChart.Data<>(2, 15));
+        weekly.getData().add(new XYChart.Data<>(3, 28));
+        weekly.getData().add(new XYChart.Data<>(4, 21));
 
-        monthly.getData().add(new XYChart.Data("1", 23));
-        monthly.getData().add(new XYChart.Data("5", 13));
-        monthly.getData().add(new XYChart.Data("10", 19));
-        monthly.getData().add(new XYChart.Data("15", 25));
+
+        monthly.getData().add(new XYChart.Data<>(1, 23));
+        monthly.getData().add(new XYChart.Data<>(5, 13));
+        monthly.getData().add(new XYChart.Data<>(10, 19));
+        monthly.getData().add(new XYChart.Data<>(15, 25));
 
         UpdateableListViewSkin<ListItem> skin = new UpdateableListViewSkin<>(this.leaderboardList);
         this.leaderboardList.setSkin(skin);
 
-        timeframeButton.setOnMouseClicked((MouseEvent event) -> {
-            if(timeframeButton.getText().equals("View Monthly Data")) {
-                timeframeButton.setText("View Weekly Data");
-                items.clear();
-                items.add(new ListItem("profile4", "images/buttonProfile.png", 3000));
-                items.add(new ListItem("profile712847", "images/buttonProfile.png", 3000));
-                ((UpdateableListViewSkin) leaderboardList.getSkin()).refresh();
-                scoreChart.getData().clear();
-                scoreChart.getData().addAll(monthly);
+        timeframeButton.setOnMouseClicked(event -> {
+            currentDatePeriod = currentDatePeriod.getNext();
+            DateHolder dates = Api.current.getDatesFor(currentDatePeriod);
+
+            XYChart.Series<Integer, Double> data = new XYChart.Series<>();
+            scoreChart.getData().clear();
+            for (int i = 0; i < dates.getDays(); i++) {
+                data.getData().add(new XYChart.Data<>(dates.getDays() - i, dates.getData()[i]));
             }
-            else{
-                    timeframeButton.setText("View Monthly Data");
-                    items.clear();
-                    items.add(new ListItem("profile1", "images/achievementImage.png", 3000));
-                    items.add(new ListItem("profile2", "images/achievementImage.png", 420));
-                    items.add(new ListItem("profile3", "images/achievementImage.png", 3));
-                    ((UpdateableListViewSkin) leaderboardList.getSkin()).refresh();
-                    scoreChart.getData().clear();
-                    scoreChart.getData().addAll(weekly);
+            scoreChart.getData().add(data);
+            scoreChart.getXAxis().setLabel(currentDatePeriod.name());
+            switch (currentDatePeriod) {
+                case WEEK:
+                case MONTH:
+                case YEAR:
             }
+//            if (timeframeButton.getText().equals("View Monthly Data")) {
+//                timeframeButton.setText("View Weekly Data");
+//                items.clear();
+//                items.add(new ListItem("profile4", "images/buttonProfile.png", 3000));
+//                items.add(new ListItem("profile712847", "images/buttonProfile.png", 3000));
+//                ((UpdateableListViewSkin) leaderboardList.getSkin()).refresh();
+//                scoreChart.getData().clear();
+//                scoreChart.getData().addAll(monthly);
+//            } else {
+//                timeframeButton.setText("View Monthly Data");
+//                items.clear();
+//                items.add(new ListItem("profile1", "images/achievementImage.png", 3000));
+//                items.add(new ListItem("profile2", "images/achievementImage.png", 420));
+//                items.add(new ListItem("profile3", "images/achievementImage.png", 3));
+//                ((UpdateableListViewSkin) leaderboardList.getSkin()).refresh();
+//                scoreChart.getData().clear();
+//                scoreChart.getData().addAll(weekly);
+//            }
         });
 
-        items.clear();
-        items.add(new ListItem("profile1", "images/achievementImage.png", 3000));
-        items.add(new ListItem("profile2", "images/achievementImage.png", 420));
-        items.add(new ListItem("profile3", "images/achievementImage.png", 3));
+        timeframeButton.getOnMouseClicked().handle(null);
+
 
         leaderboardList.setCellFactory(new Callback<ListView<ListItem>, ListCell<ListItem>>() {
             @Override
@@ -131,12 +150,13 @@ public class LeaderboardController implements Initializable {
             }
         });
         leaderboardList.setEditable(true);
-        System.out.print(leaderboardList.isEditable());
+
         leaderboardList.setItems(items);
 
+        scoreChart.getXAxis().setTickLabelsVisible(false);
+
+
     }
-
-
 
 }
 

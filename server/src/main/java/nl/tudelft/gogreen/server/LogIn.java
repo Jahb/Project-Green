@@ -23,22 +23,19 @@ public class LogIn {
                 resource.getString("Postgresql.datasource.url"),
                 resource.getString("Postgresql.datasource.username"),
                 resource.getString("Postgresql.datasource.password"));
-        PreparedStatement stmt = conn.prepareStatement(resource.getString("getAllUsers"));
+        PreparedStatement stmt = conn.prepareStatement(resource.getString("getPasswordByUsername"));
+        stmt.setString(1, username);
         ResultSet rs = stmt.executeQuery();
-        String dbpassword = null;
-        while (rs.next()) {
 
-            if (rs.getString(2).equals(username)) {
-                dbpassword = rs.getString(3);
-            }
-        }
-        System.out.println("the password");
-
-        if (dbpassword == null) {
-            System.out.print("You are not registered, click this button to sign in!");
+        if (!rs.next()){
             return false;
         }
+
+
+        String dbpassword = rs.getString("password");
+
         return BCrypt.checkpw(password, dbpassword);
     }
+
 
 }

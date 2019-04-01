@@ -16,7 +16,7 @@ public class UpdateableListViewSkin<ListItem> extends ListViewSkin<ListItem> {
 
     @SuppressWarnings("unchecked")
     static <ListItem> UpdateableListViewSkin<ListItem> cast(Object obj) {
-        return (UpdateableListViewSkin<ListItem>)obj;
+        return (UpdateableListViewSkin<ListItem>) obj;
     }
 
 }

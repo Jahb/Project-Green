@@ -8,7 +8,7 @@ import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
-import nl.tudelft.gogreen.client.communication.API;
+import nl.tudelft.gogreen.client.communication.Api;
 
 import java.io.IOException;
 
@@ -126,7 +126,7 @@ public class Main extends Application {
      * @param args Program arguments
      */
     public static void main(String[] args) {
-        API.initAPI();
+        Api.initApi();
 
         launch(args);
     }
