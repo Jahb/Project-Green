@@ -126,7 +126,7 @@ public class NewFeature {
 
             case 2:
                 PreparedStatement updatec2 =
-                    conn.prepareStatement(resource.getString("qactualizec2"));
+                        conn.prepareStatement(resource.getString("qactualizec2"));
                 updatec2.setInt(1, points);
                 updatec2.setInt(2, points);
                 updatec2.execute();
@@ -357,6 +357,28 @@ public class NewFeature {
         return total;
     }
 
+    /**
+     * Method which returns the total per category. Send c1 for category 1,..., c'n' for category 'n'.
+     *
+     * @param id
+     * @param category
+     * @param conn
+     * @return
+     * @throws Exception
+     */
+    public static int getTotalCategory1(int id, String category, Connection conn) throws Exception {
+
+        PreparedStatement getTotalCategory1 = conn.prepareStatement("select ? from user_points where user_id = ?");
+        getTotalCategory1.setString(1, category);
+        getTotalCategory1.setInt(2, id);
+        ResultSet points = getTotalCategory1.executeQuery();
+        int total = -1;
+
+        while (points.next()) {
+            total = points.getInt(1);
+        }
+        return total;
+    }
 
     /**
      * Method which given a certain day, checks if this one is the current day.
