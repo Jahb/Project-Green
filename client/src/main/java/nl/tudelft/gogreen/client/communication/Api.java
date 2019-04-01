@@ -173,6 +173,9 @@ public class Api {
         }
         MessageHolder<Integer> holder = gson.fromJson(res, new TypeToken<MessageHolder<Integer>>() {
         }.getType());
+        if (followers.containsKey("username")){
+            followers.put(username, holder.getData());
+        }
 
         return holder.getData();
     }

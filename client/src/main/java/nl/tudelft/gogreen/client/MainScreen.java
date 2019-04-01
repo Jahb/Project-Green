@@ -111,14 +111,17 @@ public class MainScreen {
 
     private void updateRingValues() {
         double[] valuesMAIN = Api.current.getRingSegmentValues(ringMAIN.getName());
+        ringMAIN.setUsername(Api.current.getUsername());
         ringMAIN.setSegmentValues(valuesMAIN);
         ringMAIN.startAnimation();
 
         double[] valuesNEXT = Api.current.getRingSegmentValues(ringNEXT.getName());
+        ringNEXT.setUsername(Api.current.getUsernameNext());
         ringNEXT.setSegmentValues(valuesNEXT);
         ringNEXT.startAnimation();
 
         double[] valuesPREVIOUS = Api.current.getRingSegmentValues(ringPREVIOUS.getName());
+        ringPREVIOUS.setUsername(Api.current.getUsernamePrevious());
         ringPREVIOUS.setSegmentValues(valuesPREVIOUS);
         ringPREVIOUS.startAnimation();
     }
