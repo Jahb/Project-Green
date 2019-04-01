@@ -1,0 +1,24 @@
+Meeting week 8 - Notes (Chairman : Julius, Secretary: Paul)
+
+-	Everything seems prepared for Demo 8
+-	Discuss if we should swap the small rings
+-	Bug about overlapping another user regarding rings
+-	When you hover over followers in the followers list you can see their rings
+-	Demo successful
+-	Notifications to be implemented for bonus
+-	Presentation needs to be discussed
+-	“Do information literacy is bad” – Julius
+-	Kamron did not add 6 features (priority A)
+-	Julius completed his job
+-	Vlad did 20% of what he had to do (priority A) 
+-	Jahson did a good job
+-	Paul and Pablo completed the task and we have a functional API 
+-	Sprint planning for next week :
+-	We should work on different branches
+-	What we have to do : unfollow, notifications, streaks, dynamic profile pictures, leaderboard, designing profile picture, percentage in the rings, fixing bugs, hovering over followers and show their rings, colors for rings,  events need to work, recent activity and recent achievements, search bar for find followers, adding all the icons, logout,  
+-	Kamron: leaderboard, percentage in the rings(name on top), fixing bugs, adding all the icons, dynamic profile pictures
+-	Vlad: unfollow, leaderboard, fixing bugs, recent activity and recent achievements, search bar for find follower
+-	Paul + Pablo: fixing bugs, colors for rings, recent activity and recent achievements, testing the code
+-	Julius: notifications server, fixing bugs, colors for rings, events need to work, recent activity and recent achievements, search bar for find followers, test + Mokito
+-	Jahson: notifications GUI, streaks, re-designing profile page, fixing bugs, hovering over followers and show the ring and the percentage, logout
+-	Next meeting : Thursday
