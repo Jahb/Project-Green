@@ -32,6 +32,7 @@ public class Ring {
     private Text temporaryUsername = new Text();
     private Pane textPane = new Pane();
     private AnchorPane pane;
+    private int totalPoints = -1;
     static final double MAXPOINTS = 1000;
 
     /**
@@ -45,7 +46,6 @@ public class Ring {
     public Ring(int innerRadius, int outerRadius, int centerX, int centerY, String name) {
         this.name = name;
         centerOffs = outerRadius;
-
 
         innerCircle.setCenterX(centerOffs);
         innerCircle.setCenterY(centerOffs);
@@ -69,7 +69,6 @@ public class Ring {
         textPane.setBackground(new Background(new BackgroundFill(new Color(1, 1, 1, .0), null, null)));
         temporaryUsername.setFont(Font.font("Calibri", FontWeight.BOLD, 30));
         temporaryUsername.setY(30);
-
 
         pane = new AnchorPane();
         pane.getChildren().add(outerCircle);
@@ -119,10 +118,10 @@ public class Ring {
     }
 
     public void startAnimation() {
-//        if (System.nanoTime() - timerStart > 3000_000_000d) {
+        isEmpty();
         timerStart = System.nanoTime();
         timer.start();
-//        }
+
     }
 
     private AnimationTimer timer = new AnimationTimer() {
@@ -134,7 +133,6 @@ public class Ring {
 
             if (progress > MAXPOINTS)
                 timer.stop();
-
 
             for (RingSegment rs : segments) {
                 rs.arc.setStartAngle(90 + startAngle);
@@ -155,6 +153,28 @@ public class Ring {
         }
     };
 
+    private void isEmpty() {
+        int sum = 0;
+        for (RingSegment rs : segments)
+            sum += rs.points + rs.delta;
+
+        if (sum == totalPoints)
+            return;
+
+        if (sum == 0) {
+            outerCircle.setFill(new Color(.7, .7, .7, 1));
+            for (RingSegment rs : segments)
+                rs.arc.setStrokeWidth(0);
+            
+        } else {
+            outerCircle.setFill(Color.GRAY);
+            System.out.println(segments.get(0).arc.getStrokeWidth());
+            for (RingSegment rs : segments)
+                rs.arc.setStrokeWidth(1);
+        }
+        totalPoints = sum;
+    }
+
     private Color blend(Color c1) {
         final double ratio = 0.25;
         final double iRatio = 1d - ratio;
@@ -166,7 +186,6 @@ public class Ring {
         final double r = Math.sqrt((r1 * r1 * iRatio) + (ratio));
         final double g = Math.sqrt((g1 * g1 * iRatio) + (ratio));
         final double b = Math.sqrt((b1 * b1 * iRatio) + (ratio));
-
 
         return new Color(r, g, b, 1);
     }
@@ -227,6 +246,5 @@ public class Ring {
             arc.addEventFilter(MouseEvent.MOUSE_PRESSED, event -> handler.accept(ringName + ":" + name));
         }
     }
-
 
 }

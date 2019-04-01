@@ -216,14 +216,14 @@ public class Api {
 
         if (ringName.equals("NEXT")) {
             if (getUsernameNext() == null) {
-                return new double[]{333, 334, 333};
+                return new double[]{0, 0, 0};
             }
             return new double[]{getFor(getUsernameNext()), 0, 0};
         }
 
         if (ringName.equals("PREVIOUS")) {
             if (getUsernamePrevious() == null) {
-                return new double[]{333, 334, 333};
+            	return new double[]{0, 0, 0};
             }
             return new double[]{getFor(getUsernamePrevious()), 0, 0};
         }
