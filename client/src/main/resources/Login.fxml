@@ -56,7 +56,7 @@
    </Button>
    <AnchorPane fx:id="frgtPassword" layoutX="259.0" layoutY="171.0" prefHeight="192.0" prefWidth="352.0" style="-fx-background-color: whitesmoke; -fx-background-radius: 20; -fx-border-color: #50e476; -fx-border-width: 5; -fx-border-radius: 15;" visible="false" AnchorPane.bottomAnchor="50.0" AnchorPane.rightAnchor="7.0" AnchorPane.topAnchor="171.0">
       <children>
-         <JFXTextField fx:id="enterEmail" layoutX="35.0" layoutY="86.0" prefHeight="39.0" prefWidth="290.0" text="Enter Email Address" />
+         <JFXTextField fx:id="enterEmail" layoutX="35.0" layoutY="86.0" prefHeight="39.0" prefWidth="290.0" promptText="Enter Email Address" />
          <Button id="button" fx:id="sendEmailButton" layoutX="24.0" layoutY="139.0" mnemonicParsing="false" onAction="#sendEmail" prefHeight="39.0" prefWidth="144.0" stylesheets="@Common.css" text="Send Email" textFill="WHITE">
             <font>
                <Font size="18.0" />
