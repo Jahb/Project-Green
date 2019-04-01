@@ -89,7 +89,7 @@ public class LeaderboardController implements Initializable {
                 data.getData().add(new XYChart.Data<>(dates.getDays() - i, dates.getData()[i]));
             }
             scoreChart.getData().add(data);
-
+            scoreChart.getXAxis().setLabel(currentDatePeriod.name());
             switch (currentDatePeriod) {
                 case WEEK:
                 case MONTH:
@@ -152,6 +152,9 @@ public class LeaderboardController implements Initializable {
         leaderboardList.setEditable(true);
 
         leaderboardList.setItems(items);
+
+        scoreChart.getXAxis().setTickLabelsVisible(false);
+
 
     }
 
