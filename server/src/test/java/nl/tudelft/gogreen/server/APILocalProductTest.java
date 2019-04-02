@@ -27,6 +27,7 @@ public class APILocalProductTest {
             }
             assertEquals(result,1461.1871,1461.1871);
             System.out.println(result);
+            
 
         } catch (Exception exception) {
             System.out.println("Error!");
