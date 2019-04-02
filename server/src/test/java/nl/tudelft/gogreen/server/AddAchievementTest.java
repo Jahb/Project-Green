@@ -14,7 +14,7 @@ import java.util.ResourceBundle;
 import static org.junit.Assert.assertEquals;
 
 
-public class CreateAchievementTest {
+public class AddAchievementTest {
     private static ResourceBundle resource = ResourceBundle.getBundle("db");
 
     @Before
