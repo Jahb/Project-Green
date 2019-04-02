@@ -5,9 +5,13 @@ import com.jfoenix.controls.JFXTextField;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
@@ -21,6 +25,8 @@ import java.net.URL;
 import java.util.ResourceBundle;
 import java.util.function.Consumer;
 
+import static javafx.scene.layout.Priority.ALWAYS;
+
 public class NewProfileController implements Initializable {
 
     @FXML
@@ -31,8 +37,6 @@ public class NewProfileController implements Initializable {
     private JFXListView followerList;
     @FXML
     private JFXTextField searchFollowers;
-    @FXML
-    private ListView achievementsList;
     @FXML
     private Button achievementsButton;
     @FXML
@@ -51,6 +55,8 @@ public class NewProfileController implements Initializable {
     private Button follow;
     @FXML
     private HBox topRightBox;
+    @FXML
+    private BorderPane achievementsBorder;
 
     private Ring userRing;
 
@@ -79,7 +85,47 @@ public class NewProfileController implements Initializable {
             topRightBox.getChildren().remove(follow);
         }
 
+        //TODO Adding Achievements just pull 3 most recent and call AddAchievements Method
+        ListItem achievement1 = new ListItem(new Image("/images/IconCupGold.png"), "Achievement 1");
+        ListItem achievement2 = new ListItem(new Image("/images/IconCupSilver.png"), "Achievement 2");
+        ListItem achievement3 = new ListItem(new Image("/images/IconCupBronze.png"), "Achievement 3");
+        addAchievements(achievement1, achievement2, achievement3);
+    }
 
+    /**
+     * A Badly written method that takes 3 list items and adds them to the Achievements Panel.
+     *
+     * @param one   ListItem
+     * @param two   ListItem
+     * @param three ListItem
+     */
+    private void addAchievements(ListItem one, ListItem two, ListItem three) {
+        Pane pane = new Pane();
+
+        HBox first = (HBox) achievementsBorder.getLeft();
+        first.setAlignment(Pos.CENTER);
+        HBox second = (HBox) achievementsBorder.getCenter();
+        second.setAlignment(Pos.CENTER);
+        HBox third = (HBox) achievementsBorder.getRight();
+        third.setAlignment(Pos.CENTER);
+        HBox.setHgrow(pane, ALWAYS);
+
+        ImageView image1 = new ImageView(one.getImage());
+        ImageView image2 = new ImageView(two.getImage());
+        ImageView image3 = new ImageView(three.getImage());
+
+        image1.setFitWidth(50);
+        image1.setFitHeight(50);
+
+        image2.setFitHeight(50);
+        image2.setFitWidth(50);
+
+        image3.setFitHeight(50);
+        image3.setFitWidth(50);
+
+        first.getChildren().addAll(image1, new Label(one.getText()), pane);
+        second.getChildren().addAll(image2, new Label(two.getText()), pane);
+        third.getChildren().addAll(image3, new Label(three.getText()), pane);
     }
 
     /**
@@ -111,6 +157,52 @@ public class NewProfileController implements Initializable {
         userRing.setUsername(Api.current.getUsername());
         userRing.setSegmentValues(valuesMain);
         userRing.startAnimation();
+    }
+
+    class ListItem {
+        private Image image;
+        private String text;
+
+        ListItem(Image image, String text) {
+            this.image = image;
+            this.text = text;
+        }
+
+        public Image getImage() {
+            return this.image;
+        }
+
+        public String getText() {
+            return this.text;
+        }
+    }
+
+    class Cell extends ListCell<ListItem> {
+        HBox listCell = new HBox();
+        Label itemName = new Label();
+        Pane pane = new Pane();
+        ImageView image = new ImageView();
+
+        private Cell() {
+            super();
+            listCell.getChildren().addAll(image, pane, itemName);
+            HBox.setHgrow(pane, ALWAYS);
+            listCell.setAlignment(Pos.CENTER);
+            image.setFitHeight(50);
+            image.setFitWidth(50);
+        }
+
+        public void updateItem(ListItem item, boolean empty) {
+            super.updateItem(item, empty);
+            setText(null);
+            setGraphic(null);
+
+            if (item != null && !empty) {
+                itemName.setText(item.getText());
+                image.setImage(item.getImage());
+                setGraphic(listCell);
+            }
+        }
     }
 
 }

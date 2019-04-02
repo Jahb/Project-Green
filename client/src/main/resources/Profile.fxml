@@ -80,9 +80,19 @@
       </AnchorPane>
       <AnchorPane layoutY="609.0" prefHeight="143.0" prefWidth="683.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="317.0">
          <children>
-            <ListView fx:id="achievementsList" layoutY="70.0" orientation="HORIZONTAL" prefHeight="65.0" prefWidth="662.0" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="7.0" />
             <Label id="niceLabel" alignment="CENTER" contentDisplay="CENTER" layoutX="14.0" layoutY="14.0" prefHeight="48.0" prefWidth="370.0" text="Recent Achievements" />
             <Button id="button2" fx:id="achievementsButton" layoutX="527.0" layoutY="31.0" mnemonicParsing="false" text="All Achievements" />
+            <BorderPane fx:id="achievementsBorder" layoutX="14.0" layoutY="70.0" prefHeight="65.0" prefWidth="662.0" style="-fx-background-color: white; -fx-border-color: lightgray;">
+               <left>
+                  <HBox fx:id="achievment1" prefHeight="100.0" prefWidth="200.0" BorderPane.alignment="CENTER" />
+               </left>
+               <center>
+                  <HBox fx:id="achievement2" prefHeight="100.0" prefWidth="200.0" BorderPane.alignment="CENTER" />
+               </center>
+               <right>
+                  <HBox fx:id="achievement3" prefHeight="100.0" prefWidth="200.0" BorderPane.alignment="CENTER" />
+               </right>
+            </BorderPane>
          </children>
       </AnchorPane>
       <AnchorPane layoutY="197.0" prefHeight="410.0" prefWidth="321.0" AnchorPane.bottomAnchor="145.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="197.0">
