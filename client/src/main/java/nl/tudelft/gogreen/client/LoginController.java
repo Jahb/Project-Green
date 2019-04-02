@@ -1,7 +1,10 @@
 package nl.tudelft.gogreen.client;
 
+import com.jfoenix.controls.JFXTextField;
 import com.mashape.unirest.http.exceptions.UnirestException;
 import javafx.fxml.FXML;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.text.Text;
@@ -12,6 +15,26 @@ import nl.tudelft.gogreen.client.communication.Api;
  * Controller For MainControllerFXML.
  */
 public class LoginController {
+    @FXML
+    public Button loginButton;
+    @FXML
+    public Button registerButton;
+    @FXML
+    public Label loginLabel;
+    @FXML
+    public Button frgtPassButton;
+    @FXML
+    public JFXTextField enterEmail;
+    @FXML
+    public Button sendEmailButton;
+    @FXML
+    public Button cancelButton;
+    @FXML
+    public Button cancelButton1;
+    @FXML
+    public JFXTextField emailField;
+    @FXML
+    public Button backToLogin;
     @FXML
     private TextField passwordField;
     @FXML

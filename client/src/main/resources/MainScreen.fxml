@@ -16,10 +16,9 @@
 <AnchorPane id="layeredMainScreen" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="720.0" minWidth="1000.0"
             prefHeight="720.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/8.0.171"
             xmlns:fx="http://javafx.com/fxml/1">
-    <children>
         <BorderPane id="baseLayer" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
                     prefHeight="720.0" prefWidth="1000.0"
-                    style="-fx-background-image: url(&quot;/images/background.jpg&quot;); -fx-background-position: center center; -fx-background-repeat: no-repeat;"
+                    style="-fx-background-image: url('/images/background.jpg'); -fx-background-position: center center; -fx-background-repeat: no-repeat;"
                     AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"
                     AnchorPane.topAnchor="0.0">
             <bottom>
@@ -35,18 +34,11 @@
                             <BorderPane.margin>
                                 <Insets/>
                             </BorderPane.margin>
-                            <image>
                                 <Image url="@images/TemporaryLogo.png"/>
-                            </image>
                         </ImageView>
                     </left>
                     <right>
                         <HBox fx:id="topButtons" prefHeight="100.0" prefWidth="200.0" BorderPane.alignment="CENTER">
-<!--                            <ImageView fitHeight="75.0" fitWidth="115.0" pickOnBounds="true" preserveRatio="true">-->
-<!--                                <image>-->
-<!--                                    <Image url="@images/ButtonProfile.png"/>-->
-<!--                                </image>-->
-<!--                            </ImageView>-->
                             <BorderPane fx:id="eventButtonPane" prefHeight="200.0" prefWidth="200.0">
                                 <center>
                                     <Circle fill="#50e476" radius="35.0" stroke="TRANSPARENT" strokeType="INSIDE"
@@ -63,7 +55,6 @@
         </BorderPane>
         <AnchorPane id="overlayLayer" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0"
                     AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-            <children>
                 <TextArea id="helpText" fx:id="helpText" editable="false" layoutX="431.0" layoutY="73.0"
                           prefHeight="412.0" prefWidth="569.0" promptText="How To Earn Points"
                           style="-fx-border-radius: 150 150 0 0; -fx-background-radius: 150 150 0 0;"
@@ -78,30 +69,22 @@
                             AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
                     <center>
                         <StackPane prefHeight="150.0" prefWidth="600.0" BorderPane.alignment="CENTER">
-                            <children>
                                 <Rectangle arcHeight="120.0" arcWidth="120.0" fill="#50e476" height="120.0"
                                            stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="500.0"/>
-                            </children>
                         </StackPane>
                     </center>
                     <left>
                         <StackPane prefHeight="150.0" prefWidth="150.0" BorderPane.alignment="CENTER">
-                            <children>
                                 <Rectangle arcHeight="120.0" arcWidth="120.0" fill="#50e476" height="120.0"
                                            stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="120.0"/>
-                            </children>
                         </StackPane>
                     </left>
                     <right>
                         <StackPane prefHeight="150.0" prefWidth="150.0" BorderPane.alignment="CENTER">
-                            <children>
                                 <Rectangle arcHeight="120.0" arcWidth="120.0" fill="#50e476" height="120.0"
                                            stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="120.0"/>
-                            </children>
                         </StackPane>
                     </right>
                 </BorderPane>
-            </children>
         </AnchorPane>
-    </children>
 </AnchorPane>

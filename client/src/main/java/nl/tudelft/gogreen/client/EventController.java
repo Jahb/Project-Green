@@ -27,6 +27,7 @@ public class EventController implements Initializable {
     public ListView<EventItem> fullEventList;
     @FXML
     public AnchorPane createEvent;
+    public BorderPane buttonPane;
 
     private ObservableList<EventItem> allEvents = FXCollections.observableArrayList();
     private ObservableList<EventItem> userEvents = FXCollections.observableArrayList();

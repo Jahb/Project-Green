@@ -10,13 +10,11 @@
 
 <AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="nl.tudelft.gogreen.client.AchievementsController">
    <HBox alignment="TOP_CENTER" layoutX="101.0" prefHeight="100.0" prefWidth="429.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="15.0">
-      <children>
          <Label alignment="CENTER" prefHeight="90.0" prefWidth="320.0" style="-fx-font-size: 35; -fx-text-fill: white; -fx-background-color:#50E476;-fx-font-weight: bold;   -fx-background-radius: 45 45 45 45" text="Achievements">
             <font>
                <Font name="System Bold" size="24.0" />
             </font>
          </Label>
-      </children>
    </HBox>
    <BorderPane layoutX="100.0" layoutY="213.0" prefHeight="115.0" prefWidth="595.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
       <padding>
