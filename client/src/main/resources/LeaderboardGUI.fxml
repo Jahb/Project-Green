@@ -31,7 +31,7 @@
       </BorderPane>
       <LineChart fx:id="scoreChart" layoutY="198.0" prefHeight="354.0" prefWidth="660.0" AnchorPane.bottomAnchor="1.0" AnchorPane.leftAnchor="1.0" AnchorPane.topAnchor="115.0">
         <xAxis>
-          <CategoryAxis label="Months" side="BOTTOM" fx:id="x" />
+          <NumberAxis label="Months" side="BOTTOM" fx:id="x" />
         </xAxis>
         <yAxis>
           <NumberAxis fx:id="y" label="CO2 Reduction" side="LEFT" />

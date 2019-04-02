@@ -9,7 +9,6 @@ import javafx.scene.Node;
 import javafx.scene.control.Tooltip;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
-
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
@@ -79,7 +78,7 @@ class AddActivityButton {
 
         activityButtonPane = new AnchorPane(backgroundPane, text);
 
-        activityButtonPane.setPrefWidth((double)(600 * 15 / 16));
+        activityButtonPane.setPrefWidth((double) (600 * 15 / 16));
         activityButtonPane.setPrefWidth(200);
         activityButtonPane.setLayoutX(500 - 600.0 * 31 / 64);
         activityButtonPane.setLayoutY(720 - 75);
@@ -278,7 +277,7 @@ class AddActivityButton {
             hackTooltipStartTiming(tooltip);
             tooltip.setStyle("-fx-background-color:#52EA7F; -fx-font-weight:bold; -fx-text-color:white;" +
                     "-fx-font-size:20");
-            Tooltip.install(button.getStackPane(),tooltip);
+            Tooltip.install(button.getStackPane(), tooltip);
         }
 
         void addNodes(AnchorPane anchorPane) {
@@ -296,7 +295,8 @@ class AddActivityButton {
     }
 
     /**
-     *  this makes it so the tooltips show instantly
+     * this makes it so the tooltips show instantly
+     *
      * @param tooltip
      */
     public static void hackTooltipStartTiming(Tooltip tooltip) {

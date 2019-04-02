@@ -18,21 +18,20 @@ public class delete_eventTest {
 
     @Test
     public void delete_eventTest() {
-        try(Connection conn = DriverManager.getConnection(resource.getString("Postgresql.datasource.url"), resource.getString("Postgresql.datasource.username"), resource.getString("Postgresql.datasource.password"))) {
+        try (Connection conn = DriverManager.getConnection(resource.getString("Postgresql.datasource.url"), resource.getString("Postgresql.datasource.username"), resource.getString("Postgresql.datasource.password"))) {
 
-            CreateUser.create_user("test2","test");
-            int id = NewFeature.getId("test2",conn);
-            EventsMain.create_event("test2", id,"karnaval2", conn);
-            EventsMain.delete_event("test2","karnaval2",conn);
+            CreateUser.create_user("test2", "test");
+            int id = NewFeature.getId("test2", conn);
+            EventsMain.create_event("test2", "karnaval2", "", "", "", conn);
+            EventsMain.delete_event("test2", "karnaval2", conn);
             PreparedStatement getCreator = conn.prepareStatement("select event_name from event where event_name = 'karnaval2';");
             ResultSet rs = getCreator.executeQuery();
             String hash = null;
-            while(rs.next()){
+            while (rs.next()) {
                 hash = rs.getString(1);
             }
             assertNull(hash);
-        }
-        catch (Exception exception){
+        } catch (Exception exception) {
             System.out.println("Error!");
         }
     }

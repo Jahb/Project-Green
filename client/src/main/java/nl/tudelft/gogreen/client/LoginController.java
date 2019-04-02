@@ -5,7 +5,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.text.Text;
-import nl.tudelft.gogreen.client.communication.API;
+import nl.tudelft.gogreen.client.communication.Api;
 
 
 /**
@@ -37,7 +37,7 @@ public class LoginController {
         String pw = passwordField.getText();
 
 
-        if (API.current.login(un, pw)) {
+        if (Api.current.login(un, pw)) {
 
             Main.openMainScreen();
         } else if (passwordWrong != null) {
@@ -57,7 +57,7 @@ public class LoginController {
         String pw2 = passwordField2.getText();
         if (!pw.equals(pw2)) {
             passwordNotMatch.setVisible(true);
-        } else if (API.current.register(un, pw)) {
+        } else if (Api.current.register(un, pw)) {
             login();
         }
 

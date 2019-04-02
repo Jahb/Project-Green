@@ -29,15 +29,15 @@ public class SDataLastWeekTest {
 
         try (Connection conn = DriverManager.getConnection(resource.getString("Postgresql.datasource.url"), resource.getString("Postgresql.datasource.username"), resource.getString("Postgresql.datasource.password"))) {
             int id = NewFeature.getId("Russell", conn);
-            float[] AllData = Statistics.getLastWeekData(id);
-            float totalPoints = AllData[AllData.length-2];
+            double[] AllData = Statistics.getLastWeekData(id);
+            double totalPoints = AllData[AllData.length-2];
 
             PreparedStatement insertData = conn.prepareStatement(resource.getString("qInsertWeekData"));
             insertData.setInt(1,id);
             insertData.execute();
 
-            float[] AllData2 = Statistics.getLastWeekData(id);
-            float totalPoints2 = AllData2[AllData2.length-2];
+            double[] AllData2 = Statistics.getLastWeekData(id);
+            double totalPoints2 = AllData2[AllData2.length-2];
 
             assertNotEquals(totalPoints,totalPoints2);
 
@@ -45,7 +45,7 @@ public class SDataLastWeekTest {
 
             assertEquals(totalPoints,totalPoints2, 0.1);
 
-            float value1 = 20f/7f;
+            double value1 = 20f/7f;
             assertEquals(AllData2[AllData2.length-2],  20,0.1);
             assertEquals(AllData2[AllData2.length-1], value1,0.1);
 

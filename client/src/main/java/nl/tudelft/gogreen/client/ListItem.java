@@ -1,5 +1,11 @@
 package nl.tudelft.gogreen.client;
 
+
+/*
+ * Cursed ListItem?
+ * What does it do, how does it work?
+ * Nobody knows
+ */
 class ListItem {
 
     private String text;

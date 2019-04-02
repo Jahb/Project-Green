@@ -43,7 +43,8 @@ public class AchievementsController implements Initializable {
 
     /**
      * Initialises List and adds images to it.
-     * @param location URL of images
+     *
+     * @param location  URL of images
      * @param resources A ResourceBundle
      */
     public void initialize(URL location, ResourceBundle resources) {

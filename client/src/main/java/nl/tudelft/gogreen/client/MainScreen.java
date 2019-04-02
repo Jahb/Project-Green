@@ -9,7 +9,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
-import nl.tudelft.gogreen.client.communication.API;
+import nl.tudelft.gogreen.client.communication.Api;
 
 import java.io.IOException;
 import java.net.URL;
@@ -25,15 +25,16 @@ public class MainScreen {
 
     private Scene scene;
 
-    private Ring ringMain;
-    private Ring ringPrevious;
-    private Ring ringNext;
+    private Ring ringMAIN;
+    private Ring ringPREVIOUS;
+    private Ring ringNEXT;
     private TextArea helpText;
     private AddActivityButton activityButton;
     // TODO handler for each subcategory
     private Consumer<String> handler = name -> {
         try {
-            int res = API.current.addFeature(name);
+            int res = Api.current.addFeature(name);
+            System.out.println(name);
             updateRingValues();
         } catch (UnirestException e) {
             e.printStackTrace();
@@ -82,26 +83,26 @@ public class MainScreen {
     }
 
     private void addRings(AnchorPane anchorPane) {
-        ringMain = new Ring((int) (150 * .75), 150, Main.getWidth() / 2, 200, "MAIN");
-        ringMain.setHandler(ringHandler);
-        ringMain.setUsername(API.current.getUsername());
-        anchorPane.getChildren().add(ringMain.getPane());
+        ringMAIN = new Ring((int) (150 * .75), 150, Main.getWidth() / 2, 200, "MAIN");
+        ringMAIN.setHandler(ringHandler);
+        ringMAIN.setUsername(Api.current.getUsername());
+        anchorPane.getChildren().add(ringMAIN.getPane());
 
-        ringNext = new Ring((int) (90 * .75), 90, 120, 350, "NEXT");
-        ringNext.setHandler(ringHandler);
-        ringNext.setUsername(API.current.getUsernameNEXT());
-        anchorPane.getChildren().add(ringNext.getPane());
+        ringNEXT = new Ring((int) (90 * .75), 90, 120, 350, "NEXT");
+        ringNEXT.setHandler(ringHandler);
+        ringNEXT.setUsername(Api.current.getUsernameNext());
+        anchorPane.getChildren().add(ringNEXT.getPane());
 
-        ringPrevious = new Ring((int) (90 * .75), 90, Main.getWidth() - 120, 350, "PREVIOUS");
-        ringPrevious.setHandler(ringHandler);
-        ringPrevious.setUsername(API.current.getUsernamePREVIOUS());
-        anchorPane.getChildren().add(ringPrevious.getPane());
+        ringPREVIOUS = new Ring((int) (90 * .75), 90, Main.getWidth() - 120, 350, "PREVIOUS");
+        ringPREVIOUS.setHandler(ringHandler);
+        ringPREVIOUS.setUsername(Api.current.getUsernamePrevious());
+        anchorPane.getChildren().add(ringPREVIOUS.getPane());
 
         scene.widthProperty()
                 .addListener((obs, oldVal, newVal) -> {
-                    ringMain.setX(newVal.intValue() / 2);
-                    ringNext.setX(120);
-                    ringPrevious.setX(newVal.intValue() - 120);
+                    ringMAIN.setX(newVal.intValue() / 2);
+                    ringNEXT.setX(120);
+                    ringPREVIOUS.setX(newVal.intValue() - 120);
                 });
 
         updateRingValues();
@@ -109,17 +110,20 @@ public class MainScreen {
     }
 
     private void updateRingValues() {
-        double[] valuesMain = API.current.getRingSegmentValues(ringMain.getName());
-        ringMain.setSegmentValues(valuesMain);
-        ringMain.startAnimation();
+        double[] valuesMAIN = Api.current.getRingSegmentValues(ringMAIN.getName());
+        ringMAIN.setUsername(Api.current.getUsername());
+        ringMAIN.setSegmentValues(valuesMAIN);
+        ringMAIN.startAnimation();
 
-        double[] valuesNext = API.current.getRingSegmentValues(ringNext.getName());
-        ringNext.setSegmentValues(valuesNext);
-        ringNext.startAnimation();
+        double[] valuesNEXT = Api.current.getRingSegmentValues(ringNEXT.getName());
+        ringNEXT.setUsername(Api.current.getUsernameNext());
+        ringNEXT.setSegmentValues(valuesNEXT);
+        ringNEXT.startAnimation();
 
-        double[] valuesPrevious = API.current.getRingSegmentValues(ringPrevious.getName());
-        ringPrevious.setSegmentValues(valuesPrevious);
-        ringPrevious.startAnimation();
+        double[] valuesPREVIOUS = Api.current.getRingSegmentValues(ringPREVIOUS.getName());
+        ringPREVIOUS.setUsername(Api.current.getUsernamePrevious());
+        ringPREVIOUS.setSegmentValues(valuesPREVIOUS);
+        ringPREVIOUS.startAnimation();
     }
 
     private void addActivityButton(AnchorPane anchorPane) {
@@ -151,8 +155,14 @@ public class MainScreen {
      */
     private void addTopMenuButtons(HBox hbox) {
         IconButton helpButton = new IconButton("Help", 70, 70);
-        BorderPane root = (BorderPane) hbox.getChildren().get(1);
+        BorderPane root = (BorderPane) hbox.getChildren().get(0);
         root.setCenter(helpButton.getStackPane());
+
+        IconButton profileButton = new IconButton("Profile", 70, 70);
+        BorderPane r2 = new BorderPane();
+        r2.setCenter(profileButton.getStackPane());
+        hbox.getChildren().add(r2);
+        profileButton.setOnClick(event -> Main.openProfileScreen());
 
         helpButton.setOnClick(event -> helpText.setVisible(!helpText.isVisible()));
     }

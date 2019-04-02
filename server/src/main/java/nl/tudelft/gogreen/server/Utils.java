@@ -4,6 +4,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Utils {
 
@@ -24,6 +26,15 @@ public class Utils {
 
     public static <T> void writeJson(HttpServletResponse response, T data) throws IOException {
         writeJson(response, data, 200);
+    }
+
+    public static List<Integer> verifyUsersValid(String... usernames) {
+        List<Integer> uids = new ArrayList<>();
+        for (String username : usernames) {
+            int otherID = NewFeature.getUID(username);
+            uids.add(otherID);
+        }
+        return uids;
     }
 
 }
