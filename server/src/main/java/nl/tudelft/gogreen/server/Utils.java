@@ -4,11 +4,14 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.sql.Connection;
+import java.sql.DriverManager;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.ResourceBundle;
 
 public class Utils {
-
+    private static ResourceBundle resource = ResourceBundle.getBundle("db");
 
     public static ObjectMapper mapper = new ObjectMapper();
 
@@ -29,12 +32,22 @@ public class Utils {
     }
 
     public static List<Integer> verifyUsersValid(String... usernames) {
-        List<Integer> uids = new ArrayList<>();
-        for (String username : usernames) {
-            int otherID = NewFeature.getUID(username);
-            uids.add(otherID);
+        try {
+            List<Integer> uids = new ArrayList<>();
+            Connection conn = DriverManager.getConnection(
+                    resource.getString("Postgresql.datasource.url"),
+                    resource.getString("Postgresql.datasource.username"),
+                    resource.getString("Postgresql.datasource.password"));
+            for (String username : usernames) {
+                int otherID = NewFeature.getId(username,conn);
+                uids.add(otherID);
+            }
+            return uids;
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
         }
-        return uids;
-    }
+        return null;
 
+
+    }
 }
