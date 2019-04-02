@@ -1,13 +1,24 @@
 package nl.tudelft.gogreen.client;
 
+import java.util.ArrayList;
+import java.util.function.Consumer;
+
 import javafx.animation.AnimationTimer;
+import javafx.animation.FadeTransition;
 import javafx.animation.FillTransition;
 import javafx.animation.Transition;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
+import javafx.scene.layout.Border;
+import javafx.scene.layout.BorderStroke;
+import javafx.scene.layout.BorderStrokeStyle;
+import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Arc;
 import javafx.scene.shape.ArcType;
@@ -16,9 +27,6 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.util.Duration;
-
-import java.util.ArrayList;
-import java.util.function.Consumer;
 
 public class Ring {
 
@@ -135,6 +143,8 @@ public class Ring {
                 timer.stop();
 
             for (RingSegment rs : segments) {
+                if (rs.delta == 0)
+                    continue;
                 rs.arc.setStartAngle(90 + startAngle);
                 double animationLength = Math.max(-1, Math.min(progress / rs.delta, 1));
                 rs.arc.setLength((rs.points + smoothFormula(animationLength) * rs.delta) * -360 / MAXPOINTS);
@@ -142,7 +152,9 @@ public class Ring {
                 if (animationLength == 1 || animationLength == -1) {
                     rs.points += rs.delta;
                     rs.delta = 0;
+                    
                 }
+                rs.updateHoverText(rs.points + smoothFormula(animationLength) * rs.delta);
 //                rs.cutArc.;
                 startAngle += rs.arc.getLength();
             }
@@ -155,22 +167,21 @@ public class Ring {
 
     private void isEmpty() {
         int sum = 0;
-        for (RingSegment rs : segments)
+        for (RingSegment rs : segments) {
             sum += rs.points + rs.delta;
+            rs.arc.setStrokeWidth(rs.points + rs.delta > 0 ? 1 : 0);
+
+        }
 
         if (sum == totalPoints)
             return;
 
         if (sum == 0) {
             outerCircle.setFill(new Color(.7, .7, .7, 1));
-            for (RingSegment rs : segments)
-                rs.arc.setStrokeWidth(0);
-            
+
         } else {
             outerCircle.setFill(Color.GRAY);
             System.out.println(segments.get(0).arc.getStrokeWidth());
-            for (RingSegment rs : segments)
-                rs.arc.setStrokeWidth(1);
         }
         totalPoints = sum;
     }
@@ -195,9 +206,10 @@ public class Ring {
         protected Color color;
         protected String name;
         protected String ringName;
-        double points;
+        private double points;
         double delta;
         Arc arc;
+        StackPane hoverText;
 
         RingSegment(Ring ring, double percentage, Color color, String name) {
             this.delta = percentage;
@@ -221,26 +233,60 @@ public class Ring {
             arc.setStroke(Color.BLACK);
 
             addTransitions();
+            Text text = new Text(name + ": " + points);
+            text.setFont(new Font(centerOffs/5));
+            hoverText = new StackPane(text);
+            BackgroundFill bgf = new BackgroundFill(new Color(1,1,1,.95), new CornerRadii(5), null);
+            hoverText.setBackground(new Background(bgf));
+            hoverText.setBorder(new Border(new BorderStroke(Color.DARKGRAY, BorderStrokeStyle.SOLID, null, null)));
+            hoverText.setPadding(new Insets(0, 5, 0, 5));
+            hoverText.setAlignment(Pos.TOP_CENTER);
+            hoverText.setMouseTransparent(true);
+            hoverText.setVisible(false);
+
+        }
+
+        void updateHoverText(double points) {
+            Text text = (Text) hoverText.getChildren().get(0);
+            double width = hoverText.getLayoutBounds().getWidth();
+            double height = hoverText.getLayoutBounds().getHeight();
+
+            final double r = (.25 - points / MAXPOINTS / 2) * Math.PI * 2;
+            double x = Math.cos(r) * centerOffs * .80;
+            double y = -Math.sin(r) * centerOffs * .80;
+            
+            if (x < 0)
+                x -= width;
+            if (y < 0)
+                y -= height;
+            hoverText.setLayoutX(centerOffs + x);
+            hoverText.setLayoutY(centerOffs + y);
+            if(ringName.equals("MAIN"))
+                text.setText(name + ": " + (int)(points));
+            else
+                text.setText(""+(int)(points));
         }
 
         void addNodes(Pane root) {
             root.getChildren().add(arc);
+            root.getChildren().add(hoverText);
         }
 
         void addTransitions() {
             Color mouseOver = blend(color);
-            Transition mouseEnter = new FillTransition(Duration.millis(200), arc, color, mouseOver);
-            Transition mouseExit = new FillTransition(Duration.millis(100), arc, mouseOver, color);
+            Transition brighten = new FillTransition(Duration.millis(200), arc, color, mouseOver);
+            Transition resetColor = new FillTransition(Duration.millis(100), arc, mouseOver, color);
 
             arc.setOnMouseEntered(event -> {
-                mouseExit.jumpTo(Duration.millis(100));
-                mouseEnter.playFromStart();
-
+                resetColor.jumpTo(Duration.millis(100));
+                brighten.playFromStart();
+                hoverText.setVisible(true);
             });
 
             arc.setOnMouseExited(event -> {
-                mouseEnter.jumpTo(Duration.millis(200));
-                mouseExit.playFromStart();
+                brighten.jumpTo(Duration.millis(200));
+                resetColor.playFromStart();
+                hoverText.setVisible(false);
             });
 
             arc.addEventFilter(MouseEvent.MOUSE_PRESSED, event -> handler.accept(ringName + ":" + name));
