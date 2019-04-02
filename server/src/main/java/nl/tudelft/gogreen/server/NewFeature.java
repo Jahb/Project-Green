@@ -159,7 +159,7 @@ public class NewFeature {
                 updatec4.execute();
                 break;
             default:
-                System.out.println("Wrong category");
+
         }
         PreparedStatement updatectotal =
                 conn.prepareStatement(resource.getString("updatetotalpoints"));
@@ -230,7 +230,7 @@ public class NewFeature {
                     createc4.execute();
                     break;
                 default:
-                    System.out.println("Wrong category");
+
 
             }
 
@@ -274,7 +274,7 @@ public class NewFeature {
                     break;
 
                 default:
-                    System.out.println("Wrong category");
+
 
             }
 
@@ -363,9 +363,9 @@ public class NewFeature {
      * @param id of the user
      * @return Returns the number of days as an int
      */
-    public static int getStreak(int id) {
+    public static int getStreak(int id) throws Exception {
 
-        try {
+
             Connection conn = getConnection(
                     resource.getString("Postgresql.datasource.url"),
                     resource.getString("Postgresql.datasource.username"),
@@ -379,11 +379,7 @@ public class NewFeature {
             }
 
             return numDays;
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
-            return -1;
 
-        }
     }
 
     /**

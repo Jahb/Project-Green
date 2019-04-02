@@ -9,8 +9,8 @@ public class Achievements {
 
     private static ResourceBundle resource = ResourceBundle.getBundle("db");
 
-    public static void addAchievement(int id, String achievementName) {
-        try {
+    public static void addAchievement(int id, String achievementName) throws Exception {
+
             Connection conn = DriverManager.getConnection(
                     resource.getString("Postgresql.datasource.url"),
                     resource.getString("Postgresql.datasource.username"),
@@ -21,12 +21,9 @@ public class Achievements {
             add.setString(2,achievementName);
             add.execute();
 
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
-        }
+
     }
-    public static void deleteAchievement(int id, String achievementName) {
-        try {
+    public static void deleteAchievement(int id, String achievementName)  throws  Exception{
             Connection conn = DriverManager.getConnection(
                     resource.getString("Postgresql.datasource.url"),
                     resource.getString("Postgresql.datasource.username"),
@@ -36,8 +33,6 @@ public class Achievements {
             delete.setInt(1,id);
             delete.execute();
 
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
-        }
+
     }
 }

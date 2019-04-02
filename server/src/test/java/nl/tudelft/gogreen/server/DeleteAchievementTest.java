@@ -35,7 +35,7 @@ public class DeleteAchievementTest {
 
 
             Achievements.addAchievement(NewFeature.getId("paul",conn),"1000 points");
-            PreparedStatement getNameAchievement = conn.prepareStatement("select achievement_name from achievements where user_id = ?");
+            PreparedStatement getNameAchievement = conn.prepareStatement(resource.getString("qgetAchievements"));
             getNameAchievement.setInt(1, NewFeature.getId("paul",conn));
             String name = null;
             ResultSet rs = getNameAchievement.executeQuery();
@@ -44,7 +44,7 @@ public class DeleteAchievementTest {
             }
             assertEquals("1000 points", name);
             Achievements.deleteAchievement(NewFeature.getId("paul",conn),"1000 points");
-            PreparedStatement getNameAchievement2 = conn.prepareStatement("select achievement_name from achievements where user_id = ?");
+            PreparedStatement getNameAchievement2 = conn.prepareStatement(resource.getString("qgetAchievements"));
             getNameAchievement2.setInt(1, NewFeature.getId("paul",conn));
             String name2 = null;
             ResultSet rs2 = getNameAchievement2.executeQuery();
