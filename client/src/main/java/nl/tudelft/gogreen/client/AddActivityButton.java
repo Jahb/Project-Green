@@ -275,7 +275,10 @@ class AddActivityButton {
             subBackground.getChildren().add(button.getStackPane());
             Tooltip tooltip = new Tooltip(name);
             hackTooltipStartTiming(tooltip);
-            tooltip.setStyle("-fx-background-color:#52EA7F; -fx-font-weight:bold; -fx-text-color:white;" +
+            tooltip.setStyle(
+                    "-fx-background-color:#52EA7F; " +
+                    "-fx-font-weight:bold; " +
+                    "-fx-text-color:white;" +
                     "-fx-font-size:20");
             Tooltip.install(button.getStackPane(), tooltip);
         }
@@ -295,11 +298,11 @@ class AddActivityButton {
     }
 
     /**
-     * this makes it so the tooltips show instantly
+     * this makes it so the tooltips show instantly.
      *
-     * @param tooltip
+     * @param tooltip ToolTip object
      */
-    public static void hackTooltipStartTiming(Tooltip tooltip) {
+    private static void hackTooltipStartTiming(Tooltip tooltip) {
         try {
             Field fieldBehavior = tooltip.getClass().getDeclaredField("BEHAVIOR");
             fieldBehavior.setAccessible(true);

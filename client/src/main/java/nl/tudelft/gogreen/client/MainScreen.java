@@ -25,15 +25,16 @@ public class MainScreen {
 
     private Scene scene;
 
-    private Ring ringMAIN;
-    private Ring ringPREVIOUS;
-    private Ring ringNEXT;
+    private Ring ringMain;
+    private Ring ringPrevious;
+    private Ring ringNext;
     private TextArea helpText;
     private AddActivityButton activityButton;
     // TODO handler for each subcategory
     private Consumer<String> handler = name -> {
         try {
-            int res = Api.current.addFeature(name);
+            //Line below this one used to be res = API...... removed for checkStyle
+            Api.current.addFeature(name);
             System.out.println(name);
             updateRingValues();
         } catch (UnirestException e) {
@@ -83,26 +84,26 @@ public class MainScreen {
     }
 
     private void addRings(AnchorPane anchorPane) {
-        ringMAIN = new Ring((int) (150 * .75), 150, Main.getWidth() / 2, 200, "MAIN");
-        ringMAIN.setHandler(ringHandler);
-        ringMAIN.setUsername(Api.current.getUsername());
-        anchorPane.getChildren().add(ringMAIN.getPane());
+        ringMain = new Ring((int) (150 * .75), 150, Main.getWidth() / 2, 200, "MAIN");
+        ringMain.setHandler(ringHandler);
+        ringMain.setUsername(Api.current.getUsername());
+        anchorPane.getChildren().add(ringMain.getPane());
 
-        ringNEXT = new Ring((int) (90 * .75), 90, 120, 350, "NEXT");
-        ringNEXT.setHandler(ringHandler);
-        ringNEXT.setUsername(Api.current.getUsernameNext());
-        anchorPane.getChildren().add(ringNEXT.getPane());
+        ringNext = new Ring((int) (90 * .75), 90, 120, 350, "NEXT");
+        ringNext.setHandler(ringHandler);
+        ringNext.setUsername(Api.current.getUsernameNext());
+        anchorPane.getChildren().add(ringNext.getPane());
 
-        ringPREVIOUS = new Ring((int) (90 * .75), 90, Main.getWidth() - 120, 350, "PREVIOUS");
-        ringPREVIOUS.setHandler(ringHandler);
-        ringPREVIOUS.setUsername(Api.current.getUsernamePrevious());
-        anchorPane.getChildren().add(ringPREVIOUS.getPane());
+        ringPrevious = new Ring((int) (90 * .75), 90, Main.getWidth() - 120, 350, "PREVIOUS");
+        ringPrevious.setHandler(ringHandler);
+        ringPrevious.setUsername(Api.current.getUsernamePrevious());
+        anchorPane.getChildren().add(ringPrevious.getPane());
 
         scene.widthProperty()
                 .addListener((obs, oldVal, newVal) -> {
-                    ringMAIN.setX(newVal.intValue() / 2);
-                    ringNEXT.setX(120);
-                    ringPREVIOUS.setX(newVal.intValue() - 120);
+                    ringMain.setX(newVal.intValue() / 2);
+                    ringNext.setX(120);
+                    ringPrevious.setX(newVal.intValue() - 120);
                 });
 
         updateRingValues();
@@ -110,20 +111,20 @@ public class MainScreen {
     }
 
     private void updateRingValues() {
-        double[] valuesMAIN = Api.current.getRingSegmentValues(ringMAIN.getName());
-        ringMAIN.setUsername(Api.current.getUsername());
-        ringMAIN.setSegmentValues(valuesMAIN);
-        ringMAIN.startAnimation();
+        double[] valuesMain = Api.current.getRingSegmentValues(ringMain.getName());
+        ringMain.setUsername(Api.current.getUsername());
+        ringMain.setSegmentValues(valuesMain);
+        ringMain.startAnimation();
 
-        double[] valuesNEXT = Api.current.getRingSegmentValues(ringNEXT.getName());
-        ringNEXT.setUsername(Api.current.getUsernameNext());
-        ringNEXT.setSegmentValues(valuesNEXT);
-        ringNEXT.startAnimation();
+        double[] valuesNext = Api.current.getRingSegmentValues(ringNext.getName());
+        ringNext.setUsername(Api.current.getUsernameNext());
+        ringNext.setSegmentValues(valuesNext);
+        ringNext.startAnimation();
 
-        double[] valuesPREVIOUS = Api.current.getRingSegmentValues(ringPREVIOUS.getName());
-        ringPREVIOUS.setUsername(Api.current.getUsernamePrevious());
-        ringPREVIOUS.setSegmentValues(valuesPREVIOUS);
-        ringPREVIOUS.startAnimation();
+        double[] valuesPrevious = Api.current.getRingSegmentValues(ringPrevious.getName());
+        ringPrevious.setUsername(Api.current.getUsernamePrevious());
+        ringPrevious.setSegmentValues(valuesPrevious);
+        ringPrevious.startAnimation();
     }
 
     private void addActivityButton(AnchorPane anchorPane) {

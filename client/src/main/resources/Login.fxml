@@ -10,18 +10,18 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane prefHeight="367.0" prefWidth="625.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="nl.tudelft.gogreen.client.MainController">
+<AnchorPane prefHeight="413.0" prefWidth="625.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="nl.tudelft.gogreen.client.LoginController">
     <AnchorPane layoutY="-1.0" prefHeight="162.0" prefWidth="625.0" style="-fx-background-color: #49d36c;" stylesheets="@Common.css" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
         <ImageView fitHeight="122.0" fitWidth="351.0" layoutX="33.0" layoutY="20.0" pickOnBounds="true" preserveRatio="true" AnchorPane.leftAnchor="33.0" AnchorPane.topAnchor="20.0">
             <Image url="@images/TemporaryLogo.png" />
         </ImageView>
     </AnchorPane>
-    <JFXTextField fx:id="userField" layoutX="363.0" layoutY="184.0" promptText="Insert Username" style="-jfx-unfocus-color: lightgray; -jfx-focus-color: gray; -fx-background-image: url('/images/IconUser.png'); -fx-background-repeat: no-repeat; -fx-background-position: right center;" AnchorPane.rightAnchor="38.0" AnchorPane.topAnchor="184.0">
+    <JFXTextField fx:id="userField" layoutX="363.0" layoutY="184.0" prefHeight="39.0" prefWidth="221.0" promptText="Insert Username" style="-jfx-unfocus-color: lightgray; -jfx-focus-color: gray; -fx-background-image: url('/images/IconUser.png'); -fx-background-repeat: no-repeat; -fx-background-position: right center;" AnchorPane.rightAnchor="38.0" AnchorPane.topAnchor="184.0">
         <font>
             <Font size="18.0" />
         </font>
     </JFXTextField>
-    <JFXPasswordField fx:id="passwordField" layoutX="363.0" layoutY="247.0" promptText="Insert Password" style="-jfx-unfocus-color: lightgray; -jfx-focus-color: gray; -fx-background-image: url('/images/IconLock.png'); -fx-background-repeat: no-repeat; -fx-background-position: right center;" AnchorPane.rightAnchor="38.0" AnchorPane.topAnchor="247.0">
+    <JFXPasswordField fx:id="passwordField" layoutX="363.0" layoutY="247.0" prefHeight="39.0" prefWidth="221.0" promptText="Insert Password" style="-jfx-unfocus-color: lightgray; -jfx-focus-color: gray; -fx-background-image: url('/images/IconLock.png'); -fx-background-repeat: no-repeat; -fx-background-position: right center;" AnchorPane.rightAnchor="38.0" AnchorPane.topAnchor="247.0">
         <font>
             <Font size="18.0" />
         </font>
@@ -31,9 +31,7 @@
             <Font size="18.0" />
         </font>
     </Button>
-    <Button id="button" fx:id="registerButton" layoutX="492.0" layoutY="314.0" mnemonicParsing="false" prefHeight="39.0"
-            prefWidth="95.0" stylesheets="@Common.css" text="Register" textFill="WHITE" AnchorPane.rightAnchor="38.0" onAction="#register"
-            AnchorPane.topAnchor="314.0">
+    <Button id="button" fx:id="registerButton" layoutX="492.0" layoutY="314.0" mnemonicParsing="false" onAction="#openRegister" prefHeight="39.0" prefWidth="95.0" stylesheets="@Common.css" text="Register" textFill="WHITE" AnchorPane.rightAnchor="38.0" AnchorPane.topAnchor="314.0">
         <font>
             <Font size="18.0" />
         </font>
@@ -48,7 +46,47 @@
           <Font name="System Italic" size="15.0" />
         </font>
     </Text>
-    <ImageView fitHeight="150.0" fitWidth="200.0" layoutX="32.0" layoutY="172.0" pickOnBounds="true" preserveRatio="true" AnchorPane.leftAnchor="32.0" AnchorPane.topAnchor="172.0">
+    <ImageView fitHeight="188.0" fitWidth="232.0" layoutX="59.0" layoutY="180.0" pickOnBounds="true" preserveRatio="true" AnchorPane.leftAnchor="59.0" AnchorPane.topAnchor="180.0">
         <Image url="@images/ButtonProfile.png" />
     </ImageView>
+   <Button id="button" fx:id="frgtPassButton" layoutX="364.0" layoutY="365.0" mnemonicParsing="false" onAction="#frgtPassToggle" prefHeight="39.0" prefWidth="221.0" stylesheets="@Common.css" text="Forgot Password" textFill="WHITE">
+      <font>
+         <Font size="18.0" />
+      </font>
+   </Button>
+   <AnchorPane fx:id="frgtPassword" layoutX="259.0" layoutY="171.0" prefHeight="192.0" prefWidth="352.0" style="-fx-background-color: whitesmoke; -fx-background-radius: 20; -fx-border-color: #50e476; -fx-border-width: 5; -fx-border-radius: 15;" visible="false" AnchorPane.bottomAnchor="50.0" AnchorPane.rightAnchor="7.0" AnchorPane.topAnchor="171.0">
+         <JFXTextField fx:id="enterEmail" layoutX="35.0" layoutY="86.0" prefHeight="39.0" prefWidth="290.0" promptText="Enter Email Address" />
+         <Button id="button" fx:id="sendEmailButton" layoutX="24.0" layoutY="139.0" mnemonicParsing="false" onAction="#sendEmail" prefHeight="39.0" prefWidth="144.0" stylesheets="@Common.css" text="Send Email" textFill="WHITE">
+            <font>
+               <Font size="18.0" />
+            </font>
+         </Button>
+         <Button id="button" fx:id="cancelButton" layoutX="181.0" layoutY="139.0" mnemonicParsing="false" onAction="#frgtPassToggle" prefHeight="39.0" prefWidth="144.0" stylesheets="@Common.css" text="Cancel" textFill="WHITE">
+            <font>
+               <Font size="18.0" />
+            </font>
+         </Button>
+         <Text layoutX="13.0" layoutY="30.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Enter The Email Used When Creating Your Account We Shall Send Instructions On How To Reset Your Password." textAlignment="CENTER" wrappingWidth="335.93994140625">
+            <font>
+               <Font name="System Bold" size="15.0" />
+            </font>
+         </Text>
+   </AnchorPane>
+   <AnchorPane fx:id="emailSent" layoutX="269.0" layoutY="181.0" prefHeight="192.0" prefWidth="352.0" style="-fx-background-color: whitesmoke; -fx-background-radius: 20; -fx-border-color: #50e476; -fx-border-width: 5; -fx-border-radius: 15;" visible="false">
+         <Button id="button" fx:id="cancelButton1" layoutX="107.0" layoutY="122.0" mnemonicParsing="false" onAction="#frgtPassToggle" prefHeight="39.0" prefWidth="144.0" stylesheets="@Common.css" text="Okay" textFill="WHITE">
+            <font>
+               <Font size="18.0" />
+            </font>
+         </Button>
+         <Text layoutX="11.0" layoutY="49.0" strokeType="OUTSIDE" strokeWidth="0.0" text="If The Email Exsists In Our DataBase Then Instructions On How To Reset Your Password Is Now In Your Inbox" textAlignment="CENTER" wrappingWidth="335.93994140625">
+            <font>
+               <Font name="System Bold" size="15.0" />
+            </font>
+         </Text>
+   </AnchorPane>
+   <Text fx:id="passwordWrong" fill="RED" layoutX="364.0" layoutY="302.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Username or Password Is Incorrect!" visible="false" wrappingWidth="238.99999256432056">
+      <font>
+         <Font name="System Italic" size="15.0" />
+      </font>
+   </Text>
 </AnchorPane>
