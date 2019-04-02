@@ -1,5 +1,6 @@
 package nl.tudelft.gogreen.client;
 
+import com.jfoenix.controls.JFXListCell;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -8,8 +9,6 @@ import javafx.fxml.Initializable;
 import javafx.scene.Scene;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.util.Callback;
@@ -42,7 +41,8 @@ public class AchievementsController implements Initializable {
 
     /**
      * Initialises List and adds images to it.
-     * @param location URL of images
+     *
+     * @param location  URL of images
      * @param resources A ResourceBundle
      */
     public void initialize(URL location, ResourceBundle resources) {
@@ -54,16 +54,12 @@ public class AchievementsController implements Initializable {
 
             @Override
             public ListCell<ListItem> call(ListView<ListItem> arg0) {
-                ListCell<ListItem> cell = new ListCell<ListItem>() {
+                JFXListCell<ListItem> cell = new JFXListCell<ListItem>() {
                     @Override
-                    protected void updateItem(ListItem item, boolean bool) {
+                    public void updateItem(ListItem item, boolean bool) {
                         super.updateItem(item, bool);
                         if (item != null && !bool) {
-                            Image img = new Image(getClass().getResource("/" + item.getImageLocation()).toExternalForm());
-                            ImageView imgview = new ImageView(img);
-                            imgview.setFitHeight(90);
-                            imgview.setFitWidth(90);
-                            setGraphic(imgview);
+                            setGraphic(ListItem.imageView(item));
                             setText(item.getName() + "\nProgress: " + item.getStatus());
                         } else {
                             setText(null);

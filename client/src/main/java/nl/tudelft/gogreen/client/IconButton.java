@@ -1,17 +1,19 @@
 package nl.tudelft.gogreen.client;
 
+import com.jfoenix.controls.JFXRippler;
 import javafx.event.EventHandler;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
+import javafx.scene.paint.Paint;
 import javafx.scene.shape.Rectangle;
 
 class IconButton extends ImageView {
     static Color color = new Color(.3, .9, .5, 1);
     static Color colorMouseOver = new Color(.32, .92, .52, 1);
-    static Color colorMouseDown = new Color(.25, .90, .45, 1);
+    static Color colorMouseDown = new Color(.25, .87, .45, 1);
 
     private StackPane layoutBox;
     private Rectangle clickBox;
@@ -29,8 +31,7 @@ class IconButton extends ImageView {
         clickBox.setArcWidth(min - padding * 2);
         clickBox.setFill(color);
         clickBox.setId(name);
-
-        ImageView icon = new ImageView("/images/Icon" + name + ".png");
+        ImageView icon = new ImageView("images/Icon" + name + ".png");
         icon.setFitWidth(min);
         icon.setFitHeight(min);
         icon.setMouseTransparent(true);
@@ -43,6 +44,9 @@ class IconButton extends ImageView {
         layoutBox = new StackPane(clickBox, icon);
         layoutBox.setPickOnBounds(false);
         layoutBox.setPrefSize(width, height);
+        JFXRippler rippler = new JFXRippler(layoutBox);
+        rippler.setRipplerFill(Paint.valueOf("#ffffff"));
+
     }
 
     private void mouseOver(boolean mouseOver) {

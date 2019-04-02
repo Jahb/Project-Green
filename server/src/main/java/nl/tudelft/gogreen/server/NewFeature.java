@@ -52,6 +52,22 @@ public class NewFeature {
         return total;
     }
 
+    public static int getUID(String username) {
+        try {
+            Connection conn = getConnection(
+                    resource.getString("Postgresql.datasource.url"),
+                    resource.getString("Postgresql.datasource.username"),
+                    resource.getString("Postgresql.datasource.password"));
+            int id = getId(username, conn);
+            conn.close();
+            return id;
+        }catch (Exception ex){
+            ex.printStackTrace();
+        }
+        return -1;
+    }
+
+
     /**
      * Method which given a username returns its id.
      *
@@ -126,7 +142,7 @@ public class NewFeature {
 
             case 2:
                 PreparedStatement updatec2 =
-                    conn.prepareStatement(resource.getString("qactualizec2"));
+                        conn.prepareStatement(resource.getString("qactualizec2"));
                 updatec2.setInt(1, points);
                 updatec2.setInt(2, points);
                 updatec2.execute();

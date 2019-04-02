@@ -1,10 +1,5 @@
 package nl.tudelft.gogreen.client;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-
-import com.mashape.unirest.http.ObjectMapper;
-import com.mashape.unirest.http.Unirest;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -13,11 +8,11 @@ import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
+import nl.tudelft.gogreen.client.communication.Api;
 
 import java.io.IOException;
 
 public class Main extends Application {
-    public static Gson gson = new GsonBuilder().setPrettyPrinting().create();
 
     private static int width = 1000;
     private static int height = 720;
@@ -26,6 +21,7 @@ public class Main extends Application {
     private static ProfileController profileScreen = new ProfileController();
     private static LeaderboardController leaderBoardScreen = new LeaderboardController();
     private static AchievementsController achievementsScreen = new AchievementsController();
+    private static EventController EventController = new EventController();
 
 
     static int getWidth() {
@@ -54,9 +50,21 @@ public class Main extends Application {
     /**
      * Method that changes scene to Login Screen.
      */
-    private static void openLoginScreen() {
+    static void openLoginScreen() {
         try {
             Parent root1 = FXMLLoader.load(Main.class.getResource("/Login.fxml"));
+            stage.setScene(new Scene(root1));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * Method that changes scene to Register Screen.
+     */
+    static void openRegisterScreen() {
+        try {
+            Parent root1 = FXMLLoader.load(Main.class.getResource("/Register.fxml"));
             stage.setScene(new Scene(root1));
         } catch (IOException e) {
             e.printStackTrace();
@@ -82,6 +90,14 @@ public class Main extends Application {
     static void openLeaderboardScreen() {
         try {
             stage.setScene(leaderBoardScreen.getScene());
+        } catch (IOException ex) {
+            pageOpenError(ex);
+        }
+    }
+
+    static void openEventScreen() {
+        try {
+            stage.setScene(EventController.getScene());
         } catch (IOException ex) {
             pageOpenError(ex);
         }
@@ -122,18 +138,7 @@ public class Main extends Application {
      * @param args Program arguments
      */
     public static void main(String[] args) {
-        Unirest.setObjectMapper(new ObjectMapper() {
-
-            @Override
-            public <T> T readValue(String value, Class<T> valueType) {
-                return gson.fromJson(value, valueType);
-            }
-
-            @Override
-            public String writeValue(Object value) {
-                return gson.toJson(value);
-            }
-        });
+        Api.initApi();
 
         launch(args);
     }

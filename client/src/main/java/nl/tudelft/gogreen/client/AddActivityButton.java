@@ -1,9 +1,12 @@
 package nl.tudelft.gogreen.client;
 
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.animation.TranslateTransition;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
+import javafx.scene.control.Tooltip;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
@@ -14,12 +17,10 @@ import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.util.Duration;
 
+import java.lang.reflect.Field;
 import java.util.HashSet;
 import java.util.function.Consumer;
 
-//import javafx.scene.layout.*;
-
-//import javafx.scene.layout.*;
 
 /**
  * AddActivityButton GUI object.
@@ -51,7 +52,7 @@ class AddActivityButton {
     AddActivityButton() {
         Pane backgroundPane = new Pane();
         CornerRadii cr = new CornerRadii(60, 60, 0, 0, false);
-        BackgroundFill bf = new BackgroundFill(new Color(1, 1, 1, .8), cr, Insets.EMPTY);
+        BackgroundFill bf = new BackgroundFill(new Color(1, 1, 1, .95), cr, Insets.EMPTY);
         backgroundPane.setBackground(new Background(bf));
 
         backgroundPane.setPrefWidth(600.0 * 31 / 32);
@@ -77,7 +78,7 @@ class AddActivityButton {
 
         activityButtonPane = new AnchorPane(backgroundPane, text);
 
-        activityButtonPane.setPrefWidth((double)(600 * 15 / 16));
+        activityButtonPane.setPrefWidth((double) (600 * 15 / 16));
         activityButtonPane.setPrefWidth(200);
         activityButtonPane.setLayoutX(500 - 600.0 * 31 / 64);
         activityButtonPane.setLayoutY(720 - 75);
@@ -225,18 +226,18 @@ class AddActivityButton {
                 addSubCategoryButton("Help");
             }
             if (name.equals("Transport")) {
-                addSubCategoryButton("Help");
-                addSubCategoryButton("Help");
+                addSubCategoryButton("Bike");
+                addSubCategoryButton("Publictransport");
                 addSubCategoryButton("Help");
             }
             if (name.equals("Energy")) {
-                addSubCategoryButton("Help");
+                addSubCategoryButton("Solarpanel");
                 addSubCategoryButton("Help");
                 addSubCategoryButton("Help");
             }
             if (name.equals("Habit")) {
-                addSubCategoryButton("Help");
-                addSubCategoryButton("Help");
+                addSubCategoryButton("Recycle");
+                addSubCategoryButton("NoSmoking");
                 addSubCategoryButton("Help");
             }
 
@@ -268,11 +269,18 @@ class AddActivityButton {
         private void addSubCategoryButton(String name) {
             IconButton button = new IconButton(name, 40, 40);
             button.setOnClick(event -> handler.accept(name));
-
             allNodes.add(button.getStackPane());
             allNodes.add(button.getStackPane().getChildren().get(0));
             allNodes.add(button.getStackPane().getChildren().get(1));
             subBackground.getChildren().add(button.getStackPane());
+            Tooltip tooltip = new Tooltip(name);
+            hackTooltipStartTiming(tooltip);
+            tooltip.setStyle(
+                    "-fx-background-color:#52EA7F; " +
+                    "-fx-font-weight:bold; " +
+                    "-fx-text-color:white;" +
+                    "-fx-font-size:20");
+            Tooltip.install(button.getStackPane(), tooltip);
         }
 
         void addNodes(AnchorPane anchorPane) {
@@ -289,4 +297,25 @@ class AddActivityButton {
         LEFT, CENTER, RIGHT
     }
 
+    /**
+     * this makes it so the tooltips show instantly.
+     *
+     * @param tooltip ToolTip object
+     */
+    private static void hackTooltipStartTiming(Tooltip tooltip) {
+        try {
+            Field fieldBehavior = tooltip.getClass().getDeclaredField("BEHAVIOR");
+            fieldBehavior.setAccessible(true);
+            Object objBehavior = fieldBehavior.get(tooltip);
+
+            Field fieldTimer = objBehavior.getClass().getDeclaredField("activationTimer");
+            fieldTimer.setAccessible(true);
+            Timeline objTimer = (Timeline) fieldTimer.get(objBehavior);
+
+            objTimer.getKeyFrames().clear();
+            objTimer.getKeyFrames().add(new KeyFrame(new Duration(0)));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 }
