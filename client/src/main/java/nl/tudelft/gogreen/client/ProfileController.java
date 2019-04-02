@@ -1,33 +1,57 @@
 package nl.tudelft.gogreen.client;
 
+
+import com.jfoenix.controls.JFXButton;
+import com.jfoenix.controls.JFXListCell;
+import com.jfoenix.controls.JFXTextField;
+
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Scene;
+import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.paint.ImagePattern;
-import javafx.scene.shape.Circle;
+import javafx.scene.text.Text;
 import javafx.util.Callback;
+import nl.tudelft.gogreen.client.communication.Api;
 
 import java.io.IOException;
 import java.net.URL;
+import java.time.Duration;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
+import java.time.format.FormatStyle;
+import java.util.Map;
 import java.util.ResourceBundle;
 
 public class ProfileController implements Initializable {
 
     @FXML
-    Circle achievementCircle1;
+    private JFXButton followUserButton;
     @FXML
-    Circle achievementCircle2;
+    private Text dailyPoints;
     @FXML
-    Circle achievementCircle3;
+    private Text overallPoints;
+    @FXML
+    private Label followLabel;
+    @FXML
+    private JFXButton showFollowersButton;
+    @FXML
+    public JFXTextField followField;
+    @FXML
+    ImageView achievementImage1;
+    @FXML
+    ImageView achievementImage2;
+    @FXML
+    ImageView achievementImage3;
     @FXML
     ListView<String> activityList = new ListView<>();
     @FXML
@@ -40,27 +64,58 @@ public class ProfileController implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
 
-        Image achievementImg = new Image("images/achievementImage.png");
-        achievementCircle1.setFill(new ImagePattern(achievementImg));
-        achievementCircle2.setFill(new ImagePattern(achievementImg));
-        achievementCircle3.setFill(new ImagePattern(achievementImg));
+        UpdateableListViewSkin<ListItem> skin = new UpdateableListViewSkin<>(this.friendsList);
+        this.friendsList.setSkin(skin);
 
-        activities.add("17:05 - Ate a Vegetarian Meal");
-        activities.add("11:45 - Ate a Vegetarian Meal");
-        activities.add("13:05 - Ate a Vegetarian Meal");
+        showFollowersButton.setOnMouseClicked((MouseEvent event) -> {
+            if (followLabel.getText().equals("Following")) {
+                Map<String, Integer> followers = Api.current.getFollowers();
+                items.clear();
+                for (String st : followers.keySet()) {
+                    items.add(new ListItem(st, "images/buttonProfile.png"));
+                }
+                ((UpdateableListViewSkin) friendsList.getSkin()).refresh();
+                followLabel.setText("Followers");
+                showFollowersButton.setText("Show Following");
+            } else {
+                items.clear();
+                Map<String, Integer> followers = Api.current.getFollowing();
+                items.clear();
+                for (String st : followers.keySet()) {
+                    items.add(new ListItem(st, "images/buttonProfile.png"));
+                }
+                ((UpdateableListViewSkin) friendsList.getSkin()).refresh();
+                followLabel.setText("Following");
+                showFollowersButton.setText("Show Followers");
+            }
+        });
+
+        overallPoints.setText(Integer.toString(Api.current.getTotal()));
+        dailyPoints.setText(Integer.toString(Api.current.getTotal()));
+
+        LocalTime yeet = LocalTime.now().minus(Duration.ofMinutes(1));
+
+        activities.add(yeet.format(
+                DateTimeFormatter.ofLocalizedTime(FormatStyle.MEDIUM)) + " - Sometime this");
+        activities.add(yeet.minus(
+                Duration.ofMinutes(1)).format(DateTimeFormatter.ofLocalizedTime(FormatStyle.MEDIUM)) + " - is going to be");
+        activities.add(yeet.minus(
+                Duration.ofMinutes(2)).format(DateTimeFormatter.ofLocalizedTime(FormatStyle.MEDIUM)) + " - kept history");
         activityList.setItems(activities);
 
+        Map<String, Integer> followers = Api.current.getFollowing();
         items.clear();
-        items.add(new ListItem("profile1", "images/achievementImage.png"));
-        items.add(new ListItem("profile2", "images/achievementImage.png"));
-        items.add(new ListItem("profile3", "images/achievementImage.png"));
+        for (String st : followers.keySet()) {
+            items.add(new ListItem(st, "images/buttonProfile.png"));
+        }
+
         friendsList.setCellFactory(new Callback<ListView<ListItem>, ListCell<ListItem>>() {
 
             @Override
             public ListCell<ListItem> call(ListView<ListItem> arg0) {
-                return new ListCell<ListItem>() {
+                return new JFXListCell<ListItem>() {
                     @Override
-                    protected void updateItem(ListItem item, boolean bool) {
+                    public void updateItem(ListItem item, boolean bool) {
                         super.updateItem(item, bool);
                         if (item != null) {
                             Image img = new Image(getClass()
@@ -76,11 +131,18 @@ public class ProfileController implements Initializable {
             }
         });
         friendsList.setItems(items);
+
+        //Adding Follow
+        followUserButton.setOnMouseClicked((MouseEvent event) -> {
+            String username = followField.getText();
+            boolean res = Api.current.follow(username);
+        });
     }
 
 
     /**
      * Returns ProfileGUI Scene.
+     *
      * @return ProfileGUI Scene
      * @throws IOException IO Exception may be thrown
      */
@@ -91,14 +153,19 @@ public class ProfileController implements Initializable {
         BorderPane buttonPane = (BorderPane) root.getChildren().get(0);
         IconButton.addBackButton(buttonPane);
         BorderPane bottomPane = (BorderPane) root.getChildren().get(1);
-        addLowerButtons(bottomPane);
+        BorderPane searchPane = (BorderPane) root.getChildren().get(2);
+        addIconButtons(bottomPane, searchPane);
         return new Scene(root, Main.getWidth(), Main.getHeight());
     }
 
 
-    private void addLowerButtons(BorderPane root) {
+    private void addIconButtons(BorderPane root, BorderPane root1) {
         IconButton achievementsButton = new IconButton("Achievements", 100, 100);
         root.setLeft(achievementsButton.getStackPane());
         achievementsButton.setOnClick(event -> Main.openAchievementsScreen());
+        IconButton leaderboardButton = new IconButton("Leaderboard", 100, 100);
+        root.setRight(leaderboardButton.getStackPane());
+        leaderboardButton.setOnClick(event -> Main.openLeaderboardScreen());
     }
+
 }

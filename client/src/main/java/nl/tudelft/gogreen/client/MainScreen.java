@@ -8,8 +8,8 @@ import javafx.scene.control.TextArea;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.paint.Color;
-import nl.tudelft.gogreen.client.communication.API;
+import javafx.scene.layout.HBox;
+import nl.tudelft.gogreen.client.communication.Api;
 
 import java.io.IOException;
 import java.net.URL;
@@ -19,23 +19,30 @@ import java.util.function.Consumer;
  * MainScreen object.
  *
  * @author Kamron Geijsen
- * @version 4.20.19
+ * @version 4.20.21
  */
 public class MainScreen {
 
-    private Ring ring;
+    private Scene scene;
+
+    private Ring ringMain;
+    private Ring ringPrevious;
+    private Ring ringNext;
     private TextArea helpText;
     private AddActivityButton activityButton;
     // TODO handler for each subcategory
     private Consumer<String> handler = name -> {
         try {
-            int res = API.current.addFeature(name);
-            Main.openMainScreen();
+            //Line below this one used to be res = API...... removed for checkStyle
+            Api.current.addFeature(name);
+            System.out.println(name);
+            updateRingValues();
         } catch (UnirestException e) {
             e.printStackTrace();
         }
     };
-
+    //TODO handler for each ring category
+    private Consumer<String> ringHandler = name -> System.out.println("EXE [" + name + "]");
 
     /**
      * Creates a scene for MainScreen.
@@ -44,25 +51,29 @@ public class MainScreen {
         URL url = Main.class.getResource("/MainScreen.fxml");
         System.out.println(url);
         AnchorPane root = FXMLLoader.load(url);
+        scene = new Scene(root, Main.getWidth(), Main.getHeight());
 
         BorderPane baseLayer = (BorderPane) root.getChildren().get(0);
         AnchorPane mainRingPane = (AnchorPane) baseLayer.getCenter();
+        BorderPane topPane = (BorderPane) baseLayer.getTop();
+        HBox topButtons = (HBox) topPane.getRight();
 
         AnchorPane overlayLayer = (AnchorPane) root.getChildren().get(1);
-        BorderPane buttonsPanel = (BorderPane) overlayLayer.getChildren().get(1);
         helpText = (TextArea) overlayLayer.getChildren().get(0);
+        BorderPane buttonsPanel = (BorderPane) overlayLayer.getChildren().get(1);
 
-        addMainRing(mainRingPane);
+        addRings(mainRingPane);
+        addTopMenuButtons(topButtons);
         addIconButtons(buttonsPanel);
         addActivityButton(overlayLayer);
 
-        ring.startAnimation();
+
         helpText.setVisible(false);
         overlayLayer.setPrefSize(1000, 720);
 
         overlayLayer.setPickOnBounds(false);
         buttonsPanel.setPickOnBounds(false);
-        Scene scene = new Scene(root, Main.getWidth(), Main.getHeight());
+
         scene.addEventHandler(MouseEvent.MOUSE_PRESSED, event -> {
             Node node = event.getPickResult().getIntersectedNode();
             if (node != null && !activityButton.contains(node))
@@ -72,19 +83,48 @@ public class MainScreen {
         return scene;
     }
 
-    private void addMainRing(AnchorPane anchorPane) {
-        ring = new Ring((int) (150 * .75), 150, Main.getHeight() / 2, 200);
-//        ring.addSegment(38, Color.LIME);
-//        ring.addSegment(20, Color.YELLOW);
-//        ring.addSegment(15, Color.GREEN);
-        float calc = ((float) API.current.getTotal() / 1000);
-        int i = (int) (calc * 100);
-        System.out.println(i);
-        ring.addSegment(i, Color.LIME);
-        anchorPane.getChildren().add(ring.getPane());
+    private void addRings(AnchorPane anchorPane) {
+        ringMain = new Ring((int) (150 * .75), 150, Main.getWidth() / 2, 200, "MAIN");
+        ringMain.setHandler(ringHandler);
+        ringMain.setUsername(Api.current.getUsername());
+        anchorPane.getChildren().add(ringMain.getPane());
 
-        anchorPane.widthProperty()
-                .addListener((obs, oldVal, newVal) -> ring.setX(newVal.intValue() / 2));
+        ringNext = new Ring((int) (90 * .75), 90, 120, 350, "NEXT");
+        ringNext.setHandler(ringHandler);
+        ringNext.setUsername(Api.current.getUsernameNext());
+        anchorPane.getChildren().add(ringNext.getPane());
+
+        ringPrevious = new Ring((int) (90 * .75), 90, Main.getWidth() - 120, 350, "PREVIOUS");
+        ringPrevious.setHandler(ringHandler);
+        ringPrevious.setUsername(Api.current.getUsernamePrevious());
+        anchorPane.getChildren().add(ringPrevious.getPane());
+
+        scene.widthProperty()
+                .addListener((obs, oldVal, newVal) -> {
+                    ringMain.setX(newVal.intValue() / 2);
+                    ringNext.setX(120);
+                    ringPrevious.setX(newVal.intValue() - 120);
+                });
+
+        updateRingValues();
+
+    }
+
+    private void updateRingValues() {
+        double[] valuesMain = Api.current.getRingSegmentValues(ringMain.getName());
+        ringMain.setUsername(Api.current.getUsername());
+        ringMain.setSegmentValues(valuesMain);
+        ringMain.startAnimation();
+
+        double[] valuesNext = Api.current.getRingSegmentValues(ringNext.getName());
+        ringNext.setUsername(Api.current.getUsernameNext());
+        ringNext.setSegmentValues(valuesNext);
+        ringNext.startAnimation();
+
+        double[] valuesPrevious = Api.current.getRingSegmentValues(ringPrevious.getName());
+        ringPrevious.setUsername(Api.current.getUsernamePrevious());
+        ringPrevious.setSegmentValues(valuesPrevious);
+        ringPrevious.startAnimation();
     }
 
     private void addActivityButton(AnchorPane anchorPane) {
@@ -96,16 +136,36 @@ public class MainScreen {
     private void addIconButtons(BorderPane root) {
         IconButton leaderboardButton = new IconButton("Leaderboard", 150, 150);
         IconButton addButton = new IconButton("Add", 600, 150);
-        IconButton helpButton = new IconButton("Help", 150, 150);
+        IconButton eventButton = new IconButton("Event", 150, 150);
+
 
         root.setLeft(leaderboardButton.getStackPane());
         root.setCenter(addButton.getStackPane());
-        root.setRight(helpButton.getStackPane());
+        root.setRight(eventButton.getStackPane());
 
-        helpButton.setOnClick(event -> helpText.setVisible(!helpText.isVisible()));
+        eventButton.setOnClick(event -> Main.openEventScreen());
 
         addButton.setOnClick(event -> activityButton.open());
         leaderboardButton.setOnClick(event -> Main.openLeaderboardScreen());
+    }
+
+    /**
+     * Method which adds button to HBox on TopRight of MainScreen.
+     *
+     * @param hbox A Hbox Container.
+     */
+    private void addTopMenuButtons(HBox hbox) {
+        IconButton helpButton = new IconButton("Help", 70, 70);
+        BorderPane root = (BorderPane) hbox.getChildren().get(0);
+        root.setCenter(helpButton.getStackPane());
+
+        IconButton profileButton = new IconButton("Profile", 70, 70);
+        BorderPane r2 = new BorderPane();
+        r2.setCenter(profileButton.getStackPane());
+        hbox.getChildren().add(r2);
+        profileButton.setOnClick(event -> Main.openProfileScreen());
+
+        helpButton.setOnClick(event -> helpText.setVisible(!helpText.isVisible()));
     }
 
 }

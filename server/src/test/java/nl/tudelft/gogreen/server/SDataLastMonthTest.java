@@ -30,22 +30,22 @@ public class SDataLastMonthTest {
 
         try (Connection conn = DriverManager.getConnection(resource.getString("Postgresql.datasource.url"), resource.getString("Postgresql.datasource.username"), resource.getString("Postgresql.datasource.password"))) {
             int id = NewFeature.getId("Russell", conn);
-            float[] AllData = Statistics.getLastMonthData(id);
-            float totalPoints = AllData[AllData.length - 2];
+            double[] AllData = Statistics.getLastMonthData(id);
+            double totalPoints = AllData[AllData.length - 2];
 
             PreparedStatement insertData = conn.prepareStatement(resource.getString("qInsertMonthData"));
             insertData.setInt(1, id);
             insertData.execute();
 
-            float[] AllData2 = Statistics.getLastMonthData(id);
-            float totalPoints2 = AllData2[AllData2.length - 2];
+            double[] AllData2 = Statistics.getLastMonthData(id);
+            double totalPoints2 = AllData2[AllData2.length - 2];
 
             assertNotEquals(totalPoints, totalPoints2);
 
             totalPoints += 20;
 
             assertEquals(totalPoints, totalPoints2, 0.1);
-            float value1 = 20f / 30f;
+            double value1 = 20f / 30f;
             assertEquals(AllData2[AllData2.length - 2], 20f, 0.1);
             assertEquals(AllData2[AllData2.length - 1], value1, 0.1);
 
