@@ -52,21 +52,16 @@ public class NewFeature {
         return total;
     }
 
-    public static int getUID(String username) {
-        try {
-            Connection conn = getConnection(
-                    resource.getString("Postgresql.datasource.url"),
-                    resource.getString("Postgresql.datasource.username"),
-                    resource.getString("Postgresql.datasource.password"));
-            int id = getId(username, conn);
-            conn.close();
-            return id;
-        }catch (Exception ex){
-            ex.printStackTrace();
+    public static int getTotal(int id, Connection conn) throws Exception {
+        PreparedStatement OldUserPoints = conn.prepareStatement(resource.getString("qgetTotalUP"));
+        OldUserPoints.setInt(1, id);
+        ResultSet OUP = OldUserPoints.executeQuery();
+        int total = -1;
+        while (OUP.next()) {
+            total = OUP.getInt(1);
         }
-        return -1;
+        return total;
     }
-
 
     /**
      * Method which given a username returns its id.
@@ -362,17 +357,57 @@ public class NewFeature {
 
     }
 
-    public static int getTotal(int id, Connection conn) throws Exception {
-        PreparedStatement OldUserPoints = conn.prepareStatement(resource.getString("qgetTotalUP"));
-        OldUserPoints.setInt(1, id);
-        ResultSet OUP = OldUserPoints.executeQuery();
+    /**
+     * Method which returns the number of Streak of the given user.
+     *
+     * @param id of the user
+     * @return Returns the number of days as an int
+     */
+    public static int getStreak(int id) {
+
+        try {
+            Connection conn = getConnection(
+                    resource.getString("Postgresql.datasource.url"),
+                    resource.getString("Postgresql.datasource.username"),
+                    resource.getString("Postgresql.datasource.password"));
+            PreparedStatement getStreak = conn.prepareStatement(resource.getString("qRetrievingStreakDays"));
+            getStreak.setInt(1, id);
+            int numDays = 0;
+            ResultSet numDaysRS = getStreak.executeQuery();
+            while (numDaysRS.next()) {
+                numDays = numDaysRS.getInt(1);
+            }
+
+            return numDays;
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            return -1;
+
+        }
+    }
+
+    /**
+     * Method which returns the total per category. Send c1 for category 1,..., c'n' for category 'n'.
+     *
+     * @param id
+     * @param category
+     * @param conn
+     * @return
+     * @throws Exception
+     */
+    public static int getTotalCategory1(int id, String category, Connection conn) throws Exception {
+
+        PreparedStatement getTotalCategory1 = conn.prepareStatement("select ? from user_points where user_id = ?");
+        getTotalCategory1.setString(1, category);
+        getTotalCategory1.setInt(2, id);
+        ResultSet points = getTotalCategory1.executeQuery();
         int total = -1;
-        while (OUP.next()) {
-            total = OUP.getInt(1);
+
+        while (points.next()) {
+            total = points.getInt(1);
         }
         return total;
     }
-
 
     /**
      * Method which given a certain day, checks if this one is the current day.
