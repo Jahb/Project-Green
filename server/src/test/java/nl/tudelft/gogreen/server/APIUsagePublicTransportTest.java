@@ -10,22 +10,22 @@ import java.util.ResourceBundle;
 
 import static org.junit.Assert.assertEquals;
 
-public class APILocalProductTest {
+public class APIUsagePublicTransportTest {
 
     private static ResourceBundle resource = ResourceBundle.getBundle("db");
 
     @Test
-    public void LocalProductTest() {
+    public void UsagePublicTransport() {
         try (Connection conn = DriverManager.getConnection(resource.getString("Postgresql.datasource.url"), resource.getString("Postgresql.datasource.username"), resource.getString("Postgresql.datasource.password"))){
 
-            CoolClimateAPI.LocalProduct();
-            PreparedStatement localproduct = conn.prepareStatement(resource.getString("qLocalProduct"));
-            ResultSet rs = localproduct.executeQuery();
+            CoolClimateAPI.UsageofPublicTransport();
+            PreparedStatement usagetransport = conn.prepareStatement(resource.getString("qUsageTransport"));
+            ResultSet rs = usagetransport.executeQuery();
             float result = 0;
             while (rs.next()) {
                 result = rs.getFloat(1);
             }
-            assertEquals(result,1461.1871,1461.1871);
+            assertEquals(result,607.24585,607.24585);
             System.out.println(result);
 
 
