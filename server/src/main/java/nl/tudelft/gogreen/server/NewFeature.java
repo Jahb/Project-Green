@@ -139,7 +139,7 @@ public class NewFeature {
                 PreparedStatement updatec2 =
                         conn.prepareStatement(resource.getString("qactualizec2"));
                 updatec2.setInt(1, points);
-                updatec2.setInt(2, points);
+                updatec2.setInt(2, id);
                 updatec2.execute();
                 break;
 
@@ -147,7 +147,7 @@ public class NewFeature {
                 PreparedStatement updatec3 =
                         conn.prepareStatement(resource.getString("qactualizec3"));
                 updatec3.setInt(1, points);
-                updatec3.setInt(2, points);
+                updatec3.setInt(2, id);
                 updatec3.execute();
                 break;
 
@@ -155,7 +155,7 @@ public class NewFeature {
                 PreparedStatement updatec4 =
                         conn.prepareStatement(resource.getString("qactualizec4"));
                 updatec4.setInt(1, points);
-                updatec4.setInt(2, points);
+                updatec4.setInt(2, id);
                 updatec4.execute();
                 break;
             default:
