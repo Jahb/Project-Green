@@ -66,10 +66,9 @@ public class CreateUser {
         PreparedStatement streak = conn.prepareStatement(resource.getString("qInsertStreakk"));
         DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
         Date date = new Date();
-        String today = dateFormat.format(date);
         streak.setInt(1, id);
-        streak.setDate(2, java.sql.Date.valueOf(today));
-        streak.setInt(3, 1);
+        streak.setNull(2, Types.DATE);
+        streak.setInt(3, 0);
         streak.execute();
         PreparedStatement userpoints = conn.prepareStatement(resource.getString("qInsertUserPoints"));
         userpoints.setInt(1, id);
