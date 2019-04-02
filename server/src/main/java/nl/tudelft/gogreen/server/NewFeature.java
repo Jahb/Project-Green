@@ -357,7 +357,27 @@ public class NewFeature {
 
     }
 
+    public static int getStreak(int id) {
 
+        try {
+            Connection conn = getConnection(
+                    resource.getString("Postgresql.datasource.url"),
+                    resource.getString("Postgresql.datasource.username"),
+                    resource.getString("Postgresql.datasource.password"));
+            PreparedStatement getStreak = conn.prepareStatement("select number_of_days from streak where user_id = ?");
+            int numDays = 0;
+            ResultSet numDaysRS = getStreak.executeQuery();
+            while (numDaysRS.next()) {
+                numDays = numDaysRS.getInt(1);
+            }
+
+            return numDays;
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            return -1;
+
+        }
+    }
 
     /**
      * Method which returns the total per category. Send c1 for category 1,..., c'n' for category 'n'.
