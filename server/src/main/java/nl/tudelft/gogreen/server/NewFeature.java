@@ -359,6 +359,7 @@ public class NewFeature {
 
     /**
      * Method which returns the number of Streak of the given user.
+     *
      * @param id of the user
      * @return Returns the number of days as an int
      */
@@ -369,7 +370,7 @@ public class NewFeature {
                     resource.getString("Postgresql.datasource.url"),
                     resource.getString("Postgresql.datasource.username"),
                     resource.getString("Postgresql.datasource.password"));
-            PreparedStatement getStreak = conn.prepareStatement("select number_of_days from streak where user_id = ?");
+            PreparedStatement getStreak = conn.prepareStatement(resource.getString("qRetrievingStreakDays"));
             getStreak.setInt(1, id);
             int numDays = 0;
             ResultSet numDaysRS = getStreak.executeQuery();
