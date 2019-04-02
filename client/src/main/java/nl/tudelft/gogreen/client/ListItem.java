@@ -1,5 +1,7 @@
 package nl.tudelft.gogreen.client;
 
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 
 /*
  * Cursed ListItem?
@@ -45,5 +47,14 @@ class ListItem {
 
     String getStatus() {
         return status;
+    }
+
+    static ImageView imageView(ListItem item) {
+        Image img = new Image(ListItem.class
+                .getResource("/" + item.getImageLocation()).toExternalForm());
+        javafx.scene.image.ImageView imgView = new javafx.scene.image.ImageView(img);
+        imgView.setFitHeight(90);
+        imgView.setFitWidth(90);
+        return imgView;
     }
 }

@@ -161,7 +161,7 @@ public class Api {
      * @param username the username to find
      * @return the co2 saved
      */
-    public int getFor(String username) {
+    private int getFor(String username) {
         String res;
         Map<String, Object> params = new HashMap<>();
         params.put("username", username);
@@ -173,7 +173,7 @@ public class Api {
         }
         MessageHolder<Integer> holder = gson.fromJson(res, new TypeToken<MessageHolder<Integer>>() {
         }.getType());
-        if (followers.containsKey("username")){
+        if (followers.containsKey("username")) {
             followers.put(username, holder.getData());
         }
 

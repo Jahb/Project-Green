@@ -4,6 +4,7 @@ package nl.tudelft.gogreen.client;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXListCell;
 import com.jfoenix.controls.JFXTextField;
+
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -94,9 +95,12 @@ public class ProfileController implements Initializable {
 
         LocalTime yeet = LocalTime.now().minus(Duration.ofMinutes(1));
 
-        activities.add(yeet.format(DateTimeFormatter.ofLocalizedTime(FormatStyle.MEDIUM)) + " - Sometime this");
-        activities.add(yeet.minus(Duration.ofMinutes(1)).format(DateTimeFormatter.ofLocalizedTime(FormatStyle.MEDIUM)) + " - is going to be");
-        activities.add(yeet.minus(Duration.ofMinutes(2)).format(DateTimeFormatter.ofLocalizedTime(FormatStyle.MEDIUM)) + " - kept history");
+        activities.add(yeet.format(
+                DateTimeFormatter.ofLocalizedTime(FormatStyle.MEDIUM)) + " - Sometime this");
+        activities.add(yeet.minus(
+                Duration.ofMinutes(1)).format(DateTimeFormatter.ofLocalizedTime(FormatStyle.MEDIUM)) + " - is going to be");
+        activities.add(yeet.minus(
+                Duration.ofMinutes(2)).format(DateTimeFormatter.ofLocalizedTime(FormatStyle.MEDIUM)) + " - kept history");
         activityList.setItems(activities);
 
         Map<String, Integer> followers = Api.current.getFollowing();
@@ -128,9 +132,7 @@ public class ProfileController implements Initializable {
         });
         friendsList.setItems(items);
 
-        /**
-         * adding a follow
-         */
+        //Adding Follow
         followUserButton.setOnMouseClicked((MouseEvent event) -> {
             String username = followField.getText();
             boolean res = Api.current.follow(username);

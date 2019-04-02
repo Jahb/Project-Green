@@ -1,5 +1,7 @@
 package nl.tudelft.gogreen.client;
 
+import static javafx.scene.layout.Priority.ALWAYS;
+
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -16,8 +18,6 @@ import nl.tudelft.gogreen.shared.EventItem;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
-
-import static javafx.scene.layout.Priority.ALWAYS;
 
 public class EventController implements Initializable {
 
