@@ -52,6 +52,17 @@ public class NewFeature {
         return total;
     }
 
+    public static int getTotal(int id, Connection conn) throws Exception {
+        PreparedStatement OldUserPoints = conn.prepareStatement(resource.getString("qgetTotalUP"));
+        OldUserPoints.setInt(1, id);
+        ResultSet OUP = OldUserPoints.executeQuery();
+        int total = -1;
+        while (OUP.next()) {
+            total = OUP.getInt(1);
+        }
+        return total;
+    }
+
     /**
      * Method which given a username returns its id.
      *
@@ -346,16 +357,7 @@ public class NewFeature {
 
     }
 
-    public static int getTotal(int id, Connection conn) throws Exception {
-        PreparedStatement OldUserPoints = conn.prepareStatement(resource.getString("qgetTotalUP"));
-        OldUserPoints.setInt(1, id);
-        ResultSet OUP = OldUserPoints.executeQuery();
-        int total = -1;
-        while (OUP.next()) {
-            total = OUP.getInt(1);
-        }
-        return total;
-    }
+
 
     /**
      * Method which returns the total per category. Send c1 for category 1,..., c'n' for category 'n'.
