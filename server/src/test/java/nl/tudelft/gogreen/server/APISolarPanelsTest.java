@@ -8,24 +8,24 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ResourceBundle;
 
-import static org.junit.Assert.assertEquals;
+import static junit.framework.TestCase.assertEquals;
 
-public class APILocalProductTest {
+public class APISolarPanelsTest {
 
     private static ResourceBundle resource = ResourceBundle.getBundle("db");
 
     @Test
-    public void LocalProductTest() {
+    public void UsageBikeTest() {
         try (Connection conn = DriverManager.getConnection(resource.getString("Postgresql.datasource.url"), resource.getString("Postgresql.datasource.username"), resource.getString("Postgresql.datasource.password"))){
 
-            CoolClimateAPI.LocalProduct();
-            PreparedStatement localproduct = conn.prepareStatement(resource.getString("qLocalProduct"));
-            ResultSet rs = localproduct.executeQuery();
+            CoolClimateAPI.SolarPanels();
+            PreparedStatement solar = conn.prepareStatement(resource.getString("qSolarPanels"));
+            ResultSet rs = solar.executeQuery();
             float result = 0;
             while (rs.next()) {
                 result = rs.getFloat(1);
             }
-            assertEquals(result,1461.1871,1461.1871);
+            assertEquals(result,1425.7097,1425.7097);
             System.out.println(result);
 
 
