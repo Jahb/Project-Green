@@ -71,28 +71,28 @@ public class QuizController implements Initializable {
         fuelSlider.setLabelFormatter(new StringConverter<Double>() {
             @Override
             public String toString(Double n) {
+                if (n < 0.5) return "Electric";
                 if (n < 1.5) return "Gasoline";
-                if (n < 2.5) return "Diesel";
-                else return "Electric";
+                else return "Diesel";
 
             }
             public Double fromString(String s) {
                 switch (s) {
-                    case "Gasoline":
-                        return 0d;
-                    case "Diesel":
-                        return 1d;
                     case "Electric":
+                        return 0d;
+                    case "Gasoline":
+                        return 1d;
+                    case "Diesel":
                         return 2d;
                     default:
-                        return 0d;
+                        return 1d;
                 }
             }
         });
         /**
          * disable last 3 sliders when vehicleSlider is set to "No"
          */
-        vehicleSlider.valueProperty().addListener(new ChangeListener<Number>() {
+        ChangeListener<Number> a = new ChangeListener<Number>() {
             public void changed(ObservableValue<? extends Number> ov,
                                 Number oldVal, Number newVal) {
                 if(newVal.intValue()<0.5){
@@ -112,7 +112,26 @@ public class QuizController implements Initializable {
                     economyLabel.setStyle("-fx-text-fill: black");
                 }
             }
-        });
+        };
+        ChangeListener<Number> b = new ChangeListener<Number>() {
+            public void changed(ObservableValue<? extends Number> ov,
+                                Number oldVal, Number newVal) {
+                if(newVal.intValue()<0.5){
+                    economySlider.setDisable(true);
+                    mileSlider.setDisable(true);
+                    mileLabel.setStyle("-fx-text-fill: gray");
+                    economyLabel.setStyle("-fx-text-fill: gray");
+                }
+                else{
+                    economySlider.setDisable(false);
+                    mileSlider.setDisable(false);
+                    mileLabel.setStyle("-fx-text-fill: black");
+                    economyLabel.setStyle("-fx-text-fill: black");
+                }
+            }
+        };
+        vehicleSlider.valueProperty().addListener(a);
+        fuelSlider.valueProperty().addListener(b);
     }
 
     /**
@@ -137,10 +156,10 @@ public class QuizController implements Initializable {
      */
     public void addIconButtons(BorderPane root1, BorderPane root2){
         IconButton defaultsButton = new IconButton("Confirm", 100, 100);
-        root1.setRight(defaultsButton.getStackPane());
+        root1.setLeft(defaultsButton.getStackPane());
         defaultsButton.setOnClick(event -> useDefaults());
         IconButton saveButton = new IconButton("Confirm", 100, 100);
-        root2.setRight(saveButton.getStackPane());
+        root2.setLeft(saveButton.getStackPane());
         saveButton.setOnClick(event-> useSaved());
     }
 
