@@ -68,7 +68,6 @@ public class ScoreGraph {
             allData = data;
         }
         public void drawGraph() {
-            
             final int len = allData.length;
             double[] xPoints = new double[len]; 
             Arrays.setAll(xPoints, a -> a/(double)(len-1)*width);
@@ -77,10 +76,27 @@ public class ScoreGraph {
             System.out.println(Arrays.toString(yPoints));
             
             g.clearRect(0, 0, width, height);
-            g.setStroke(Color.RED);
+            g.setFill(Color.WHITE);
+            g.fillRect(0, 0, width, height);
+            
             g.setLineWidth(5);
+            g.setStroke(Color.DARKGRAY);
+            g.transform(1,0,0,1,3,3);
             g.strokePolyline(xPoints, yPoints, len);
             final double r = 12;
+            g.setFill(Color.DARKGRAY);
+            for(int i = 0; i < len; i++) {
+                g.fillOval(xPoints[i]-r/2, yPoints[i]-r/2, r, r);
+            }
+            
+            
+            
+            
+            g.transform(1,0,0,1,-3,-3);
+            g.setStroke(Color.RED);
+            g.strokePolyline(xPoints, yPoints, len);
+            
+//            final double r = 12;
             for(int i = 0; i < len; i++) {
             	g.setFill(Color.RED);
                 g.fillOval(xPoints[i]-r/2, yPoints[i]-r/2, r, r);

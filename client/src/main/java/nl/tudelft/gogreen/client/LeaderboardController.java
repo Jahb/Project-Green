@@ -67,8 +67,8 @@ public class LeaderboardController implements Initializable {
     	ScoreGraph g = new ScoreGraph(100,200,400,400);
     	root.getChildren().add(g.getPane());
         UndecoratedGraph graph = g.getGraph();
-        graph.setData(new double[] {0,1,1,3,4,4,6});
-        graph.standardizeY(5);
+        graph.setData(new double[] {0,20,20,60,80,80,120});
+        graph.standardizeY(250);
         graph.drawGraph();
     }
     
