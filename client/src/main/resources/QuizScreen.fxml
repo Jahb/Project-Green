@@ -18,7 +18,7 @@
             </Label>
          </center>
       </BorderPane>
-      <BorderPane layoutX="56.0" layoutY="580.0" prefHeight="135.0" prefWidth="340.0">
+      <BorderPane layoutX="56.0" layoutY="580.0" prefHeight="135.0" prefWidth="280.0">
          <left>
             <Label text="Use defaults" BorderPane.alignment="CENTER">
                <font>
@@ -27,7 +27,7 @@
             </Label>
          </left>
       </BorderPane>
-      <BorderPane layoutX="552.0" layoutY="585.0" prefHeight="135.0" prefWidth="340.0">
+      <BorderPane layoutX="552.0" layoutY="585.0" prefHeight="135.0" prefWidth="280.0">
          <left>
             <Label text="Save changes" BorderPane.alignment="CENTER">
                <font>
@@ -63,21 +63,21 @@
                   <Font size="20.0" />
                </font>
             </Label>
-            <Label fx:id="economyLabel" minHeight="55.0" prefHeight="55.0" prefWidth="435.0" text="• What is your vehicle's fuel economy? ">
+            <Label fx:id="economyLabel" minHeight="55.0" prefHeight="55.0" prefWidth="478.0" text="• What is your vehicle's fuel economy? (miles / gallon)">
                <font>
                   <Font size="20.0" />
                </font>
             </Label>
          </children>
       </VBox>
-      <VBox layoutX="552.0" layoutY="165.0" prefHeight="415.0" prefWidth="358.0" spacing="15.0" AnchorPane.leftAnchor="552.0">
+      <VBox layoutX="552.0" layoutY="165.0" prefHeight="415.0" prefWidth="358.0" AnchorPane.leftAnchor="552.0">
          <children>
-            <JFXSlider fx:id="incomeSlider" minHeight="55.0" prefHeight="55.0" prefWidth="358.0" snapToTicks="true" />
-            <JFXSlider fx:id="sizeSlider" minHeight="55.0" snapToTicks="true" />
-            <JFXSlider fx:id="vehicleSlider" blockIncrement="1.0" majorTickUnit="1.0" max="1.0" minHeight="55.0" minorTickCount="0" snapToTicks="true" />
-            <JFXSlider fx:id="fuelSlider" blockIncrement="1.0" majorTickUnit="1.0" max="2.0" minHeight="55.0" minorTickCount="0" showTickMarks="true" snapToTicks="true" />
-            <JFXSlider fx:id="mileSlider" minHeight="55.0" snapToTicks="true" />
-            <JFXSlider fx:id="economySlider" minHeight="55.0" snapToTicks="true" />
+            <JFXSlider fx:id="incomeSlider" minHeight="70.0" prefHeight="55.0" prefWidth="358.0" showTickLabels="true" snapToTicks="true" />
+            <JFXSlider fx:id="sizeSlider" minHeight="70.0" showTickLabels="true" snapToTicks="true" />
+            <JFXSlider fx:id="vehicleSlider" blockIncrement="1.0" majorTickUnit="1.0" max="1.0" minHeight="70.0" minorTickCount="0" showTickLabels="true" snapToTicks="true" value="1.0" />
+            <JFXSlider fx:id="fuelSlider" blockIncrement="1.0" majorTickUnit="1.0" max="3.0" min="1.0" minHeight="70.0" minorTickCount="0" showTickLabels="true" snapToTicks="true" value="1.0" />
+            <JFXSlider fx:id="mileSlider" minHeight="70.0" showTickLabels="true" snapToTicks="true" />
+            <JFXSlider fx:id="economySlider" minHeight="70.0" showTickLabels="true" snapToTicks="true" />
          </children></VBox>
    </children>
 </AnchorPane>
