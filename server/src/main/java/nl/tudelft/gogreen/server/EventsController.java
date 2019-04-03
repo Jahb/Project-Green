@@ -17,7 +17,7 @@ import java.util.ResourceBundle;
 @RestController
 @RequestMapping("/event")
 public class EventsController {
-    private static ResourceBundle resource = ResourceBundle.getBundle("db");
+
 
     private String getCurrentUser() {
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
@@ -33,9 +33,9 @@ public class EventsController {
     @PostMapping("/new")
     public MessageHolder<Boolean> addNew(String eventName, String description, String date, String time) throws SQLException {
         try (Connection conn = DriverManager.getConnection(
-                resource.getString("Postgresql.datasource.url"),
-                resource.getString("Postgresql.datasource.username"),
-                resource.getString("Postgresql.datasource.password"))) {
+                Main.resource.getString("Postgresql.datasource.url"),
+                Main.resource.getString("Postgresql.datasource.username"),
+                Main.resource.getString("Postgresql.datasource.password"))) {
             EventsMain.create_event(getCurrentUser(), eventName, description, date, time, conn);
         } catch (Exception e) {
             return new MessageHolder<>("Create Event", false);
@@ -47,9 +47,9 @@ public class EventsController {
     @PostMapping("/list")
     public MessageHolder<List<EventItem>> list() throws SQLException {
         Connection conn = DriverManager.getConnection(
-                resource.getString("Postgresql.datasource.url"),
-                resource.getString("Postgresql.datasource.username"),
-                resource.getString("Postgresql.datasource.password"));
+                Main.resource.getString("Postgresql.datasource.url"),
+                Main.resource.getString("Postgresql.datasource.username"),
+                Main.resource.getString("Postgresql.datasource.password"));
         List<EventItem> items = EventsMain.get_events(conn);
         conn.close();
         return new MessageHolder<>("Events", items);
@@ -58,9 +58,9 @@ public class EventsController {
     @PostMapping("/join")
     public MessageHolder<Boolean> join(String eventName) throws SQLException {
         try (Connection conn = DriverManager.getConnection(
-                resource.getString("Postgresql.datasource.url"),
-                resource.getString("Postgresql.datasource.username"),
-                resource.getString("Postgresql.datasource.password"))) {
+                Main.resource.getString("Postgresql.datasource.url"),
+                Main.resource.getString("Postgresql.datasource.username"),
+                Main.resource.getString("Postgresql.datasource.password"))) {
             EventsMain.join_event(getCurrentUser(), eventName, conn);
         } catch (Exception e) {
             return new MessageHolder<>("Join", false);

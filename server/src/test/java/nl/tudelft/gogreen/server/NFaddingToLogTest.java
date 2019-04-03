@@ -8,6 +8,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.util.Locale;
 import java.util.ResourceBundle;
 
 import static org.junit.Assert.assertEquals;
@@ -15,10 +16,12 @@ import static org.junit.Assert.assertNotEquals;
 
 public class NFaddingToLogTest {
 
-    private static ResourceBundle resource = ResourceBundle.getBundle("db");
+
 
     @Before
     public void createUserWithFeature(){
+        Main.resource = ResourceBundle.getBundle("db", Locale.GERMANY);
+
         try {
             CreateUser.create_user("Leo", "Messi");
 
@@ -29,12 +32,12 @@ public class NFaddingToLogTest {
     }
     @Test
     public void addingToLog() {
-        try( Connection conn = DriverManager.getConnection(resource.getString("Postgresql.datasource.url"),
-                resource.getString("Postgresql.datasource.username"),
-                resource.getString("Postgresql.datasource.password"))) {
+        try( Connection conn = DriverManager.getConnection(Main.resource.getString("Postgresql.datasource.url"),
+                Main.resource.getString("Postgresql.datasource.username"),
+                Main.resource.getString("Postgresql.datasource.password"))) {
 
             int id = NewFeature.getId("Leo",conn);
-            PreparedStatement getCount = conn.prepareStatement(resource.getString("qGetCountfeatures"));
+            PreparedStatement getCount = conn.prepareStatement(Main.resource.getString("qGetCountfeatures"));
             getCount.setInt(1,id);
             ResultSet number = getCount.executeQuery();
             int prevTotal  = -1;
@@ -43,7 +46,7 @@ public class NFaddingToLogTest {
             }
 
             NewFeature.addingToLog(id,conn,"Vegetarian Meal");
-            PreparedStatement getCount2 = conn.prepareStatement(resource.getString("qGetCountfeatures"));
+            PreparedStatement getCount2 = conn.prepareStatement(Main.resource.getString("qGetCountfeatures"));
             getCount2.setInt(1,id);
             ResultSet number2 = getCount2.executeQuery();
             int afterTotal = -1;
@@ -64,9 +67,9 @@ public class NFaddingToLogTest {
     @After
     public void restoreLog() throws Exception{
 
-        try( Connection conn = DriverManager.getConnection(resource.getString("Postgresql.datasource.url"),
-                resource.getString("Postgresql.datasource.username"),
-                resource.getString("Postgresql.datasource.password"))){
+        try( Connection conn = DriverManager.getConnection(Main.resource.getString("Postgresql.datasource.url"),
+                Main.resource.getString("Postgresql.datasource.username"),
+                Main.resource.getString("Postgresql.datasource.password"))){
             CreateUser.delete_user(NewFeature.getId("Leo",conn),conn);
 
 
