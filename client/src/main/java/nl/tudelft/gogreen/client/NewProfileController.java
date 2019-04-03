@@ -100,8 +100,11 @@ public class NewProfileController implements Initializable {
         //TODO Removes Position Text after condition e.g if user is not following.
         if (false) {
             topRightBox.getChildren().remove(position);
+        } else {
+            //TODO retrieve position of user compared to following
+            position.setText("Position: #10");
         }
-        //TODO Marks Follow button from "UnFollow" to Follow after condition is met.
+        //TODO Marks Follow button from "UnFollow" to Follow after condition is met eg. User does not already follow.
         if (false) {
             follow.setText("Follow");
         }
