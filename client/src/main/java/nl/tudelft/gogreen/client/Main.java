@@ -21,8 +21,7 @@ public class Main extends Application {
     private static ProfileController profileScreen = new ProfileController();
     private static LeaderboardController leaderBoardScreen = new LeaderboardController();
     private static AchievementsController achievementsScreen = new AchievementsController();
-    private static EventController eventController = new EventController();
-    private static QuizController quizController = new QuizController();
+    private static EventController EventController = new EventController();
 
 
     static int getWidth() {
@@ -96,12 +95,9 @@ public class Main extends Application {
         }
     }
 
-    /**
-     * Method that changes scene to EventScreen.
-     */
     static void openEventScreen() {
         try {
-            stage.setScene(eventController.getScene());
+            stage.setScene(EventController.getScene());
         } catch (IOException ex) {
             pageOpenError(ex);
         }
@@ -126,14 +122,6 @@ public class Main extends Application {
             stage.setScene(achievementsScreen.getScene());
         } catch (IOException ex) {
             pageOpenError(ex);
-        }
-    }
-
-    static void openQuizScreen(){
-        try{
-            stage.setScene(quizController.getScene());
-        }   catch (IOException ex) {
-        pageOpenError(ex);
         }
     }
 

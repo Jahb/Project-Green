@@ -62,7 +62,7 @@ public class LoginController {
 
         if (Api.current.login(un, pw)) {
 
-            Main.openQuizScreen();
+            Main.openMainScreen();
         } else if (passwordWrong != null) {
             passwordWrong.setVisible(true);
         }
