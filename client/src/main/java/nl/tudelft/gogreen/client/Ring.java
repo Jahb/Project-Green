@@ -38,7 +38,7 @@ public class Ring {
     private Consumer<String> handler;
     private String name;
     private Text temporaryUsername = new Text();
-    private Pane textPane = new Pane();
+    private StackPane textPane;
     private AnchorPane pane;
     private int totalPoints = -1;
     static final double MAXPOINTS = 1000;
@@ -71,19 +71,25 @@ public class Ring {
         addSegment(0, Color.YELLOW, "Energy");
         addSegment(0, Color.GREEN, "Transport");
 
-        textPane = new Pane(temporaryUsername);
+        textPane = new StackPane(temporaryUsername);
         textPane.setLayoutX(50);
         textPane.setLayoutY(centerOffs * 2 + 5);
-        textPane.setBackground(new Background(new BackgroundFill(new Color(1, 1, 1, .0), null, null)));
+        textPane.setBackground(new Background(new BackgroundFill(
+        		new Color(1, 1, 1, .9), new CornerRadii(10), null)));
+        textPane.setBorder(new Border(new BorderStroke(
+        		Color.DARKGRAY, BorderStrokeStyle.SOLID, new CornerRadii(10), null)));
+        textPane.setPadding(new Insets(5, 0, 5, 0));
         temporaryUsername.setFont(Font.font("Calibri", FontWeight.BOLD, 30));
         temporaryUsername.setY(30);
 
         pane = new AnchorPane();
         pane.getChildren().add(outerCircle);
-        for (RingSegment rs : segments)
-            rs.addNodes(pane);
         pane.getChildren().add(innerCircle);
         pane.getChildren().add(textPane);
+        for (RingSegment rs : segments)
+            rs.addNodes(pane);
+        innerCircle.toFront();
+        
         pane.setLayoutX(centerX - outerCircle.getRadius());
         pane.setLayoutY(centerY - outerCircle.getRadius());
 
@@ -106,11 +112,14 @@ public class Ring {
     }
 
     public void setUsername(String username) {
+        if(name.equals("MAIN") || username == null || username.equals("")) {
+            textPane.setVisible(false);
+            return;
+        }
         temporaryUsername.setText(username);
-        System.out.println(temporaryUsername.getLayoutBounds().getWidth());
-//        temporaryUsername.setWrappingWidth(temporaryUsername.getLayoutBounds().getWidth()+30)
-        textPane.setLayoutX(centerOffs - temporaryUsername.getLayoutBounds().getWidth() / 2);
-        textPane.setLayoutY(centerOffs - temporaryUsername.getLayoutBounds().getHeight() / 2);
+        textPane.setPrefWidth(150);
+        textPane.setLayoutX(centerOffs - 75);
+        textPane.setLayoutY(-50);
 
     }
 
@@ -252,8 +261,8 @@ public class Ring {
             double height = hoverText.getLayoutBounds().getHeight();
 
             final double r = (.25 - points / MAXPOINTS / 2) * Math.PI * 2;
-            double x = Math.cos(r) * centerOffs * .80;
-            double y = -Math.sin(r) * centerOffs * .80;
+            double x = Math.cos(r) * centerOffs * .90;
+            double y = -Math.sin(r) * centerOffs * .90;
             
             if (x < 0)
                 x -= width;
