@@ -9,7 +9,7 @@ import static java.sql.DriverManager.getConnection;
 
 public class Statistics {
 
-    private static ResourceBundle resource = ResourceBundle.getBundle("db");
+
 
     /**
      * Method which returns an array of Floats with values in order chronological
@@ -23,9 +23,9 @@ public class Statistics {
     public static double[] getLastWeekData(int id) throws Exception {
 
         Connection conn = getConnection(
-                resource.getString("Postgresql.datasource.url"),
-                resource.getString("Postgresql.datasource.username"),
-                resource.getString("Postgresql.datasource.password"));
+                Main.resource.getString("Postgresql.datasource.url"),
+                Main.resource.getString("Postgresql.datasource.username"),
+                Main.resource.getString("Postgresql.datasource.password"));
 
         double[] data = getLastData(id, 7, conn);
         conn.close();
@@ -46,9 +46,9 @@ public class Statistics {
     public static double[] getLastMonthData(int id) throws Exception {
 
         Connection conn = getConnection(
-                resource.getString("Postgresql.datasource.url"),
-                resource.getString("Postgresql.datasource.username"),
-                resource.getString("Postgresql.datasource.password"));
+                Main.resource.getString("Postgresql.datasource.url"),
+                Main.resource.getString("Postgresql.datasource.username"),
+                Main.resource.getString("Postgresql.datasource.password"));
 
 
         double[] data = getLastData(id, 30, conn);
@@ -69,9 +69,9 @@ public class Statistics {
     public static double[] getLastYearData(int id) throws Exception {
 
         Connection conn = getConnection(
-                resource.getString("Postgresql.datasource.url"),
-                resource.getString("Postgresql.datasource.username"),
-                resource.getString("Postgresql.datasource.password"));
+                Main.resource.getString("Postgresql.datasource.url"),
+                Main.resource.getString("Postgresql.datasource.username"),
+                Main.resource.getString("Postgresql.datasource.password"));
 
         double[] data = getLastData(id, 365, conn);
         conn.close();
@@ -91,7 +91,7 @@ public class Statistics {
 
         double[] result = new double[days + 2];
         double total = 0.0;
-        PreparedStatement gettingWeekData = conn.prepareStatement(resource.getString("qGetData"));
+        PreparedStatement gettingWeekData = conn.prepareStatement(Main.resource.getString("qGetData"));
         gettingWeekData.setInt(2, id);
         for (int i = 0; i < days; i++) {
             gettingWeekData.setInt(1, i);

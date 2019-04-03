@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.ResourceBundle;
 
 public class EventsMain {
-    private static ResourceBundle resource = ResourceBundle.getBundle("db");
+
 
     /**
      * Method which creates an event with the given parameters.
@@ -30,7 +30,7 @@ public class EventsMain {
         int idEvent = getMaxId(conn);
         int idCreator = NewFeature.getId(username, conn);
         System.out.println("The idEvent is: " + idEvent + " and the eventName is: " + eventName + " and the idCreator is: " + idCreator);
-        PreparedStatement createEvent = conn.prepareStatement(resource.getString("qInsertIntoEvent"));
+        PreparedStatement createEvent = conn.prepareStatement(Main.resource.getString("qInsertIntoEvent"));
         createEvent.setInt(1, idEvent);
         createEvent.setString(2, eventName);
         createEvent.setInt(3, idCreator);
@@ -50,7 +50,7 @@ public class EventsMain {
      * @throws SQLException if the database has an error
      */
     public static List<EventItem> get_events(Connection conn) throws SQLException {
-        PreparedStatement events = conn.prepareStatement(resource.getString("qListAllEvents"));
+        PreparedStatement events = conn.prepareStatement(Main.resource.getString("qListAllEvents"));
         ResultSet results = events.executeQuery();
         List<EventItem> items = new ArrayList<>();
         while (results.next()) {
@@ -73,7 +73,7 @@ public class EventsMain {
                                     Connection conn) throws Exception {
         //delete event
 
-        PreparedStatement delete = conn.prepareStatement(resource.getString("qDeleteFromEvent"));
+        PreparedStatement delete = conn.prepareStatement(Main.resource.getString("qDeleteFromEvent"));
         delete.setString(1, eventName);
         delete.execute();
 
@@ -91,7 +91,7 @@ public class EventsMain {
                                   Connection conn) throws Exception {
 
         int id = NewFeature.getId(username, conn);
-        PreparedStatement join = conn.prepareStatement(resource.getString("qJoinEvent"));
+        PreparedStatement join = conn.prepareStatement(Main.resource.getString("qJoinEvent"));
         join.setString(1, eventName);
         join.setInt(2, id);
         join.setInt(3, NewFeature.getId(username, conn));
@@ -111,7 +111,7 @@ public class EventsMain {
                                    Connection conn) throws Exception {
 
         int id = NewFeature.getId(username, conn);
-        PreparedStatement leave = conn.prepareStatement(resource.getString("qLeaveEvent"));
+        PreparedStatement leave = conn.prepareStatement(Main.resource.getString("qLeaveEvent"));
         leave.setInt(1, id);
         leave.setString(2, eventName);
         leave.execute();
@@ -129,7 +129,7 @@ public class EventsMain {
         int id = -1;
 
 
-        PreparedStatement getId = conn.prepareStatement(resource.getString("qGetEventId"));
+        PreparedStatement getId = conn.prepareStatement(Main.resource.getString("qGetEventId"));
         getId.setString(1, eventName);
         ResultSet rs = getId.executeQuery();
         while (rs.next()) {
@@ -148,7 +148,7 @@ public class EventsMain {
 
     public static int getMaxId(Connection conn) throws Exception {
 
-        PreparedStatement getMaxId = conn.prepareStatement(resource.getString("qGetMaxId"));
+        PreparedStatement getMaxId = conn.prepareStatement(Main.resource.getString("qGetMaxId"));
         ResultSet rs0 = getMaxId.executeQuery();
         int id = 0;
         while (rs0.next()) {
@@ -165,7 +165,7 @@ public class EventsMain {
      * @throws Exception raises when an error occurs accessing
      */
     public static void deleteAllAtendance(int id, Connection conn) throws Exception {
-        PreparedStatement delAttendance = conn.prepareStatement(resource.getString("qDeleteAllAtendance"));
+        PreparedStatement delAttendance = conn.prepareStatement(Main.resource.getString("qDeleteAllAtendance"));
         delAttendance.setInt(1, id);
         delAttendance.execute();
     }
@@ -180,10 +180,10 @@ public class EventsMain {
     public static void deleteAllEvents(int id, Connection conn) throws Exception {
 
 
-        PreparedStatement delEventAttendance = conn.prepareStatement(resource.getString("qDeleteAllEventsAttendance"));
+        PreparedStatement delEventAttendance = conn.prepareStatement(Main.resource.getString("qDeleteAllEventsAttendance"));
         delEventAttendance.setInt(1, id);
         delEventAttendance.execute();
-        PreparedStatement delEvent = conn.prepareStatement(resource.getString("qDeleteAllEvents"));
+        PreparedStatement delEvent = conn.prepareStatement(Main.resource.getString("qDeleteAllEvents"));
         delEvent.setInt(1, id);
         delEvent.execute();
     }
