@@ -6,43 +6,44 @@ import org.junit.Test;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.util.Locale;
 import java.util.ResourceBundle;
 
 public class NFactualizingUserHistoryTest {
 
-    private static ResourceBundle resource = ResourceBundle.getBundle("db");
+
 
     @Test
-    public void actualizingUserPoints(){
-        try(Connection conn = DriverManager.getConnection(resource.getString("Postgresql.datasource.url"),
-                resource.getString("Postgresql.datasource.username"), resource.getString("Postgresql.datasource.password"))) {
+    public void actualizingUserPoints() {
+        try (Connection conn = DriverManager.getConnection(Main.resource.getString("Postgresql.datasource.url"),
+                Main.resource.getString("Postgresql.datasource.username"), Main.resource.getString("Postgresql.datasource.password"))) {
 
             int id = NewFeature.getId("MJ", conn);
 
             //TO IMPLEMENT
 
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
     @Before
     public void createOnlyUser() throws Exception {
+        Main.resource = ResourceBundle.getBundle("db", Locale.GERMANY);
 
-            CreateUser.create_user("MJ","MJ");
 
+        CreateUser.create_user("MJ", "MJ");
 
 
     }
 
     @After
-    public void deleteUser() throws Exception{
-        try(Connection conn = DriverManager.getConnection(resource.getString("Postgresql.datasource.url"), resource.getString("Postgresql.datasource.username"), resource.getString("Postgresql.datasource.password"))) {
-            CreateUser.delete_user(NewFeature.getId("MJ",conn),conn);
+    public void deleteUser() throws Exception {
+        try (Connection conn = DriverManager.getConnection(Main.resource.getString("Postgresql.datasource.url"), Main.resource.getString("Postgresql.datasource.username"), Main.resource.getString("Postgresql.datasource.password"))) {
+            CreateUser.delete_user(NewFeature.getId("MJ", conn), conn);
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
         }
-                catch(Exception e){
-                    System.out.println(e.getMessage());
-            }
-            }
     }
+}
 

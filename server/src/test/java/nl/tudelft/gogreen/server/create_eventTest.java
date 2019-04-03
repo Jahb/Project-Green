@@ -2,24 +2,30 @@ package nl.tudelft.gogreen.server;
 
 
 import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.util.Locale;
 import java.util.ResourceBundle;
 
 import static org.junit.Assert.assertEquals;
 
 
 public class create_eventTest {
-    private static ResourceBundle resource = ResourceBundle.getBundle("db");
 
+    @Before
+    public void replaceDb(){
+        Main.resource = ResourceBundle.getBundle("db", Locale.GERMANY);
+
+    }
 
     @After
     public void deleteEvent() {
-        try (Connection conn = DriverManager.getConnection(resource.getString("Postgresql.datasource.url"), resource.getString("Postgresql.datasource.username"), resource.getString("Postgresql.datasource.password"))) {
+        try (Connection conn = DriverManager.getConnection(Main.resource.getString("Postgresql.datasource.url"), Main.resource.getString("Postgresql.datasource.username"), Main.resource.getString("Postgresql.datasource.password"))) {
 
 
             PreparedStatement delete = conn.prepareStatement("delete from event where event_name = 'karnaval';");
@@ -32,7 +38,7 @@ public class create_eventTest {
 
     @Test
     public void create_eventTest() {
-        try (Connection conn = DriverManager.getConnection(resource.getString("Postgresql.datasource.url"), resource.getString("Postgresql.datasource.username"), resource.getString("Postgresql.datasource.password"))) {
+        try (Connection conn = DriverManager.getConnection(Main.resource.getString("Postgresql.datasource.url"), Main.resource.getString("Postgresql.datasource.username"), Main.resource.getString("Postgresql.datasource.password"))) {
 
             CreateUser.create_user("test", "test");
             int id = NewFeature.getId("test", conn);

@@ -2,6 +2,7 @@ package nl.tudelft.gogreen.server;
 
 
 import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
 import org.springframework.security.crypto.bcrypt.BCrypt;
 
@@ -9,20 +10,26 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.util.Locale;
 import java.util.ResourceBundle;
 
 import static junit.framework.TestCase.assertTrue;
 
 
 public class create_userTest {
-    private static ResourceBundle resource = ResourceBundle.getBundle("db");
 
+
+    @Before
+    public void replaceDb(){
+        Main.resource = ResourceBundle.getBundle("db", Locale.GERMANY);
+
+    }
 
     @After
     public void deleteUser() {
-        try( Connection conn = DriverManager.getConnection(resource.getString("Postgresql.datasource.url"),
-                resource.getString("Postgresql.datasource.username"),
-                resource.getString("Postgresql.datasource.password"))) {
+        try( Connection conn = DriverManager.getConnection(Main.resource.getString("Postgresql.datasource.url"),
+                Main.resource.getString("Postgresql.datasource.username"),
+                Main.resource.getString("Postgresql.datasource.password"))) {
 
 
             int id = NewFeature.getId("paul", conn);
@@ -35,7 +42,7 @@ public class create_userTest {
 
     @Test
     public void create_userTest() {
-        try(Connection conn = DriverManager.getConnection(resource.getString("Postgresql.datasource.url"), resource.getString("Postgresql.datasource.username"), resource.getString("Postgresql.datasource.password"))) {
+        try(Connection conn = DriverManager.getConnection(Main.resource.getString("Postgresql.datasource.url"), Main.resource.getString("Postgresql.datasource.username"), Main.resource.getString("Postgresql.datasource.password"))) {
 
             CreateUser.create_user("paul", "paul");
             System.out.println("hash");
