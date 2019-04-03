@@ -50,7 +50,7 @@ public class NewProfileController implements Initializable {
     @FXML
     private Button achievementsButton;
     @FXML
-    private ListView activityList;
+    private JFXListView activityList;
     @FXML
     private BorderPane ringPane;
     @FXML
@@ -71,6 +71,7 @@ public class NewProfileController implements Initializable {
     private Ring userRing;
     private ObservableList<ListItem> followerArray = FXCollections.observableArrayList();
     private ObservableList<ListItem> followingArray = FXCollections.observableArrayList();
+    private ObservableList<String> activities = FXCollections.observableArrayList();
 
     //TODO handler for each ring category
     private Consumer<String> ringHandler = name -> System.out.println("EXE [" + name + "]");
@@ -111,14 +112,22 @@ public class NewProfileController implements Initializable {
         ListItem achievement3 = new ListItem(new Image("/images/IconCupBronze.png"), "Achievement 3");
         addAchievements(achievement1, achievement2, achievement3);
 
+        //TODO Add to Follow Array buttons I think should work all you need to do is pull from DB and add to the followerArray & followingArray
         ListItem follower1 = new ListItem(new Image("/images/addButton.png"), "Alex");
         ListItem follower2 = new ListItem(new Image("/images/addButton.png"), "Justin");
         ListItem follower3 = new ListItem(new Image("/images/addButton.png"), "Emily");
 
-        followerArray.addAll(follower1, follower2, follower3);
+        followerArray.addAll(follower1, follower2, follower3, follower1, follower2);
         followingArray.addAll(follower2, follower1);
         followerList.setItems(followerArray);
         followerList.setCellFactory(param -> new Cell());
+
+
+        //TODO Activities List
+        activities.add("13:00 - Did this");
+        activities.add("14:00 - Did That");
+        activities.add("10:00 - Ate a vegetarian meal");
+        activityList.setItems(activities);
 
 
     }
@@ -213,13 +222,16 @@ public class NewProfileController implements Initializable {
         HBox listCell = new HBox();
         Label itemName = new Label();
         Pane pane = new Pane();
+        Pane pane2 = new Pane();
         ImageView image = new ImageView();
 
         private Cell() {
             super();
-            listCell.getChildren().addAll(image, pane, itemName);
+            listCell.getChildren().addAll(image, pane, itemName, pane2);
             HBox.setHgrow(pane, ALWAYS);
+            HBox.setHgrow(pane2, ALWAYS);
             listCell.setAlignment(Pos.CENTER);
+            followersLabel.setAlignment(Pos.CENTER);
             image.setFitHeight(75);
             image.setFitWidth(75);
 
