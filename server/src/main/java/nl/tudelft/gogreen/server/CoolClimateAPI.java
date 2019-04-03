@@ -14,7 +14,7 @@ public class CoolClimateAPI {
 
     private static ResourceBundle resource = ResourceBundle.getBundle("db");
 
-    public static void fetchApiData(){
+    public static void fetchApiData() throws Exception{
         VegetarianMeal();
         LocalProduct();
         UsageofBike();
@@ -24,9 +24,7 @@ public class CoolClimateAPI {
         Recycling();
     }
 
-    public static void VegetarianMeal() {
-
-        try {
+    public static void VegetarianMeal() throws Exception {
 
             Connection conn = DriverManager.getConnection(
                     resource.getString("Postgresql.datasource.url"),
@@ -52,15 +50,10 @@ public class CoolClimateAPI {
             PreparedStatement insertAPI = conn.prepareStatement(resource.getString("qupdateVegetarianMeal"));
             insertAPI.setFloat(1, result);
             insertAPI.execute();
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
         }
 
-    }
 
-    public static void LocalProduct() {
-
-        try {
+    public static void LocalProduct() throws Exception{
 
             Connection conn = DriverManager.getConnection(
                     resource.getString("Postgresql.datasource.url"),
@@ -81,14 +74,10 @@ public class CoolClimateAPI {
             PreparedStatement insertAPI = conn.prepareStatement(resource.getString("qupdateLocalProduct"));
             insertAPI.setFloat(1, result);
             insertAPI.execute();
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
         }
-    }
 
-    public static void UsageofBike() {
+    public static void UsageofBike() throws Exception{
 
-        try {
             Connection conn = DriverManager.getConnection(
                     resource.getString("Postgresql.datasource.url"),
                     resource.getString("Postgresql.datasource.username"),
@@ -109,15 +98,11 @@ public class CoolClimateAPI {
             PreparedStatement insertAPI = conn.prepareStatement(resource.getString("qupdateUsageofBike"));
             insertAPI.setFloat(1, result);
             insertAPI.execute();
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
         }
 
-    }
 
-    public static void UsageofPublicTransport() {
+    public static void UsageofPublicTransport() throws Exception{
 
-        try {
             Connection conn = DriverManager.getConnection(
                     resource.getString("Postgresql.datasource.url"),
                     resource.getString("Postgresql.datasource.username"),
@@ -139,14 +124,10 @@ public class CoolClimateAPI {
             PreparedStatement insertAPI = conn.prepareStatement(resource.getString("qupdateUsageofPublicTransport"));
             insertAPI.setFloat(1, result);
             insertAPI.execute();
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
         }
-    }
 
-    public static void LowerTemperature() {
+    public static void LowerTemperature() throws Exception{
 
-        try {
             Connection conn = DriverManager.getConnection(
                     resource.getString("Postgresql.datasource.url"),
                     resource.getString("Postgresql.datasource.username"),
@@ -166,15 +147,11 @@ public class CoolClimateAPI {
             PreparedStatement insertAPI = conn.prepareStatement(resource.getString("qupdateLowerTemperature"));
             insertAPI.setFloat(1, result);
             insertAPI.execute();
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
         }
 
-    }
 
-    public static void SolarPanels() {
+    public static void SolarPanels()throws Exception {
 
-        try {
             Connection conn = DriverManager.getConnection(
                     resource.getString("Postgresql.datasource.url"),
                     resource.getString("Postgresql.datasource.username"),
@@ -194,15 +171,10 @@ public class CoolClimateAPI {
             insertAPI.setFloat(1, result);
             insertAPI.execute();
 
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
         }
 
-    }
+    public static void Recycling()throws Exception {
 
-    public static void Recycling() {
-
-        try {
             Connection conn = DriverManager.getConnection(
                     resource.getString("Postgresql.datasource.url"),
                     resource.getString("Postgresql.datasource.username"),
@@ -221,11 +193,7 @@ public class CoolClimateAPI {
             PreparedStatement insertAPI = conn.prepareStatement(resource.getString("qupdateRecycling"));
             insertAPI.setFloat(1, result);
             insertAPI.execute();
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
-        }
-
-    }
+        } 
 
     public static Map<String, String> getParams() {
         Map<String, String> params = new HashMap<>();
