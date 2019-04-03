@@ -1,5 +1,6 @@
 package nl.tudelft.gogreen.client;
 
+import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXSlider;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -39,10 +40,18 @@ public class QuizController implements Initializable {
     public Label mileLabel;
     @FXML
     public Label economyLabel;
+    @FXML
+    public JFXButton defaultButton;
+    @FXML
+    public JFXButton saveButton;
 
 
 
     public void initialize (URL location, ResourceBundle resources){
+
+        defaultButton.setOnMouseClicked(event -> useDefaults());
+        saveButton.setOnMouseClicked(event -> useSaved());
+
 
         /**
          * Sets string labels for vehicleSlider
@@ -143,25 +152,10 @@ public class QuizController implements Initializable {
         URL url = Main.class.getResource("/QuizScreen.fxml");
         System.out.println(url);
         AnchorPane root = FXMLLoader.load(url);
-        BorderPane leftPane = (BorderPane) root.getChildren().get(1);
-        BorderPane rightPane = (BorderPane) root.getChildren().get(2);
-        addIconButtons(leftPane, rightPane);
         return new Scene(root, Main.getWidth(), Main.getHeight());
     }
 
-    /**
-     * Method for adding defaults and save button
-     * @param root1
-     * @param root2
-     */
-    public void addIconButtons(BorderPane root1, BorderPane root2){
-        IconButton defaultsButton = new IconButton("Confirm", 100, 100);
-        root1.setLeft(defaultsButton.getStackPane());
-        defaultsButton.setOnClick(event -> useDefaults());
-        IconButton saveButton = new IconButton("Confirm", 100, 100);
-        root2.setLeft(saveButton.getStackPane());
-        saveButton.setOnClick(event-> useSaved());
-    }
+
 
     /**
      * Method for using the default stats when clicking the defaultsButton
