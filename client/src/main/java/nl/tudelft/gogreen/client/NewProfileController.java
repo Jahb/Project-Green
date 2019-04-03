@@ -2,6 +2,9 @@ package nl.tudelft.gogreen.client;
 
 import com.jfoenix.controls.JFXListView;
 import com.jfoenix.controls.JFXTextField;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -19,6 +22,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
 import nl.tudelft.gogreen.client.communication.Api;
+import nl.tudelft.gogreen.shared.EventItem;
 
 import java.io.IOException;
 import java.net.URL;
@@ -29,6 +33,12 @@ import static javafx.scene.layout.Priority.ALWAYS;
 
 public class NewProfileController implements Initializable {
 
+    @FXML
+    public Button followingButton;
+    @FXML
+    public Label followersLabel;
+    @FXML
+    public Text position;
     @FXML
     private BorderPane buttonPane;
     @FXML
@@ -59,6 +69,8 @@ public class NewProfileController implements Initializable {
     private BorderPane achievementsBorder;
 
     private Ring userRing;
+    private ObservableList<ListItem> followerArray = FXCollections.observableArrayList();
+    private ObservableList<ListItem> followingArray = FXCollections.observableArrayList();
 
     //TODO handler for each ring category
     private Consumer<String> ringHandler = name -> System.out.println("EXE [" + name + "]");
@@ -80,9 +92,17 @@ public class NewProfileController implements Initializable {
         titleText.setText(Api.current.getUsername() + "'s Profile");
         todayPoints.setText("Total Points: " + Api.current.getTotal());
 
-        //TODO Removes Follow Button From Scene If condition is met.
+        //TODO Removes Follow Button From Scene If condition is met e.g if is UserProfile.
         if (false) {
             topRightBox.getChildren().remove(follow);
+        }
+        //TODO Removes Position Text after condition e.g if user is not following.
+        if (false) {
+            topRightBox.getChildren().remove(position);
+        }
+        //TODO Marks Follow button from "UnFollow" to Follow after condition is met.
+        if (false) {
+            follow.setText("Follow");
         }
 
         //TODO Adding Achievements just pull 3 most recent and call AddAchievements Method
@@ -90,6 +110,17 @@ public class NewProfileController implements Initializable {
         ListItem achievement2 = new ListItem(new Image("/images/IconCupSilver.png"), "Achievement 2");
         ListItem achievement3 = new ListItem(new Image("/images/IconCupBronze.png"), "Achievement 3");
         addAchievements(achievement1, achievement2, achievement3);
+
+        ListItem follower1 = new ListItem(new Image("/images/addButton.png"), "Alex");
+        ListItem follower2 = new ListItem(new Image("/images/addButton.png"), "Justin");
+        ListItem follower3 = new ListItem(new Image("/images/addButton.png"), "Emily");
+
+        followerArray.addAll(follower1, follower2, follower3);
+        followingArray.addAll(follower2, follower1);
+        followerList.setItems(followerArray);
+        followerList.setCellFactory(param -> new Cell());
+
+
     }
 
     /**
@@ -159,6 +190,7 @@ public class NewProfileController implements Initializable {
         userRing.startAnimation();
     }
 
+
     class ListItem {
         private Image image;
         private String text;
@@ -188,8 +220,10 @@ public class NewProfileController implements Initializable {
             listCell.getChildren().addAll(image, pane, itemName);
             HBox.setHgrow(pane, ALWAYS);
             listCell.setAlignment(Pos.CENTER);
-            image.setFitHeight(50);
-            image.setFitWidth(50);
+            image.setFitHeight(75);
+            image.setFitWidth(75);
+
+            //listCell.getStylesheets().add(getClass().getResource("/ListStyle.css").toExternalForm());
         }
 
         public void updateItem(ListItem item, boolean empty) {
@@ -205,4 +239,26 @@ public class NewProfileController implements Initializable {
         }
     }
 
+    @FXML
+    private void followersClicked() {
+        if (followersLabel.getText().equals("Followers")) {
+            followersLabel.setText("Following");
+            followingButton.setText("Followers");
+            followerList.setItems(followingArray);
+        } else {
+            followersLabel.setText("Followers");
+            followingButton.setText("Following");
+            followerList.setItems(followerArray);
+        }
+    }
+
+    @FXML
+    private void followClicked() {
+        //TODO Allow Follow and UnFollow Of User
+        if (follow.getText().equals("Follow")) {
+            follow.setText("UnFollow");
+        } else {
+            follow.setText("Follow");
+        }
+    }
 }
