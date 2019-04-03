@@ -53,7 +53,7 @@ public class CoolClimateAPI {
         }
 
 
-    public static void LocalProduct() throws Exception{
+    public static void LocalProduct()throws Exception{
 
             Connection conn = DriverManager.getConnection(
                     resource.getString("Postgresql.datasource.url"),
@@ -76,7 +76,7 @@ public class CoolClimateAPI {
             insertAPI.execute();
         }
 
-    public static void UsageofBike() throws Exception{
+    public static void UsageofBike()throws Exception{
 
             Connection conn = DriverManager.getConnection(
                     resource.getString("Postgresql.datasource.url"),
@@ -101,7 +101,7 @@ public class CoolClimateAPI {
         }
 
 
-    public static void UsageofPublicTransport() throws Exception{
+    public static void UsageofPublicTransport()throws Exception{
 
             Connection conn = DriverManager.getConnection(
                     resource.getString("Postgresql.datasource.url"),
@@ -126,7 +126,7 @@ public class CoolClimateAPI {
             insertAPI.execute();
         }
 
-    public static void LowerTemperature() throws Exception{
+    public static void LowerTemperature()throws Exception{
 
             Connection conn = DriverManager.getConnection(
                     resource.getString("Postgresql.datasource.url"),
@@ -193,7 +193,7 @@ public class CoolClimateAPI {
             PreparedStatement insertAPI = conn.prepareStatement(resource.getString("qupdateRecycling"));
             insertAPI.setFloat(1, result);
             insertAPI.execute();
-        } 
+        }
 
     public static Map<String, String> getParams() {
         Map<String, String> params = new HashMap<>();
