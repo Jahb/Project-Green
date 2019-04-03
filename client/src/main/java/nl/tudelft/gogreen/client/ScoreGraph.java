@@ -24,10 +24,13 @@ public class ScoreGraph {
     ScoreGraph(int x, int y, int width, int height){
         graph = new UndecoratedGraph(width, height);
         
+        
+        
         pane = new AnchorPane(graph.graphCanvas);
         pane.setLayoutX(x);
         pane.setLayoutY(y);
         pane.setBorder(new Border(new BorderStroke(Color.BLACK, BorderStrokeStyle.SOLID, null, BorderWidths.DEFAULT)));
+        
     }
     
     public Pane getPane() {
@@ -74,7 +77,16 @@ public class ScoreGraph {
             System.out.println(Arrays.toString(yPoints));
             
             g.clearRect(0, 0, width, height);
+            g.setStroke(Color.RED);
+            g.setLineWidth(5);
             g.strokePolyline(xPoints, yPoints, len);
+            final double r = 12;
+            for(int i = 0; i < len; i++) {
+            	g.setFill(Color.RED);
+                g.fillOval(xPoints[i]-r/2, yPoints[i]-r/2, r, r);
+                g.setFill(Color.WHITE);
+                g.fillOval(xPoints[i]-r/4, yPoints[i]-r/4, r/2, r/2);
+            }
         }
         public void standardizeY() {
             minY = Double.MAX_VALUE;
@@ -83,6 +95,16 @@ public class ScoreGraph {
                 minY = Math.min(minY, d);
                 maxY = Math.max(maxY, d);
             }
+        }
+        public void standardizeY(double snapOntoValue) {
+            minY = Double.MAX_VALUE;
+            maxY = Double.MIN_VALUE;
+            for(double d : allData) {
+                minY = Math.min(minY, d);
+                maxY = Math.max(maxY, d);
+            }
+            minY = Math.floor(minY / snapOntoValue) * snapOntoValue;
+            maxY = Math.ceil(maxY / snapOntoValue) * snapOntoValue;
         }
         
         Canvas getCanvas() {
