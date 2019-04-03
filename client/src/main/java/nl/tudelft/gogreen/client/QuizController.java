@@ -113,15 +113,20 @@ public class QuizController implements Initializable {
                     economyLabel.setStyle("-fx-text-fill: gray");
                 }
                 else{
+                    if(fuelSlider.getValue()!=0){
+                        economySlider.setDisable(false);
+                        mileSlider.setDisable(false);
+                        mileLabel.setStyle("-fx-text-fill: black");
+                        economyLabel.setStyle("-fx-text-fill: black");
+                    }
                     fuelSlider.setDisable(false);
-                    economySlider.setDisable(false);
-                    mileSlider.setDisable(false);
                     fuelLabel.setStyle("-fx-text-fill: black");
-                    mileLabel.setStyle("-fx-text-fill: black");
-                    economyLabel.setStyle("-fx-text-fill: black");
                 }
             }
         };
+        /**
+         * disable last 2 sliders when fuelSlider is set to "Electric"
+         */
         ChangeListener<Number> b = new ChangeListener<Number>() {
             public void changed(ObservableValue<? extends Number> ov,
                                 Number oldVal, Number newVal) {
