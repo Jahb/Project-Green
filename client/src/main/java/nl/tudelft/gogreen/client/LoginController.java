@@ -81,7 +81,8 @@ public class LoginController {
         if (!pw.equals(pw2)) {
             passwordNotMatch.setVisible(true);
         } else if (Api.current.register(un, pw)) {
-            login();
+            if (Api.current.login(un, pw))
+                Main.openMainScreen();
         }
 
     }
@@ -108,7 +109,7 @@ public class LoginController {
     }
 
     /**
-     *  Method That is run once user clicks Send Email Button.
+     * Method That is run once user clicks Send Email Button.
      */
     public void sendEmail() {
         //TODO Forget Email method.

@@ -9,6 +9,7 @@ import javafx.scene.image.Image;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import nl.tudelft.gogreen.client.communication.Api;
+import nl.tudelft.gogreen.client.communication.ProfileType;
 
 import java.io.IOException;
 

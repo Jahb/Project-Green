@@ -2,9 +2,9 @@ package nl.tudelft.gogreen.client;
 
 import com.jfoenix.controls.JFXListView;
 import com.jfoenix.controls.JFXTextField;
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -13,7 +13,6 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
-import javafx.scene.control.ListView;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
@@ -22,11 +21,12 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
 import nl.tudelft.gogreen.client.communication.Api;
-import nl.tudelft.gogreen.shared.EventItem;
+import nl.tudelft.gogreen.client.communication.ProfileType;
 
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
+import java.util.Set;
 import java.util.function.Consumer;
 
 import static javafx.scene.layout.Priority.ALWAYS;
@@ -44,13 +44,13 @@ public class NewProfileController implements Initializable {
     @FXML
     private ImageView profilePicture;
     @FXML
-    private JFXListView followerList;
+    private JFXListView<ListItem> followerList;
     @FXML
     private JFXTextField searchFollowers;
     @FXML
     private Button achievementsButton;
     @FXML
-    private JFXListView activityList;
+    private JFXListView<String> activityList;
     @FXML
     private BorderPane ringPane;
     @FXML
@@ -76,6 +76,9 @@ public class NewProfileController implements Initializable {
     //TODO handler for each ring category
     private Consumer<String> ringHandler = name -> System.out.println("EXE [" + name + "]");
 
+    private String username = Api.current.getUsername();
+    private ProfileType type = ProfileType.CURRENTUSER;
+
     /**
      * Called to initialize a controller after its root element has been
      * completely processed.
@@ -90,13 +93,13 @@ public class NewProfileController implements Initializable {
         IconButton.addBackButton(buttonPane);
         achievementsButton.setOnAction(event -> Main.openAchievementsScreen());
         addRing(ringPane);
-        titleText.setText(Api.current.getUsername() + "'s Profile");
+        titleText.setText(this.username + "'s Profile");
         todayPoints.setText("Total Points: " + Api.current.getTotal());
 
-        //TODO Removes Follow Button From Scene If condition is met e.g if is UserProfile.
-        if (false) {
+        if (this.type == ProfileType.CURRENTUSER) {
             topRightBox.getChildren().remove(follow);
         }
+
         //TODO Removes Position Text after condition e.g if user is not following.
         if (false) {
             topRightBox.getChildren().remove(position);
@@ -104,8 +107,7 @@ public class NewProfileController implements Initializable {
             //TODO retrieve position of user compared to following
             position.setText("Position: #10");
         }
-        //TODO Marks Follow button from "UnFollow" to Follow after condition is met eg. User does not already follow.
-        if (false) {
+        if (Api.current.getFollowing().keySet().stream().noneMatch(s -> s.equals(this.username))) {
             follow.setText("Follow");
         }
 
@@ -115,13 +117,23 @@ public class NewProfileController implements Initializable {
         ListItem achievement3 = new ListItem(new Image("/images/IconCupBronze.png"), "Achievement 3");
         addAchievements(achievement1, achievement2, achievement3);
 
-        //TODO Add to Follow Array buttons I think should work all you need to do is pull from DB and add to the followerArray & followingArray
-        ListItem follower1 = new ListItem(new Image("/images/addButton.png"), "Alex");
-        ListItem follower2 = new ListItem(new Image("/images/addButton.png"), "Justin");
-        ListItem follower3 = new ListItem(new Image("/images/addButton.png"), "Emily");
 
-        followerArray.addAll(follower1, follower2, follower3, follower1, follower2);
-        followingArray.addAll(follower2, follower1);
+        new Thread(() -> {
+            Set<String> following = Api.getApi().getFollowing().keySet();
+            Set<String> followers = Api.getApi().getFollowers().keySet();
+            Platform.runLater(() -> {
+                for (String f : following) {
+                    followingArray.add(new ListItem(new Image("/images/addButton.png"), f));
+                }
+                for (String f : followers) {
+                    followerArray.add(new ListItem(new Image("/images/addButton.png"), f));
+
+                }
+                followerList.setItems(followerArray);
+
+            });
+        }).start();
+
         followerList.setItems(followerArray);
         followerList.setCellFactory(param -> new Cell());
 
@@ -178,6 +190,7 @@ public class NewProfileController implements Initializable {
      * @throws IOException IO Exception may be thrown
      */
     public Scene getScene() throws IOException {
+        System.out.println(this.username);
         URL url = Main.class.getResource("/Profile.fxml");
         System.out.println(url);
         AnchorPane root = FXMLLoader.load(url);
