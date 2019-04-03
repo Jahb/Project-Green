@@ -1,7 +1,12 @@
 package nl.tudelft.gogreen.client;
 
+import java.io.IOException;
+import java.net.URL;
+import java.util.ResourceBundle;
+
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXListCell;
+
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -18,13 +23,10 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.util.Callback;
+import nl.tudelft.gogreen.client.ScoreGraph.UndecoratedGraph;
 import nl.tudelft.gogreen.client.communication.Api;
 import nl.tudelft.gogreen.shared.DateHolder;
 import nl.tudelft.gogreen.shared.DatePeriod;
-
-import java.io.IOException;
-import java.net.URL;
-import java.util.ResourceBundle;
 
 public class LeaderboardController implements Initializable {
 
@@ -50,10 +52,26 @@ public class LeaderboardController implements Initializable {
         System.out.println(url);
         AnchorPane root = FXMLLoader.load(url);
         BorderPane topPane = (BorderPane) root.getChildren().get(2);
+        
+        root.getChildren().remove(3);
+        createGraph(root);
+        
+        
+        
+        
         IconButton.addBackButton(topPane);
         return new Scene(root, Main.getWidth(), Main.getHeight());
     }
 
+    private void createGraph(AnchorPane root) {
+    	ScoreGraph g = new ScoreGraph(100,200,400,400);
+    	root.getChildren().add(g.getPane());
+        UndecoratedGraph graph = g.getGraph();
+        graph.setData(new double[] {0,1,1,3,4,4,6});
+        graph.standardizeY();
+        graph.drawGraph();
+    }
+    
     /**
      * Initializes images for class.
      *
