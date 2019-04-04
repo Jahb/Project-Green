@@ -12,3 +12,12 @@
 .button:pressed{
     -fx-background-color: #38ba5c;
 }
+.jfx-slider > .thumb {
+    -fx-background-color: #38ba5c;
+}
+.jfx-slider > .animated-thumb {
+    -fx-background-color: #38ba5c;
+}
+.jfx-slider > .colored-track {
+    -fx-background-color: #38ba5c;
+}
