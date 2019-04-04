@@ -70,6 +70,7 @@ public class Ring {
         addSegment(0, Color.LIME, "Food");
         addSegment(0, Color.YELLOW, "Energy");
         addSegment(0, Color.GREEN, "Transport");
+        addSegment(0, Color.GOLD, "Bonus");
 
         textPane = new StackPane(temporaryUsername);
         textPane.setLayoutX(50);
@@ -163,7 +164,7 @@ public class Ring {
                     rs.delta = 0;
                     
                 }
-                rs.updateHoverText(rs.points + smoothFormula(animationLength) * rs.delta);
+                rs.updateHoverText(startAngle, rs.points + smoothFormula(animationLength) * rs.delta);
 //                rs.cutArc.;
                 startAngle += rs.arc.getLength();
             }
@@ -255,12 +256,12 @@ public class Ring {
 
         }
 
-        void updateHoverText(double points) {
+        void updateHoverText(double startAngle, double points) {
             Text text = (Text) hoverText.getChildren().get(0);
             double width = hoverText.getLayoutBounds().getWidth();
             double height = hoverText.getLayoutBounds().getHeight();
 
-            final double r = (.25 - points / MAXPOINTS / 2) * Math.PI * 2;
+            final double r = (startAngle/360 + (.25 - points / MAXPOINTS / 2)) * Math.PI * 2;
             double x = Math.cos(r) * centerOffs * .90;
             double y = -Math.sin(r) * centerOffs * .90;
             
