@@ -1,6 +1,7 @@
 package nl.tudelft.gogreen.client;
 
 import com.mashape.unirest.http.exceptions.UnirestException;
+import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Scene;
@@ -13,6 +14,7 @@ import nl.tudelft.gogreen.client.communication.Api;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.Set;
 import java.util.function.Consumer;
 
 /**
@@ -111,20 +113,30 @@ public class MainScreen {
     }
 
     private void updateRingValues() {
-        double[] valuesMain = Api.current.getRingSegmentValues(ringMain.getName());
-        ringMain.setUsername(Api.current.getUsername());
-        ringMain.setSegmentValues(valuesMain);
-        ringMain.startAnimation();
+        new Thread(() -> {
+            double[] valuesMain = Api.current.getRingSegmentValues(ringMain.getName());
+            ringMain.setUsername(Api.current.getUsername());
+            ringMain.setSegmentValues(valuesMain);
+            Platform.runLater(() -> ringMain.startAnimation());
+        }).start();
 
-        double[] valuesNext = Api.current.getRingSegmentValues(ringNext.getName());
-        ringNext.setUsername(Api.current.getUsernameNext());
-        ringNext.setSegmentValues(valuesNext);
-        ringNext.startAnimation();
+        new Thread(() -> {
+            double[] valuesNext = Api.current.getRingSegmentValues(ringNext.getName());
+            ringNext.setUsername(Api.current.getUsernameNext());
+            ringNext.setSegmentValues(valuesNext);
+            Platform.runLater(() -> ringNext.startAnimation());
+        }).start();
 
-        double[] valuesPrevious = Api.current.getRingSegmentValues(ringPrevious.getName());
-        ringPrevious.setUsername(Api.current.getUsernamePrevious());
-        ringPrevious.setSegmentValues(valuesPrevious);
-        ringPrevious.startAnimation();
+        new Thread(() -> {
+            double[] valuesPrevious = Api.current.getRingSegmentValues(ringPrevious.getName());
+            ringPrevious.setUsername(Api.current.getUsernamePrevious());
+            ringPrevious.setSegmentValues(valuesPrevious);
+            Platform.runLater(() -> ringPrevious.startAnimation());
+        }).start();
+
+
+
+
     }
 
     private void addActivityButton(AnchorPane anchorPane) {

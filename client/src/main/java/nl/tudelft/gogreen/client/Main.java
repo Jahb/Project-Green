@@ -9,6 +9,7 @@ import javafx.scene.image.Image;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import nl.tudelft.gogreen.client.communication.Api;
+import nl.tudelft.gogreen.client.communication.ProfileType;
 
 import java.io.IOException;
 
@@ -18,7 +19,7 @@ public class Main extends Application {
     private static int height = 720;
     private static Stage stage;
     private static MainScreen mainScreen = new MainScreen();
-    private static ProfileController profileScreen = new ProfileController();
+    private static NewProfileController profileScreen = new NewProfileController();
     private static LeaderboardController leaderBoardScreen = new LeaderboardController();
     private static AchievementsController achievementsScreen = new AchievementsController();
     private static EventController eventController = new EventController();

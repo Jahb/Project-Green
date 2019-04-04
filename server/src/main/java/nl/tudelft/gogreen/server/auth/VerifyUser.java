@@ -2,6 +2,7 @@ package nl.tudelft.gogreen.server.auth;
 
 import nl.tudelft.gogreen.server.CreateUser;
 import nl.tudelft.gogreen.server.LogIn;
+import org.postgresql.util.PSQLException;
 
 public class VerifyUser {
     /**
@@ -24,6 +25,10 @@ public class VerifyUser {
      * @return a boolean whether the user is added (and thus didnt exist)
      */
     public static boolean addNewUser(String username, String password) throws Exception {
-        return CreateUser.create_user(username, password);
+        try {
+            return CreateUser.create_user(username, password);
+        }catch (PSQLException ex){
+            return false;
+        }
     }
 }

@@ -16,7 +16,7 @@ import java.util.ResourceBundle;
 @RestController
 @RequestMapping("/stats")
 public class StatsController {
-    private static ResourceBundle resource = ResourceBundle.getBundle("db");
+
 
     private String getCurrentUser() {
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
@@ -32,9 +32,9 @@ public class StatsController {
     @PostMapping
     public MessageHolder<DateHolder> getFor(DatePeriod days) {
         try (Connection conn = DriverManager.getConnection(
-                resource.getString("Postgresql.datasource.url"),
-                resource.getString("Postgresql.datasource.username"),
-                resource.getString("Postgresql.datasource.password"))) {
+                Main.resource.getString("Postgresql.datasource.url"),
+                Main.resource.getString("Postgresql.datasource.username"),
+                Main.resource.getString("Postgresql.datasource.password"))) {
             int uid = Utils.verifyUsersValid(getCurrentUser()).get(0);
             if (uid < 0) throw new Exception("Yeet!");
             double[] data = Statistics.getLastData(uid, days.getIndex(), conn);
