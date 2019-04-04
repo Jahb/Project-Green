@@ -366,19 +366,19 @@ public class NewFeature {
     public static int getStreak(int id) throws Exception {
 
 
-            Connection conn = getConnection(
-                    resource.getString("Postgresql.datasource.url"),
-                    resource.getString("Postgresql.datasource.username"),
-                    resource.getString("Postgresql.datasource.password"));
-            PreparedStatement getStreak = conn.prepareStatement(resource.getString("qRetrievingStreakDays"));
-            getStreak.setInt(1, id);
-            int numDays = 0;
-            ResultSet numDaysRS = getStreak.executeQuery();
-            while (numDaysRS.next()) {
-                numDays = numDaysRS.getInt(1);
-            }
+        Connection conn = getConnection(
+                resource.getString("Postgresql.datasource.url"),
+                resource.getString("Postgresql.datasource.username"),
+                resource.getString("Postgresql.datasource.password"));
+        PreparedStatement getStreak = conn.prepareStatement(resource.getString("qRetrievingStreakDays"));
+        getStreak.setInt(1, id);
+        int numDays = 0;
+        ResultSet numDaysRS = getStreak.executeQuery();
+        while (numDaysRS.next()) {
+            numDays = numDaysRS.getInt(1);
+        }
 
-            return numDays;
+        return numDays;
 
     }
 
