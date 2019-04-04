@@ -16,7 +16,7 @@
          <center>
             <Label alignment="CENTER" prefHeight="78.0" prefWidth="726.0" text="Getting Started" textFill="WHITE" BorderPane.alignment="CENTER">
                <font>
-                  <Font name="System Bold" size="55.0" />
+                  <Font name="System Bold" size="70.0" />
                </font>
                <graphic>
                   <ImageView fitHeight="102.0" fitWidth="102.0" pickOnBounds="true" preserveRatio="true">
