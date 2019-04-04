@@ -56,12 +56,12 @@ class AddActivityButton {
         backgroundPane.setBackground(new Background(bf));
 
         backgroundPane.setPrefWidth(600.0 * 31 / 32);
-        backgroundPane.setPrefHeight(200);
+        backgroundPane.setPrefHeight(400);
         backgroundPane.setOnMousePressed(event -> {
-            foodButton.subBackground.setVisible(false);
-            transportButton.subBackground.setVisible(false);
-            energyButton.subBackground.setVisible(false);
-            habitButton.subBackground.setVisible(false);
+            foodButton.closeDropDown();
+            transportButton.closeDropDown();
+            energyButton.closeDropDown();
+            habitButton.closeDropDown();
         });
         backgroundPane.setLayoutY(0);
 
@@ -79,7 +79,7 @@ class AddActivityButton {
         activityButtonPane = new AnchorPane(backgroundPane, text);
 
         activityButtonPane.setPrefWidth((double) (600 * 15 / 16));
-        activityButtonPane.setPrefWidth(200);
+        activityButtonPane.setPrefHeight(400);
         activityButtonPane.setLayoutX(500 - 600.0 * 31 / 64);
         activityButtonPane.setLayoutY(720 - 75);
         activityButtonPane.setVisible(false);
@@ -97,8 +97,8 @@ class AddActivityButton {
 
         slideUp = new TranslateTransition(Duration.millis(200), activityButtonPane);
         stayPut = new TranslateTransition(Duration.millis(200), animationOverlay);
-        slideUp.setByY(-200);
-        stayPut.setByY(200);
+        slideUp.setByY(-400);
+        stayPut.setByY(400);
 
         allNodes.add(activityButtonPane);
         allNodes.add(text);
@@ -127,10 +127,10 @@ class AddActivityButton {
             return;
         }
         activityButtonPane.setVisible(true);
-        foodButton.subBackground.setVisible(false);
-        transportButton.subBackground.setVisible(false);
-        energyButton.subBackground.setVisible(false);
-        habitButton.subBackground.setVisible(false);
+        foodButton.closeDropDown();
+        transportButton.closeDropDown();
+        energyButton.closeDropDown();
+        habitButton.closeDropDown();
 
         activityButtonPane.setTranslateY(0);
         animationOverlay.setTranslateY(0);
@@ -157,7 +157,7 @@ class AddActivityButton {
         private Text name;
         private ImageView icon;
 
-        private HBox subBackground;
+        private VBox subCategories;
 
         CategoryButton(String name, CategoryButtonCornerType type, int index) {
 
@@ -199,27 +199,18 @@ class AddActivityButton {
             background.setOnMouseExited(event -> mouseOver(false));
 
             background.addEventHandler(MouseEvent.MOUSE_PRESSED, event -> {
-                foodButton.subBackground.setVisible(false);
-                transportButton.subBackground.setVisible(false);
-                energyButton.subBackground.setVisible(false);
-                habitButton.subBackground.setVisible(false);
+                foodButton.closeDropDown();
+                transportButton.closeDropDown();
+                energyButton.closeDropDown();
+                habitButton.closeDropDown();
 
-                subBackground.setVisible(true);
+                openDropDown();
             });
+            
+            subCategories = new VBox();
+            subCategories.setLayoutX(x);
+            subCategories.setLayoutY(y+height);
 
-            final int subButtonSize = 40;
-            final int subPadding = 5;
-            final int subBoxWidth = 3 * (subButtonSize + subPadding) + subPadding;
-            subBackground = new HBox(5);
-            subBackground.setAlignment(Pos.CENTER_LEFT);
-            subBackground.setPrefHeight(subButtonSize + 2 * subPadding);
-            subBackground.setPrefWidth(subBoxWidth);
-            subBackground.setLayoutX(x + width - subBoxWidth + 5);
-            subBackground.setLayoutY(y - subButtonSize);
-            subBackground.setPadding(new Insets(5));
-            BackgroundFill bf2 = new BackgroundFill(Color.WHITE, new CornerRadii(25), Insets.EMPTY);
-            subBackground.setBackground(new Background(bf2));
-            subBackground.setVisible(false);
             if (name.equals("Food")) {
                 addSubCategoryButton("Vegetarian");
                 addSubCategoryButton("Localproduce");
@@ -267,52 +258,31 @@ class AddActivityButton {
         }
 
         private void addSubCategoryButton(String name) {
-            IconButton button = new IconButton(name, 40, 40);
+            IconButton button = new IconButton(name, 125, 80);
             button.setOnClick(event -> handler.accept(name));
             allNodes.add(button.getStackPane());
             allNodes.add(button.getStackPane().getChildren().get(0));
             allNodes.add(button.getStackPane().getChildren().get(1));
-            subBackground.getChildren().add(button.getStackPane());
-            Tooltip tooltip = new Tooltip(name);
-            hackTooltipStartTiming(tooltip);
-            tooltip.setStyle("-fx-background-color:#52EA7F; -fx-font-weight:bold; -fx-text-color:white;" +
-                    "-fx-font-size:20");
-            Tooltip.install(button.getStackPane(), tooltip);
+            subCategories.getChildren().add(button.getStackPane());
         }
 
         void addNodes(AnchorPane anchorPane) {
-            anchorPane.getChildren().addAll(background, icon, name, subBackground);
+            anchorPane.getChildren().addAll(background, icon, name, subCategories);
             allNodes.add(background);
             allNodes.add(icon);
             allNodes.add(name);
-            allNodes.add(subBackground);
+            allNodes.add(subCategories);
         }
-
+        private void closeDropDown() {
+        	subCategories.setVisible(false);
+        }
+        private void openDropDown() {
+        	subCategories.setVisible(true);
+        }
     }
+    
 
     private enum CategoryButtonCornerType {
         LEFT, CENTER, RIGHT
-    }
-
-    /**
-     * this makes it so the tooltips show instantly
-     *
-     * @param tooltip
-     */
-    public static void hackTooltipStartTiming(Tooltip tooltip) {
-        try {
-            Field fieldBehavior = tooltip.getClass().getDeclaredField("BEHAVIOR");
-            fieldBehavior.setAccessible(true);
-            Object objBehavior = fieldBehavior.get(tooltip);
-
-            Field fieldTimer = objBehavior.getClass().getDeclaredField("activationTimer");
-            fieldTimer.setAccessible(true);
-            Timeline objTimer = (Timeline) fieldTimer.get(objBehavior);
-
-            objTimer.getKeyFrames().clear();
-            objTimer.getKeyFrames().add(new KeyFrame(new Duration(0)));
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
     }
 }
