@@ -43,7 +43,7 @@ public class ScoreGraph {
         titleBackground.setPadding(new Insets(5, 0, 5, 0));
         titleBackground.setPrefWidth(100);
 
-        pane = new AnchorPane(graph.graphCanvas, titleBackground);
+        pane = new AnchorPane(graph.getCanvas(), titleBackground);
         pane.setLayoutX(x);
         pane.setLayoutY(y);
         pane.setBorder(new Border(new BorderStroke(Color.BLACK, BorderStrokeStyle.SOLID, null, BorderWidths.DEFAULT)));
@@ -84,28 +84,33 @@ public class ScoreGraph {
         }
 
         public void drawGraph() {
+        	final int padding = 20;
+        	final double insetWidth = width-padding*2;
+        	final double insetHeight = height-padding*2;
+        	
             final int len = allData.length;
             double[] xPoints = new double[len];
-            Arrays.setAll(xPoints, a -> a / (double) (len - 1) * width);
-            double[] yPoints = Arrays.stream(allData).map(a -> height - (a - minY) / (maxY - minY) * height).toArray();
+            Arrays.setAll(xPoints, a -> padding + a / (double) (len - 1) * insetWidth);
+            double[] yPoints = Arrays.stream(allData).map(a -> 
+            		padding + insetHeight - (a - minY) / (maxY - minY) * insetHeight).toArray();
             System.out.println(Arrays.toString(xPoints));
             System.out.println(Arrays.toString(yPoints));
 
-            g.clearRect(0, 0, width, height);
             g.setFill(Color.WHITE);
             g.fillRect(0, 0, width, height);
 
             g.setLineWidth(5);
             g.setStroke(Color.DARKGRAY);
+            g.setFill(Color.DARKGRAY);
             g.transform(1, 0, 0, 1, 3, 3);
             g.strokePolyline(xPoints, yPoints, len);
-            final double r = 12;
-            g.setFill(Color.DARKGRAY);
-            for (int i = 0; i < len; i++) {
-                g.fillOval(xPoints[i] - r / 2, yPoints[i] - r / 2, r, r);
-            }
-
             g.transform(1, 0, 0, 1, -3, -3);
+            
+            final double r = 12;
+            for (int i = 0; i < len; i++)
+                g.fillOval(xPoints[i] - r / 2 + 3, yPoints[i] - r / 2 + 3, r, r);
+
+            
             g.setStroke(Color.RED);
             g.strokePolyline(xPoints, yPoints, len);
 
@@ -140,7 +145,7 @@ public class ScoreGraph {
 
         Canvas getCanvas() {
             return graphCanvas;
-        }
+		}
 
-    }
+	}
 }
