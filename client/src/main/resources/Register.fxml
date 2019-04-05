@@ -39,21 +39,21 @@
                   <Font size="18.0" />
               </font>
           </JFXPasswordField>
-          <Button id="button" fx:id="registerButton" layoutX="76.0" layoutY="294.0" mnemonicParsing="false" onAction="#register" prefHeight="39.0" prefWidth="136.0" stylesheets="@Common.css" text="Register" textFill="WHITE" AnchorPane.rightAnchor="184.0" AnchorPane.topAnchor="294.0">
-              <font>
-                  <Font size="18.0" />
-              </font>
-          </Button>
          <JFXPasswordField fx:id="passwordField2" layoutX="57.0" layoutY="163.0" promptText="Re-Type Password" style="-jfx-unfocus-color: lightgray; -jfx-focus-color: gray; -fx-background-image: url('/images/IconLock.png'); -fx-background-repeat: no-repeat; -fx-background-position: right center;">
             <font>
                <Font size="18.0" />
             </font>
          </JFXPasswordField>
-         <JFXTextField fx:id="emailField" layoutX="57.0" layoutY="234.0" promptText="Insert E-mail" style="-jfx-unfocus-color: lightgray; -jfx-focus-color: gray; -fx-background-image: url('/images/IconEmail.png'); -fx-background-repeat: no-repeat; -fx-background-position: right center;">
+         <JFXTextField fx:id="emailField" layoutX="57.0" layoutY="223.0" promptText="Insert E-mail" style="-jfx-unfocus-color: lightgray; -jfx-focus-color: gray; -fx-background-image: url('/images/IconEmail.png'); -fx-background-repeat: no-repeat; -fx-background-position: right center;">
             <font>
                <Font size="18.0" />
             </font>
          </JFXTextField>
+          <Button id="button" fx:id="registerButton" layoutX="76.0" layoutY="294.0" mnemonicParsing="false" onAction="#register" prefHeight="39.0" prefWidth="136.0" stylesheets="@Common.css" text="Register" textFill="WHITE" AnchorPane.rightAnchor="184.0" AnchorPane.topAnchor="294.0">
+              <font>
+                  <Font size="18.0" />
+              </font>
+          </Button>
          <Button id="button" fx:id="backToLogin" layoutX="168.0" layoutY="294.0" mnemonicParsing="false" onAction="#openLogin" prefHeight="39.0" prefWidth="129.0" stylesheets="@Common.css" text="Cancel" textFill="WHITE">
             <font>
                <Font size="18.0" />
@@ -64,5 +64,10 @@
                <Font name="System Italic" size="15.0" />
             </font>
          </Text>
+      <Text fx:id="invalidEmail" fill="RED" layoutX="57.0" layoutY="278.0" strokeType="OUTSIDE" strokeWidth="0.0" text="E-Mail Not Valid!" visible="false">
+         <font>
+            <Font name="System Italic" size="15.0" />
+         </font>
+      </Text>
    </AnchorPane>
 </AnchorPane>
