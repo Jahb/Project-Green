@@ -48,9 +48,12 @@
             </BorderPane>
          </children>
       </AnchorPane>
-      <BorderPane fx:id="topBar" prefHeight="124.0" prefWidth="1000.0" style="-fx-background-color: #38ba5c;" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+      <BorderPane fx:id="topBar" prefHeight="124.0" prefWidth="986.0" style="-fx-background-color: #38ba5c;" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <left>
-            <BorderPane fx:id="buttonPane" prefHeight="119.0" prefWidth="129.0" BorderPane.alignment="CENTER" />
+            <BorderPane fx:id="buttonPane" prefHeight="119.0" prefWidth="129.0" BorderPane.alignment="CENTER">
+               <opaqueInsets>
+                  <Insets />
+               </opaqueInsets></BorderPane>
          </left>
          <center>
             <Text fx:id="titleText" fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Username's Profile" textAlignment="CENTER" wrappingWidth="649.42822265625" BorderPane.alignment="CENTER">
@@ -60,15 +63,21 @@
             </Text>
          </center>
          <right>
-            <ImageView fx:id="profilePicture" fitHeight="111.0" fitWidth="188.0" pickOnBounds="true" preserveRatio="true" BorderPane.alignment="CENTER">
+            <ImageView fx:id="profilePicture" fitHeight="100.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true" BorderPane.alignment="CENTER">
                <image>
-                  <Image url="@images/ButtonProfile.png" />
+                  <Image url="@images/ppLvl3.png" />
                </image>
+               <BorderPane.margin>
+                  <Insets right="10.0" />
+               </BorderPane.margin>
             </ImageView>
          </right>
          <padding>
             <Insets left="10.0" />
          </padding>
+         <opaqueInsets>
+            <Insets />
+         </opaqueInsets>
       </BorderPane>
       <AnchorPane layoutX="673.0" layoutY="197.0" prefHeight="523.0" prefWidth="327.0" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="197.0">
          <children>
