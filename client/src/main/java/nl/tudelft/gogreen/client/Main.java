@@ -9,6 +9,7 @@ import javafx.scene.image.Image;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import nl.tudelft.gogreen.client.communication.Api;
+import nl.tudelft.gogreen.client.communication.ProfileType;
 
 import java.io.IOException;
 
@@ -18,7 +19,7 @@ public class Main extends Application {
     private static int height = 720;
     private static Stage stage;
     private static MainScreen mainScreen = new MainScreen();
-    private static ProfileController profileScreen = new ProfileController();
+    private static NewProfileController profileScreen = new NewProfileController();
     private static LeaderboardController leaderBoardScreen = new LeaderboardController();
     private static AchievementsController achievementsScreen = new AchievementsController();
     private static EventController EventController = new EventController();
@@ -133,13 +134,32 @@ public class Main extends Application {
     }
 
     /**
+     * Returns One Of 4 ProfilePictures Of Current User.
+     *
+     * @return ProfilePicture Image.
+     */
+    public static Image getProfilePicture() {
+        int points = Api.current.getTotal();
+
+        if (points < 250) {
+            return new Image("/images/ppLvl1.png");
+        }
+        if (points < 500) {
+            return new Image("/images/ppLvl2.png");
+        }
+        if (points < 750) {
+            return new Image("/images/ppLvl3.png");
+        }
+        return new Image("images/ppLvl4.png");
+    }
+
+    /**
      * Main Method.
      *
      * @param args Program arguments
      */
     public static void main(String[] args) {
         Api.initApi();
-
         launch(args);
     }
 }

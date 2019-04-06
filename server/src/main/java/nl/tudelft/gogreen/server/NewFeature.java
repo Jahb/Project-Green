@@ -78,7 +78,7 @@ public class NewFeature {
     public static int getId(String username, Connection conn) throws Exception {
         int id = -1;
 
-        System.out.println("the username is: " + username);
+        //System.out.println("the username is: " + username);
         PreparedStatement getId = conn.prepareStatement(Main.resource.getString("qgetId"));
         getId.setString(1, username);
         ResultSet rs = getId.executeQuery();
