@@ -144,6 +144,8 @@ public class NewProfileController implements Initializable {
         activities.add("10:00 - Ate a vegetarian meal");
         activityList.setItems(activities);
 
+        profilePicture.setImage(Main.getProfilePicture());
+
 
     }
 

@@ -146,13 +146,32 @@ public class Main extends Application {
     }
 
     /**
+     * Returns One Of 4 ProfilePictures Of Current User.
+     *
+     * @return ProfilePicture Image.
+     */
+    public static Image getProfilePicture() {
+        int points = Api.current.getTotal();
+
+        if (points < 250) {
+            return new Image("/images/ppLvl1.png");
+        }
+        if (points < 500) {
+            return new Image("/images/ppLvl2.png");
+        }
+        if (points < 750) {
+            return new Image("/images/ppLvl3.png");
+        }
+        return new Image("images/ppLvl4.png");
+    }
+
+    /**
      * Main Method.
      *
      * @param args Program arguments
      */
     public static void main(String[] args) {
         Api.initApi();
-
         launch(args);
     }
 }

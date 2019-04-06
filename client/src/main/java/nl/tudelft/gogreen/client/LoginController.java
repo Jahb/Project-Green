@@ -49,6 +49,8 @@ public class LoginController {
     private Text passwordWrong;
     @FXML
     private Text passwordNotMatch;
+    @FXML
+    private Text invalidEmail;
 
     /**
      * Switches to Main Menu After a Successful Login.
@@ -78,9 +80,19 @@ public class LoginController {
         String un = userField.getText();
         String pw = passwordField.getText();
         String pw2 = passwordField2.getText();
+        if (emailField.getText().indexOf('@') == -1 || emailField.getText().indexOf('.') == -1) {
+            invalidEmail.setVisible(true);
+            return;
+        } else {
+            invalidEmail.setVisible(false);
+        }
         if (!pw.equals(pw2)) {
             passwordNotMatch.setVisible(true);
-        } else if (Api.current.register(un, pw)) {
+            return;
+        } else {
+            passwordNotMatch.setVisible(false);
+        }
+        if (Api.current.register(un, pw)) {
             if (Api.current.login(un, pw))
                 Main.openMainScreen();
         }
