@@ -72,10 +72,10 @@
                   <Circle fill="#50e476" radius="55.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" BorderPane.alignment="CENTER" />
                </center>
             </BorderPane>
-            <JFXTextField layoutX="55.0" layoutY="123.0" prefHeight="31.0" prefWidth="320.0" promptText="Event Name" />
-            <JFXDatePicker defaultColor="#50e476" layoutX="55.0" layoutY="176.0" prefHeight="31.0" prefWidth="320.0" promptText="Event Date" />
-            <JFXTextArea layoutX="55.0" layoutY="286.0" prefHeight="110.0" prefWidth="320.0" promptText="Event Description" />
-            <JFXTimePicker defaultColor="#50e476" layoutX="55.0" layoutY="226.0" prefHeight="31.0" prefWidth="320.0" promptText="Event Time" />
+            <JFXTextField layoutX="55.0" layoutY="123.0" prefHeight="31.0" prefWidth="320.0" promptText="Event Name" fx:id="newEventName" />
+            <JFXDatePicker defaultColor="#50e476" layoutX="55.0" layoutY="176.0" prefHeight="31.0" prefWidth="320.0" promptText="Event Date" fx:id="newEventDate" />
+            <JFXTextArea layoutX="55.0" layoutY="286.0" prefHeight="110.0" prefWidth="320.0" promptText="Event Description" fx:id="newEventDesc" />
+            <JFXTimePicker defaultColor="#50e476" layoutX="55.0" layoutY="226.0" prefHeight="31.0" prefWidth="320.0" promptText="Event Time" fx:id="newEventTime" />
             <Text fill="#50e476" layoutX="47.0" layoutY="81.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Enter Event Details Below">
                <font>
                   <Font name="System Bold Italic" size="28.0" />

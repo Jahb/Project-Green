@@ -16,15 +16,10 @@ import static org.junit.Assert.assertEquals;
 public class events_mainTest {
 
 
-
-    @Before
-    public void replaceDb(){
-        Main.resource = ResourceBundle.getBundle("db", Locale.GERMANY);
-
-    }
-
     @Before
     public void createOnlyUser() {
+        Main.resource = ResourceBundle.getBundle("db", Locale.GERMANY);
+
         try (Connection conn = DriverManager.getConnection(Main.resource.getString("Postgresql.datasource.url"), Main.resource.getString("Postgresql.datasource.username"), Main.resource.getString("Postgresql.datasource.password"))){
 
 

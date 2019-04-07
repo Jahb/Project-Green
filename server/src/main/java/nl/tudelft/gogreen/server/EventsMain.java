@@ -51,6 +51,17 @@ public class EventsMain {
      */
     public static List<EventItem> get_events(Connection conn) throws SQLException {
         PreparedStatement events = conn.prepareStatement(Main.resource.getString("qListAllEvents"));
+        return getEventItems(events);
+    }
+
+    public static List<EventItem> get_user_events(String username, Connection conn) throws SQLException {
+        PreparedStatement events = conn.prepareStatement(Main.resource.getString("qGetUserEvents"));
+        int idCreator = NewFeature.getId(username, conn);
+        events.setInt(1,idCreator);
+        return getEventItems(events);
+    }
+
+    private static List<EventItem> getEventItems(PreparedStatement events) throws SQLException {
         ResultSet results = events.executeQuery();
         List<EventItem> items = new ArrayList<>();
         while (results.next()) {
@@ -60,6 +71,7 @@ public class EventsMain {
         }
         return items;
     }
+
 
     /**
      * Method which deletes an existing event with the given parameters.

@@ -12,7 +12,6 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.List;
-import java.util.ResourceBundle;
 
 @RestController
 @RequestMapping("/event")
@@ -31,12 +30,12 @@ public class EventsController {
     }
 
     @PostMapping("/new")
-    public MessageHolder<Boolean> addNew(String eventName, String description, String date, String time) throws SQLException {
+    public MessageHolder<Boolean> addNew(EventItem event) {
         try (Connection conn = DriverManager.getConnection(
                 Main.resource.getString("Postgresql.datasource.url"),
                 Main.resource.getString("Postgresql.datasource.username"),
                 Main.resource.getString("Postgresql.datasource.password"))) {
-            EventsMain.create_event(getCurrentUser(), eventName, description, date, time, conn);
+            EventsMain.create_event(getCurrentUser(), event.getName(), event.getDescription(), event.getDate(), event.getTime(), conn);
         } catch (Exception e) {
             return new MessageHolder<>("Create Event", false);
         }
@@ -55,8 +54,19 @@ public class EventsController {
         return new MessageHolder<>("Events", items);
     }
 
+    @PostMapping("/user")
+    public MessageHolder<List<EventItem>> userEvents() throws SQLException {
+        Connection conn = DriverManager.getConnection(
+                Main.resource.getString("Postgresql.datasource.url"),
+                Main.resource.getString("Postgresql.datasource.username"),
+                Main.resource.getString("Postgresql.datasource.password"));
+        List<EventItem> items = EventsMain.get_user_events(getCurrentUser(),conn);
+        conn.close();
+        return new MessageHolder<>("Events", items);
+    }
+
     @PostMapping("/join")
-    public MessageHolder<Boolean> join(String eventName) throws SQLException {
+    public MessageHolder<Boolean> join(String eventName) {
         try (Connection conn = DriverManager.getConnection(
                 Main.resource.getString("Postgresql.datasource.url"),
                 Main.resource.getString("Postgresql.datasource.username"),
@@ -67,6 +77,20 @@ public class EventsController {
         }
 
         return new MessageHolder<>("Join", true);
+    }
+
+    @PostMapping("/leave")
+    public MessageHolder<Boolean> leave(String eventName) {
+        try (Connection conn = DriverManager.getConnection(
+                Main.resource.getString("Postgresql.datasource.url"),
+                Main.resource.getString("Postgresql.datasource.username"),
+                Main.resource.getString("Postgresql.datasource.password"))) {
+            EventsMain.leave_event(getCurrentUser(), eventName, conn);
+        } catch (Exception e) {
+            return new MessageHolder<>("Leave", false);
+        }
+
+        return new MessageHolder<>("Leave", true);
     }
 
 }
