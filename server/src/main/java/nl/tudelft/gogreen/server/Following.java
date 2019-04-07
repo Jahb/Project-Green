@@ -5,6 +5,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.ResourceBundle;
 
 import static java.sql.DriverManager.getConnection;
@@ -114,6 +115,22 @@ public class Following {
             e.printStackTrace();
         }
         return "error";
+    }
+
+    public static List<String> gettingAllUsers() throws Exception{
+
+        Connection conn = getConnection(
+                resource.getString("Postgresql.datasource.url"),
+                resource.getString("Postgresql.datasource.username"),
+                resource.getString("Postgresql.datasource.password"));
+
+        List<String> users = new ArrayList<String>();
+        PreparedStatement getUsers = conn.prepareStatement("select username from user_table");
+        ResultSet result = getUsers.executeQuery();
+        while(result.next()){
+            users.add(result.getString(1));
+        }
+        return users;
     }
 
 }
