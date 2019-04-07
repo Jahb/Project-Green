@@ -4,6 +4,7 @@ import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXTextField;
 import com.mashape.unirest.http.exceptions.UnirestException;
 import javafx.application.Platform;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -19,10 +20,10 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import nl.tudelft.gogreen.client.communication.Api;
 
+
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
-import java.util.Set;
 import java.util.function.Consumer;
 
 /**
@@ -204,34 +205,48 @@ public class MainScreen implements Initializable{
          * testing notitifications
          */
         Main.showMessage(notificationPane, "You have opened the main screen");
-
+        /**
+         * String array with all usernames
+         */
         String[] options = {"user1", "asdf", "wovuwe", "brrrr", "name", "sample", "sample223", "naaaaaaaaaaame", "namenamename", "username"};
         searchField.textProperty().addListener((observable, oldValue, newValue) -> {
             if(container.getChildren().size()>1){ // if already contains a drop-down menu -> remove it
                 container.getChildren().remove(1);
             }
-            container.getChildren().add(populateDropDownMenu(newValue, options)); // then add the populated drop-down menu to the second row in the grid pane
+            container.getChildren().add(populateDropDownMenu(newValue, options, searchField)); // then add the populated drop-down menu to the second row in the grid pane
         });
 
     }
-    // this method searches for a given text in an array of Strings (i.e. the options)
-    // then returns a VBox containing all matches
-    public static VBox populateDropDownMenu(String text, String[] options){
-        VBox dropDownMenu = new VBox();
-        dropDownMenu.setStyle("-fx-background-color: white"); // colors just for example
-        dropDownMenu.setAlignment(Pos.CENTER); // all these are optional and up to you
 
-        for(String option : options){ // loop through every String in the array
-            // if the given text is not empty and doesn't consists of spaces only, as well as it's a part of one (or more) of the options
+    /**
+     * Searches for text in an array of strings and returns the matches in a VBox
+     * @param text
+     * @param options
+     * @param search
+     * @return
+     */
+    public static VBox populateDropDownMenu(String text, String[] options, JFXTextField search){
+        VBox dropDownMenu = new VBox();
+        dropDownMenu.setStyle("-fx-background-color: white");
+        dropDownMenu.setAlignment(Pos.CENTER);
+
+        for(String option : options){
+            // loop through every String in the array
             if(!text.replace(" ", "").isEmpty() && option.toUpperCase().contains(text.toUpperCase())){
-                Label label = new Label(option); // create a label and set the text
-                // you can add listener to the label here if you want
-                // your user to be able to click on the options in the drop-down menu
-                dropDownMenu.getChildren().add(label); // add the label to the VBox
+                Label label = new Label(option);
+                label.setMinWidth(330);
+                label.setStyle("-fx-border-radius: 1; -fx-border-color: gray");
+                label.setOnMouseClicked(new EventHandler<MouseEvent>(){
+                        @Override
+                        public void handle(MouseEvent event) {
+                            search.setText(label.getText());
+                        }
+                    }
+                );
+                dropDownMenu.getChildren().add(label); //adds suggestion to VBox
             }
         }
-
-        return dropDownMenu; // at the end return the VBox (i.e. drop-down menu)
+        return dropDownMenu;
     }
 
 }
