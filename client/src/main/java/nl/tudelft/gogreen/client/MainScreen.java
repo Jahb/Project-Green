@@ -210,6 +210,9 @@ public class MainScreen implements Initializable{
          */
         String[] options = {"user1", "asdf", "wovuwe", "brrrr", "name", "sample", "sample223", "naaaaaaaaaaame", "namenamename", "username"};
         searchField.textProperty().addListener((observable, oldValue, newValue) -> {
+            if(container.getChildren().size()>1){
+                container.getChildren().remove(1);
+            }
             container.getChildren().add(populateDropDownMenu(newValue, options, searchField)); 
         });
 
