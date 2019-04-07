@@ -12,8 +12,6 @@ public class UserController {
 
     @PostMapping("/new")
     public MessageHolder<Boolean> createNew(@RequestParam String username, @RequestParam String password) throws Exception {
-        System.out.println(username);
-        System.out.println(password);
         boolean res = VerifyUser.addNewUser(username, password);
         if (res) {
             return new MessageHolder<>("New user created!", true);

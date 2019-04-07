@@ -1,0 +1,24 @@
+.jfx-snackbar-content {
+    -fx-border-width: 1;
+    -fx-border-color: gray;
+    -fx-background-color: white;
+    -fx-font-size: 20;
+    -fx-font-weight: bold;
+    -fx-font-style: italic;
+    -fx-border-radius: 5;
+    -fx-background-radius: 5;
+}
+.button{
+    -fx-background-color: #50e476;
+    -fx-background-radius: 35;
+    -fx-font-weight: bold;
+    -fx-text-fill: white;
+    -fx-font-size: 25;
+    -fx-font-style: normal;
+}
+.button:hover{
+    -fx-background-color: #52eb85;
+}
+.button:pressed{
+    -fx-background-color: #38ba5c;
+}

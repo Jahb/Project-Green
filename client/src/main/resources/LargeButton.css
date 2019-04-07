@@ -1,0 +1,24 @@
+.button{
+    -fx-background-color: #50e476;
+    -fx-background-radius: 35;
+    -fx-font-weight: bold;
+    -fx-text-fill: white;
+    -fx-font-size: 25;
+    -fx-font-style: normal;
+}
+.button:hover{
+    -fx-background-color: #52eb85;
+    -fx-font-size: 24;
+}
+.button:pressed{
+    -fx-background-color: #38ba5c;
+}
+.jfx-slider > .thumb {
+    -fx-background-color: #38ba5c;
+}
+.jfx-slider > .animated-thumb {
+    -fx-background-color: #38ba5c;
+}
+.jfx-slider > .colored-track {
+    -fx-background-color: #38ba5c;
+}

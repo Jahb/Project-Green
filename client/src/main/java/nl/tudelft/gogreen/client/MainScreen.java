@@ -1,7 +1,10 @@
 package nl.tudelft.gogreen.client;
 
 import com.mashape.unirest.http.exceptions.UnirestException;
+import javafx.application.Platform;
+import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.TextArea;
@@ -13,6 +16,8 @@ import nl.tudelft.gogreen.client.communication.Api;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.ResourceBundle;
+import java.util.Set;
 import java.util.function.Consumer;
 
 /**
@@ -21,10 +26,11 @@ import java.util.function.Consumer;
  * @author Kamron Geijsen
  * @version 4.20.21
  */
-public class MainScreen {
+public class MainScreen implements Initializable{
 
+    @FXML
+    public AnchorPane notificationPane;
     private Scene scene;
-
     private Ring ringMain;
     private Ring ringPrevious;
     private Ring ringNext;
@@ -111,20 +117,30 @@ public class MainScreen {
     }
 
     private void updateRingValues() {
-        double[] valuesMain = Api.current.getRingSegmentValues(ringMain.getName());
-        ringMain.setUsername(Api.current.getUsername());
-        ringMain.setSegmentValues(valuesMain);
-        ringMain.startAnimation();
+        new Thread(() -> {
+            double[] valuesMain = Api.current.getRingSegmentValues(ringMain.getName());
+            ringMain.setUsername(Api.current.getUsername());
+            ringMain.setSegmentValues(valuesMain);
+            Platform.runLater(() -> ringMain.startAnimation());
+        }).start();
 
-        double[] valuesNext = Api.current.getRingSegmentValues(ringNext.getName());
-        ringNext.setUsername(Api.current.getUsernameNext());
-        ringNext.setSegmentValues(valuesNext);
-        ringNext.startAnimation();
+        new Thread(() -> {
+            double[] valuesNext = Api.current.getRingSegmentValues(ringNext.getName());
+            ringNext.setUsername(Api.current.getUsernameNext());
+            ringNext.setSegmentValues(valuesNext);
+            Platform.runLater(() -> ringNext.startAnimation());
+        }).start();
 
-        double[] valuesPrevious = Api.current.getRingSegmentValues(ringPrevious.getName());
-        ringPrevious.setUsername(Api.current.getUsernamePrevious());
-        ringPrevious.setSegmentValues(valuesPrevious);
-        ringPrevious.startAnimation();
+        new Thread(() -> {
+            double[] valuesPrevious = Api.current.getRingSegmentValues(ringPrevious.getName());
+            ringPrevious.setUsername(Api.current.getUsernamePrevious());
+            ringPrevious.setSegmentValues(valuesPrevious);
+            Platform.runLater(() -> ringPrevious.startAnimation());
+        }).start();
+
+
+
+
     }
 
     private void addActivityButton(AnchorPane anchorPane) {
@@ -166,6 +182,13 @@ public class MainScreen {
         profileButton.setOnClick(event -> Main.openProfileScreen());
 
         helpButton.setOnClick(event -> helpText.setVisible(!helpText.isVisible()));
+
     }
 
+    /**
+     * shows notifications
+     */
+    public void initialize(URL location, ResourceBundle resources){
+        Main.showMessage(notificationPane, "You have opened the main screen");
+    }
 }

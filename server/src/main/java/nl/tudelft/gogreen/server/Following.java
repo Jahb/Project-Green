@@ -11,17 +11,17 @@ import static java.sql.DriverManager.getConnection;
 
 public class Following {
 
-    private static ResourceBundle resource = ResourceBundle.getBundle("db");
+
 
     public static void Follow(int id1, int id2) throws Exception {
 
         Connection conn = getConnection(
-                resource.getString("Postgresql.datasource.url"),
-                resource.getString("Postgresql.datasource.username"),
-                resource.getString("Postgresql.datasource.password"));
+                Main.resource.getString("Postgresql.datasource.url"),
+                Main.resource.getString("Postgresql.datasource.username"),
+                Main.resource.getString("Postgresql.datasource.password"));
 
         if (!isFollowing(id1, id2, conn)) {
-            PreparedStatement follow = conn.prepareStatement(resource.getString("qFollow"));
+            PreparedStatement follow = conn.prepareStatement(Main.resource.getString("qFollow"));
             follow.setInt(1, id1);
             follow.setInt(2, id2);
             follow.execute();
@@ -33,12 +33,12 @@ public class Following {
     public static void Unfollow(int id1, int id2) throws Exception {
 
         Connection conn = getConnection(
-                resource.getString("Postgresql.datasource.url"),
-                resource.getString("Postgresql.datasource.username"),
-                resource.getString("Postgresql.datasource.password"));
+                Main.resource.getString("Postgresql.datasource.url"),
+                Main.resource.getString("Postgresql.datasource.username"),
+                Main.resource.getString("Postgresql.datasource.password"));
 
         if (isFollowing(id1, id2, conn)) {
-            PreparedStatement unfollow = conn.prepareStatement(resource.getString("qUnfollow"));
+            PreparedStatement unfollow = conn.prepareStatement(Main.resource.getString("qUnfollow"));
             unfollow.setInt(1, id1);
             unfollow.setInt(2, id2);
             unfollow.execute();
@@ -48,7 +48,7 @@ public class Following {
 
     public static boolean isFollowing(int id1, int id2, Connection conn) throws Exception {
 
-        PreparedStatement isFollowing = conn.prepareStatement(resource.getString("qIsFollowing"));
+        PreparedStatement isFollowing = conn.prepareStatement(Main.resource.getString("qIsFollowing"));
         isFollowing.setInt(1, id1);
         isFollowing.setInt(2, id2);
         int count = -1;
@@ -64,7 +64,7 @@ public class Following {
 
     public static void deleteAllFollows(int id1, Connection conn) throws Exception {
 
-        PreparedStatement delFollowers = conn.prepareStatement(resource.getString("qDelFollowing"));
+        PreparedStatement delFollowers = conn.prepareStatement(Main.resource.getString("qDelFollowing"));
         delFollowers.setInt(1, id1);
         delFollowers.setInt(2, id1);
         delFollowers.execute();
@@ -72,7 +72,7 @@ public class Following {
 
     public static ArrayList<Integer> showAllFollowing(int id1, Connection conn) throws Exception {
 
-        PreparedStatement showFollowing = conn.prepareStatement(resource.getString("qShowFollowing"));
+        PreparedStatement showFollowing = conn.prepareStatement(Main.resource.getString("qShowFollowing"));
         showFollowing.setInt(1, id1);
         ArrayList<Integer> result = new ArrayList<>();
         ResultSet rs = showFollowing.executeQuery();
@@ -84,7 +84,7 @@ public class Following {
 
     public static ArrayList<Integer> showAllFollowers(int id1, Connection conn) throws Exception {
 
-        PreparedStatement showFollowers = conn.prepareStatement(resource.getString("qShowFollowers"));
+        PreparedStatement showFollowers = conn.prepareStatement(Main.resource.getString("qShowFollowers"));
         showFollowers.setInt(1, id1);
         ArrayList<Integer> result = new ArrayList<>();
         ResultSet rs = showFollowers.executeQuery();
@@ -105,7 +105,7 @@ public class Following {
     static String toUsername(int id, Connection conn) {
         PreparedStatement getUsername;
         try {
-            getUsername = conn.prepareStatement(resource.getString("getUsernameById"));
+            getUsername = conn.prepareStatement(Main.resource.getString("getUsernameById"));
             getUsername.setInt(1, id);
             ResultSet res = getUsername.executeQuery();
             res.next();

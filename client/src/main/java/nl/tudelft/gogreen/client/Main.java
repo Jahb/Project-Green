@@ -1,6 +1,10 @@
 package nl.tudelft.gogreen.client;
 
+import com.jfoenix.controls.JFXSnackbar;
 import javafx.application.Application;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
+import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -9,6 +13,7 @@ import javafx.scene.image.Image;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import nl.tudelft.gogreen.client.communication.Api;
+import nl.tudelft.gogreen.client.communication.ProfileType;
 
 import java.io.IOException;
 
@@ -18,10 +23,11 @@ public class Main extends Application {
     private static int height = 720;
     private static Stage stage;
     private static MainScreen mainScreen = new MainScreen();
-    private static ProfileController profileScreen = new ProfileController();
+    private static NewProfileController profileScreen = new NewProfileController();
     private static LeaderboardController leaderBoardScreen = new LeaderboardController();
     private static AchievementsController achievementsScreen = new AchievementsController();
-    private static EventController EventController = new EventController();
+    private static EventController eventController = new EventController();
+    private static QuizController quizController = new QuizController();
 
 
     static int getWidth() {
@@ -95,9 +101,12 @@ public class Main extends Application {
         }
     }
 
+    /**
+     * Method that changes scene to EventScreen.
+     */
     static void openEventScreen() {
         try {
-            stage.setScene(EventController.getScene());
+            stage.setScene(eventController.getScene());
         } catch (IOException ex) {
             pageOpenError(ex);
         }
@@ -125,11 +134,39 @@ public class Main extends Application {
         }
     }
 
+    static void openQuizScreen(){
+        try{
+            stage.setScene(quizController.getScene());
+        }   catch (IOException ex) {
+        pageOpenError(ex);
+        }
+    }
+
     private static void pageOpenError(Exception ex) {
         ex.printStackTrace();
         Pane pane = new Pane();
         pane.getChildren().add(new Label("Something went wrong"));
         stage.setScene(new Scene(pane, width, height));
+    }
+
+    /**
+     * Returns One Of 4 ProfilePictures Of Current User.
+     *
+     * @return ProfilePicture Image.
+     */
+    public static Image getProfilePicture() {
+        int points = Api.current.getTotal();
+
+        if (points < 250) {
+            return new Image("/images/ppLvl1.png");
+        }
+        if (points < 500) {
+            return new Image("/images/ppLvl2.png");
+        }
+        if (points < 750) {
+            return new Image("/images/ppLvl3.png");
+        }
+        return new Image("images/ppLvl4.png");
     }
 
     /**
@@ -139,7 +176,22 @@ public class Main extends Application {
      */
     public static void main(String[] args) {
         Api.initApi();
-
         launch(args);
+    }
+
+    /**
+     * Method used to show notifications to the user. Notification appears in the selected pane and disappears if clicked.
+     * @param message
+     */
+    @FXML
+    public static void showMessage( Pane pane, String message){
+        JFXSnackbar snackbar = new JFXSnackbar(pane);
+        snackbar.getStylesheets().add("NotificationCSS.css");
+        snackbar.show(message, "Close", 4000, new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                snackbar.close();
+            }
+        });
     }
 }

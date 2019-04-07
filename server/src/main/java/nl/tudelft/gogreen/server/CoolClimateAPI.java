@@ -12,7 +12,7 @@ import java.util.ResourceBundle;
 
 public class CoolClimateAPI {
 
-    private static ResourceBundle resource = ResourceBundle.getBundle("db");
+
 
     public static void fetchApiData(){
         VegetarianMeal();
@@ -29,9 +29,9 @@ public class CoolClimateAPI {
         try {
 
             Connection conn = DriverManager.getConnection(
-                    resource.getString("Postgresql.datasource.url"),
-                    resource.getString("Postgresql.datasource.username"),
-                    resource.getString("Postgresql.datasource.password"));
+                    Main.resource.getString("Postgresql.datasource.url"),
+                    Main.resource.getString("Postgresql.datasource.username"),
+                    Main.resource.getString("Postgresql.datasource.password"));
 
             Map<String, String> params = new HashMap<>();
             params.put("accept", "application/json");
@@ -49,7 +49,7 @@ public class CoolClimateAPI {
             float difference = (holderNum - holder1Num) * 1000 * 1000;
             float result = difference / 365 / 3;
             System.out.println(result);
-            PreparedStatement insertAPI = conn.prepareStatement(resource.getString("qupdateVegetarianMeal"));
+            PreparedStatement insertAPI = conn.prepareStatement(Main.resource.getString("qupdateVegetarianMeal"));
             insertAPI.setFloat(1, result);
             insertAPI.execute();
         } catch (Exception e) {
@@ -63,9 +63,9 @@ public class CoolClimateAPI {
         try {
 
             Connection conn = DriverManager.getConnection(
-                    resource.getString("Postgresql.datasource.url"),
-                    resource.getString("Postgresql.datasource.username"),
-                    resource.getString("Postgresql.datasource.password"));
+                    Main.resource.getString("Postgresql.datasource.url"),
+                    Main.resource.getString("Postgresql.datasource.username"),
+                    Main.resource.getString("Postgresql.datasource.password"));
 
             Map<String, String> params = getParams();
 
@@ -78,7 +78,7 @@ public class CoolClimateAPI {
             float holderNum = Float.parseFloat(holder) * 1000 * 1000;
             float result = holderNum / 365 / 3;
             System.out.println(result);
-            PreparedStatement insertAPI = conn.prepareStatement(resource.getString("qupdateLocalProduct"));
+            PreparedStatement insertAPI = conn.prepareStatement(Main.resource.getString("qupdateLocalProduct"));
             insertAPI.setFloat(1, result);
             insertAPI.execute();
         } catch (Exception e) {
@@ -90,9 +90,9 @@ public class CoolClimateAPI {
 
         try {
             Connection conn = DriverManager.getConnection(
-                    resource.getString("Postgresql.datasource.url"),
-                    resource.getString("Postgresql.datasource.username"),
-                    resource.getString("Postgresql.datasource.password"));
+                    Main.resource.getString("Postgresql.datasource.url"),
+                    Main.resource.getString("Postgresql.datasource.username"),
+                    Main.resource.getString("Postgresql.datasource.password"));
 
             Map<String, String> params = getParams();
 
@@ -106,7 +106,7 @@ public class CoolClimateAPI {
             float result = holderNum / 365; //result in grams per day
             System.out.println(result);
 
-            PreparedStatement insertAPI = conn.prepareStatement(resource.getString("qupdateUsageofBike"));
+            PreparedStatement insertAPI = conn.prepareStatement(Main.resource.getString("qupdateUsageofBike"));
             insertAPI.setFloat(1, result);
             insertAPI.execute();
         } catch (Exception e) {
@@ -119,9 +119,9 @@ public class CoolClimateAPI {
 
         try {
             Connection conn = DriverManager.getConnection(
-                    resource.getString("Postgresql.datasource.url"),
-                    resource.getString("Postgresql.datasource.username"),
-                    resource.getString("Postgresql.datasource.password"));
+                    Main.resource.getString("Postgresql.datasource.url"),
+                    Main.resource.getString("Postgresql.datasource.username"),
+                    Main.resource.getString("Postgresql.datasource.password"));
 
             Map<String, String> params = getParams();
 
@@ -136,7 +136,7 @@ public class CoolClimateAPI {
             float result = holderNum - holderNum1; //result in grams per day
             System.out.println("the total is: " + holderNum + " and the public transport one: " + holderNum1 + " and the result is: " + result);
 
-            PreparedStatement insertAPI = conn.prepareStatement(resource.getString("qupdateUsageofPublicTransport"));
+            PreparedStatement insertAPI = conn.prepareStatement(Main.resource.getString("qupdateUsageofPublicTransport"));
             insertAPI.setFloat(1, result);
             insertAPI.execute();
         } catch (Exception e) {
@@ -148,9 +148,9 @@ public class CoolClimateAPI {
 
         try {
             Connection conn = DriverManager.getConnection(
-                    resource.getString("Postgresql.datasource.url"),
-                    resource.getString("Postgresql.datasource.username"),
-                    resource.getString("Postgresql.datasource.password"));
+                    Main.resource.getString("Postgresql.datasource.url"),
+                    Main.resource.getString("Postgresql.datasource.username"),
+                    Main.resource.getString("Postgresql.datasource.password"));
 
             Map<String, String> params = getParams();
 
@@ -163,7 +163,7 @@ public class CoolClimateAPI {
             float save = 911 / 10 / 30; //grams of C02 saved by lowering temperature per day
             float result = holderNum * save; //result in grams per day
             System.out.println(result);
-            PreparedStatement insertAPI = conn.prepareStatement(resource.getString("qupdateLowerTemperature"));
+            PreparedStatement insertAPI = conn.prepareStatement(Main.resource.getString("qupdateLowerTemperature"));
             insertAPI.setFloat(1, result);
             insertAPI.execute();
         } catch (Exception e) {
@@ -176,9 +176,9 @@ public class CoolClimateAPI {
 
         try {
             Connection conn = DriverManager.getConnection(
-                    resource.getString("Postgresql.datasource.url"),
-                    resource.getString("Postgresql.datasource.username"),
-                    resource.getString("Postgresql.datasource.password"));
+                    Main.resource.getString("Postgresql.datasource.url"),
+                    Main.resource.getString("Postgresql.datasource.username"),
+                    Main.resource.getString("Postgresql.datasource.password"));
 
             Map<String, String> params = getParams();
 
@@ -190,7 +190,7 @@ public class CoolClimateAPI {
             float holderNum = Float.parseFloat(holder) * 1000 * 1000; //transform from tones to grams
             float result = holderNum / 365; //transform from yearly to daily
 
-            PreparedStatement insertAPI = conn.prepareStatement(resource.getString("qupdateSolarPanels"));
+            PreparedStatement insertAPI = conn.prepareStatement(Main.resource.getString("qupdateSolarPanels"));
             insertAPI.setFloat(1, result);
             insertAPI.execute();
 
@@ -204,9 +204,9 @@ public class CoolClimateAPI {
 
         try {
             Connection conn = DriverManager.getConnection(
-                    resource.getString("Postgresql.datasource.url"),
-                    resource.getString("Postgresql.datasource.username"),
-                    resource.getString("Postgresql.datasource.password"));
+                    Main.resource.getString("Postgresql.datasource.url"),
+                    Main.resource.getString("Postgresql.datasource.username"),
+                    Main.resource.getString("Postgresql.datasource.password"));
 
             Map<String, String> params = getParams();
 
@@ -218,7 +218,7 @@ public class CoolClimateAPI {
             float holderNum = Float.parseFloat(holder) * 1000 * 1000; //transform from tones to grams
             float result = holderNum / 365 / 3; //transform from yearly to daily
             System.out.println(result);
-            PreparedStatement insertAPI = conn.prepareStatement(resource.getString("qupdateRecycling"));
+            PreparedStatement insertAPI = conn.prepareStatement(Main.resource.getString("qupdateRecycling"));
             insertAPI.setFloat(1, result);
             insertAPI.execute();
         } catch (Exception e) {

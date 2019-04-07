@@ -16,7 +16,7 @@ import java.util.stream.Collectors;
 @RequestMapping("/follow")
 public class FollowerController {
 
-    private static ResourceBundle resource = ResourceBundle.getBundle("db");
+
 
     private String getCurrentUser() {
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
@@ -74,9 +74,9 @@ public class FollowerController {
         List<Integer> users = Utils.verifyUsersValid(getCurrentUser());
         Map<String, Integer> result = new HashMap<>();
         try (Connection conn = DriverManager.getConnection(
-                resource.getString("Postgresql.datasource.url"),
-                resource.getString("Postgresql.datasource.username"),
-                resource.getString("Postgresql.datasource.password"))) {
+                Main.resource.getString("Postgresql.datasource.url"),
+                Main.resource.getString("Postgresql.datasource.username"),
+                Main.resource.getString("Postgresql.datasource.password"))) {
             List<String> following = Following.showAllFollowing(users.get(0), conn).stream().map(userid -> Following.toUsername(userid, conn)).collect(Collectors.toList());
             for (String s : following) {
                 result.put(s, NewFeature.getTotal(s));
@@ -93,9 +93,9 @@ public class FollowerController {
         List<Integer> users = Utils.verifyUsersValid(getCurrentUser());
         Map<String, Integer> result = new HashMap<>();
         try (Connection conn = DriverManager.getConnection(
-                resource.getString("Postgresql.datasource.url"),
-                resource.getString("Postgresql.datasource.username"),
-                resource.getString("Postgresql.datasource.password"))) {
+                Main.resource.getString("Postgresql.datasource.url"),
+                Main.resource.getString("Postgresql.datasource.username"),
+                Main.resource.getString("Postgresql.datasource.password"))) {
             List<String> followers = Following.showAllFollowers(users.get(0), conn).stream().map(userid -> Following.toUsername(userid, conn)).collect(Collectors.toList());
             for (String s : followers) {
                 result.put(s, NewFeature.getTotal(s));
