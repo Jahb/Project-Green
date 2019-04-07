@@ -1,7 +1,6 @@
 package nl.tudelft.gogreen.client;
 
 import com.jfoenix.controls.JFXListView;
-import com.jfoenix.controls.JFXSnackbar;
 import com.jfoenix.controls.JFXTextField;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;

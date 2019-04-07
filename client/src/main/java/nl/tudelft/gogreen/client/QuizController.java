@@ -10,14 +10,11 @@ import javafx.fxml.Initializable;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.BorderPane;
 import javafx.util.StringConverter;
 
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
-
-
 
 
 public class QuizController implements Initializable {
@@ -46,8 +43,7 @@ public class QuizController implements Initializable {
     public JFXButton saveButton;
 
 
-
-    public void initialize (URL location, ResourceBundle resources){
+    public void initialize(URL location, ResourceBundle resources) {
 
         defaultButton.setOnMouseClicked(event -> useDefaults());
         saveButton.setOnMouseClicked(event -> useSaved());
@@ -63,6 +59,7 @@ public class QuizController implements Initializable {
                 else return "Yes";
 
             }
+
             public Double fromString(String s) {
                 switch (s) {
                     case "No":
@@ -79,14 +76,15 @@ public class QuizController implements Initializable {
          */
         fuelSlider.setLabelFormatter(new StringConverter<Double>() {
             @Override
-            public String toString(Double n) {
-                if (n < 0.5) return "Electric";
-                if (n < 1.5) return "Gasoline";
+            public String toString(Double number) {
+                if (number < 0.5) return "Electric";
+                if (number < 1.5) return "Gasoline";
                 else return "Diesel";
 
             }
-            public Double fromString(String s) {
-                switch (s) {
+
+            public Double fromString(String string) {
+                switch (string) {
                     case "Electric":
                         return 0d;
                     case "Gasoline":
@@ -101,19 +99,18 @@ public class QuizController implements Initializable {
         /**
          * disable last 3 sliders when vehicleSlider is set to "No"
          */
-        ChangeListener<Number> a = new ChangeListener<Number>() {
+        ChangeListener<Number> listener = new ChangeListener<Number>() {
             public void changed(ObservableValue<? extends Number> ov,
                                 Number oldVal, Number newVal) {
-                if(newVal.intValue()<0.5){
+                if (newVal.intValue() < 0.5) {
                     fuelSlider.setDisable(true);
                     economySlider.setDisable(true);
                     mileSlider.setDisable(true);
                     fuelLabel.setStyle("-fx-text-fill: gray");
                     mileLabel.setStyle("-fx-text-fill: gray");
                     economyLabel.setStyle("-fx-text-fill: gray");
-                }
-                else{
-                    if(fuelSlider.getValue()!=0){
+                } else {
+                    if (fuelSlider.getValue() != 0) {
                         economySlider.setDisable(false);
                         mileSlider.setDisable(false);
                         mileLabel.setStyle("-fx-text-fill: black");
@@ -130,13 +127,12 @@ public class QuizController implements Initializable {
         ChangeListener<Number> b = new ChangeListener<Number>() {
             public void changed(ObservableValue<? extends Number> ov,
                                 Number oldVal, Number newVal) {
-                if(newVal.intValue()<0.5){
+                if (newVal.intValue() < 0.5) {
                     economySlider.setDisable(true);
                     mileSlider.setDisable(true);
                     mileLabel.setStyle("-fx-text-fill: gray");
                     economyLabel.setStyle("-fx-text-fill: gray");
-                }
-                else{
+                } else {
                     economySlider.setDisable(false);
                     mileSlider.setDisable(false);
                     mileLabel.setStyle("-fx-text-fill: black");
@@ -144,12 +140,13 @@ public class QuizController implements Initializable {
                 }
             }
         };
-        vehicleSlider.valueProperty().addListener(a);
+        vehicleSlider.valueProperty().addListener(listener);
         fuelSlider.valueProperty().addListener(b);
     }
 
     /**
      * Method for loading the QuizScreen scene
+     *
      * @return
      * @throws IOException
      */
@@ -161,18 +158,17 @@ public class QuizController implements Initializable {
     }
 
 
-
     /**
      * Method for using the default stats when clicking the defaultsButton
      */
-    public void useDefaults(){
+    public void useDefaults() {
         Main.openMainScreen();
     }
 
     /**
      * Method for using user-selected stats when clicking the saveButton
      */
-    public void useSaved(){
+    public void useSaved() {
         Main.openMainScreen();
     }
 }

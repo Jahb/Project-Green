@@ -84,15 +84,15 @@ public class ScoreGraph {
         }
 
         public void drawGraph() {
-        	final int padding = 20;
-        	final double insetWidth = width-padding*2;
-        	final double insetHeight = height-padding*2;
-        	
+            final int padding = 20;
+            final double insetWidth = width - padding * 2;
+            final double insetHeight = height - padding * 2;
+
             final int len = allData.length;
             double[] xPoints = new double[len];
             Arrays.setAll(xPoints, a -> padding + a / (double) (len - 1) * insetWidth);
-            double[] yPoints = Arrays.stream(allData).map(a -> 
-            		padding + insetHeight - (a - minY) / (maxY - minY) * insetHeight).toArray();
+            double[] yPoints = Arrays.stream(allData).map(a ->
+                    padding + insetHeight - (a - minY) / (maxY - minY) * insetHeight).toArray();
             System.out.println(Arrays.toString(xPoints));
             System.out.println(Arrays.toString(yPoints));
 
@@ -105,12 +105,12 @@ public class ScoreGraph {
             g.transform(1, 0, 0, 1, 3, 3);
             g.strokePolyline(xPoints, yPoints, len);
             g.transform(1, 0, 0, 1, -3, -3);
-            
+
             final double r = 12;
             for (int i = 0; i < len; i++)
                 g.fillOval(xPoints[i] - r / 2 + 3, yPoints[i] - r / 2 + 3, r, r);
 
-            
+
             g.setStroke(Color.RED);
             g.strokePolyline(xPoints, yPoints, len);
 
@@ -145,7 +145,7 @@ public class ScoreGraph {
 
         Canvas getCanvas() {
             return graphCanvas;
-		}
+        }
 
-	}
+    }
 }

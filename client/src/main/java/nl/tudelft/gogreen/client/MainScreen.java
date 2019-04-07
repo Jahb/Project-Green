@@ -1,23 +1,29 @@
 package nl.tudelft.gogreen.client;
 
+import com.jfoenix.controls.JFXButton;
+import com.jfoenix.controls.JFXTextField;
 import com.mashape.unirest.http.exceptions.UnirestException;
 import javafx.application.Platform;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Scene;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 import nl.tudelft.gogreen.client.communication.Api;
+
 
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
-import java.util.Set;
 import java.util.function.Consumer;
 
 /**
@@ -30,6 +36,12 @@ public class MainScreen implements Initializable{
 
     @FXML
     public AnchorPane notificationPane;
+    @FXML
+    public JFXButton searchButton;
+    @FXML
+    public JFXTextField searchField;
+    @FXML
+    public VBox container;
     private Scene scene;
     private Ring ringMain;
     private Ring ringPrevious;
@@ -64,7 +76,7 @@ public class MainScreen implements Initializable{
         BorderPane topPane = (BorderPane) baseLayer.getTop();
         HBox topButtons = (HBox) topPane.getRight();
 
-        AnchorPane overlayLayer = (AnchorPane) root.getChildren().get(1);
+        AnchorPane overlayLayer = (AnchorPane) root.getChildren().get(2);
         helpText = (TextArea) overlayLayer.getChildren().get(0);
         BorderPane buttonsPanel = (BorderPane) overlayLayer.getChildren().get(1);
 
@@ -189,6 +201,52 @@ public class MainScreen implements Initializable{
      * shows notifications
      */
     public void initialize(URL location, ResourceBundle resources){
+        /*
+         * testing notitifications
+         */
         Main.showMessage(notificationPane, "You have opened the main screen");
+        /*
+         * String array with all usernames TODO retrieve usernames from database to string options
+         */
+        String[] options = {"user1", "asdf", "wovuwe", "brrrr", "name", "sample", "sample223", "naaaaaaaaaaame", "namenamename", "username"};
+        searchField.textProperty().addListener((observable, oldValue, newValue) -> {
+            if(container.getChildren().size()>1){
+                container.getChildren().remove(1);
+            }
+            container.getChildren().add(populateDropDownMenu(newValue, options, searchField));
+        });
+
     }
+
+    /**
+     * Searches for text in an array of strings and returns the matches in a VBox
+     * @param text text currently in the search bar
+     * @param options array of all potential suggestions
+     * @param search the search field itself
+     * @return returns suggestions box
+     */
+    private static VBox populateDropDownMenu(String text, String[] options, JFXTextField search){
+        VBox dropDownMenu = new VBox();
+        dropDownMenu.setStyle("-fx-background-color: white");
+        dropDownMenu.setAlignment(Pos.CENTER);
+
+        for(String option : options){
+            // loop through every String in the array
+            if(!text.replace(" ", "").isEmpty() && option.toUpperCase().contains(text.toUpperCase())){
+                Label label = new Label(option);
+                label.setMinWidth(330);
+                label.setStyle("-fx-border-radius: 1; -fx-border-color: gray");
+                label.setOnMouseClicked(new EventHandler<MouseEvent>(){
+                        @Override
+                        public void handle(MouseEvent event) {
+                            search.setText(label.getText());
+                        }
+                    }
+                );
+                dropDownMenu.getChildren().add(label); //adds suggestion to VBox
+            }
+        }
+        return dropDownMenu;
+    }
+
 }
