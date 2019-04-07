@@ -1,7 +1,9 @@
 package nl.tudelft.gogreen.client;
+
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
+
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXListCell;
 import javafx.collections.FXCollections;
@@ -47,26 +49,24 @@ public class LeaderboardController implements Initializable {
         System.out.println(url);
         AnchorPane root = FXMLLoader.load(url);
         BorderPane topPane = (BorderPane) root.getChildren().get(1);
-        
+
         root.getChildren().remove(2);
         createGraph(root);
-        
-        
-        
-        
+
+
         IconButton.addBackButton(topPane);
         return new Scene(root, Main.getWidth(), Main.getHeight());
     }
 
     private void createGraph(AnchorPane root) {
-    	ScoreGraph g = new ScoreGraph(500,200,400,400);
-    	root.getChildren().add(g.getPane());
-        UndecoratedGraph graph = g.getGraph();
-        graph.setData(new double[] {0,20,20,60,80,80,120});
+        ScoreGraph graph1 = new ScoreGraph(500, 200, 400, 400);
+        root.getChildren().add(graph1.getPane());
+        UndecoratedGraph graph = graph1.getGraph();
+        graph.setData(new double[]{0, 20, 20, 60, 80, 80, 120});
         graph.standardizeY(250);
         graph.drawGraph();
     }
-    
+
     /**
      * Initializes images for class.
      *

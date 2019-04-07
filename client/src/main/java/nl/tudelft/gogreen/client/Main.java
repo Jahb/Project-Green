@@ -181,7 +181,7 @@ public class Main extends Application {
 
     /**
      * Method used to show notifications to the user. Notification appears in the selected pane and disappears if clicked.
-     * @param message
+     * @param message text to show inside the notification box
      */
     @FXML
     public static void showMessage( Pane pane, String message){

@@ -201,31 +201,31 @@ public class MainScreen implements Initializable{
      * shows notifications
      */
     public void initialize(URL location, ResourceBundle resources){
-        /**
+        /*
          * testing notitifications
          */
         Main.showMessage(notificationPane, "You have opened the main screen");
-        /**
-         * String array with all usernames
+        /*
+         * String array with all usernames TODO retrieve usernames from database to string options
          */
         String[] options = {"user1", "asdf", "wovuwe", "brrrr", "name", "sample", "sample223", "naaaaaaaaaaame", "namenamename", "username"};
         searchField.textProperty().addListener((observable, oldValue, newValue) -> {
             if(container.getChildren().size()>1){
                 container.getChildren().remove(1);
             }
-            container.getChildren().add(populateDropDownMenu(newValue, options, searchField)); 
+            container.getChildren().add(populateDropDownMenu(newValue, options, searchField));
         });
 
     }
 
     /**
      * Searches for text in an array of strings and returns the matches in a VBox
-     * @param text
-     * @param options
-     * @param search
-     * @return
+     * @param text text currently in the search bar
+     * @param options array of all potential suggestions
+     * @param search the search field itself
+     * @return returns suggestions box
      */
-    public static VBox populateDropDownMenu(String text, String[] options, JFXTextField search){
+    private static VBox populateDropDownMenu(String text, String[] options, JFXTextField search){
         VBox dropDownMenu = new VBox();
         dropDownMenu.setStyle("-fx-background-color: white");
         dropDownMenu.setAlignment(Pos.CENTER);
