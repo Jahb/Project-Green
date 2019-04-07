@@ -210,10 +210,7 @@ public class MainScreen implements Initializable{
          */
         String[] options = {"user1", "asdf", "wovuwe", "brrrr", "name", "sample", "sample223", "naaaaaaaaaaame", "namenamename", "username"};
         searchField.textProperty().addListener((observable, oldValue, newValue) -> {
-            if(container.getChildren().size()>1){ // if already contains a drop-down menu -> remove it
-                container.getChildren().remove(1);
-            }
-            container.getChildren().add(populateDropDownMenu(newValue, options, searchField)); // then add the populated drop-down menu to the second row in the grid pane
+            container.getChildren().add(populateDropDownMenu(newValue, options, searchField)); 
         });
 
     }
