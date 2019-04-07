@@ -2,7 +2,9 @@ package nl.tudelft.gogreen.client;
 
 import com.mashape.unirest.http.exceptions.UnirestException;
 import javafx.application.Platform;
+import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.TextArea;
@@ -14,6 +16,7 @@ import nl.tudelft.gogreen.client.communication.Api;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.ResourceBundle;
 import java.util.Set;
 import java.util.function.Consumer;
 
@@ -23,10 +26,11 @@ import java.util.function.Consumer;
  * @author Kamron Geijsen
  * @version 4.20.21
  */
-public class MainScreen {
+public class MainScreen implements Initializable{
 
+    @FXML
+    public AnchorPane notificationPane;
     private Scene scene;
-
     private Ring ringMain;
     private Ring ringPrevious;
     private Ring ringNext;
@@ -178,6 +182,13 @@ public class MainScreen {
         profileButton.setOnClick(event -> Main.openProfileScreen());
 
         helpButton.setOnClick(event -> helpText.setVisible(!helpText.isVisible()));
+
     }
 
+    /**
+     * shows notifications
+     */
+    public void initialize(URL location, ResourceBundle resources){
+        Main.showMessage(notificationPane, "You have opened the main screen");
+    }
 }

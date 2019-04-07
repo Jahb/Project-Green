@@ -46,9 +46,9 @@ public class LeaderboardController implements Initializable {
         URL url = Main.class.getResource("/LeaderboardGUI.fxml");
         System.out.println(url);
         AnchorPane root = FXMLLoader.load(url);
-        BorderPane topPane = (BorderPane) root.getChildren().get(2);
+        BorderPane topPane = (BorderPane) root.getChildren().get(1);
         
-        root.getChildren().remove(3);
+        root.getChildren().remove(2);
         createGraph(root);
         
         

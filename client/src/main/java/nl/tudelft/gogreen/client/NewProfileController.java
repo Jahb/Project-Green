@@ -1,6 +1,7 @@
 package nl.tudelft.gogreen.client;
 
 import com.jfoenix.controls.JFXListView;
+import com.jfoenix.controls.JFXSnackbar;
 import com.jfoenix.controls.JFXTextField;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
@@ -33,6 +34,8 @@ import static javafx.scene.layout.Priority.ALWAYS;
 
 public class NewProfileController implements Initializable {
 
+    @FXML
+    private AnchorPane bottomPane;
     @FXML
     public Button followingButton;
     @FXML
@@ -89,6 +92,7 @@ public class NewProfileController implements Initializable {
      */
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        Main.showMessage(bottomPane, "You have opened the profile screen");
         //Adding of BackButton
         IconButton.addBackButton(buttonPane);
         achievementsButton.setOnAction(event -> Main.openAchievementsScreen());
@@ -286,7 +290,7 @@ public class NewProfileController implements Initializable {
     private void followClicked() {
         //TODO Allow Follow and UnFollow Of User
         if (follow.getText().equals("Follow")) {
-            follow.setText("UnFollow");
+            follow.setText("Unfollow");
         } else {
             follow.setText("Follow");
         }

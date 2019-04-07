@@ -1,6 +1,10 @@
 package nl.tudelft.gogreen.client;
 
+import com.jfoenix.controls.JFXSnackbar;
 import javafx.application.Application;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
+import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -173,5 +177,21 @@ public class Main extends Application {
     public static void main(String[] args) {
         Api.initApi();
         launch(args);
+    }
+
+    /**
+     * Method used to show notifications to the user. Notification appears in the selected pane and disappears if clicked.
+     * @param message
+     */
+    @FXML
+    public static void showMessage( Pane pane, String message){
+        JFXSnackbar snackbar = new JFXSnackbar(pane);
+        snackbar.getStylesheets().add("NotificationCSS.css");
+        snackbar.show(message, "Close", 4000, new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                snackbar.close();
+            }
+        });
     }
 }

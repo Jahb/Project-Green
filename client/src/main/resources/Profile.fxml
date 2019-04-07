@@ -87,7 +87,7 @@
             <Button id="button2" fx:id="followingButton" layoutX="207.0" layoutY="34.0" mnemonicParsing="false" onAction="#followersClicked" prefHeight="31.0" prefWidth="102.0" text="Following" />
          </children>
       </AnchorPane>
-      <AnchorPane layoutY="609.0" prefHeight="143.0" prefWidth="683.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="317.0">
+      <AnchorPane fx:id="bottomPane" layoutY="609.0" prefHeight="143.0" prefWidth="683.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="317.0">
          <children>
             <Label id="niceLabel" alignment="CENTER" contentDisplay="CENTER" layoutX="14.0" layoutY="14.0" prefHeight="50.0" prefWidth="370.0" style="-fx-background-radius: 25;" text="Recent Achievements" />
             <Button id="button2" fx:id="achievementsButton" layoutX="527.0" layoutY="31.0" mnemonicParsing="false" text="All Achievements" />
