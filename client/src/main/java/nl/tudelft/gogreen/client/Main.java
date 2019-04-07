@@ -1,6 +1,7 @@
 package nl.tudelft.gogreen.client;
 
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -42,7 +43,10 @@ public class Main extends Application {
 
         openLoginScreen();
         stage.show();
-
+        stage.setOnCloseRequest(event -> {
+            Platform.exit();
+            System.exit(0);
+        });
         System.out.println("Initialization code took " +
                 ((System.nanoTime() - startTime) / 1000000 / 1000.0) + "s");
     }

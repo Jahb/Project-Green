@@ -3,19 +3,18 @@ package nl.tudelft.gogreen.client.communication;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
-
 import com.mashape.unirest.http.ObjectMapper;
 import com.mashape.unirest.http.Unirest;
 import com.mashape.unirest.http.exceptions.UnirestException;
+import nl.tudelft.gogreen.shared.*;
+import org.apache.http.client.CookieStore;
+import org.apache.http.impl.client.BasicCookieStore;
+import org.apache.http.impl.client.HttpClients;
+import org.java_websocket.client.WebSocketClient;
+import org.java_websocket.handshake.ServerHandshake;
 
-import nl.tudelft.gogreen.shared.DateHolder;
-import nl.tudelft.gogreen.shared.DatePeriod;
-import nl.tudelft.gogreen.shared.MessageHolder;
-
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.net.URI;
+import java.util.*;
 import java.util.stream.Collectors;
 
 
@@ -30,6 +29,8 @@ public class Api {
     public static Gson gson = new GsonBuilder().setPrettyPrinting().create();
 
     private static Api api;
+
+    private static CookieStore cookies = new BasicCookieStore();
 
     private String username;
 
@@ -57,7 +58,10 @@ public class Api {
         remapper.put("Recycle", "Recycling");
         remapper.put("NoSmoking", "Lower Temperature");
 
-
+        for (PingPacketData d : PingPacketData.values()) {
+            notifications.put(d, new ArrayList<>());
+        }
+        this.registerNotification(PingPacketData.FOLLOWER, System.out::println);
     }
 
 
@@ -93,6 +97,7 @@ public class Api {
         }.getType());
         if (holder.getData()) {
             this.username = username;
+            wsInit();
         }
         return holder.getData();
     }
@@ -368,6 +373,63 @@ public class Api {
         return holder.getData();
     }
 
+
+    private void wsInit() {
+        String url = baseUrl.replace("http", "ws") + "/ws";
+        Map<String, String> cooks = new HashMap<>();
+        cookies.getCookies().forEach(cookie -> cooks.put(cookie.getName(), cookie.getValue()));
+
+        WebSocketClient client = new WebSocketClient(URI.create(url), cooks) {
+            @Override
+            public void onOpen(ServerHandshake handshakedata) {
+                this.send(gson.toJson(new PingPacket(PingPacketData.OPEN, Api.this.username)));
+
+            }
+
+            @Override
+            public void onMessage(String message) {
+                PingPacket packet = gson.fromJson(message, PingPacket.class);
+                System.out.println(packet);
+                notifications.get(packet.getDataType()).forEach(it -> it.run(packet.getData()));
+            }
+
+            @Override
+            public void onClose(int code, String reason, boolean remote) {
+
+            }
+
+            @Override
+            public void onError(Exception ex) {
+
+            }
+        };
+        client.connect();
+
+    }
+
+    private Map<PingPacketData, List<MessageRunnable>> notifications = new HashMap<>();
+
+    /**
+     * Register a new notification, it is added to the list so don't add it twice!
+     * @param type the notification type to respond to
+     * @param runnable the MessageRunnable to execute
+     */
+    public void registerNotification(PingPacketData type, MessageRunnable runnable) {
+        notifications.get(type).add(runnable);
+    }
+
+    /**
+     * The basic notification class
+     */
+    public interface MessageRunnable {
+        /**
+         * The called method when a notification is received
+         *
+         * @param data The data to receive, is always a string but may be json encoded data.
+         */
+        void run(String data);
+    }
+
     private String remap(String feature) {
         return remapper.get(feature);
     }
@@ -408,6 +470,7 @@ public class Api {
                 return gson.toJson(value);
             }
         });
+        Unirest.setHttpClient(HttpClients.custom().setDefaultCookieStore(cookies).build());
     }
 
 }
