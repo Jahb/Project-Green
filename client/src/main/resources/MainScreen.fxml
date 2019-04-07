@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXTextField?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.image.Image?>
@@ -9,6 +11,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
 <?import javafx.scene.shape.Circle?>
 <?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
@@ -43,6 +46,16 @@
                 <AnchorPane fx:id="notificationPane" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER" />
             </center>
         </BorderPane>
+   <VBox fx:id="container" prefHeight="200.0" prefWidth="325.0" spacing="1.0" AnchorPane.leftAnchor="400.0" AnchorPane.rightAnchor="275.0" AnchorPane.topAnchor="0.0">
+      <children>
+         <HBox fx:id="searchBox" alignment="CENTER_LEFT" minHeight="75.0" prefHeight="75.0" prefWidth="330.0">
+            <children>
+               <JFXTextField fx:id="searchField" focusColor="GREY" nodeOrientation="LEFT_TO_RIGHT" prefHeight="33.0" prefWidth="209.0" promptText="Search for users:" />
+               <JFXButton fx:id="searchButton" mnemonicParsing="false" prefHeight="40.0" prefWidth="108.0" stylesheets="@Common.css" text="Follow user" />
+            </children>
+         </HBox>
+      </children>
+   </VBox>
         <AnchorPane id="overlayLayer" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                 <TextArea id="helpText" fx:id="helpText" editable="false" layoutX="431.0" layoutY="73.0" prefHeight="412.0" prefWidth="569.0" promptText="How To Earn Points" style="-fx-border-radius: 150 150 0 0; -fx-background-radius: 150 150 0 0;" stylesheets="@MainScreenCSS.css" text="Welcome to Project Green!&#10;&#10;The goal is simple earn points by&#10;doing various activities that reduce your&#10;CO2 emissions.&#10;&#10;Doing so earns you &quot;Green Points&quot;&#10;which in term fills your Ring. &#10;Try and compete with others using the app!&#10;Rings reset once a week.&#10;&#10;The aim is to get as many points and you can&#10; and the ring is initially set to a goal of 1000 points." wrapText="true">
                     <font>

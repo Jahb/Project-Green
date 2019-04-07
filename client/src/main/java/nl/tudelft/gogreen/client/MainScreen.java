@@ -1,17 +1,22 @@
 package nl.tudelft.gogreen.client;
 
+import com.jfoenix.controls.JFXButton;
+import com.jfoenix.controls.JFXTextField;
 import com.mashape.unirest.http.exceptions.UnirestException;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Scene;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 import nl.tudelft.gogreen.client.communication.Api;
 
 import java.io.IOException;
@@ -30,6 +35,12 @@ public class MainScreen implements Initializable{
 
     @FXML
     public AnchorPane notificationPane;
+    @FXML
+    public JFXButton searchButton;
+    @FXML
+    public JFXTextField searchField;
+    @FXML
+    public VBox container;
     private Scene scene;
     private Ring ringMain;
     private Ring ringPrevious;
@@ -64,7 +75,7 @@ public class MainScreen implements Initializable{
         BorderPane topPane = (BorderPane) baseLayer.getTop();
         HBox topButtons = (HBox) topPane.getRight();
 
-        AnchorPane overlayLayer = (AnchorPane) root.getChildren().get(1);
+        AnchorPane overlayLayer = (AnchorPane) root.getChildren().get(2);
         helpText = (TextArea) overlayLayer.getChildren().get(0);
         BorderPane buttonsPanel = (BorderPane) overlayLayer.getChildren().get(1);
 
@@ -189,6 +200,38 @@ public class MainScreen implements Initializable{
      * shows notifications
      */
     public void initialize(URL location, ResourceBundle resources){
+        /**
+         * testing notitifications
+         */
         Main.showMessage(notificationPane, "You have opened the main screen");
+
+        String[] options = {"user1", "asdf", "wovuwe", "brrrr", "name", "sample", "sample223", "naaaaaaaaaaame", "namenamename", "username"};
+        searchField.textProperty().addListener((observable, oldValue, newValue) -> {
+            if(container.getChildren().size()>1){ // if already contains a drop-down menu -> remove it
+                container.getChildren().remove(1);
+            }
+            container.getChildren().add(populateDropDownMenu(newValue, options)); // then add the populated drop-down menu to the second row in the grid pane
+        });
+
     }
+    // this method searches for a given text in an array of Strings (i.e. the options)
+    // then returns a VBox containing all matches
+    public static VBox populateDropDownMenu(String text, String[] options){
+        VBox dropDownMenu = new VBox();
+        dropDownMenu.setStyle("-fx-background-color: white"); // colors just for example
+        dropDownMenu.setAlignment(Pos.CENTER); // all these are optional and up to you
+
+        for(String option : options){ // loop through every String in the array
+            // if the given text is not empty and doesn't consists of spaces only, as well as it's a part of one (or more) of the options
+            if(!text.replace(" ", "").isEmpty() && option.toUpperCase().contains(text.toUpperCase())){
+                Label label = new Label(option); // create a label and set the text
+                // you can add listener to the label here if you want
+                // your user to be able to click on the options in the drop-down menu
+                dropDownMenu.getChildren().add(label); // add the label to the VBox
+            }
+        }
+
+        return dropDownMenu; // at the end return the VBox (i.e. drop-down menu)
+    }
+
 }
