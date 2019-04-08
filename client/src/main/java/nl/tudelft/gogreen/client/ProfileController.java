@@ -4,7 +4,6 @@ package nl.tudelft.gogreen.client;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXListCell;
 import com.jfoenix.controls.JFXTextField;
-
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -69,7 +68,8 @@ public class ProfileController implements Initializable {
 
         showFollowersButton.setOnMouseClicked((MouseEvent event) -> {
             if (followLabel.getText().equals("Following")) {
-                Map<String, Integer> followers = Api.current.getFollowers();
+                // TODO: Change Api.current.getUsername() to the actual username of the user...
+                Map<String, Integer> followers = Api.current.getFollowers(Api.current.getUsername());
                 items.clear();
                 for (String st : followers.keySet()) {
                     items.add(new ListItem(st, "images/buttonProfile.png"));
@@ -79,7 +79,8 @@ public class ProfileController implements Initializable {
                 showFollowersButton.setText("Show Following");
             } else {
                 items.clear();
-                Map<String, Integer> followers = Api.current.getFollowing();
+                // TODO: Change Api.current.getUsername() to the actual username of the user...
+                Map<String, Integer> followers = Api.current.getFollowing(Api.current.getUsername());
                 items.clear();
                 for (String st : followers.keySet()) {
                     items.add(new ListItem(st, "images/buttonProfile.png"));
@@ -103,7 +104,8 @@ public class ProfileController implements Initializable {
                 Duration.ofMinutes(2)).format(DateTimeFormatter.ofLocalizedTime(FormatStyle.MEDIUM)) + " - kept history");
         activityList.setItems(activities);
 
-        Map<String, Integer> followers = Api.current.getFollowing();
+        // TODO: Change Api.current.getUsername() to the actual username of the user...
+        Map<String, Integer> followers = Api.current.getFollowing(Api.current.getUsername());
         items.clear();
         for (String st : followers.keySet()) {
             items.add(new ListItem(st, "images/buttonProfile.png"));

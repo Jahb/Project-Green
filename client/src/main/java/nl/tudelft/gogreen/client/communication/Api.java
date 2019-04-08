@@ -3,11 +3,9 @@ package nl.tudelft.gogreen.client.communication;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
-
 import com.mashape.unirest.http.ObjectMapper;
 import com.mashape.unirest.http.Unirest;
 import com.mashape.unirest.http.exceptions.UnirestException;
-
 import nl.tudelft.gogreen.shared.DateHolder;
 import nl.tudelft.gogreen.shared.DatePeriod;
 import nl.tudelft.gogreen.shared.MessageHolder;
@@ -240,7 +238,7 @@ public class Api {
     public String getUsernamePrevious() {
         int myTotal = getTotal();
         if (followDirty) {
-            followers = getFollowing();
+            followers = getFollowing(this.username);
             followDirty = false;
         }
         List<Map.Entry<String, Integer>> yeet =
@@ -261,7 +259,7 @@ public class Api {
     public String getUsernameNext() {
         int myTotal = getTotal();
         if (followDirty) {
-            followers = getFollowing();
+            followers = getFollowing(this.username);
             followDirty = false;
         }
         List<Map.Entry<String, Integer>> yeet =
@@ -284,9 +282,10 @@ public class Api {
 
     /**
      * Get the position of the user on their leaderboard
+     *
      * @return the users position
      */
-    public int getPosition(){
+    public int getPosition() {
         return position;
     }
 
@@ -341,9 +340,10 @@ public class Api {
      *
      * @return your followers
      */
-    public Map<String, Integer> getFollowers() {
+    public Map<String, Integer> getFollowers(String username) {
         String res;
         Map<String, Object> params = new HashMap<>();
+        params.put("username", username);
         try {
             res = this.post(baseUrl + "/follow/followers", params);
         } catch (UnirestException e) {
@@ -362,9 +362,10 @@ public class Api {
      *
      * @return the peeps you're following
      */
-    public Map<String, Integer> getFollowing() {
+    public Map<String, Integer> getFollowing(String username) {
         String res;
         Map<String, Object> params = new HashMap<>();
+        params.put("username", username);
         try {
             res = this.post(baseUrl + "/follow/following", params);
         } catch (UnirestException e) {
