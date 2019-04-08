@@ -24,30 +24,29 @@ public class CoolClimateAPI {
         Recycling();
     }
 
-   /* public static void getRandomData() throws Exception{
+    public static void getRandomData() throws Exception {
         Connection conn = DriverManager.getConnection(
                 resource.getString("Postgresql.datasource.url"),
                 resource.getString("Postgresql.datasource.username"),
                 resource.getString("Postgresql.datasource.password"));
-        int[] inputs = new int[keys.length];
-        inputs[0] = 3;
-        inputs[1] = 50000;
-        boolean[] actions = new boolean[takeActionKeys.length];
-        for(int i = 0; i < takeActionKeys.length; i++){
-            actions[i] = false;
-        }
-        Map<String, String> params = calculateFootprintParams(inputs, actions );
+
+
+        calculateTotal("NY", "2", "10000", "100", "1000",
+                "10", "10000", "2000", "1000");
+
+
+        Map<String, String> params = new HashMap<>();
         params.put("accept", "application/json");
         params.put("app_id", "93af0470");
         params.put("app_key", "be1dbf535bd450c012e78261cf93c0ad");
-        String url = "https://apis.berkeley.edu/coolclimate/footprint-sandbox?";
-
-        String holder = Unirest.get(url).headers(params).asString().getBody();
-        //String holder = XML.toJSONObject(Unirest.get(url2).headers(params).asString().getBody()).getJSONObject("response").toString();
+        String url = createUrl();
 
 
-        System.out.println(holder );
-    }*/
+        String holder = XML.toJSONObject(Unirest.get(url).headers(params).asString().getBody()).getJSONObject("response").toString();
+
+        System.out.println(holder);
+    }
+
     public static void VegetarianMeal() throws Exception {
 
         Connection conn = DriverManager.getConnection(
@@ -231,81 +230,77 @@ public class CoolClimateAPI {
         return "https://apis.berkeley.edu/coolclimate/footprint-sandbox?input_location_mode=2&input_location=New%20York%2C%20NY%2C%20USA&input_income=1&input_size=0&input_footprint_transportation_miles1=13000&input_footprint_transportation_mpg1=6&input_footprint_transportation_fuel1=0&result_takeaction_meat_reduction=1";
     }
 
-
-   /* *//**
+    /**
      * Filled in by user answering questions in the survey and applied to API. Questions receive user
      * information about their current zip code, how many people live in their household (adults,
      * children), annual income, square footage of home, yearly expenditures on each utility
      * (electricity, heating, water), how many days per year the household uses heat and cooling,
      * personal vehicle usage and mpg (up to 3 vehicles) and final questions about how many miles the
      * user acquires through air travel and public transportation.
-     *//*
-    private static String[] keys = {
-            "input_size",
-            "input_footprint_shopping_food_fruitvegetables_default"
+     */
 
+
+    private static String[] keys = {
+            "input_location=",                               // User inputs their zip code
+            "input_size=",                            // The number of people that live in the user's house
+            "input_footprint_household_adults=",            // How many adults occupy the user's house
+            "input_footprint_household_children=",         // How many children occupy the user's house
+            "input_income=",                              // User inputs their income
+            "input_footprint_housing_squarefeet=",       // How large is the user's house
+            "input_footprint_housing_electricity_dollars=",
+            "input_footprint_housing_naturalgas_dollars=",
+            "input_footprint_housing_heatingoil_dollars=",
+            "input_footprint_housing_watersewage=",
+            "input_footprint_housing_hdd=",                // Days that the house is heated/year
+            "input_footprint_housing_cdd=",               // Days that the house is cooled/year
+            "input_footprint_transportation_miles1=",
+            "input_footprint_transportation_mpg1=",
+            "input_footprint_transportation_miles2=",
+            "input_footprint_transportation_mpg2=",
+            "input_footprint_transportation_miles3=",
+            "input_footprint_transportation_mpg3=",
+            "input_footprint_transportation_airtotal=",
+            "input_footprint_transportation_publictrans="
     };
 
-    *//*private static String[] keys = {
-            "input_location",                               // User inputs their zip code
-            "input_size",                            // The number of people that live in the user's house
-            "input_footprint_household_adults",            // How many adults occupy the user's house
-            "input_footprint_household_children",         // How many children occupy the user's house
-            "input_income",                              // User inputs their income
-            "input_footprint_housing_squarefeet",       // How large is the user's house
-            "input_footprint_housing_electricity_dollars",
-            "input_footprint_housing_naturalgas_dollars",
-            "input_footprint_housing_heatingoil_dollars",
-            "input_footprint_housing_watersewage",
-            "input_footprint_housing_hdd",                // Days that the house is heated/year
-            "input_footprint_housing_cdd",               // Days that the house is cooled/year
-            "input_footprint_transportation_miles1",
-            "input_footprint_transportation_mpg1",
-            "input_footprint_transportation_miles2",
-            "input_footprint_transportation_mpg2",
-            "input_footprint_transportation_miles3",
-            "input_footprint_transportation_mpg3",
-            "input_footprint_transportation_airtotal",
-            "input_footprint_transportation_publictrans"
-    };*//*
-
-    *//**
+    /**
      * Implemented by the user selecting tasks that have been completed to reduce their annual carbon
      * footprint.These actions include switching to cfl (compact fluorescent light), maintaining
      * maintenance on vehicles, reducing air travel, telecommuting to work, reducing days using the
      * thermostat in winter and summer, riding their bike instead of driving, carpooling, and
      * practicing eco driving.
-     *//*
+     */
     private static String[] takeActionKeys = {
-            "input_takeaction_switch_to_cfl",
-            "input_takeaction_maintain_my_vehicles",
-            "input_takeaction_more_efficient_vehicle",
-            "input_takeaction_reduce_air_travel",
-            "input_takeaction_telecommute_to_work",
-            "input_takeaction_thermostat_summer",
-            "input_takeaction_offset_housing",
-            "input_takeaction_energy_star_fridge",
-            "input_takeaction_thermostat_winter",
-            "input_takeaction_offset_transportation",
-            "input_takeaction_ride_my_bike",
-            "input_takeaction_purchase_green_electricity",
-            "input_takeaction_take_public_transportation",
-            "input_takeaction_carpool_to_work",
-            "input_takeaction_practice_eco_driving",
+            "input_takeaction_switch_to_cfl=0",
+            "input_takeaction_maintain_my_vehicles=0",
+            "input_takeaction_more_efficient_vehicle=0",
+            "input_takeaction_reduce_air_travel=0",
+            "input_takeaction_telecommute_to_work=0",
+            "input_takeaction_thermostat_summer=0",
+            "input_takeaction_offset_housing=0",
+            "input_takeaction_energy_star_fridge=0",
+            "input_takeaction_thermostat_winter=0",
+            "input_takeaction_offset_transportation=0",
+            "input_takeaction_ride_my_bike=0",
+            "input_takeaction_purchase_green_electricity=0",
+            "input_takeaction_take_public_transportation=0",
+            "input_takeaction_carpool_to_work=0",
+            "input_takeaction_practice_eco_driving=0",
     };
 
-    *//**
+    /**
      * Required keys needed for the API to properly function and are hard coded with values. These
      * keys are invisible to the user but the programmer has the option to add any of the keys to
      * {@link #keys} to receive user input.
-     *//*
+     */
     private static String[] requiredKeys = {
             "input_location_mode=1",                                        // 1 = Zip code
+            "internal_state_abbreviation=NY",
             "input_changed=0",                                              // Meaningless variable
-            "input_footprint_transportation_num_vehicles=0",  // Number of vehicles is assumed to be 3
-            "input_footprint_transportation_fuel1=0",        //if 0mpg is input then that car gets deleted
-            "input_footprint_transportation_fuel2=0",
-            "input_footprint_transportation_fuel3=0",
+            "input_footprint_transportation_num_vehicles=3",  // Number of vehicles is assumed to be 3
+            "input_footprint_transportation_fuel1=1",        //if 0mpg is input then that car gets deleted
+            "input_footprint_transportation_fuel2=1",
+            "input_footprint_transportation_fuel3=1",
             "input_footprint_transportation_miles4=0",
             "input_footprint_transportation_mpg4=0",
             "input_footprint_transportation_fuel4=0",
@@ -355,42 +350,58 @@ public class CoolClimateAPI {
 
     };
 
+    public static void calculateTotal(String location, String inputSize, String input_income,
+                                      String input_footprint_housing_squarefeet, String input_footprint_housing_electricity_dollars, String input_footprint_housing_cdd,
+                                      String input_footprint_transportation_miles1, String input_footprint_transportation_airtotal,
+                                      String input_footprint_transportation_publictrans) {
 
-    public static Map<String, String> calculateFootprintParams(int[] inputValues,
-                                                        boolean[] takeActionInputs) {
+        keys[0] += location;// User inputs their zip code
+        keys[1] += inputSize;
+        keys[2] += inputSize;
+        keys[3] += 0;
+        keys[4] += input_income;
+        keys[5] += input_footprint_housing_squarefeet;
+        keys[6] += input_footprint_housing_electricity_dollars;
+        keys[7] += 0;
+        keys[8] += 0;
+        keys[9] += 0;
+        keys[10] += 0;
+        keys[11] += input_footprint_housing_cdd;
+        keys[12] += input_footprint_transportation_miles1;
+        keys[13] += 30;
+        keys[14] += 0;
+        keys[15] += 0;
+        keys[16] += 0;
+        keys[17] += 0;
+        keys[18] += input_footprint_transportation_airtotal;
+        keys[19] += input_footprint_transportation_publictrans;
 
-        Map<String, String> params = new HashMap<>();
-        // Build Parameter request string
-        for (int i = 0; i < inputValues.length; i++) {
 
-            int curValue = inputValues[i];
+    }
 
-            params.put(keys[i], String.valueOf(curValue));
+    public static String createUrl() {
+        String result = "https://apis.berkeley.edu/coolclimate/footprint?";
+        for (int i = 0; i < keys.length; i++) {
+
+            result += keys[i] + "&";
+
+
         }
-
-        //Adding state value default NY
-
-        params.put("internal_state_abbreviation", "NY");
-
-        //Add required keys with no value
         for (int i = 0; i < requiredKeys.length; i++) {
-            params.put(requiredKeys[i], "");
-        }
-        // Add Take Action keys if they were passed into the function
-        if (takeActionInputs != null) {
-            String strValue;
 
-            // Add Take Action keys
-            for (int i = 0; i < takeActionKeys.length; i++) {
-                strValue = takeActionInputs[i] ? "1"
-                        : "0"; // This line sets strValue to "1" or "0" based on if takeActionInputs[i] is true or false
-                params.put(takeActionKeys[i], "=" + strValue);
-            }
+
+            result += requiredKeys[i] + "&";
+
+
         }
 
-        return params;
+        for(int i = 0; i < takeActionKeys.length; i++){
+            if (i == takeActionKeys.length - 1) result += takeActionKeys[i];
 
+            result += takeActionKeys[i] + "&";
+        }
+        return result;
+    }
 
-    }*/
 
 }
