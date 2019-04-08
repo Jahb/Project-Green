@@ -29,6 +29,8 @@ public class Api {
 
     public static Gson gson = new GsonBuilder().setPrettyPrinting().create();
 
+    private int position;
+
     private static Api api;
 
     private String username;
@@ -245,6 +247,7 @@ public class Api {
                 followers.entrySet().stream()
                         .sorted(Map.Entry.comparingByValue()).collect(Collectors.toList());
         yeet.removeIf(it -> it.getValue() > myTotal);
+        position = followers.size() - yeet.size() + 1;
         if (yeet.size() == 0) return null;
         return yeet.get(0) == null ? null : yeet.get(0).getKey();
 
@@ -279,6 +282,13 @@ public class Api {
         return this.username;
     }
 
+    /**
+     * Get the position of the user on their leaderboard
+     * @return the users position
+     */
+    public int getPosition(){
+        return position;
+    }
 
     /**
      * Follow another user to compare your progress with theirs.
