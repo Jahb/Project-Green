@@ -31,20 +31,35 @@ public class Achievements {
                     resource.getString("Postgresql.datasource.username"),
                     resource.getString("Postgresql.datasource.password"));
 
-            PreparedStatement delete = conn.prepareStatement("delete from achievements where user_id = ? and achivement_id = ?");
+            PreparedStatement delete = conn.prepareStatement("delete from achievements where user_id = ? and achievement_id = ?");
             delete.setInt(1,id);
             delete.setInt(2,achievementid);
             delete.execute();
 
     }
 
-    public static ArrayList<Integer> showAllAchievements(int id)  throws  Exception{
+    public static ArrayList<String> showAllAchievements()  throws  Exception{
         Connection conn = DriverManager.getConnection(
                 resource.getString("Postgresql.datasource.url"),
                 resource.getString("Postgresql.datasource.username"),
                 resource.getString("Postgresql.datasource.password"));
 
-        PreparedStatement show = conn.prepareStatement("select achievement_name from achievements where user_id = ?");
+        PreparedStatement show = conn.prepareStatement("select achievement_name from achievements_names");
+        ArrayList<String> result = new ArrayList<>();
+        ResultSet rs = show.executeQuery();
+        while (rs.next()) {
+            result.add(rs.getString(1));
+        }
+        return result;
+    }
+
+    public static ArrayList<Integer> showAchievementsForUser(int id)  throws  Exception{
+        Connection conn = DriverManager.getConnection(
+                resource.getString("Postgresql.datasource.url"),
+                resource.getString("Postgresql.datasource.username"),
+                resource.getString("Postgresql.datasource.password"));
+
+        PreparedStatement show = conn.prepareStatement("select achievement_id from achievements where user_id = ?");
         show.setInt(1,id);
         ArrayList<Integer> result = new ArrayList<>();
         ResultSet rs = show.executeQuery();
