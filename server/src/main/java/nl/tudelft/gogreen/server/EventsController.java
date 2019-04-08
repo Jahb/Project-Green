@@ -30,12 +30,12 @@ public class EventsController {
     }
 
     @PostMapping("/new")
-    public MessageHolder<Boolean> addNew(EventItem event) {
+    public MessageHolder<Boolean> addNew(String name, String description, String date, String time) {
         try (Connection conn = DriverManager.getConnection(
                 Main.resource.getString("Postgresql.datasource.url"),
                 Main.resource.getString("Postgresql.datasource.username"),
                 Main.resource.getString("Postgresql.datasource.password"))) {
-            EventsMain.create_event(getCurrentUser(), event.getName(), event.getDescription(), event.getDate(), event.getTime(), conn);
+            EventsMain.create_event(getCurrentUser(), name, description, date, time, conn);
         } catch (Exception e) {
             return new MessageHolder<>("Create Event", false);
         }
@@ -60,7 +60,7 @@ public class EventsController {
                 Main.resource.getString("Postgresql.datasource.url"),
                 Main.resource.getString("Postgresql.datasource.username"),
                 Main.resource.getString("Postgresql.datasource.password"));
-        List<EventItem> items = EventsMain.get_user_events(getCurrentUser(),conn);
+        List<EventItem> items = EventsMain.get_user_events(getCurrentUser(), conn);
         conn.close();
         return new MessageHolder<>("Events", items);
     }

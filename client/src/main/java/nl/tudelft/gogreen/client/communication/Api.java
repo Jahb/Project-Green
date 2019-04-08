@@ -3,11 +3,9 @@ package nl.tudelft.gogreen.client.communication;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
-
 import com.mashape.unirest.http.ObjectMapper;
 import com.mashape.unirest.http.Unirest;
 import com.mashape.unirest.http.exceptions.UnirestException;
-
 import nl.tudelft.gogreen.shared.DateHolder;
 import nl.tudelft.gogreen.shared.DatePeriod;
 import nl.tudelft.gogreen.shared.EventItem;
@@ -369,7 +367,7 @@ public class Api {
         return holder.getData();
     }
 
-    public List<EventItem> getAllEvents(){
+    public List<EventItem> getAllEvents() {
         String res;
         Map<String, Object> params = new HashMap<>();
         try {
@@ -385,7 +383,7 @@ public class Api {
         return holder.getData();
     }
 
-    public List<EventItem> getUserEvents(){
+    public List<EventItem> getUserEvents() {
         String res;
         Map<String, Object> params = new HashMap<>();
         try {
@@ -401,10 +399,13 @@ public class Api {
         return holder.getData();
     }
 
-    public boolean newEvent(EventItem event){
+    public boolean newEvent(EventItem event) {
         String res;
         Map<String, Object> params = new HashMap<>();
-        params.put("event", event);
+        params.put("name", event.getName());
+        params.put("description", event.getDescription());
+        params.put("date", event.getDate());
+        params.put("time", event.getTime());
         try {
             res = this.post(baseUrl + "/event/new", params);
         } catch (UnirestException e) {
@@ -418,7 +419,7 @@ public class Api {
         return holder.getData();
     }
 
-    public boolean joinEvent(String event){
+    public boolean joinEvent(String event) {
         String res;
         Map<String, Object> params = new HashMap<>();
         params.put("eventName", event);
@@ -435,7 +436,7 @@ public class Api {
         return holder.getData();
     }
 
-    public boolean leaveEvent(String event){
+    public boolean leaveEvent(String event) {
         String res;
         Map<String, Object> params = new HashMap<>();
         params.put("eventName", event);

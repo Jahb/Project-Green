@@ -31,12 +31,15 @@ import java.util.ResourceBundle;
 
 public class EventController implements Initializable {
 
+    private AnchorPane root;
+
     @FXML
     public ListView<EventItem> eventList;
     @FXML
     public ListView<EventItem> fullEventList;
     @FXML
     public AnchorPane createEvent;
+    @FXML
     public BorderPane buttonPane;
     @FXML
     public JFXTextField newEventName;
@@ -51,7 +54,7 @@ public class EventController implements Initializable {
     private ObservableList<EventItem> userEvents = FXCollections.observableArrayList();
 
     private DateTimeFormatter timeFormat = DateTimeFormatter.ofPattern("HH:mm");
-    private DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("yyyy-MM-DD");
+    private DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
     /**
      * Returns ProfileGUI Scene.
@@ -63,7 +66,8 @@ public class EventController implements Initializable {
         URL url = Main.class.getResource("/event.fxml");
         FXMLLoader loader = new FXMLLoader(url);
         loader.getController();
-        AnchorPane root = loader.load();
+
+        root = loader.load();
         System.out.println(url);
         BorderPane buttonPane = (BorderPane) root.getChildren().get(2);
         IconButton.addBackButton(buttonPane);
@@ -92,12 +96,14 @@ public class EventController implements Initializable {
     }
 
     private void addNewEvent() {
-        EventItem newEvent = new EventItem(newEventName.getText(),
-                newEventDesc.getText(),
-                newEventTime.getValue().format(timeFormat),
-                newEventDate.getValue().format(dateFormat));
+        AnchorPane base = (AnchorPane) root.getChildren().get(7);
+
+        EventItem newEvent = new EventItem(((JFXTextField) base.getChildren().get(2)).getText(),
+                ((JFXTextArea) base.getChildren().get(4)).getText(),
+                ((JFXTimePicker) base.getChildren().get(5)).getValue().format(timeFormat),
+                ((JFXDatePicker) base.getChildren().get(3)).getValue().format(dateFormat));
         createEvent.setVisible(false);
-        new Thread(()->Api.current.newEvent(newEvent)).start();
+        new Thread(() -> Api.current.newEvent(newEvent)).start();
         allEvents.add(newEvent);
     }
 
