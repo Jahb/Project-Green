@@ -38,7 +38,7 @@ public class Achievements {
 
     }
 
-    public static ArrayList<String> showAllAchievements()  throws  Exception{
+    public static ArrayList<String> showAllAchievements() throws Exception {
         Connection conn = DriverManager.getConnection(
                 resource.getString("Postgresql.datasource.url"),
                 resource.getString("Postgresql.datasource.username"),

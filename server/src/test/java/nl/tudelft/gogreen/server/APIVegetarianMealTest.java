@@ -18,7 +18,7 @@ public class APIVegetarianMealTest {
     public void VegetarianMealTest() {
         try (Connection conn = DriverManager.getConnection(resource.getString("Postgresql.datasource.url"), resource.getString("Postgresql.datasource.username"), resource.getString("Postgresql.datasource.password"))){
 
-            CoolClimateAPI.VegetarianMeal();
+            CoolClimateAPI.VegetarianMeal("1");
             PreparedStatement vegetarian = conn.prepareStatement(resource.getString("qVegetarianMeal"));
             ResultSet rs = vegetarian.executeQuery();
             float result = 0;
