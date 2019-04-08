@@ -1,5 +1,7 @@
 package nl.tudelft.gogreen.client;
 
+import static javafx.scene.layout.Priority.ALWAYS;
+
 import com.jfoenix.controls.JFXListView;
 import com.jfoenix.controls.JFXTextField;
 import javafx.application.Platform;
@@ -29,9 +31,7 @@ import java.util.ResourceBundle;
 import java.util.Set;
 import java.util.function.Consumer;
 
-import static javafx.scene.layout.Priority.ALWAYS;
-
-public class NewProfileController implements Initializable {
+public class ProfileController implements Initializable {
 
     @FXML
     public Button followingButton;
@@ -39,6 +39,12 @@ public class NewProfileController implements Initializable {
     public Label followersLabel;
     @FXML
     public Text position;
+    @FXML
+    public HBox achievement3;
+    @FXML
+    public HBox achievement2;
+    @FXML
+    public HBox achievment1;
     @FXML
     private BorderPane buttonPane;
     @FXML
@@ -112,9 +118,12 @@ public class NewProfileController implements Initializable {
         }
 
         //TODO Adding Achievements just pull 3 most recent and call AddAchievements Method
-        ListItem achievement1 = new ListItem(new Image("/images/IconCupGold.png"), "Achievement 1");
-        ListItem achievement2 = new ListItem(new Image("/images/IconCupSilver.png"), "Achievement 2");
-        ListItem achievement3 = new ListItem(new Image("/images/IconCupBronze.png"), "Achievement 3");
+        ListItem achievement1 = new ListItem(
+                new Image("/images/IconCupGold.png"), "Achievement 1");
+        ListItem achievement2 = new ListItem(
+                new Image("/images/IconCupSilver.png"), "Achievement 2");
+        ListItem achievement3 = new ListItem(
+                new Image("/images/IconCupBronze.png"), "Achievement 3");
         addAchievements(achievement1, achievement2, achievement3);
 
 
@@ -157,26 +166,24 @@ public class NewProfileController implements Initializable {
      * @param three ListItem
      */
     private void addAchievements(ListItem one, ListItem two, ListItem three) {
-        Pane pane = new Pane();
-
         HBox first = (HBox) achievementsBorder.getLeft();
         first.setAlignment(Pos.CENTER);
         HBox second = (HBox) achievementsBorder.getCenter();
         second.setAlignment(Pos.CENTER);
         HBox third = (HBox) achievementsBorder.getRight();
         third.setAlignment(Pos.CENTER);
+        Pane pane = new Pane();
         HBox.setHgrow(pane, ALWAYS);
 
         ImageView image1 = new ImageView(one.getImage());
-        ImageView image2 = new ImageView(two.getImage());
-        ImageView image3 = new ImageView(three.getImage());
-
         image1.setFitWidth(50);
         image1.setFitHeight(50);
 
+        ImageView image2 = new ImageView(two.getImage());
         image2.setFitHeight(50);
         image2.setFitWidth(50);
 
+        ImageView image3 = new ImageView(three.getImage());
         image3.setFitHeight(50);
         image3.setFitWidth(50);
 
@@ -252,8 +259,6 @@ public class NewProfileController implements Initializable {
             followersLabel.setAlignment(Pos.CENTER);
             image.setFitHeight(75);
             image.setFitWidth(75);
-
-            //listCell.getStylesheets().add(getClass().getResource("/ListStyle.css").toExternalForm());
         }
 
         public void updateItem(ListItem item, boolean empty) {
