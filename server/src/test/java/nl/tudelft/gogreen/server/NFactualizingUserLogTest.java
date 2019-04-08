@@ -5,6 +5,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.sql.*;
+import java.util.Locale;
 import java.util.ResourceBundle;
 
 import static org.junit.Assert.assertEquals;
@@ -12,12 +13,12 @@ import static org.junit.Assert.assertNotEquals;
 
 public class NFactualizingUserLogTest {
 
-    private static ResourceBundle resource = ResourceBundle.getBundle("db");
+
 
     @Test
     public void actualizingUserPoints(){
-        try(Connection conn = DriverManager.getConnection(resource.getString("Postgresql.datasource.url"),
-                resource.getString("Postgresql.datasource.username"), resource.getString("Postgresql.datasource.password"))) {
+        try(Connection conn = DriverManager.getConnection(Main.resource.getString("Postgresql.datasource.url"),
+                Main.resource.getString("Postgresql.datasource.username"), Main.resource.getString("Postgresql.datasource.password"))) {
             int id = NewFeature.getId("MJ", conn);
 
 
@@ -40,6 +41,7 @@ public class NFactualizingUserLogTest {
 
     @Before
     public void createUsers() throws Exception {
+        Main.resource = ResourceBundle.getBundle("db", Locale.GERMANY);
 
             CreateUser.create_user("MJ","MJ");
 
@@ -50,7 +52,7 @@ public class NFactualizingUserLogTest {
 
     @After
     public void deleteUser() {
-        try(Connection conn = DriverManager.getConnection(resource.getString("Postgresql.datasource.url"), resource.getString("Postgresql.datasource.username"), resource.getString("Postgresql.datasource.password"))) {
+        try(Connection conn = DriverManager.getConnection(Main.resource.getString("Postgresql.datasource.url"), Main.resource.getString("Postgresql.datasource.username"), Main.resource.getString("Postgresql.datasource.password"))) {
             CreateUser.delete_user(NewFeature.getId("MJ",conn),conn);
 
         }

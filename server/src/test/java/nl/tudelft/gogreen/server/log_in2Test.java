@@ -7,16 +7,19 @@ import org.junit.Test;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.util.Locale;
 import java.util.ResourceBundle;
 
 import static org.junit.Assert.assertFalse;
 
 public class log_in2Test {
-    private static ResourceBundle resource = ResourceBundle.getBundle("db");
+
 
     @Before
     public void createUser(){
-        try(Connection conn = DriverManager.getConnection(resource.getString("Postgresql.datasource.url"), resource.getString("Postgresql.datasource.username"), resource.getString("Postgresql.datasource.password"));)
+        Main.resource = ResourceBundle.getBundle("db", Locale.GERMANY);
+
+        try(Connection conn = DriverManager.getConnection(Main.resource.getString("Postgresql.datasource.url"), Main.resource.getString("Postgresql.datasource.username"), Main.resource.getString("Postgresql.datasource.password"));)
         {
 
             CreateUser.create_user("'paul'","paul");
@@ -31,7 +34,7 @@ public class log_in2Test {
 
     @After
     public void deleteUser() {
-        try (Connection conn = DriverManager.getConnection(resource.getString("Postgresql.datasource.url"), resource.getString("Postgresql.datasource.username"), resource.getString("Postgresql.datasource.password"))){
+        try (Connection conn = DriverManager.getConnection(Main.resource.getString("Postgresql.datasource.url"), Main.resource.getString("Postgresql.datasource.username"), Main.resource.getString("Postgresql.datasource.password"))){
 
 
             int id = NewFeature.getId("paul",conn);
@@ -43,7 +46,7 @@ public class log_in2Test {
     }
     @Test
     public void log_inTestNegativeScenario() {
-        try (Connection conn = DriverManager.getConnection(resource.getString("Postgresql.datasource.url"), resource.getString("Postgresql.datasource.username"), resource.getString("Postgresql.datasource.password"))){
+        try (Connection conn = DriverManager.getConnection(Main.resource.getString("Postgresql.datasource.url"), Main.resource.getString("Postgresql.datasource.username"), Main.resource.getString("Postgresql.datasource.password"))){
 
             assertFalse(LogIn.log_in("paul","pa"));
         }

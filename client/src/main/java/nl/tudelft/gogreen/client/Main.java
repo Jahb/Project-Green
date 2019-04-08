@@ -50,9 +50,21 @@ public class Main extends Application {
     /**
      * Method that changes scene to Login Screen.
      */
-    private static void openLoginScreen() {
+    static void openLoginScreen() {
         try {
             Parent root1 = FXMLLoader.load(Main.class.getResource("/Login.fxml"));
+            stage.setScene(new Scene(root1));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * Method that changes scene to Register Screen.
+     */
+    static void openRegisterScreen() {
+        try {
+            Parent root1 = FXMLLoader.load(Main.class.getResource("/Register.fxml"));
             stage.setScene(new Scene(root1));
         } catch (IOException e) {
             e.printStackTrace();

@@ -30,7 +30,7 @@ import javafx.util.Duration;
 
 public class Ring {
 
-    private Circle innerCircle = new Circle();
+    private static final double MAXPOINTS = 1000;
     private Circle outerCircle = new Circle();
     private ArrayList<RingSegment> segments = new ArrayList<>();
     private int centerOffs;
@@ -42,6 +42,36 @@ public class Ring {
     private AnchorPane pane;
     private int totalPoints = -1;
     static final double MAXPOINTS = 1000;
+
+    private AnimationTimer timer = new AnimationTimer() {
+
+        @Override
+        public void handle(long time) {
+            double progress = (time - timerStart) / (3_000_000_000d / MAXPOINTS);
+            double startAngle = 0;
+
+            if (progress > MAXPOINTS)
+                timer.stop();
+
+
+            for (RingSegment rs : segments) {
+                rs.arc.setStartAngle(90 + startAngle);
+                double animationLength = Math.max(-1, Math.min(progress / rs.delta, 1));
+                rs.arc.setLength((
+                        rs.points + smoothFormula(animationLength) * rs.delta) * -360 / MAXPOINTS);
+
+                if (animationLength == 1 || animationLength == -1) {
+                    rs.points += rs.delta;
+                    rs.delta = 0;
+                }
+                startAngle += rs.arc.getLength();
+            }
+        }
+
+        private double smoothFormula(double num) {
+            return Math.sin(Math.PI * (num - .5)) / 2 + .5;
+        }
+    };
 
     /**
      * Constructor for Ring Class.
@@ -96,19 +126,19 @@ public class Ring {
 
     }
 
-    private void addSegment(int percentage, Color color, String name) {
-        segments.add(new RingSegment(this, percentage, color, name));
+    private void addSegment(Color color, String name) {
+        segments.add(new RingSegment(this, 0, color, name));
     }
 
-    public void setHandler(Consumer<String> handler) {
+    void setHandler(Consumer<String> handler) {
         this.handler = handler;
     }
 
-    public Pane getPane() {
+    Pane getPane() {
         return pane;
     }
 
-    public void setX(int centerX) {
+    void setX(int centerX) {
         pane.setLayoutX(centerX - outerCircle.getRadius());
     }
 
@@ -124,7 +154,7 @@ public class Ring {
 
     }
 
-    public void setSegmentValues(double... newValues) throws ArrayIndexOutOfBoundsException {
+    void setSegmentValues(double... newValues) throws ArrayIndexOutOfBoundsException {
         for (int i = 0; i < newValues.length; i++) {
             segments.get(i).delta = newValues[i] - segments.get(i).points;
         }
@@ -142,7 +172,6 @@ public class Ring {
 
     }
 
-    private AnimationTimer timer = new AnimationTimer() {
 
         @Override
         public void handle(long time) {
@@ -204,9 +233,9 @@ public class Ring {
         final double g1 = c1.getGreen();
         final double b1 = c1.getBlue();
 
-        final double r = Math.sqrt((r1 * r1 * iRatio) + (ratio));
-        final double g = Math.sqrt((g1 * g1 * iRatio) + (ratio));
-        final double b = Math.sqrt((b1 * b1 * iRatio) + (ratio));
+        final double r = Math.sqrt((r1 * r1 * iRatio) + ratio);
+        final double g = Math.sqrt((g1 * g1 * iRatio) + ratio);
+        final double b = Math.sqrt((b1 * b1 * iRatio) + ratio);
 
         return new Color(r, g, b, 1);
     }
@@ -299,7 +328,8 @@ public class Ring {
                 hoverText.setVisible(false);
             });
 
-            arc.addEventFilter(MouseEvent.MOUSE_PRESSED, event -> handler.accept(ringName + ":" + name));
+            arc.addEventFilter(
+                    MouseEvent.MOUSE_PRESSED, event -> handler.accept(ringName + ":" + name));
         }
     }
 

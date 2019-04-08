@@ -6,17 +6,20 @@ import org.junit.Test;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.util.Locale;
 import java.util.ResourceBundle;
 
 import static junit.framework.TestCase.assertFalse;
 
 
 public class UnfollowTest {
-    private static ResourceBundle resource = ResourceBundle.getBundle("db");
+
 
     @Before
     public void createUsers(){
-        try (Connection conn = DriverManager.getConnection(resource.getString("Postgresql.datasource.url"), resource.getString("Postgresql.datasource.username"), resource.getString("Postgresql.datasource.password"))) {
+        Main.resource = ResourceBundle.getBundle("db", Locale.GERMANY);
+
+        try (Connection conn = DriverManager.getConnection(Main.resource.getString("Postgresql.datasource.url"), Main.resource.getString("Postgresql.datasource.username"), Main.resource.getString("Postgresql.datasource.password"))) {
             CreateUser.deleteAllUsers(conn);
             CreateUser.create_user("paul", "paul");
             CreateUser.create_user("pablo", "pablo");
@@ -33,7 +36,7 @@ public class UnfollowTest {
 
     @Test
     public void Unfollowing() {
-        try (Connection conn = DriverManager.getConnection(resource.getString("Postgresql.datasource.url"), resource.getString("Postgresql.datasource.username"), resource.getString("Postgresql.datasource.password"))) {
+        try (Connection conn = DriverManager.getConnection(Main.resource.getString("Postgresql.datasource.url"), Main.resource.getString("Postgresql.datasource.username"), Main.resource.getString("Postgresql.datasource.password"))) {
 
             int id1 = NewFeature.getId("paul",conn);
             int id2 = NewFeature.getId("pablo",conn);
@@ -50,7 +53,7 @@ public class UnfollowTest {
 
     @After
     public void deleteUsers() {
-        try (Connection conn = DriverManager.getConnection(resource.getString("Postgresql.datasource.url"), resource.getString("Postgresql.datasource.username"), resource.getString("Postgresql.datasource.password"))) {
+        try (Connection conn = DriverManager.getConnection(Main.resource.getString("Postgresql.datasource.url"), Main.resource.getString("Postgresql.datasource.username"), Main.resource.getString("Postgresql.datasource.password"))) {
             int id1 = NewFeature.getId("paul",conn);
             int id2 = NewFeature.getId("pablo",conn);
 
