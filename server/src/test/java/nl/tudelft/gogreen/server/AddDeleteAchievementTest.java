@@ -11,11 +11,10 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ResourceBundle;
 
-import static junit.framework.TestCase.assertNull;
 import static org.junit.Assert.assertEquals;
 
 
-public class DeleteAchievementTest {
+public class AddDeleteAchievementTest {
     private static ResourceBundle resource = ResourceBundle.getBundle("db");
 
     @Before
@@ -34,24 +33,25 @@ public class DeleteAchievementTest {
         try (Connection conn = DriverManager.getConnection(resource.getString("Postgresql.datasource.url"), resource.getString("Postgresql.datasource.username"), resource.getString("Postgresql.datasource.password"))) {
 
 
-            Achievements.addAchievement(NewFeature.getId("paul",conn),"1000 points");
-            PreparedStatement getNameAchievement = conn.prepareStatement(resource.getString("qgetAchievements"));
-            getNameAchievement.setInt(1, NewFeature.getId("paul",conn));
-            String name = null;
-            ResultSet rs = getNameAchievement.executeQuery();
+            Achievements.addAchievement(NewFeature.getId("paul",conn),1);
+            PreparedStatement getIdAchievement = conn.prepareStatement(resource.getString("qgetAchievements"));
+            getIdAchievement.setInt(1, NewFeature.getId("paul",conn));
+            int id = 0;
+            ResultSet rs = getIdAchievement.executeQuery();
             while(rs.next()){
-                name = rs.getString(1);
+                id = rs.getInt(1);
             }
-            assertEquals("1000 points", name);
-            Achievements.deleteAchievement(NewFeature.getId("paul",conn),"1000 points");
-            PreparedStatement getNameAchievement2 = conn.prepareStatement(resource.getString("qgetAchievements"));
-            getNameAchievement2.setInt(1, NewFeature.getId("paul",conn));
-            String name2 = null;
-            ResultSet rs2 = getNameAchievement2.executeQuery();
+            assertEquals(1, id);
+
+            Achievements.deleteAchievement(NewFeature.getId("paul",conn),1);
+            PreparedStatement getIdAchievement2 = conn.prepareStatement(resource.getString("qgetAchievements"));
+            getIdAchievement2.setInt(1, NewFeature.getId("paul",conn));
+            int id2 = 0;
+            ResultSet rs2 = getIdAchievement2.executeQuery();
             while(rs2.next()){
-                name2 = rs2.getString(1);
+                id2 = rs2.getInt(1);
             }
-            assertNull(name2);
+            assertEquals(0,id2);
         } catch (Exception exception) {
             System.out.println(exception.getMessage());
         }
