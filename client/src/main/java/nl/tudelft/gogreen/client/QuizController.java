@@ -30,9 +30,7 @@ public class QuizController implements Initializable {
     @FXML
     public JFXSlider economySlider;
     @FXML
-    public JFXSlider fuelSlider;
-    @FXML
-    public Label fuelLabel;
+    public JFXSlider billSlider;
     @FXML
     public Label mileLabel;
     @FXML
@@ -71,60 +69,11 @@ public class QuizController implements Initializable {
                 }
             }
         });
-        /**
-         * Sets string labels for fuelSlider
-         */
-        fuelSlider.setLabelFormatter(new StringConverter<Double>() {
-            @Override
-            public String toString(Double number) {
-                if (number < 0.5) return "Electric";
-                if (number < 1.5) return "Gasoline";
-                else return "Diesel";
 
-            }
-
-            public Double fromString(String string) {
-                switch (string) {
-                    case "Electric":
-                        return 0d;
-                    case "Gasoline":
-                        return 1d;
-                    case "Diesel":
-                        return 2d;
-                    default:
-                        return 1d;
-                }
-            }
-        });
         /**
          * disable last 3 sliders when vehicleSlider is set to "No"
          */
         ChangeListener<Number> listener = new ChangeListener<Number>() {
-            public void changed(ObservableValue<? extends Number> ov,
-                                Number oldVal, Number newVal) {
-                if (newVal.intValue() < 0.5) {
-                    fuelSlider.setDisable(true);
-                    economySlider.setDisable(true);
-                    mileSlider.setDisable(true);
-                    fuelLabel.setStyle("-fx-text-fill: gray");
-                    mileLabel.setStyle("-fx-text-fill: gray");
-                    economyLabel.setStyle("-fx-text-fill: gray");
-                } else {
-                    if (fuelSlider.getValue() != 0) {
-                        economySlider.setDisable(false);
-                        mileSlider.setDisable(false);
-                        mileLabel.setStyle("-fx-text-fill: black");
-                        economyLabel.setStyle("-fx-text-fill: black");
-                    }
-                    fuelSlider.setDisable(false);
-                    fuelLabel.setStyle("-fx-text-fill: black");
-                }
-            }
-        };
-        /**
-         * disable last 2 sliders when fuelSlider is set to "Electric"
-         */
-        ChangeListener<Number> b = new ChangeListener<Number>() {
             public void changed(ObservableValue<? extends Number> ov,
                                 Number oldVal, Number newVal) {
                 if (newVal.intValue() < 0.5) {
@@ -141,7 +90,6 @@ public class QuizController implements Initializable {
             }
         };
         vehicleSlider.valueProperty().addListener(listener);
-        fuelSlider.valueProperty().addListener(b);
     }
 
     /**

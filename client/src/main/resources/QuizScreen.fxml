@@ -48,12 +48,12 @@
                   <Font size="20.0" />
                </font>
             </Label>
-            <Label minHeight="55.0" prefHeight="50.0" prefWidth="493.0" text="• Do you own a vehicle?">
+            <Label fx:id="fuelLabel" minHeight="55.0" prefHeight="55.0" prefWidth="475.0" text="• What is your annual energy bill in dollars?">
                <font>
                   <Font size="20.0" />
                </font>
             </Label>
-            <Label fx:id="fuelLabel" minHeight="55.0" prefHeight="55.0" prefWidth="475.0" text="• What is your vehicle's fuel type?">
+            <Label minHeight="55.0" prefHeight="50.0" prefWidth="493.0" text="• Do you own a vehicle?">
                <font>
                   <Font size="20.0" />
                </font>
@@ -74,10 +74,10 @@
          <children>
             <JFXSlider fx:id="incomeSlider" blockIncrement="0.0" majorTickUnit="20000.0" max="120000.0" minHeight="70.0" minorTickCount="1" prefHeight="55.0" prefWidth="358.0" showTickLabels="true" showTickMarks="true" snapToTicks="true" stylesheets="@LargeButton.css" />
             <JFXSlider fx:id="sizeSlider" blockIncrement="0.0" majorTickUnit="1.0" max="5.0" min="1.0" minHeight="70.0" minorTickCount="0" showTickLabels="true" snapToTicks="true" stylesheets="@LargeButton.css" value="1.0" />
+            <JFXSlider fx:id="billSlider" blockIncrement="1.0" majorTickUnit="400.0" max="2000.0" minHeight="70.0" showTickLabels="true" showTickMarks="true" snapToTicks="true" stylesheets="@LargeButton.css" value="1.0" />
             <JFXSlider fx:id="vehicleSlider" blockIncrement="1.0" majorTickUnit="1.0" max="1.0" minHeight="70.0" minorTickCount="0" showTickLabels="true" snapToTicks="true" stylesheets="@LargeButton.css" value="1.0" />
-            <JFXSlider fx:id="fuelSlider" blockIncrement="1.0" majorTickUnit="1.0" max="2.0" minHeight="70.0" minorTickCount="0" showTickLabels="true" snapToTicks="true" stylesheets="@LargeButton.css" value="1.0" />
-            <JFXSlider fx:id="mileSlider" minHeight="70.0" showTickLabels="true" snapToTicks="true" stylesheets="@LargeButton.css" />
-            <JFXSlider fx:id="economySlider" minHeight="70.0" minorTickCount="5" showTickLabels="true" snapToTicks="true" stylesheets="@LargeButton.css" />
+            <JFXSlider fx:id="mileSlider" majorTickUnit="20000.0" max="100000.0" minHeight="70.0" minorTickCount="1" showTickLabels="true" showTickMarks="true" snapToTicks="true" stylesheets="@LargeButton.css" />
+            <JFXSlider fx:id="economySlider" majorTickUnit="10.0" minHeight="70.0" minorTickCount="1" showTickLabels="true" showTickMarks="true" snapToTicks="true" stylesheets="@LargeButton.css" />
          </children></VBox>
       <JFXButton fx:id="saveButton" layoutX="560.0" layoutY="612.0" mnemonicParsing="false" prefHeight="70.0" prefWidth="370.0" stylesheets="@LargeButton.css" text="Save settings" textFill="WHITE" AnchorPane.rightAnchor="70.0">
          <font>
