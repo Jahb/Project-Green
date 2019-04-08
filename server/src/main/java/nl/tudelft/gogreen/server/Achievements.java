@@ -3,6 +3,8 @@ package nl.tudelft.gogreen.server;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.util.ArrayList;
 import java.util.ResourceBundle;
 
 public class Achievements {
@@ -33,6 +35,21 @@ public class Achievements {
             delete.setInt(1,id);
             delete.execute();
 
+    }
 
+    public static ArrayList<String> showAllAchievements(int id)  throws  Exception{
+        Connection conn = DriverManager.getConnection(
+                resource.getString("Postgresql.datasource.url"),
+                resource.getString("Postgresql.datasource.username"),
+                resource.getString("Postgresql.datasource.password"));
+
+        PreparedStatement show = conn.prepareStatement("select achievement_name from achievements where user_id = ?");
+        show.setInt(1,id);
+        ArrayList<String> result = new ArrayList<>();
+        ResultSet rs = show.executeQuery();
+        while (rs.next()) {
+            result.add(rs.getString(1));
+        }
+        return result;
     }
 }
