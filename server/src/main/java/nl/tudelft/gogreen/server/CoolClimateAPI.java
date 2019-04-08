@@ -18,39 +18,17 @@ public class CoolClimateAPI {
         //VegetarianMeal();
         LocalProduct();
         UsageofBike();
-        UsageofPublicTransport();
+        //UsageofPublicTransport();
         LowerTemperature();
         SolarPanels();
         Recycling();
     }
 
-    public static void getRandomData() throws Exception {
-        Connection conn = DriverManager.getConnection(
-                resource.getString("Postgresql.datasource.url"),
-                resource.getString("Postgresql.datasource.username"),
-                resource.getString("Postgresql.datasource.password"));
-
-
-
-        Map<String, String> params = new HashMap<>();
-        params.put("accept", "application/json");
-        params.put("app_id", "93af0470");
-        params.put("app_key", "be1dbf535bd450c012e78261cf93c0ad");
-        String url = createUrl();
-
-
-        String holder = XML.toJSONObject(Unirest.get(url).headers(params).asString().getBody()).getJSONObject("response").toString();
-
-        System.out.println(holder);
-    }
 
     public static float VegetarianMeal(String input_footprint_shopping_food_fruitvegetables) throws Exception {
 
-        Connection conn = DriverManager.getConnection(
-                resource.getString("Postgresql.datasource.url"),
-                resource.getString("Postgresql.datasource.username"),
-                resource.getString("Postgresql.datasource.password"));
         VMmapping(input_footprint_shopping_food_fruitvegetables);
+
         Map<String, String> params = new HashMap<>();
         params.put("accept", "application/json");
         params.put("app_id", "93af0470");
@@ -62,13 +40,9 @@ public class CoolClimateAPI {
 
 
         System.out.println(holder);
-        float holderNum = Float.parseFloat(holder);
+        float result = Float.parseFloat(holder);
 
-        float result = holderNum / 365 / 3;
         System.out.println(result);
-        PreparedStatement insertAPI = conn.prepareStatement(resource.getString("qupdateVegetarianMeal"));
-        insertAPI.setFloat(1, result);
-        insertAPI.execute();
 
         return result;
     }
@@ -126,30 +100,31 @@ public class CoolClimateAPI {
     }
 
 
-    public static float UsageofPublicTransport() throws Exception {
+    public static float UsageofPublicTransport(String input_takeaction_take_public_transportation_gco2transit) throws Exception {
 
         Connection conn = DriverManager.getConnection(
                 resource.getString("Postgresql.datasource.url"),
                 resource.getString("Postgresql.datasource.username"),
                 resource.getString("Postgresql.datasource.password"));
 
+        PTmapping(input_takeaction_take_public_transportation_gco2transit);
         Map<String, String> params = getParams();
 
-        String url = getUrl();
+        String url = createUrl();
 
 
-        String holder = XML.toJSONObject(Unirest.get(url).headers(params).asString().getBody()).getJSONObject("response").get("result_transport_total").toString();
-        String holder1 = XML.toJSONObject(Unirest.get(url).headers(params).asString().getBody()).getJSONObject("response").get("input_takeaction_take_public_transportation_gco2bus").toString();
+        String holder = XML.toJSONObject(Unirest.get(url).headers(params).asString().getBody()).getJSONObject("response").get("result_takeaction_offset_transportation_transpledges").toString();
 
-        float holderNum = Float.parseFloat(holder) * 1000 * 1000 / 365 / 100;
-        float holderNum1 = Float.parseFloat(holder) * 6;
+
+        float result = Float.parseFloat(holder);
+        /*float holderNum1 = Float.parseFloat(holder) * 6;
         float result = holderNum - holderNum1; //result in grams per day
         System.out.println("the total is: " + holderNum + " and the public transport one: " + holderNum1 + " and the result is: " + result);
 
         PreparedStatement insertAPI = conn.prepareStatement(resource.getString("qupdateUsageofPublicTransport"));
         insertAPI.setFloat(1, result);
         insertAPI.execute();
-
+*/
         return result;
     }
 
@@ -267,7 +242,8 @@ public class CoolClimateAPI {
             "input_footprint_transportation_mpg3=",
             "input_footprint_transportation_airtotal=",
             "input_footprint_transportation_publictrans=",
-            "input_footprint_shopping_food_fruitvegetables="
+            "input_footprint_shopping_food_fruitvegetables=",
+            "input_takeaction_take_public_transportation_gco2transit="
 
 
     };
@@ -295,6 +271,7 @@ public class CoolClimateAPI {
             "input_takeaction_take_public_transportation=0",
             "input_takeaction_carpool_to_work=0",
             "input_takeaction_practice_eco_driving=0",
+
     };
 
     /**
@@ -360,37 +337,48 @@ public class CoolClimateAPI {
             "input_footprint_housing_hdd=0"
 
 
-
     };
-    public static String getLocation(){
+
+    public static String getLocation() {
         return "NY";
     }
-    public static String getInputSize(){
+
+    public static String getInputSize() {
         return "2";
     }
-    public static String getIncome(){
+
+    public static String getIncome() {
         return "100";
     }
-    public static String getSquarefeet(){
+
+    public static String getSquarefeet() {
         return "10";
     }
-    public static String getElectrictyBill(){
+
+    public static String getElectrictyBill() {
         return "10";
     }
 
 
-    public static void VMmapping(String input_footprint_shopping_food_fruitvegetables){
-        calculateTotal(getLocation(),getInputSize(),getIncome(), getSquarefeet(),
-                getElectrictyBill(),"0" , "0",
-                "0","0",
-                input_footprint_shopping_food_fruitvegetables);
+    public static void VMmapping(String input_footprint_shopping_food_fruitvegetables) {
+        calculateTotal(getLocation(), getInputSize(), getIncome(), getSquarefeet(),
+                getElectrictyBill(), "0", "0",
+                "0", "0",
+                input_footprint_shopping_food_fruitvegetables,"0");
     }
 
+    public static void PTmapping(String input_takeaction_take_public_transportation_gco2transit) {
+        calculateTotal(getLocation(), getInputSize(), getIncome(), getSquarefeet(),
+                getElectrictyBill(), "0", "0",
+                "0", "0",
+                "0", input_takeaction_take_public_transportation_gco2transit);
+    }
 
     public static void calculateTotal(String location, String inputSize, String input_income,
                                       String input_footprint_housing_squarefeet, String input_footprint_housing_electricity_dollars, String input_footprint_housing_cdd,
                                       String input_footprint_transportation_miles1, String input_footprint_transportation_airtotal,
-                                      String input_footprint_transportation_publictrans, String input_footprint_shopping_food_fruitvegetables) {
+                                      String input_footprint_transportation_publictrans, String input_footprint_shopping_food_fruitvegetables,
+                                      String input_takeaction_take_public_transportation_gco2transit) {
 
         keys[0] += location;// User inputs their zip code
         keys[1] += inputSize;
@@ -410,7 +398,7 @@ public class CoolClimateAPI {
         keys[15] += input_footprint_transportation_airtotal;
         keys[16] += input_footprint_transportation_publictrans;
         keys[17] += input_footprint_shopping_food_fruitvegetables;
-
+        keys[18] += input_takeaction_take_public_transportation_gco2transit;
 
 
     }
@@ -431,7 +419,7 @@ public class CoolClimateAPI {
 
         }
 
-        for(int i = 0; i < takeActionKeys.length; i++){
+        for (int i = 0; i < takeActionKeys.length; i++) {
             if (i == takeActionKeys.length - 1) result += takeActionKeys[i];
 
             result += takeActionKeys[i] + "&";
