@@ -14,14 +14,16 @@ public class CoolClimateAPI {
 
     private static ResourceBundle resource = ResourceBundle.getBundle("db");
 
-    public static void fetchApiData() throws Exception {
-        //VegetarianMeal();
-        LocalProduct();
-        UsageofBike();
-        //UsageofPublicTransport();
-       // LowerTemperature();
-        SolarPanels();
-        Recycling();
+    public static float fetchApiData(String feature, String user_input) throws Exception {
+
+        if(feature.equals("Vegetarian Meal")) return VegetarianMeal(user_input);
+        if(feature.equals("Local Product"))  return LocalProduct();
+        if(feature.equals("Usage of Bike")) return UsageofBike();
+        if(feature.equals("Usage of Public Transport")) return UsageofPublicTransport(user_input);
+        if(feature.equals("Lower Temperature")) return LowerTemperature(user_input);
+        if(feature.equals("Solar Panel")) return SolarPanels();
+        if(feature.equals("Recycling")) return Recycling();
+        return -1;
     }
 
 
@@ -100,11 +102,11 @@ public class CoolClimateAPI {
     }
 
 
-    public static float UsageofPublicTransport(String input_takeaction_take_public_transportation_gco2transit) throws Exception {
+    public static float UsageofPublicTransport(String input_miles) throws Exception {
 
 
 
-        PTmapping(input_takeaction_take_public_transportation_gco2transit);
+        PTmapping(input_miles);
         Map<String, String> params = new HashMap<>();
         params.put("accept", "application/json");
         params.put("app_id", "93af0470");
@@ -240,7 +242,7 @@ public class CoolClimateAPI {
             "input_footprint_transportation_airtotal=",
             "input_footprint_transportation_publictrans=",
             "input_footprint_shopping_food_fruitvegetables=",
-            "input_takeaction_take_public_transportation_gco2transit="
+            "input_footprint_transportation_bus="
 
 
     };
@@ -265,9 +267,12 @@ public class CoolClimateAPI {
             "input_takeaction_offset_transportation=0",
             "input_takeaction_ride_my_bike=0",
             "input_takeaction_purchase_green_electricity=0",
-            "input_takeaction_take_public_transportation=1",
             "input_takeaction_carpool_to_work=0",
             "input_takeaction_practice_eco_driving=0",
+            "input_takeaction_take_public_transportation=1",
+            "input_takeaction_take_public_transportation_type=0",
+            "input_takeaction_take_public_transportation_gco2bus=1",
+            "input_takeaction_take_public_transportation_mpg=30"
 
     };
 
@@ -370,18 +375,18 @@ public class CoolClimateAPI {
                 "0", "0");
     }
 
-    public static void PTmapping(String input_takeaction_take_public_transportation_gco2transit) {
+    public static void PTmapping(String input_miles) {
         calculateTotal(getLocation(), getInputSize(), getIncome(), getSquarefeet(),
                 getElectrictyBill(), "0", "0",
                 "0", "0",
-                "0", input_takeaction_take_public_transportation_gco2transit);
+                "0", input_miles);
     }
 
     public static void calculateTotal(String location, String inputSize, String input_income,
                                       String input_footprint_housing_squarefeet, String input_footprint_housing_electricity_dollars, String input_footprint_housing_cdd,
                                       String input_footprint_transportation_miles1, String input_footprint_transportation_airtotal,
                                       String input_footprint_transportation_publictrans, String input_footprint_shopping_food_fruitvegetables,
-                                      String input_takeaction_take_public_transportation_gco2transit) {
+                                      String input_miles ) {
 
         keys[0] += location;// User inputs their zip code
         keys[1] += inputSize;
@@ -401,7 +406,7 @@ public class CoolClimateAPI {
         keys[15] += input_footprint_transportation_airtotal;
         keys[16] += input_footprint_transportation_publictrans;
         keys[17] += input_footprint_shopping_food_fruitvegetables;
-        keys[18] += input_takeaction_take_public_transportation_gco2transit;
+        keys[18] += input_miles;
 
 
     }
@@ -423,7 +428,10 @@ public class CoolClimateAPI {
         }
 
         for (int i = 0; i < takeActionKeys.length; i++) {
-            if (i == takeActionKeys.length - 1) result += takeActionKeys[i];
+            if (i == takeActionKeys.length - 1){
+                result += takeActionKeys[i];
+                break;
+            }
 
             result += takeActionKeys[i] + "&";
         }
