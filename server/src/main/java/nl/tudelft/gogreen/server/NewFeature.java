@@ -30,6 +30,8 @@ public class NewFeature {
                 resource.getString("Postgresql.datasource.url"),
                 resource.getString("Postgresql.datasource.username"),
                 resource.getString("Postgresql.datasource.password"));
+
+
         int id = getId(username, conn);
         newStreak(id, conn);
         actualizingFeatures(conn, feature);
@@ -40,7 +42,11 @@ public class NewFeature {
         conn.close();
         return String.valueOf(total);
     }
+    public static int C02toPoints( int points) {
 
+        return points/4;
+
+    }
     public static int getTotal(String username) throws Exception {
         Connection conn = getConnection(
                 resource.getString("Postgresql.datasource.url"),

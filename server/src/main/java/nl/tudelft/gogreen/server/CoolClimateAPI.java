@@ -15,7 +15,7 @@ public class CoolClimateAPI {
     private static ResourceBundle resource = ResourceBundle.getBundle("db");
 
     public static void fetchApiData() throws Exception {
-        VegetarianMeal();
+        //VegetarianMeal();
         LocalProduct();
         UsageofBike();
         UsageofPublicTransport();
@@ -31,9 +31,6 @@ public class CoolClimateAPI {
                 resource.getString("Postgresql.datasource.password"));
 
 
-        calculateTotal("NY", "2", "10000", "100", "1000",
-                "10", "10000", "2000", "1000");
-
 
         Map<String, String> params = new HashMap<>();
         params.put("accept", "application/json");
@@ -47,36 +44,37 @@ public class CoolClimateAPI {
         System.out.println(holder);
     }
 
-    public static void VegetarianMeal() throws Exception {
+    public static float VegetarianMeal(String input_footprint_shopping_food_fruitvegetables) throws Exception {
 
         Connection conn = DriverManager.getConnection(
                 resource.getString("Postgresql.datasource.url"),
                 resource.getString("Postgresql.datasource.username"),
                 resource.getString("Postgresql.datasource.password"));
-
+        VMmapping(input_footprint_shopping_food_fruitvegetables);
         Map<String, String> params = new HashMap<>();
         params.put("accept", "application/json");
         params.put("app_id", "93af0470");
         params.put("app_key", "be1dbf535bd450c012e78261cf93c0ad");
-        String url = "https://apis.berkeley.edu/coolclimate/footprint-sandbox?input_location_mode=2&input_location=New%20York%2C%20NY%2C%20USA&input_income=1&input_size=0&input_footprint_transportation_miles1=13000&input_footprint_transportation_mpg1=6&input_footprint_transportation_fuel1=0&result_takeaction_meat_reduction=1";
+        String url = createUrl();
 
 
-        String holder = XML.toJSONObject(Unirest.get(url).headers(params).asString().getBody()).getJSONObject("response").get("result_food_meat").toString();
-        String holder1 = XML.toJSONObject(Unirest.get(url).headers(params).asString().getBody()).getJSONObject("response").get("result_food_fruitsveg").toString();
+        String holder = XML.toJSONObject(Unirest.get(url).headers(params).asString().getBody()).getJSONObject("response").get("result_food_fruitsveg").toString();
 
-        System.out.println("value meat: " + holder + " and value vegies: " + holder1);
+
+        System.out.println(holder);
         float holderNum = Float.parseFloat(holder);
-        float holder1Num = Float.parseFloat(holder1);
-        float difference = (holderNum - holder1Num) * 1000 * 1000;
-        float result = difference / 365 / 3;
+
+        float result = holderNum / 365 / 3;
         System.out.println(result);
         PreparedStatement insertAPI = conn.prepareStatement(resource.getString("qupdateVegetarianMeal"));
         insertAPI.setFloat(1, result);
         insertAPI.execute();
+
+        return result;
     }
 
 
-    public static void LocalProduct() throws Exception {
+    public static float LocalProduct() throws Exception {
 
         Connection conn = DriverManager.getConnection(
                 resource.getString("Postgresql.datasource.url"),
@@ -97,9 +95,11 @@ public class CoolClimateAPI {
         PreparedStatement insertAPI = conn.prepareStatement(resource.getString("qupdateLocalProduct"));
         insertAPI.setFloat(1, result);
         insertAPI.execute();
+
+        return result;
     }
 
-    public static void UsageofBike() throws Exception {
+    public static float UsageofBike() throws Exception {
 
         Connection conn = DriverManager.getConnection(
                 resource.getString("Postgresql.datasource.url"),
@@ -121,10 +121,12 @@ public class CoolClimateAPI {
         PreparedStatement insertAPI = conn.prepareStatement(resource.getString("qupdateUsageofBike"));
         insertAPI.setFloat(1, result);
         insertAPI.execute();
+
+        return result;
     }
 
 
-    public static void UsageofPublicTransport() throws Exception {
+    public static float UsageofPublicTransport() throws Exception {
 
         Connection conn = DriverManager.getConnection(
                 resource.getString("Postgresql.datasource.url"),
@@ -147,9 +149,11 @@ public class CoolClimateAPI {
         PreparedStatement insertAPI = conn.prepareStatement(resource.getString("qupdateUsageofPublicTransport"));
         insertAPI.setFloat(1, result);
         insertAPI.execute();
+
+        return result;
     }
 
-    public static void LowerTemperature() throws Exception {
+    public static float LowerTemperature() throws Exception {
 
         Connection conn = DriverManager.getConnection(
                 resource.getString("Postgresql.datasource.url"),
@@ -170,10 +174,12 @@ public class CoolClimateAPI {
         PreparedStatement insertAPI = conn.prepareStatement(resource.getString("qupdateLowerTemperature"));
         insertAPI.setFloat(1, result);
         insertAPI.execute();
+
+        return result;
     }
 
 
-    public static void SolarPanels() throws Exception {
+    public static float SolarPanels() throws Exception {
 
         Connection conn = DriverManager.getConnection(
                 resource.getString("Postgresql.datasource.url"),
@@ -194,9 +200,10 @@ public class CoolClimateAPI {
         insertAPI.setFloat(1, result);
         insertAPI.execute();
 
+        return result;
     }
 
-    public static void Recycling() throws Exception {
+    public static float Recycling() throws Exception {
 
         Connection conn = DriverManager.getConnection(
                 resource.getString("Postgresql.datasource.url"),
@@ -216,6 +223,8 @@ public class CoolClimateAPI {
         PreparedStatement insertAPI = conn.prepareStatement(resource.getString("qupdateRecycling"));
         insertAPI.setFloat(1, result);
         insertAPI.execute();
+
+        return result;
     }
 
     public static Map<String, String> getParams() {
@@ -244,14 +253,11 @@ public class CoolClimateAPI {
             "input_location=",                               // User inputs their zip code
             "input_size=",                            // The number of people that live in the user's house
             "input_footprint_household_adults=",            // How many adults occupy the user's house
-            "input_footprint_household_children=",         // How many children occupy the user's house
+            "input_footprint_household_children=",
             "input_income=",                              // User inputs their income
             "input_footprint_housing_squarefeet=",       // How large is the user's house
             "input_footprint_housing_electricity_dollars=",
-            "input_footprint_housing_naturalgas_dollars=",
-            "input_footprint_housing_heatingoil_dollars=",
             "input_footprint_housing_watersewage=",
-            "input_footprint_housing_hdd=",                // Days that the house is heated/year
             "input_footprint_housing_cdd=",               // Days that the house is cooled/year
             "input_footprint_transportation_miles1=",
             "input_footprint_transportation_mpg1=",
@@ -260,7 +266,10 @@ public class CoolClimateAPI {
             "input_footprint_transportation_miles3=",
             "input_footprint_transportation_mpg3=",
             "input_footprint_transportation_airtotal=",
-            "input_footprint_transportation_publictrans="
+            "input_footprint_transportation_publictrans=",
+            "input_footprint_shopping_food_fruitvegetables="
+
+
     };
 
     /**
@@ -333,7 +342,6 @@ public class CoolClimateAPI {
             "input_footprint_shopping_food_meatfisheggs=0", // Calories eaten daily of meat, fish and eggs
             "input_footprint_shopping_food_dairy=0",                      // Calories eaten daily of dairy
             "input_footprint_shopping_food_otherfood=0",                    // Calories per day other food
-            "input_footprint_shopping_food_fruitvegetables=0",     // Calories per day fruits and veggies
             "input_footprint_shopping_food_cereals=0",                      // Calories per day cereals
             "input_footprint_shopping_goods_default_furnitureappliances=0",// Furniture/appliances cost/yr
             "input_footprint_shopping_goods_default_clothing=0",            // Clothing cost/year
@@ -346,14 +354,43 @@ public class CoolClimateAPI {
             "input_footprint_shopping_goods_total=0",        // No input by the user, sum of the subtotals
             "input_footprint_shopping_services_type=simple",
             "input_footprint_shopping_services_total=0", // How much the user spends on services per year
-            "input_footprint_housing_gco2_per_kwh=1000"
+            "input_footprint_housing_gco2_per_kwh=1000",
+            "input_footprint_housing_naturalgas_dollars=0",
+            "input_footprint_housing_heatingoil_dollars=0",
+            "input_footprint_housing_hdd=0"
+
+
 
     };
+    public static String getLocation(){
+        return "NY";
+    }
+    public static String getInputSize(){
+        return "2";
+    }
+    public static String getIncome(){
+        return "100";
+    }
+    public static String getSquarefeet(){
+        return "10";
+    }
+    public static String getElectrictyBill(){
+        return "10";
+    }
+
+
+    public static void VMmapping(String input_footprint_shopping_food_fruitvegetables){
+        calculateTotal(getLocation(),getInputSize(),getIncome(), getSquarefeet(),
+                getElectrictyBill(),"0" , "0",
+                "0","0",
+                input_footprint_shopping_food_fruitvegetables);
+    }
+
 
     public static void calculateTotal(String location, String inputSize, String input_income,
                                       String input_footprint_housing_squarefeet, String input_footprint_housing_electricity_dollars, String input_footprint_housing_cdd,
                                       String input_footprint_transportation_miles1, String input_footprint_transportation_airtotal,
-                                      String input_footprint_transportation_publictrans) {
+                                      String input_footprint_transportation_publictrans, String input_footprint_shopping_food_fruitvegetables) {
 
         keys[0] += location;// User inputs their zip code
         keys[1] += inputSize;
@@ -363,18 +400,17 @@ public class CoolClimateAPI {
         keys[5] += input_footprint_housing_squarefeet;
         keys[6] += input_footprint_housing_electricity_dollars;
         keys[7] += 0;
-        keys[8] += 0;
-        keys[9] += 0;
-        keys[10] += 0;
-        keys[11] += input_footprint_housing_cdd;
-        keys[12] += input_footprint_transportation_miles1;
-        keys[13] += 30;
+        keys[8] += input_footprint_housing_cdd;
+        keys[9] += input_footprint_transportation_miles1;
+        keys[10] += 30;
+        keys[11] += 0;
+        keys[12] += 0;
+        keys[13] += 0;
         keys[14] += 0;
-        keys[15] += 0;
-        keys[16] += 0;
-        keys[17] += 0;
-        keys[18] += input_footprint_transportation_airtotal;
-        keys[19] += input_footprint_transportation_publictrans;
+        keys[15] += input_footprint_transportation_airtotal;
+        keys[16] += input_footprint_transportation_publictrans;
+        keys[17] += input_footprint_shopping_food_fruitvegetables;
+
 
 
     }
