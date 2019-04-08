@@ -11,7 +11,7 @@ public class Achievements {
 
     private static ResourceBundle resource = ResourceBundle.getBundle("db");
 
-    public static void addAchievement(int id, String achievementName) throws Exception {
+    public static void addAchievement(int id, int achievementid) throws Exception {
 
             Connection conn = DriverManager.getConnection(
                     resource.getString("Postgresql.datasource.url"),
@@ -20,24 +20,25 @@ public class Achievements {
 
             PreparedStatement add = conn.prepareStatement("insert into achievements values(?,?)");
             add.setInt(1,id);
-            add.setString(2,achievementName);
+            add.setInt(2,achievementid);
             add.execute();
 
 
     }
-    public static void deleteAchievement(int id, String achievementName)  throws  Exception{
+    public static void deleteAchievement(int id, int achievementid)  throws  Exception{
             Connection conn = DriverManager.getConnection(
                     resource.getString("Postgresql.datasource.url"),
                     resource.getString("Postgresql.datasource.username"),
                     resource.getString("Postgresql.datasource.password"));
 
-            PreparedStatement delete = conn.prepareStatement("delete from achievements where user_id = ?");
+            PreparedStatement delete = conn.prepareStatement("delete from achievements where user_id = ? and achivement_id = ?");
             delete.setInt(1,id);
+            delete.setInt(2,achievementid);
             delete.execute();
 
     }
 
-    public static ArrayList<String> showAllAchievements(int id)  throws  Exception{
+    public static ArrayList<Integer> showAllAchievements(int id)  throws  Exception{
         Connection conn = DriverManager.getConnection(
                 resource.getString("Postgresql.datasource.url"),
                 resource.getString("Postgresql.datasource.username"),
@@ -45,10 +46,10 @@ public class Achievements {
 
         PreparedStatement show = conn.prepareStatement("select achievement_name from achievements where user_id = ?");
         show.setInt(1,id);
-        ArrayList<String> result = new ArrayList<>();
+        ArrayList<Integer> result = new ArrayList<>();
         ResultSet rs = show.executeQuery();
         while (rs.next()) {
-            result.add(rs.getString(1));
+            result.add(rs.getInt(1));
         }
         return result;
     }
