@@ -19,7 +19,7 @@ public class CoolClimateAPI {
         LocalProduct();
         UsageofBike();
         //UsageofPublicTransport();
-        LowerTemperature();
+       // LowerTemperature();
         SolarPanels();
         Recycling();
     }
@@ -102,10 +102,7 @@ public class CoolClimateAPI {
 
     public static float UsageofPublicTransport(String input_takeaction_take_public_transportation_gco2transit) throws Exception {
 
-        Connection conn = DriverManager.getConnection(
-                resource.getString("Postgresql.datasource.url"),
-                resource.getString("Postgresql.datasource.username"),
-                resource.getString("Postgresql.datasource.password"));
+
 
         PTmapping(input_takeaction_take_public_transportation_gco2transit);
         Map<String, String> params = new HashMap<>();
@@ -131,27 +128,24 @@ public class CoolClimateAPI {
         return 0;
     }
 
-    public static float LowerTemperature() throws Exception {
+    public static float LowerTemperature(String input_footprint_housing_cdd) throws Exception {
 
-        Connection conn = DriverManager.getConnection(
-                resource.getString("Postgresql.datasource.url"),
-                resource.getString("Postgresql.datasource.username"),
-                resource.getString("Postgresql.datasource.password"));
+        LTmapping(input_footprint_housing_cdd);
 
-        Map<String, String> params = getParams();
+        Map<String, String> params = new HashMap<>();
+        params.put("accept", "application/json");
+        params.put("app_id", "93af0470");
+        params.put("app_key", "be1dbf535bd450c012e78261cf93c0ad");
+        String url = createUrl();
 
-        String url = getUrl();
+
+        String holder = XML.toJSONObject(Unirest.get(url).headers(params).asString().getBody()).getJSONObject("response").get("result_takeaction_thermostat_summer_kwhuse").toString();
 
 
-        String holder = XML.toJSONObject(Unirest.get(url).headers(params).asString().getBody()).getJSONObject("response").get("input_footprint_housing_electricity_kwh").toString();
-
-        float holderNum = Float.parseFloat(holder) / 365; //grams saved per each kwH by lowering temperature
-        float save = 911 / 10 / 30; //grams of C02 saved by lowering temperature per day
-        float result = holderNum * save; //result in grams per day
+        System.out.println(holder); //that is kwuse
+        float result = Float.parseFloat(holder);
+        result = result*800;
         System.out.println(result);
-        PreparedStatement insertAPI = conn.prepareStatement(resource.getString("qupdateLowerTemperature"));
-        insertAPI.setFloat(1, result);
-        insertAPI.execute();
 
         return result;
     }
@@ -369,6 +363,12 @@ public class CoolClimateAPI {
                 "0", "0",
                 input_footprint_shopping_food_fruitvegetables, "0");
     }
+    public static void LTmapping(String input_footprint_housing_cdd) {
+        calculateTotal(getLocation(), getInputSize(), getIncome(), getSquarefeet(),
+                getElectrictyBill(), input_footprint_housing_cdd, "0",
+                "0", "0",
+                "0", "0");
+    }
 
     public static void PTmapping(String input_takeaction_take_public_transportation_gco2transit) {
         calculateTotal(getLocation(), getInputSize(), getIncome(), getSquarefeet(),
@@ -427,8 +427,9 @@ public class CoolClimateAPI {
 
             result += takeActionKeys[i] + "&";
         }
-        return result;
-    }
 
+        return result;
+
+    }
 
 }
