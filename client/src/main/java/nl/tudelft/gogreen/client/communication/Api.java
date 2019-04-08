@@ -3,11 +3,9 @@ package nl.tudelft.gogreen.client.communication;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
-
 import com.mashape.unirest.http.ObjectMapper;
 import com.mashape.unirest.http.Unirest;
 import com.mashape.unirest.http.exceptions.UnirestException;
-
 import nl.tudelft.gogreen.shared.DateHolder;
 import nl.tudelft.gogreen.shared.DatePeriod;
 import nl.tudelft.gogreen.shared.MessageHolder;
@@ -93,8 +91,10 @@ public class Api {
 
         MessageHolder<Boolean> holder = gson.fromJson(res, new TypeToken<MessageHolder<Boolean>>() {
         }.getType());
-        if (holder.getData()) {
+        System.out.println(this.username);
+        if (holder.getData() && this.username == null) {
             this.username = username;
+            System.out.println(this.username);
         }
         return holder.getData();
     }
@@ -279,6 +279,7 @@ public class Api {
      * @return now you know
      */
     public String getUsername() {
+        System.out.println(this.username);
         return this.username;
     }
 

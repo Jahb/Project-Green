@@ -1,14 +1,19 @@
 package nl.tudelft.gogreen.client;
 
 import com.mashape.unirest.http.exceptions.UnirestException;
+import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.text.Text;
 import nl.tudelft.gogreen.client.communication.Api;
 
 import java.io.IOException;
@@ -30,6 +35,7 @@ public class MainScreen {
     private Ring ringNext;
     private TextArea helpText;
     private AddActivityButton activityButton;
+    private AnchorPane root;
     // TODO handler for each subcategory
     private Consumer<String> handler = name -> {
         try {
@@ -50,7 +56,7 @@ public class MainScreen {
     public Scene getScene() throws IOException {
         URL url = Main.class.getResource("/MainScreen.fxml");
         System.out.println(url);
-        AnchorPane root = FXMLLoader.load(url);
+        root = FXMLLoader.load(url);
         scene = new Scene(root, Main.getWidth(), Main.getHeight());
 
         BorderPane baseLayer = (BorderPane) root.getChildren().get(0);
@@ -73,6 +79,13 @@ public class MainScreen {
 
         overlayLayer.setPickOnBounds(false);
         buttonsPanel.setPickOnBounds(false);
+
+        //Streaks
+        //TODO Implement Streaks. condition to check if first login today.
+        if (true) {
+            setUpStreak();
+        }
+
 
         scene.addEventHandler(MouseEvent.MOUSE_PRESSED, event -> {
             Node node = event.getPickResult().getIntersectedNode();
@@ -111,20 +124,28 @@ public class MainScreen {
     }
 
     private void updateRingValues() {
-        double[] valuesMain = Api.current.getRingSegmentValues(ringMain.getName());
-        ringMain.setUsername(Api.current.getUsername());
-        ringMain.setSegmentValues(valuesMain);
-        ringMain.startAnimation();
+        new Thread(() -> {
+            double[] valuesMain = Api.current.getRingSegmentValues(ringMain.getName());
+            ringMain.setUsername(Api.current.getUsername());
+            ringMain.setSegmentValues(valuesMain);
+            Platform.runLater(() -> ringMain.startAnimation());
+        }).start();
 
-        double[] valuesNext = Api.current.getRingSegmentValues(ringNext.getName());
-        ringNext.setUsername(Api.current.getUsernameNext());
-        ringNext.setSegmentValues(valuesNext);
-        ringNext.startAnimation();
+        new Thread(() -> {
+            double[] valuesNext = Api.current.getRingSegmentValues(ringNext.getName());
+            ringNext.setUsername(Api.current.getUsernameNext());
+            ringNext.setSegmentValues(valuesNext);
+            Platform.runLater(() -> ringNext.startAnimation());
+        }).start();
 
-        double[] valuesPrevious = Api.current.getRingSegmentValues(ringPrevious.getName());
-        ringPrevious.setUsername(Api.current.getUsernamePrevious());
-        ringPrevious.setSegmentValues(valuesPrevious);
-        ringPrevious.startAnimation();
+        new Thread(() -> {
+            double[] valuesPrevious = Api.current.getRingSegmentValues(ringPrevious.getName());
+            ringPrevious.setUsername(Api.current.getUsernamePrevious());
+            ringPrevious.setSegmentValues(valuesPrevious);
+            Platform.runLater(() -> ringPrevious.startAnimation());
+        }).start();
+
+
     }
 
     private void addActivityButton(AnchorPane anchorPane) {
@@ -166,6 +187,53 @@ public class MainScreen {
         profileButton.setOnClick(event -> Main.openProfileScreen());
 
         helpButton.setOnClick(event -> helpText.setVisible(!helpText.isVisible()));
+    }
+
+    private void setUpStreak() {
+        //TODO Get Streak Days
+        int streakDays = 6;
+        AnchorPane streakPane = (AnchorPane) root.getChildren().get(2);
+        AnchorPane buttonPane = (AnchorPane) streakPane.getChildren().get(0);
+        Text numDays = (Text) streakPane.getChildren().get(2);
+        Button reward = (Button) buttonPane.getChildren().get(0);
+        ImageView streakImg = (ImageView) streakPane.getChildren().get(4);
+
+        streakPane.setVisible(true);
+        numDays.setText(streakDays + " Days!");
+        reward.setOnAction(event -> streakPane.setVisible(false));
+
+        switch (streakDays) {
+            case 0:
+                reward.setText("Today Is Your First Day, ComeBack Tomorrow!");
+                break;
+            case 1:
+                reward.setText("Congratulations! You Earned An Extra 10 Points!");
+                break;
+            case 2:
+                reward.setText("Congratulations! You Earned An Extra 15 Points!");
+                break;
+            case 3:
+                reward.setText("Congratulations! You Earned An Extra 25 Points!");
+                streakImg.setImage(new Image("/images/IconCupSilver.png"));
+                break;
+            case 4:
+                reward.setText("Congratulations! You Earned An Extra 40 Points!");
+                streakImg.setImage(new Image("/images/IconCupSilver.png"));
+                break;
+            case 5:
+                reward.setText("Congratulations! You Earned An Extra 60 Points!");
+                streakImg.setImage(new Image("/images/IconCupSilver.png"));
+                break;
+            case 6:
+                reward.setText("Congratulations! You Earned An Extra 80 Points!");
+                streakImg.setImage(new Image("/images/IconCupGold.png"));
+                break;
+            default:
+                reward.setText("Congratulations! You Earned An Extra 100 Points!");
+                streakImg.setImage(new Image("IconCupGold.png"));
+                break;
+        }
+
     }
 
 }

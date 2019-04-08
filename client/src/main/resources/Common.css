@@ -12,6 +12,28 @@
     -fx-background-color: #38ba5c;
 }
 
+#button2{
+    -fx-background-color: #38ba5c;
+}
+#button2:hover{
+    -fx-background-color: #3fbd62;
+}
+#button2:pressed{
+    -fx-background-color: #2f8d49;
+}
+
+#niceLabel{
+    -fx-background-color: #52eb85;
+    -fx-font-weight: bold;
+    -fx-border-radius: 20;
+    -fx-background-radius: 20;
+    -fx-text-fill: white;
+    -fx-font-size: 30;
+    -fx-text-alignment: CENTER;
+
+}
+
+
 .tooltip {
     -fx-text-fill: white;
     -fx-background-color: #50e476;
