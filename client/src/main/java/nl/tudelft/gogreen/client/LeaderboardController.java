@@ -28,6 +28,8 @@ import nl.tudelft.gogreen.shared.DatePeriod;
 public class LeaderboardController implements Initializable {
 
     @FXML
+    private AnchorPane notificationPane;
+    @FXML
     private JFXButton timeframeButton;
     @FXML
     private LineChart<Integer, Double> scoreChart;
@@ -74,6 +76,11 @@ public class LeaderboardController implements Initializable {
      * @param resources ResourceBundle
      */
     public void initialize(URL location, ResourceBundle resources) {
+
+        //testing notifications
+        Main.showMessage(notificationPane, "You have opened the leaderboard");
+
+
         XYChart.Series<Integer, Integer> weekly = new XYChart.Series<>();
         scoreChart.setLegendVisible(false);
 
