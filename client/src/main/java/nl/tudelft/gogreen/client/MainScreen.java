@@ -208,7 +208,7 @@ public class MainScreen implements Initializable{
         /*
          * String array with all usernames TODO retrieve usernames from database to string options
          */
-        String[] options = {"user1", "asdf", "wovuwe", "brrrr", "name", "sample", "sample223", "naaaaaaaaaaame", "namenamename", "username"};
+        String[] options = {"user1", "asdf", "aaa", "wovuwe", "brrrr", "name", "sample", "sample223", "naaaaaaaaaaame", "namenamename", "username"};
         searchField.textProperty().addListener((observable, oldValue, newValue) -> {
             if(container.getChildren().size()>1){
                 container.getChildren().remove(1);
@@ -232,7 +232,11 @@ public class MainScreen implements Initializable{
 
         for(String option : options){
             // loop through every String in the array
-            if(!text.replace(" ", "").isEmpty() && option.toUpperCase().contains(text.toUpperCase())){
+            String substring;
+            if(!option.equals(text)){
+            substring = option.substring(0, Math.min(text.length(), option.length()));}
+            else substring = text;
+            if(!text.replace(" ", "").isEmpty() && substring.toUpperCase().equals(text.toUpperCase())){
                 Label label = new Label(option);
                 label.setMinWidth(330);
                 label.setStyle("-fx-border-radius: 1; -fx-border-color: gray");
