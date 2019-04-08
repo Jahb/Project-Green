@@ -2,7 +2,6 @@
 
 <?import com.jfoenix.controls.JFXButton?>
 <?import com.jfoenix.controls.JFXTextField?>
-<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
@@ -23,14 +22,6 @@
             </bottom>
             <top>
                 <BorderPane prefHeight="75.0" prefWidth="1000.0" style="-fx-background-color: white;" BorderPane.alignment="CENTER">
-                    <left>
-                        <ImageView fitHeight="65.0" fitWidth="191.0" pickOnBounds="true" preserveRatio="true" BorderPane.alignment="CENTER">
-                            <BorderPane.margin>
-                                <Insets />
-                            </BorderPane.margin>
-                                <Image url="@images/TemporaryLogo.png" />
-                        </ImageView>
-                    </left>
                     <right>
                         <HBox fx:id="topButtons" prefHeight="100.0" prefWidth="200.0" BorderPane.alignment="CENTER">
                             <BorderPane fx:id="eventButtonPane" prefHeight="200.0" prefWidth="200.0">
@@ -40,6 +31,15 @@
                             </BorderPane>
                         </HBox>
                     </right>
+            <left>
+               <HBox prefHeight="75.0" prefWidth="300.0" spacing="20.0" BorderPane.alignment="CENTER">
+                  <children>
+                              <ImageView fitHeight="65.0" fitWidth="191.0" pickOnBounds="true" preserveRatio="true">
+                                      <Image url="@images/TemporaryLogo.png" />
+                              </ImageView>
+                  </children>
+               </HBox>
+            </left>
                 </BorderPane>
             </top>
             <center>
@@ -79,5 +79,6 @@
                         </StackPane>
                     </right>
                 </BorderPane>
+      <VBox fx:id="notificationBox" layoutX="-1.0" layoutY="35.0" prefHeight="300.0" prefWidth="300.0" visible="false" AnchorPane.leftAnchor="1.0" AnchorPane.topAnchor="75.0" />
         </AnchorPane>
 </AnchorPane>

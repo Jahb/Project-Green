@@ -23,8 +23,11 @@ import nl.tudelft.gogreen.client.communication.Api;
 
 import java.io.IOException;
 import java.net.URL;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ResourceBundle;
 import java.util.function.Consumer;
+
 
 /**
  * MainScreen object.
@@ -34,6 +37,9 @@ import java.util.function.Consumer;
  */
 public class MainScreen implements Initializable{
 
+    String[] strings= new String[10];
+    @FXML
+    public VBox notificationBox = new VBox();
     @FXML
     public AnchorPane notificationPane;
     @FXML
@@ -74,14 +80,15 @@ public class MainScreen implements Initializable{
         BorderPane baseLayer = (BorderPane) root.getChildren().get(0);
         AnchorPane mainRingPane = (AnchorPane) baseLayer.getCenter();
         BorderPane topPane = (BorderPane) baseLayer.getTop();
-        HBox topButtons = (HBox) topPane.getRight();
+        HBox topRightButtons = (HBox) topPane.getRight();
+        HBox topLeftButtons = (HBox) topPane.getLeft();
 
         AnchorPane overlayLayer = (AnchorPane) root.getChildren().get(2);
         helpText = (TextArea) overlayLayer.getChildren().get(0);
         BorderPane buttonsPanel = (BorderPane) overlayLayer.getChildren().get(1);
 
         addRings(mainRingPane);
-        addTopMenuButtons(topButtons);
+        addTopMenuButtons(topRightButtons, topLeftButtons, notificationBox);
         addIconButtons(buttonsPanel);
         addActivityButton(overlayLayer);
 
@@ -100,6 +107,39 @@ public class MainScreen implements Initializable{
         });
         return scene;
     }
+
+    /**
+     * adds a notification to the list
+     */
+    public void addNotification(String text){
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
+        LocalDateTime now = LocalDateTime.now();
+        //date formatting
+        for(int i=9; i>0; i--){
+            strings[i]=strings[i-1];
+        }
+        strings[0]=dtf.format(now)+"  "+text;
+    }
+    /**
+     * toggles between showing and hiding dropdown menu
+     */
+    private void toggleNotifications(){
+        if(notificationBox.isMouseTransparent()){
+            notificationBox.setMouseTransparent(true);
+            notificationBox.setVisible(false);
+        }
+        else{
+            for(String text : strings){
+                Label label= new Label(text);
+                label.setMinWidth(330);
+                label.setStyle("-fx-border-radius: 1; -fx-border-color: gray");
+                notificationBox.getChildren().add(label);
+            }
+            notificationBox.setMouseTransparent(false);
+            notificationBox.setVisible(true);
+        }
+    }
+
 
     private void addRings(AnchorPane anchorPane) {
         ringMain = new Ring((int) (150 * .75), 150, Main.getWidth() / 2, 200, "MAIN");
@@ -180,21 +220,23 @@ public class MainScreen implements Initializable{
     /**
      * Method which adds button to HBox on TopRight of MainScreen.
      *
-     * @param hbox A Hbox Container.
+     * @param rightHbox A Hbox Container.
      */
-    private void addTopMenuButtons(HBox hbox) {
+    private void addTopMenuButtons(HBox rightHbox, HBox leftHbox, VBox notificationBox) {
         IconButton helpButton = new IconButton("Help", 70, 70);
-        BorderPane root = (BorderPane) hbox.getChildren().get(0);
+        BorderPane root = (BorderPane) rightHbox.getChildren().get(0);
         root.setCenter(helpButton.getStackPane());
-
-        IconButton profileButton = new IconButton("Profile", 70, 70);
-        BorderPane r2 = new BorderPane();
-        r2.setCenter(profileButton.getStackPane());
-        hbox.getChildren().add(r2);
-        profileButton.setOnClick(event -> Main.openProfileScreen());
-
         helpButton.setOnClick(event -> helpText.setVisible(!helpText.isVisible()));
 
+        IconButton profileButton = new IconButton("Profile", 70, 70);
+        BorderPane root2 = new BorderPane();
+        root2.setCenter(profileButton.getStackPane());
+        rightHbox.getChildren().add(root2);
+        profileButton.setOnClick(event -> Main.openProfileScreen());
+
+        IconButton notificationButton = new IconButton("Bell", 70, 70);
+        leftHbox.getChildren().add(notificationButton.getStackPane());
+        notificationButton.setOnClick(event -> toggleNotifications());
     }
 
     /**
