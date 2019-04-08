@@ -7,11 +7,7 @@ import org.junit.Test;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.util.ResourceBundle;
-
-import static org.junit.Assert.assertEquals;
 
 
 public class AddAchievementTest {
@@ -28,24 +24,24 @@ public class AddAchievementTest {
         }
     }
 
-    @Test
-    public void addAchievement() {
-        try (Connection conn = DriverManager.getConnection(resource.getString("Postgresql.datasource.url"), resource.getString("Postgresql.datasource.username"), resource.getString("Postgresql.datasource.password"))) {
-
-
-            Achievements.addAchievement(NewFeature.getId("paul",conn),"1000 points");
-            PreparedStatement getNameAchievement = conn.prepareStatement(resource.getString("qgetAchievements"));
-            getNameAchievement.setInt(1, NewFeature.getId("paul",conn));
-            String name = null;
-            ResultSet rs = getNameAchievement.executeQuery();
-            while(rs.next()){
-                name = rs.getString(1);
-            }
-            assertEquals("1000 points", name);
-        } catch (Exception exception) {
-            System.out.println(exception.getMessage());
-        }
-    }
+        @Test
+//    public void addAchievement() {
+//        try (Connection conn = DriverManager.getConnection(resource.getString("Postgresql.datasource.url"), resource.getString("Postgresql.datasource.username"), resource.getString("Postgresql.datasource.password"))) {
+//
+//
+//            Achievements.addAchievement(NewFeature.getId("paul",conn),"1000 points");
+//            PreparedStatement getNameAchievement = conn.prepareStatement(resource.getString("qgetAchievements"));
+//            getNameAchievement.setInt(1, NewFeature.getId("paul",conn));
+//            String name = null;
+//            ResultSet rs = getNameAchievement.executeQuery();
+//            while(rs.next()){
+//                name = rs.getString(1);
+//            }
+//            assertEquals("1000 points", name);
+//        } catch (Exception exception) {
+//            System.out.println(exception.getMessage());
+//        }
+//    }
     @After
     public void deleteUser(){
         try (Connection conn = DriverManager.getConnection(resource.getString("Postgresql.datasource.url"), resource.getString("Postgresql.datasource.username"), resource.getString("Postgresql.datasource.password"))) {
