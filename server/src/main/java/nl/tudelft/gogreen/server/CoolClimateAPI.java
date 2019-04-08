@@ -108,15 +108,18 @@ public class CoolClimateAPI {
                 resource.getString("Postgresql.datasource.password"));
 
         PTmapping(input_takeaction_take_public_transportation_gco2transit);
-        Map<String, String> params = getParams();
-
+        Map<String, String> params = new HashMap<>();
+        params.put("accept", "application/json");
+        params.put("app_id", "93af0470");
+        params.put("app_key", "be1dbf535bd450c012e78261cf93c0ad");
         String url = createUrl();
 
 
-        String holder = XML.toJSONObject(Unirest.get(url).headers(params).asString().getBody()).getJSONObject("response").get("result_takeaction_offset_transportation_transpledges").toString();
+        String holder = XML.toJSONObject(Unirest.get(url).headers(params).asString().getBody()).getJSONObject("response").toString();
 
 
-        float result = Float.parseFloat(holder);
+        //float result = Float.parseFloat(holder);
+        System.out.println(holder);
         /*float holderNum1 = Float.parseFloat(holder) * 6;
         float result = holderNum - holderNum1; //result in grams per day
         System.out.println("the total is: " + holderNum + " and the public transport one: " + holderNum1 + " and the result is: " + result);
@@ -125,7 +128,7 @@ public class CoolClimateAPI {
         insertAPI.setFloat(1, result);
         insertAPI.execute();
 */
-        return result;
+        return 0;
     }
 
     public static float LowerTemperature() throws Exception {
@@ -268,7 +271,7 @@ public class CoolClimateAPI {
             "input_takeaction_offset_transportation=0",
             "input_takeaction_ride_my_bike=0",
             "input_takeaction_purchase_green_electricity=0",
-            "input_takeaction_take_public_transportation=0",
+            "input_takeaction_take_public_transportation=1",
             "input_takeaction_carpool_to_work=0",
             "input_takeaction_practice_eco_driving=0",
 
@@ -364,7 +367,7 @@ public class CoolClimateAPI {
         calculateTotal(getLocation(), getInputSize(), getIncome(), getSquarefeet(),
                 getElectrictyBill(), "0", "0",
                 "0", "0",
-                input_footprint_shopping_food_fruitvegetables,"0");
+                input_footprint_shopping_food_fruitvegetables, "0");
     }
 
     public static void PTmapping(String input_takeaction_take_public_transportation_gco2transit) {
