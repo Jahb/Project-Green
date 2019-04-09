@@ -1,6 +1,7 @@
 package nl.tudelft.gogreen.client;
 
 import com.jfoenix.controls.JFXButton;
+import com.jfoenix.controls.JFXDrawer;
 import com.jfoenix.controls.JFXTextField;
 import com.mashape.unirest.http.exceptions.UnirestException;
 import javafx.application.Platform;
@@ -18,13 +19,12 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.scene.text.TextAlignment;
 import nl.tudelft.gogreen.client.communication.Api;
 
 
 import java.io.IOException;
 import java.net.URL;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.ResourceBundle;
 import java.util.function.Consumer;
 
@@ -37,9 +37,11 @@ import java.util.function.Consumer;
  */
 public class MainScreen implements Initializable{
 
-    String[] strings= new String[10];
+    public static String[] strings = new String[11];
     @FXML
-    public VBox notificationBox = new VBox();
+    public HBox topLeftButtons;
+    @FXML
+    public JFXDrawer notificationBox= new JFXDrawer();
     @FXML
     public AnchorPane notificationPane;
     @FXML
@@ -81,14 +83,13 @@ public class MainScreen implements Initializable{
         AnchorPane mainRingPane = (AnchorPane) baseLayer.getCenter();
         BorderPane topPane = (BorderPane) baseLayer.getTop();
         HBox topRightButtons = (HBox) topPane.getRight();
-        HBox topLeftButtons = (HBox) topPane.getLeft();
 
         AnchorPane overlayLayer = (AnchorPane) root.getChildren().get(2);
         helpText = (TextArea) overlayLayer.getChildren().get(0);
         BorderPane buttonsPanel = (BorderPane) overlayLayer.getChildren().get(1);
 
         addRings(mainRingPane);
-        addTopMenuButtons(topRightButtons, topLeftButtons, notificationBox);
+        addTopMenuButtons(topRightButtons);
         addIconButtons(buttonsPanel);
         addActivityButton(overlayLayer);
 
@@ -109,34 +110,16 @@ public class MainScreen implements Initializable{
     }
 
     /**
-     * adds a notification to the list
-     */
-    public void addNotification(String text){
-        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
-        LocalDateTime now = LocalDateTime.now();
-        //date formatting
-        for(int i=9; i>0; i--){
-            strings[i]=strings[i-1];
-        }
-        strings[0]=dtf.format(now)+"  "+text;
-    }
-    /**
      * toggles between showing and hiding dropdown menu
      */
-    private void toggleNotifications(){
-        if(notificationBox.isMouseTransparent()){
-            notificationBox.setMouseTransparent(true);
-            notificationBox.setVisible(false);
+    private static void toggleNotifications(JFXDrawer notificationBox){
+        if(!notificationBox.isShown()){
+            notificationBox.open();
+            notificationBox.setMouseTransparent(false);
         }
         else{
-            for(String text : strings){
-                Label label= new Label(text);
-                label.setMinWidth(330);
-                label.setStyle("-fx-border-radius: 1; -fx-border-color: gray");
-                notificationBox.getChildren().add(label);
-            }
-            notificationBox.setMouseTransparent(false);
-            notificationBox.setVisible(true);
+            notificationBox.close();
+            notificationBox.setMouseTransparent(true);
         }
     }
 
@@ -222,7 +205,7 @@ public class MainScreen implements Initializable{
      *
      * @param rightHbox A Hbox Container.
      */
-    private void addTopMenuButtons(HBox rightHbox, HBox leftHbox, VBox notificationBox) {
+    private void addTopMenuButtons(HBox rightHbox) {
         IconButton helpButton = new IconButton("Help", 70, 70);
         BorderPane root = (BorderPane) rightHbox.getChildren().get(0);
         root.setCenter(helpButton.getStackPane());
@@ -234,17 +217,35 @@ public class MainScreen implements Initializable{
         rightHbox.getChildren().add(root2);
         profileButton.setOnClick(event -> Main.openProfileScreen());
 
-        IconButton notificationButton = new IconButton("Bell", 70, 70);
-        leftHbox.getChildren().add(notificationButton.getStackPane());
-        notificationButton.setOnClick(event -> toggleNotifications());
+
     }
 
+    /**
+     * add labels to the vbox
+     */
+    public VBox setLabels() {
+        VBox labelVBox = new VBox();
+        for (String text : strings) {
+            if (text != null) {
+                Label label = new Label(text);
+                label.setMinWidth(350);
+                label.setMinHeight(45);
+                label.setStyle("-fx-border-radius: 1; -fx-border-color: gray; -fx-background-color: white; -fx-font-weight: bold; -fx-font-size:16");
+                labelVBox.getChildren().add(label);
+            }
+        }
+        return labelVBox;
+    }
     /**
      * shows notifications
      */
     public void initialize(URL location, ResourceBundle resources){
+        IconButton notificationButton = new IconButton("Bell", 70, 70);
+        topLeftButtons.getChildren().add(notificationButton.getStackPane());
+        notificationButton.setOnClick(event -> toggleNotifications(notificationBox));
+        notificationBox.setSidePane(setLabels());
         /*
-         * testing notitifications
+         * testing notifications
          */
         Main.showMessage(notificationPane, "You have opened the main screen");
         /*
@@ -281,7 +282,7 @@ public class MainScreen implements Initializable{
             if(!text.replace(" ", "").isEmpty() && substring.toUpperCase().equals(text.toUpperCase())){
                 Label label = new Label(option);
                 label.setMinWidth(330);
-                label.setStyle("-fx-border-radius: 1; -fx-border-color: gray");
+                label.setStyle("-fx-border-radius: 1; -fx-border-color: gray;");
                 label.setOnMouseClicked(new EventHandler<MouseEvent>(){
                         @Override
                         public void handle(MouseEvent event) {

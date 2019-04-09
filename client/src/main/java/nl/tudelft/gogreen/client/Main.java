@@ -16,6 +16,8 @@ import nl.tudelft.gogreen.client.communication.Api;
 import nl.tudelft.gogreen.client.communication.ProfileType;
 
 import java.io.IOException;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 public class Main extends Application {
 
@@ -193,6 +195,11 @@ public class Main extends Application {
                 snackbar.close();
             }
         });
-        mainScreen.addNotification(message);
+        for(int i=10; i>0; i--){
+            MainScreen.strings[i]= MainScreen.strings[i-1];
+        }
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("hh:mm");
+        LocalDateTime now = LocalDateTime.now();
+        MainScreen.strings[0]= " "+dtf.format(now)+" "+message;
     }
 }
