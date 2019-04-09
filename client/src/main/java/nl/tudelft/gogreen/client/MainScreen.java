@@ -322,7 +322,7 @@ public class MainScreen implements Initializable{
         //TODO Get Streak Days
         int streakDays = 6;
         AnchorPane streakPane = (AnchorPane) root.getChildren().get(3);
-        AnchorPane buttonPane = (AnchorPane) streakPane.getChildren().get(0);
+        BorderPane buttonPane = (BorderPane) streakPane.getChildren().get(0);
         Text numDays = (Text) streakPane.getChildren().get(2);
         JFXButton reward = (JFXButton) buttonPane.getChildren().get(0);
         ImageView streakImg = (ImageView) streakPane.getChildren().get(4);
