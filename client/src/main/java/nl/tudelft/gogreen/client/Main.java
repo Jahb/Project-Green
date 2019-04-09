@@ -194,7 +194,7 @@ public class Main extends Application {
                 snackbar.close();
             }
         });
-        for(int i=10; i>0; i--){
+        for(int i=MainScreen.strings.length-1; i>0; i--){
             MainScreen.strings[i]= MainScreen.strings[i-1];
         }
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("hh:mm");

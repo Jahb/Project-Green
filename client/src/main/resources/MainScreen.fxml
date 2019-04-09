@@ -3,8 +3,6 @@
 <?import com.jfoenix.controls.JFXButton?>
 <?import com.jfoenix.controls.JFXDrawer?>
 <?import com.jfoenix.controls.JFXTextField?>
-<?import javafx.geometry.Insets?>
-<?import javafx.scene.control.Button?>
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
@@ -83,16 +81,16 @@
                         </StackPane>
                     </right>
                 </BorderPane>
-      <JFXDrawer fx:id="notificationBox" defaultDrawerSize="360.0" layoutX="2.0" layoutY="76.0" mouseTransparent="true" prefHeight="495.0" prefWidth="350.0" AnchorPane.bottomAnchor="150.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="75.0" />
+      <JFXDrawer fx:id="notificationBox" defaultDrawerSize="360.0" layoutX="2.0" layoutY="76.0" minHeight="250.0" minWidth="350.0" mouseTransparent="true" prefHeight="0.0" prefWidth="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="75.0" />
         </AnchorPane>
    <AnchorPane prefHeight="339.0" prefWidth="629.0" style="-fx-background-color: white; -fx-background-radius: 20; -fx-border-color: #50e476; -fx-border-width: 5; -fx-border-radius: 15;" AnchorPane.bottomAnchor="270.0" AnchorPane.leftAnchor="174.0" AnchorPane.rightAnchor="197.0" AnchorPane.topAnchor="111.0">
       <children>
-         <AnchorPane layoutX="2.0" layoutY="282.0" prefHeight="73.0" prefWidth="636.0" style="-fx-background-color: #50e476; -fx-background-radius: 20;" AnchorPane.bottomAnchor="-6.0" AnchorPane.leftAnchor="-3.0" AnchorPane.rightAnchor="-4.0">
+         <AnchorPane layoutX="2.0" layoutY="282.0" prefHeight="73.0" prefWidth="636.0" AnchorPane.bottomAnchor="-6.0" AnchorPane.leftAnchor="-3.0" AnchorPane.rightAnchor="-4.0">
             <children>
-               <Button id="button2" layoutX="144.0" layoutY="21.0" mnemonicParsing="false" text="Today Is Your First Day Come Back Tomrrow!" />
+               <JFXButton alignment="CENTER" layoutX="66.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="495.0" style="-fx-font-size: 18;" stylesheets="@LargeButton.css" text="Today is your first day, come back tomorrow!" textFill="WHITE" AnchorPane.bottomAnchor="20.0" />
             </children>
          </AnchorPane>
-         <Text fill="#50e476" layoutX="24.0" layoutY="53.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Welcome! Currently You Are On A Streak Of:">
+         <Text fill="#50e476" layoutX="24.0" layoutY="53.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Welcome! Currently you are on a streak of:">
             <font>
                <Font name="System Bold Italic" size="28.0" />
             </font>
@@ -102,7 +100,7 @@
                <Font name="System Bold Italic" size="28.0" />
             </font>
          </Text>
-         <Text fill="#50e476" layoutY="251.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Keeping Up You'r Streak Earns You Bonus Green Points!" textAlignment="CENTER" wrappingWidth="628.0">
+         <Text fill="#50e476" layoutY="251.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Keeping up your streak earns you bonus green points!" textAlignment="CENTER" wrappingWidth="628.0">
             <font>
                <Font name="System Bold Italic" size="21.0" />
             </font>

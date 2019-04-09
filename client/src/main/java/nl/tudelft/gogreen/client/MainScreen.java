@@ -13,7 +13,6 @@ import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
-import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -21,9 +20,9 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
-import javafx.scene.text.TextAlignment;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
+import javafx.scene.text.TextAlignment;
 import nl.tudelft.gogreen.client.communication.Api;
 
 
@@ -41,7 +40,7 @@ import java.util.function.Consumer;
  */
 public class MainScreen implements Initializable{
 
-    public static String[] strings = new String[11];
+    public static String[] strings = new String[7];
     @FXML
     public HBox topLeftButtons;
     @FXML
@@ -235,12 +234,19 @@ public class MainScreen implements Initializable{
      */
     public VBox setLabels() {
         VBox labelVBox = new VBox();
+        Label title= new Label(" Recent notifications:");
+        title.setMinWidth(350);
+        title.setMinHeight(40);
+        title.setTextAlignment(TextAlignment.CENTER);
+        title.setStyle("-fx-font-weight: bold; -fx-background-color: #50e476; -fx-font-size: 20; -fx-text-fill: white");
+        labelVBox.getChildren().add(title);
         for (String text : strings) {
             if (text != null) {
                 Label label = new Label(text);
                 label.setMinWidth(350);
-                label.setMinHeight(45);
-                label.setStyle("-fx-border-radius: 1; -fx-border-color: gray; -fx-background-color: white; -fx-font-weight: bold; -fx-font-size:16");
+                label.setMinHeight(30);
+                label.setStyle("-fx-border-radius: 1; -fx-border-color: gray; -fx-background-color: white;" +
+                        " -fx-font-weight: bold; -fx-font-size:16");
                 labelVBox.getChildren().add(label);
             }
         }
@@ -252,8 +258,9 @@ public class MainScreen implements Initializable{
     public void initialize(URL location, ResourceBundle resources){
         IconButton notificationButton = new IconButton("Bell", 70, 70);
         topLeftButtons.getChildren().add(notificationButton.getStackPane());
-        notificationButton.setOnClick(event -> toggleNotifications(notificationBox));
-        notificationBox.setSidePane(setLabels());
+        notificationButton.setOnClick(event -> {if(notificationBox.isHidden())notificationBox.setSidePane(setLabels());
+        toggleNotifications(notificationBox);});
+        //notificationBox.setSidePane(setLabels());
         /*
          * testing notifications
          */
@@ -309,10 +316,10 @@ public class MainScreen implements Initializable{
     private void setUpStreak() {
         //TODO Get Streak Days
         int streakDays = 6;
-        AnchorPane streakPane = (AnchorPane) root.getChildren().get(2);
+        AnchorPane streakPane = (AnchorPane) root.getChildren().get(3);
         AnchorPane buttonPane = (AnchorPane) streakPane.getChildren().get(0);
         Text numDays = (Text) streakPane.getChildren().get(2);
-        Button reward = (Button) buttonPane.getChildren().get(0);
+        JFXButton reward = (JFXButton) buttonPane.getChildren().get(0);
         ImageView streakImg = (ImageView) streakPane.getChildren().get(4);
 
         streakPane.setVisible(true);
@@ -321,16 +328,16 @@ public class MainScreen implements Initializable{
 
         switch (streakDays) {
             case 0:
-                reward.setText("Today Is Your First Day, ComeBack Tomorrow!");
+                reward.setText("Today is your first day, come back tomorrow!");
                 break;
             case 1:
-                reward.setText("Congratulations! You Earned An Extra 10 Points!");
+                reward.setText("Congratulations! You earned an extra 10 Points!");
                 break;
             case 2:
-                reward.setText("Congratulations! You Earned An Extra 15 Points!");
+                reward.setText("Congratulations! You earned an extra 15 Points!");
                 break;
             case 3:
-                reward.setText("Congratulations! You Earned An Extra 25 Points!");
+                reward.setText("Congratulations! You earned an extra 25 Points!");
                 streakImg.setImage(new Image("/images/IconCupSilver.png"));
                 break;
             case 4:
@@ -338,15 +345,15 @@ public class MainScreen implements Initializable{
                 streakImg.setImage(new Image("/images/IconCupSilver.png"));
                 break;
             case 5:
-                reward.setText("Congratulations! You Earned An Extra 60 Points!");
+                reward.setText("Congratulations! You earned an extra 60 Points!");
                 streakImg.setImage(new Image("/images/IconCupSilver.png"));
                 break;
             case 6:
-                reward.setText("Congratulations! You Earned An Extra 80 Points!");
+                reward.setText("Congratulations! You earned an extra 80 Points!");
                 streakImg.setImage(new Image("/images/IconCupGold.png"));
                 break;
             default:
-                reward.setText("Congratulations! You Earned An Extra 100 Points!");
+                reward.setText("Congratulations! You earned an extra 100 Points!");
                 streakImg.setImage(new Image("IconCupGold.png"));
                 break;
         }
