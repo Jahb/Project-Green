@@ -3,6 +3,7 @@
 <?import com.jfoenix.controls.JFXButton?>
 <?import com.jfoenix.controls.JFXDrawer?>
 <?import com.jfoenix.controls.JFXTextField?>
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
@@ -34,10 +35,13 @@
                         </HBox>
                     </right>
             <left>
-               <HBox fx:id="topLeftButtons" prefHeight="75.0" prefWidth="300.0" spacing="20.0" BorderPane.alignment="CENTER">
+               <HBox fx:id="topLeftButtons" alignment="CENTER_LEFT" prefHeight="75.0" prefWidth="373.0" spacing="20.0" BorderPane.alignment="CENTER">
                   <children>
                               <ImageView fitHeight="65.0" fitWidth="191.0" pickOnBounds="true" preserveRatio="true">
                                       <Image url="@images/TemporaryLogo.png" />
+                        <HBox.margin>
+                           <Insets left="5.0" />
+                        </HBox.margin>
                               </ImageView>
                   </children>
                </HBox>
@@ -81,7 +85,7 @@
                         </StackPane>
                     </right>
                 </BorderPane>
-      <JFXDrawer fx:id="notificationBox" defaultDrawerSize="360.0" layoutX="2.0" layoutY="76.0" minHeight="250.0" minWidth="350.0" mouseTransparent="true" prefHeight="0.0" prefWidth="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="75.0" />
+      <JFXDrawer fx:id="notificationBox" defaultDrawerSize="360.0" layoutX="2.0" layoutY="76.0" minHeight="0.0" minWidth="350.0" mouseTransparent="true" prefWidth="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="75.0" />
         </AnchorPane>
    <AnchorPane prefHeight="339.0" prefWidth="629.0" style="-fx-background-color: white; -fx-background-radius: 20; -fx-border-color: #50e476; -fx-border-width: 5; -fx-border-radius: 15;" AnchorPane.bottomAnchor="270.0" AnchorPane.leftAnchor="174.0" AnchorPane.rightAnchor="197.0" AnchorPane.topAnchor="111.0">
       <children>

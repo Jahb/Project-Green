@@ -237,9 +237,15 @@ public class MainScreen implements Initializable{
         Label title= new Label(" Recent notifications:");
         title.setMinWidth(350);
         title.setMinHeight(40);
-        title.setTextAlignment(TextAlignment.CENTER);
         title.setStyle("-fx-font-weight: bold; -fx-background-color: #50e476; -fx-font-size: 20; -fx-text-fill: white");
+        Label empty = new Label(" There are no notifications.");
+        empty.setMinHeight(30);
+        empty.setMinWidth(350);
+        empty.setStyle("-fx-font-size: 16; -fx-text-fill:grey; -fx-background-color: white;");
         labelVBox.getChildren().add(title);
+        if(strings[0]==null){
+            labelVBox.getChildren().add(empty);
+        }
         for (String text : strings) {
             if (text != null) {
                 Label label = new Label(text);
@@ -260,11 +266,10 @@ public class MainScreen implements Initializable{
         topLeftButtons.getChildren().add(notificationButton.getStackPane());
         notificationButton.setOnClick(event -> {if(notificationBox.isHidden())notificationBox.setSidePane(setLabels());
         toggleNotifications(notificationBox);});
-        //notificationBox.setSidePane(setLabels());
         /*
          * testing notifications
          */
-        Main.showMessage(notificationPane, "You have opened the main screen");
+        //Main.showMessage(notificationPane, "You have opened the main screen");
         /*
          * String array with all usernames TODO retrieve usernames from database to string options
          */
