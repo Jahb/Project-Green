@@ -13,13 +13,17 @@ import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
+import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
 import javafx.scene.text.TextAlignment;
+import javafx.scene.layout.VBox;
+import javafx.scene.text.Text;
 import nl.tudelft.gogreen.client.communication.Api;
 
 
@@ -56,6 +60,7 @@ public class MainScreen implements Initializable{
     private Ring ringNext;
     private TextArea helpText;
     private AddActivityButton activityButton;
+    private AnchorPane root;
     // TODO handler for each subcategory
     private Consumer<String> handler = name -> {
         try {
@@ -76,7 +81,7 @@ public class MainScreen implements Initializable{
     public Scene getScene() throws IOException {
         URL url = Main.class.getResource("/MainScreen.fxml");
         System.out.println(url);
-        AnchorPane root = FXMLLoader.load(url);
+        root = FXMLLoader.load(url);
         scene = new Scene(root, Main.getWidth(), Main.getHeight());
 
         BorderPane baseLayer = (BorderPane) root.getChildren().get(0);
@@ -99,6 +104,13 @@ public class MainScreen implements Initializable{
 
         overlayLayer.setPickOnBounds(false);
         buttonsPanel.setPickOnBounds(false);
+
+        //Streaks
+        //TODO Implement Streaks. condition to check if first login today.
+        if (true) {
+            setUpStreak();
+        }
+
 
         scene.addEventHandler(MouseEvent.MOUSE_PRESSED, event -> {
             Node node = event.getPickResult().getIntersectedNode();
@@ -172,8 +184,6 @@ public class MainScreen implements Initializable{
             ringPrevious.setSegmentValues(valuesPrevious);
             Platform.runLater(() -> ringPrevious.startAnimation());
         }).start();
-
-
 
 
     }
@@ -294,6 +304,53 @@ public class MainScreen implements Initializable{
             }
         }
         return dropDownMenu;
+    }
+
+    private void setUpStreak() {
+        //TODO Get Streak Days
+        int streakDays = 6;
+        AnchorPane streakPane = (AnchorPane) root.getChildren().get(2);
+        AnchorPane buttonPane = (AnchorPane) streakPane.getChildren().get(0);
+        Text numDays = (Text) streakPane.getChildren().get(2);
+        Button reward = (Button) buttonPane.getChildren().get(0);
+        ImageView streakImg = (ImageView) streakPane.getChildren().get(4);
+
+        streakPane.setVisible(true);
+        numDays.setText(streakDays + " Days!");
+        reward.setOnAction(event -> streakPane.setVisible(false));
+
+        switch (streakDays) {
+            case 0:
+                reward.setText("Today Is Your First Day, ComeBack Tomorrow!");
+                break;
+            case 1:
+                reward.setText("Congratulations! You Earned An Extra 10 Points!");
+                break;
+            case 2:
+                reward.setText("Congratulations! You Earned An Extra 15 Points!");
+                break;
+            case 3:
+                reward.setText("Congratulations! You Earned An Extra 25 Points!");
+                streakImg.setImage(new Image("/images/IconCupSilver.png"));
+                break;
+            case 4:
+                reward.setText("Congratulations! You Earned An Extra 40 Points!");
+                streakImg.setImage(new Image("/images/IconCupSilver.png"));
+                break;
+            case 5:
+                reward.setText("Congratulations! You Earned An Extra 60 Points!");
+                streakImg.setImage(new Image("/images/IconCupSilver.png"));
+                break;
+            case 6:
+                reward.setText("Congratulations! You Earned An Extra 80 Points!");
+                streakImg.setImage(new Image("/images/IconCupGold.png"));
+                break;
+            default:
+                reward.setText("Congratulations! You Earned An Extra 100 Points!");
+                streakImg.setImage(new Image("IconCupGold.png"));
+                break;
+        }
+
     }
 
 }
