@@ -360,7 +360,7 @@ public class MainScreen implements Initializable {
                 break;
             default:
                 reward.setText("Congratulations! You earned an extra 100 Points!");
-                streakImg.setImage(new Image("IconCupGold.png"));
+                streakImg.setImage(new Image("/images/IconCupGold.png"));
                 break;
         }
 

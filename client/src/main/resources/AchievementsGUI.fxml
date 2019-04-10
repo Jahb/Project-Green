@@ -26,7 +26,7 @@
             </ImageView>
       </AnchorPane>
       <ListView fx:id="allAchievements" layoutX="13.0" layoutY="182.0" prefHeight="523.0" prefWidth="480.0" stylesheets="ListStyle.css" AnchorPane.bottomAnchor="15.0" AnchorPane.leftAnchor="13.0" AnchorPane.topAnchor="182.0" />
-      <ListView fx:id="userAchievements" layoutX="507.0" layoutY="183.0" prefHeight="523.0" prefWidth="480.0" AnchorPane.bottomAnchor="14.0" AnchorPane.rightAnchor="13.0" AnchorPane.topAnchor="183.0" />
+      <ListView fx:id="userAchievements" layoutX="507.0" layoutY="183.0" prefHeight="523.0" prefWidth="480.0" stylesheets="@ListStyle.css" AnchorPane.bottomAnchor="14.0" AnchorPane.rightAnchor="13.0" AnchorPane.topAnchor="183.0" />
       <Label alignment="CENTER" layoutX="83.0" layoutY="117.0" prefHeight="64.0" prefWidth="340.0" text="All Achievements" textFill="WHITE" AnchorPane.leftAnchor="83.0" AnchorPane.topAnchor="117.0">
          <font>
             <Font name="System Bold Italic" size="40.0" />
