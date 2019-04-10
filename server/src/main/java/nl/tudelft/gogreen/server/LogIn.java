@@ -27,7 +27,7 @@ public class LogIn {
         stmt.setString(1, username);
         ResultSet rs = stmt.executeQuery();
 
-        if (!rs.next()){
+        if (!rs.next()) {
             return false;
         }
 

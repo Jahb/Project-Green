@@ -70,7 +70,8 @@ public class CreateUser {
         streak.setNull(2, Types.DATE);
         streak.setInt(3, 0);
         streak.execute();
-        PreparedStatement userpoints = conn.prepareStatement(resource.getString("qInsertUserPoints"));
+        PreparedStatement userpoints =
+                conn.prepareStatement(resource.getString("qInsertUserPoints"));
         userpoints.setInt(1, id);
         userpoints.setInt(2, 0);
         userpoints.setInt(3, 0);
@@ -78,7 +79,8 @@ public class CreateUser {
         userpoints.setInt(5, 0);
         userpoints.setInt(6, 0);
         userpoints.execute();
-        PreparedStatement userHistory = conn.prepareStatement(resource.getString("qInsertHistory0"));
+        PreparedStatement userHistory
+                = conn.prepareStatement(resource.getString("qInsertHistory0"));
         userHistory.setInt(1,id);
         conn.close();
         return true;
@@ -118,27 +120,33 @@ public class CreateUser {
 
 
 
-        PreparedStatement delObjective = conn.prepareStatement(resource.getString("qDeleteObjective"));
+        PreparedStatement delObjective =
+                conn.prepareStatement(resource.getString("qDeleteObjective"));
         delObjective.setInt(1, id);
         delObjective.execute();
 
-        PreparedStatement delHabits = conn.prepareStatement(resource.getString("qDeleteHabits"));
+        PreparedStatement delHabits =
+                conn.prepareStatement(resource.getString("qDeleteHabits"));
         delHabits.setInt(1, id);
         delHabits.execute();
 
-        PreparedStatement delStreak = conn.prepareStatement(resource.getString("qDeleteStreak"));
+        PreparedStatement delStreak =
+                conn.prepareStatement(resource.getString("qDeleteStreak"));
         delStreak.setInt(1, id);
         delStreak.execute();
 
-        PreparedStatement delUserPoints = conn.prepareStatement(resource.getString("qDeleteUserPoints"));
+        PreparedStatement delUserPoints =
+                conn.prepareStatement(resource.getString("qDeleteUserPoints"));
         delUserPoints.setInt(1, id);
         delUserPoints.execute();
 
-        PreparedStatement delFeaturesHistory = conn.prepareStatement(resource.getString("qDeleteFeaturesHistory"));
+        PreparedStatement delFeaturesHistory =
+                conn.prepareStatement(resource.getString("qDeleteFeaturesHistory"));
         delFeaturesHistory.setInt(1, id);
         delFeaturesHistory.execute();
 
-        PreparedStatement delUserHistory = conn.prepareStatement(resource.getString("qDeleteUserHistory"));
+        PreparedStatement delUserHistory =
+                conn.prepareStatement(resource.getString("qDeleteUserHistory"));
         delUserHistory.setInt(1, id);
         delUserHistory.execute();
 
@@ -147,7 +155,8 @@ public class CreateUser {
 
         Following.deleteAllFollows(id, conn);
 
-        PreparedStatement delUserTable = conn.prepareStatement(resource.getString("qDeleteUserTable"));
+        PreparedStatement delUserTable =
+                conn.prepareStatement(resource.getString("qDeleteUserTable"));
         delUserTable.setInt(1, id);
         delUserTable.execute();
 
