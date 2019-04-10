@@ -17,6 +17,10 @@ public class NewFeature {
 
     private static ResourceBundle resource = ResourceBundle.getBundle("db");
 
+    public static String adding_feature(String username, String feature, String user_input) throws Exception{
+        float points = C02toPoints(CoolClimateAPI.fetchApiData(feature,user_input));
+        return adding_feature(username,feature,points);
+    }
     /**
      * Initial Structure for the adding a feature functionalities.
      *
@@ -25,7 +29,7 @@ public class NewFeature {
      * @return returns the name of the feature
      * @throws Exception raised if an error occurs while accessing the database
      */
-    public static String adding_feature(String username, String feature) throws Exception {
+    public static String adding_feature(String username, String feature, float points) throws Exception {
         Connection conn = getConnection(
                 resource.getString("Postgresql.datasource.url"),
                 resource.getString("Postgresql.datasource.username"),
@@ -42,9 +46,9 @@ public class NewFeature {
         conn.close();
         return String.valueOf(total);
     }
-    public static int C02toPoints( int points) {
+    public static float C02toPoints( float points) {
 
-        return points/4;
+        return points;
 
     }
     public static int getTotal(String username) throws Exception {
