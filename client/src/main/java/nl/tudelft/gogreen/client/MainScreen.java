@@ -22,9 +22,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
-import javafx.scene.text.TextAlignment;
 import nl.tudelft.gogreen.client.communication.Api;
-
 
 import java.io.IOException;
 import java.net.URL;
@@ -38,13 +36,13 @@ import java.util.function.Consumer;
  * @author Kamron Geijsen
  * @version 4.20.21
  */
-public class MainScreen implements Initializable{
+public class MainScreen implements Initializable {
 
     public static String[] strings = new String[7];
     @FXML
     public HBox topLeftButtons;
     @FXML
-    public JFXDrawer notificationBox= new JFXDrawer();
+    public JFXDrawer notificationBox = new JFXDrawer();
     @FXML
     public AnchorPane notificationPane;
     @FXML
@@ -123,12 +121,11 @@ public class MainScreen implements Initializable{
     /**
      * toggles between showing and hiding dropdown menu
      */
-    private static void toggleNotifications(JFXDrawer notificationBox){
-        if(!notificationBox.isShown()){
+    private static void toggleNotifications(JFXDrawer notificationBox) {
+        if (!notificationBox.isShown()) {
             notificationBox.open();
             notificationBox.setMouseTransparent(false);
-        }
-        else{
+        } else {
             notificationBox.close();
             notificationBox.setMouseTransparent(true);
         }
@@ -234,7 +231,7 @@ public class MainScreen implements Initializable{
      */
     public VBox setLabels() {
         VBox labelVBox = new VBox();
-        Label title= new Label(" Recent notifications:");
+        Label title = new Label(" Recent notifications:");
         title.setMinWidth(350);
         title.setMinHeight(40);
         title.setStyle("-fx-font-weight: bold; -fx-background-color: #50e476; -fx-font-size: 20; -fx-text-fill: white");
@@ -243,7 +240,7 @@ public class MainScreen implements Initializable{
         empty.setMinWidth(350);
         empty.setStyle("-fx-font-size: 16; -fx-text-fill:grey; -fx-background-color: white;");
         labelVBox.getChildren().add(title);
-        if(strings[0]==null){
+        if (strings[0] == null) {
             labelVBox.getChildren().add(empty);
         }
         for (String text : strings) {
@@ -258,14 +255,17 @@ public class MainScreen implements Initializable{
         }
         return labelVBox;
     }
+
     /**
      * shows notifications
      */
-    public void initialize(URL location, ResourceBundle resources){
+    public void initialize(URL location, ResourceBundle resources) {
         IconButton notificationButton = new IconButton("Bell", 70, 70);
         topLeftButtons.getChildren().add(notificationButton.getStackPane());
-        notificationButton.setOnClick(event -> {if(notificationBox.isHidden())notificationBox.setSidePane(setLabels());
-        toggleNotifications(notificationBox);});
+        notificationButton.setOnClick(event -> {
+            if (notificationBox.isHidden()) notificationBox.setSidePane(setLabels());
+            toggleNotifications(notificationBox);
+        });
         /*
          * testing notifications
          */
@@ -275,7 +275,7 @@ public class MainScreen implements Initializable{
          */
         String[] options = {"user1", "asdf", "aaa", "wovuwe", "brrrr", "name", "sample", "sample223", "naaaaaaaaaaame", "namenamename", "username"};
         searchField.textProperty().addListener((observable, oldValue, newValue) -> {
-            if(container.getChildren().size()>1){
+            if (container.getChildren().size() > 1) {
                 container.getChildren().remove(1);
             }
             container.getChildren().add(populateDropDownMenu(newValue, options, searchField));
@@ -284,33 +284,34 @@ public class MainScreen implements Initializable{
     }
 
     /**
-     * Searches for text in an array of strings and returns the matches in a VBox
-     * @param text text currently in the search bar
+     * Searches for text in an array of strings and returns the matches in a VBox.
+     *
+     * @param text    text currently in the search bar
      * @param options array of all potential suggestions
-     * @param search the search field itself
+     * @param search  the search field itself
      * @return returns suggestions box
      */
-    private static VBox populateDropDownMenu(String text, String[] options, JFXTextField search){
+    private static VBox populateDropDownMenu(String text, String[] options, JFXTextField search) {
         VBox dropDownMenu = new VBox();
         dropDownMenu.setStyle("-fx-background-color: white");
         dropDownMenu.setAlignment(Pos.CENTER);
 
-        for(String option : options){
+        for (String option : options) {
             // loop through every String in the array
             String substring;
-            if(!option.equals(text)){
-            substring = option.substring(0, Math.min(text.length(), option.length()));}
-            else substring = text;
-            if(!text.replace(" ", "").isEmpty() && substring.toUpperCase().equals(text.toUpperCase())){
+            if (!option.equals(text)) {
+                substring = option.substring(0, Math.min(text.length(), option.length()));
+            } else substring = text;
+            if (!text.replace(" ", "").isEmpty() && substring.toUpperCase().equals(text.toUpperCase())) {
                 Label label = new Label(option);
                 label.setMinWidth(330);
                 label.setStyle("-fx-border-radius: 1; -fx-border-color: gray;");
-                label.setOnMouseClicked(new EventHandler<MouseEvent>(){
-                        @Override
-                        public void handle(MouseEvent event) {
-                            search.setText(label.getText());
-                        }
-                    }
+                label.setOnMouseClicked(new EventHandler<MouseEvent>() {
+                                            @Override
+                                            public void handle(MouseEvent event) {
+                                                search.setText(label.getText());
+                                            }
+                                        }
                 );
                 dropDownMenu.getChildren().add(label); //adds suggestion to VBox
             }

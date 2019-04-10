@@ -20,9 +20,14 @@ import java.util.ResourceBundle;
 public class AchievementsController implements Initializable {
 
     @FXML
-    private ListView<ListItem> achievementsList = new ListView<>();
+    public ListView<ListItem> userAchievements = new ListView<>();
+    @FXML
+    private ListView<ListItem> allAchievements = new ListView<>();
 
-    private final ObservableList<ListItem> items = FXCollections.observableArrayList();
+    private final ObservableList<ListItem> allAchievementsList = FXCollections
+            .observableArrayList();
+    private final ObservableList<ListItem> userAchievementsList = FXCollections
+            .observableArrayList();
 
     /**
      * Returns the Achievements Scene.
@@ -46,11 +51,14 @@ public class AchievementsController implements Initializable {
      * @param resources A ResourceBundle
      */
     public void initialize(URL location, ResourceBundle resources) {
-        items.clear();
-        items.add(new ListItem("achievement1", "images/achievementImage.png", "2/10"));
-        items.add(new ListItem("achievement2", "images/achievementImage.png", "50/100"));
-        items.add(new ListItem("achievement3", "images/achievementImage.png", "Completed"));
-        achievementsList.setCellFactory(new Callback<ListView<ListItem>, ListCell<ListItem>>() {
+        allAchievementsList.clear();
+        allAchievementsList.add(
+                new ListItem("achievement1", "images/achievementImage.png", "Not Yet"));
+        allAchievementsList.add(
+                new ListItem("achievement2", "images/achievementImage.png", "Not Yet"));
+        allAchievementsList.add(
+                new ListItem("achievement3", "images/achievementImage.png", "10/04/2019"));
+        allAchievements.setCellFactory(new Callback<ListView<ListItem>, ListCell<ListItem>>() {
 
             @Override
             public ListCell<ListItem> call(ListView<ListItem> arg0) {
@@ -60,7 +68,7 @@ public class AchievementsController implements Initializable {
                         super.updateItem(item, bool);
                         if (item != null && !bool) {
                             setGraphic(ListItem.imageView(item));
-                            setText(item.getName() + "\nProgress: " + item.getStatus());
+                            setText(item.getName() + "\nCompleted: " + item.getStatus());
                         } else {
                             setText(null);
                             setGraphic(null);
@@ -71,7 +79,8 @@ public class AchievementsController implements Initializable {
                 return cell;
             }
         });
-        achievementsList.setItems(items);
+        allAchievements.setItems(allAchievementsList);
+        userAchievements.setItems(userAchievementsList);
     }
 
 }
