@@ -10,24 +10,32 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.ResourceBundle;
 
-public class CoolClimateAPI {
+public class CoolClimateApi {
 
     private static ResourceBundle resource = ResourceBundle.getBundle("db");
 
-    public static float fetchApiData(String feature, String user_input) throws Exception {
+    /**
+     * fetches the API Data.
+     * @param feature the feature input
+     * @param userinput the user input
+     * @return returns the needed data
+     * @throws Exception raises error when unable to access database
+     */
+    public static float fetchApiData(String feature, String userinput) throws Exception {
 
-        if(feature.equals("Vegetarian Meal")) return VegetarianMeal(user_input);
-        if(feature.equals("Local Product"))  return LocalProduct();
-        if(feature.equals("Usage of Bike")) return UsageofBike();
-        if(feature.equals("Usage of Public Transport")) return UsageofPublicTransport(user_input);
-        if(feature.equals("Lower Temperature")) return LowerTemperature(user_input);
-        if(feature.equals("Solar Panel")) return SolarPanels();
-        if(feature.equals("Recycling")) return Recycling();
+        if (feature.equals("Vegetarian Meal")) return VegetarianMeal(userinput);
+        if (feature.equals("Local Product")) return LocalProduct();
+        if (feature.equals("Usage of Bike")) return UsageofBike();
+        if (feature.equals("Usage of Public Transport")) return UsageofPublicTransport(userinput);
+        if (feature.equals("Lower Temperature")) return LowerTemperature(userinput);
+        if (feature.equals("Solar Panel")) return SolarPanels();
+        if (feature.equals("Recycling")) return Recycling();
         return -1;
     }
 
 
-    public static float VegetarianMeal(String input_footprint_shopping_food_fruitvegetables) throws Exception {
+    public static float VegetarianMeal(String input_footprint_shopping_food_fruitvegetables)
+            throws Exception {
 
         VMmapping(input_footprint_shopping_food_fruitvegetables);
 
@@ -105,7 +113,6 @@ public class CoolClimateAPI {
     public static float UsageofPublicTransport(String input_miles) throws Exception {
 
 
-
         PTmapping(input_miles);
         Map<String, String> params = new HashMap<>();
         params.put("accept", "application/json");
@@ -146,7 +153,7 @@ public class CoolClimateAPI {
 
         System.out.println(holder); //that is kwuse
         float result = Float.parseFloat(holder);
-        result = result*800;
+        result = result * 800;
         System.out.println(result);
 
         return result;
@@ -197,6 +204,7 @@ public class CoolClimateAPI {
         PreparedStatement insertAPI = conn.prepareStatement(resource.getString("qupdateRecycling"));
         insertAPI.setFloat(1, result);
         insertAPI.execute();
+
 
         return result;
     }
@@ -368,6 +376,7 @@ public class CoolClimateAPI {
                 "0", "0",
                 input_footprint_shopping_food_fruitvegetables, "0");
     }
+
     public static void LTmapping(String input_footprint_housing_cdd) {
         calculateTotal(getLocation(), getInputSize(), getIncome(), getSquarefeet(),
                 getElectrictyBill(), input_footprint_housing_cdd, "0",
@@ -386,7 +395,7 @@ public class CoolClimateAPI {
                                       String input_footprint_housing_squarefeet, String input_footprint_housing_electricity_dollars, String input_footprint_housing_cdd,
                                       String input_footprint_transportation_miles1, String input_footprint_transportation_airtotal,
                                       String input_footprint_transportation_publictrans, String input_footprint_shopping_food_fruitvegetables,
-                                      String input_miles ) {
+                                      String input_miles) {
 
         keys[0] += location;// User inputs their zip code
         keys[1] += inputSize;
@@ -428,7 +437,7 @@ public class CoolClimateAPI {
         }
 
         for (int i = 0; i < takeActionKeys.length; i++) {
-            if (i == takeActionKeys.length - 1){
+            if (i == takeActionKeys.length - 1) {
                 result += takeActionKeys[i];
                 break;
             }
