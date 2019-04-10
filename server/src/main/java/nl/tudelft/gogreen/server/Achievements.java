@@ -11,40 +11,58 @@ public class Achievements {
 
     private static ResourceBundle resource = ResourceBundle.getBundle("db");
 
+    /**
+     * addAchievement for an user.
+     * @param id id is the user id
+     * @param achievementid achievement id
+     * @throws Exception raises when error accessing the database
+     */
     public static void addAchievement(int id, int achievementid) throws Exception {
 
-            Connection conn = DriverManager.getConnection(
-                    resource.getString("Postgresql.datasource.url"),
-                    resource.getString("Postgresql.datasource.username"),
-                    resource.getString("Postgresql.datasource.password"));
+        Connection conn = DriverManager.getConnection(
+                resource.getString("Postgresql.datasource.url"),
+                resource.getString("Postgresql.datasource.username"),
+                resource.getString("Postgresql.datasource.password"));
 
-            PreparedStatement add = conn.prepareStatement("insert into achievements values(?,?)");
-            add.setInt(1,id);
-            add.setInt(2,achievementid);
-            add.execute();
+        PreparedStatement add = conn.prepareStatement(resource.getString("qAddAchievement"));
+        add.setInt(1, id);
+        add.setInt(2, achievementid);
+        add.execute();
 
-
-    }
-    public static void deleteAchievement(int id, int achievementid)  throws  Exception{
-            Connection conn = DriverManager.getConnection(
-                    resource.getString("Postgresql.datasource.url"),
-                    resource.getString("Postgresql.datasource.username"),
-                    resource.getString("Postgresql.datasource.password"));
-
-            PreparedStatement delete = conn.prepareStatement("delete from achievements where user_id = ? and achievement_id = ?");
-            delete.setInt(1,id);
-            delete.setInt(2,achievementid);
-            delete.execute();
 
     }
 
+    /**
+     * Delete an achievement of an user.
+     * @param id id of the user
+     * @param achievementid achievements id
+     * @throws Exception raises when error accessing the database
+     */
+    public static void deleteAchievement(int id, int achievementid) throws Exception {
+        Connection conn = DriverManager.getConnection(
+                resource.getString("Postgresql.datasource.url"),
+                resource.getString("Postgresql.datasource.username"),
+                resource.getString("Postgresql.datasource.password"));
+
+        PreparedStatement delete = conn.prepareStatement(resource.getString("qDeleteAchievement"));
+        delete.setInt(1, id);
+        delete.setInt(2, achievementid);
+        delete.execute();
+
+    }
+
+    /**
+     * Shows the names of all achievements in the table.
+     * @return returns a list with all the achievements names
+     * @throws Exception raises error when unable to access database
+     */
     public static ArrayList<String> showAllAchievements() throws Exception {
         Connection conn = DriverManager.getConnection(
                 resource.getString("Postgresql.datasource.url"),
                 resource.getString("Postgresql.datasource.username"),
                 resource.getString("Postgresql.datasource.password"));
 
-        PreparedStatement show = conn.prepareStatement("select achievement_name from achievements_names");
+        PreparedStatement show = conn.prepareStatement(resource.getString("qSelectName"));
         ArrayList<String> result = new ArrayList<>();
         ResultSet rs = show.executeQuery();
         while (rs.next()) {
@@ -53,14 +71,20 @@ public class Achievements {
         return result;
     }
 
-    public static ArrayList<Integer> showAchievementsForUser(int id)  throws  Exception{
+    /**
+     * Show the list of achievements for a user.
+     * @param id the user's id
+     * @return returns the list of achievement names
+     * @throws Exception raises error when unable to access database
+     */
+    public static ArrayList<Integer> showAchievementsForUser(int id) throws Exception {
         Connection conn = DriverManager.getConnection(
                 resource.getString("Postgresql.datasource.url"),
                 resource.getString("Postgresql.datasource.username"),
                 resource.getString("Postgresql.datasource.password"));
 
-        PreparedStatement show = conn.prepareStatement("select achievement_id from achievements where user_id = ?");
-        show.setInt(1,id);
+        PreparedStatement show = conn.prepareStatement(resource.getString("qShowAchievement"));
+        show.setInt(1, id);
         ArrayList<Integer> result = new ArrayList<>();
         ResultSet rs = show.executeQuery();
         while (rs.next()) {
