@@ -18,7 +18,7 @@ public class APILowerTemperatureTest {
     public void UsageBikeTest() {
         try (Connection conn = DriverManager.getConnection(resource.getString("Postgresql.datasource.url"), resource.getString("Postgresql.datasource.username"), resource.getString("Postgresql.datasource.password"))){
 
-            CoolClimateAPI.LowerTemperature();
+            CoolClimateApi.LowerTemperature(null);
             PreparedStatement temperature = conn.prepareStatement(resource.getString("qLowerTemperature"));
             ResultSet rs = temperature.executeQuery();
             float result = 0;

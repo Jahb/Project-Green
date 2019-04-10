@@ -18,7 +18,7 @@ public class APISolarPanelsTest {
     public void UsageBikeTest() {
         try (Connection conn = DriverManager.getConnection(resource.getString("Postgresql.datasource.url"), resource.getString("Postgresql.datasource.username"), resource.getString("Postgresql.datasource.password"))){
 
-            CoolClimateAPI.SolarPanels();
+            CoolClimateApi.SolarPanels();
             PreparedStatement solar = conn.prepareStatement(resource.getString("qSolarPanels"));
             ResultSet rs = solar.executeQuery();
             float result = 0;

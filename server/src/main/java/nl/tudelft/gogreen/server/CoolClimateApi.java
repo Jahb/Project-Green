@@ -23,14 +23,14 @@ public class CoolClimateApi {
      */
     public static float fetchApiData(String feature, String userinput) throws Exception {
 
-        if (feature.equals("Vegetarian Meal")) return VegetarianMeal(userinput);
-        if (feature.equals("Local Product")) return LocalProduct();
-        if (feature.equals("Usage of Bike")) return UsageofBike();
-        if (feature.equals("Usage of Public Transport")) return UsageofPublicTransport(userinput);
-        if (feature.equals("Lower Temperature")) return LowerTemperature(userinput);
-        if (feature.equals("Solar Panel")) return SolarPanels();
-        if (feature.equals("Recycling")) return Recycling();
-        return -1;
+//        if (feature.equals("Vegetarian Meal")) return VegetarianMeal(userinput);
+//        if (feature.equals("Local Product")) return LocalProduct();
+//        if (feature.equals("Usage of Bike")) return UsageofBike();
+//        if (feature.equals("Usage of Public Transport")) return UsageofPublicTransport(userinput);
+//        if (feature.equals("Lower Temperature")) return LowerTemperature(userinput);
+//        if (feature.equals("Solar Panel")) return SolarPanels();
+//        if (feature.equals("Recycling")) return Recycling();
+        return 20;
     }
 
     /**

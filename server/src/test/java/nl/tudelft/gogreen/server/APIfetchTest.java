@@ -18,7 +18,7 @@ public class APIfetchTest {
     public void UsageBikeTest() {
         try (Connection conn = DriverManager.getConnection(resource.getString("Postgresql.datasource.url"), resource.getString("Postgresql.datasource.username"), resource.getString("Postgresql.datasource.password"))){
 
-            CoolClimateAPI.fetchApiData();
+            CoolClimateApi.fetchApiData(null,null);
             PreparedStatement fetch = conn.prepareStatement(resource.getString("qVegetarianMeal"));
             ResultSet rs = fetch.executeQuery();
             float result = 0;

@@ -18,7 +18,7 @@ public class APIRecyclingTest {
     public void UsageBikeTest() {
         try (Connection conn = DriverManager.getConnection(resource.getString("Postgresql.datasource.url"), resource.getString("Postgresql.datasource.username"), resource.getString("Postgresql.datasource.password"))){
 
-            CoolClimateAPI.Recycling();
+            CoolClimateApi.Recycling();
             PreparedStatement recycling = conn.prepareStatement(resource.getString("qRecycling"));
             ResultSet rs = recycling.executeQuery();
             float result = 0;

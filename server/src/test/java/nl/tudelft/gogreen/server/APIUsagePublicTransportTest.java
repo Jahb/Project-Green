@@ -18,7 +18,7 @@ public class APIUsagePublicTransportTest {
     public void UsagePublicTransport() {
         try (Connection conn = DriverManager.getConnection(resource.getString("Postgresql.datasource.url"), resource.getString("Postgresql.datasource.username"), resource.getString("Postgresql.datasource.password"))){
 
-            CoolClimateAPI.UsageofPublicTransport("1");
+            CoolClimateApi.UsageofPublicTransport("1");
             PreparedStatement usagetransport = conn.prepareStatement(resource.getString("qUsageTransport"));
             ResultSet rs = usagetransport.executeQuery();
             float result = 0;
