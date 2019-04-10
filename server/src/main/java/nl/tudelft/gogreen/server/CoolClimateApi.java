@@ -33,11 +33,16 @@ public class CoolClimateApi {
         return -1;
     }
 
-
-    public static float VegetarianMeal(String input_footprint_shopping_food_fruitvegetables)
+    /**
+     * The API fetching C02 for VegetarianMeal.
+     * @param inputFootprintShoppingFoodFruitVegetables inputs the data
+     * @return returns the c02 for v meal
+     * @throws Exception raises error when unable to access database
+     */
+    public static float VegetarianMeal(String inputFootprintShoppingFoodFruitVegetables)
             throws Exception {
 
-        VMmapping(input_footprint_shopping_food_fruitvegetables);
+        VMmapping(inputFootprintShoppingFoodFruitVegetables);
 
         Map<String, String> params = new HashMap<>();
         params.put("accept", "application/json");
@@ -46,7 +51,9 @@ public class CoolClimateApi {
         String url = createUrl();
 
 
-        String holder = XML.toJSONObject(Unirest.get(url).headers(params).asString().getBody()).getJSONObject("response").get("result_food_fruitsveg").toString();
+        String holder = XML.toJSONObject(Unirest.get(url).headers(params).asString().getBody())
+                .getJSONObject("response").get("result_food_fruitsveg").toString();
+
 
 
         System.out.println(holder);
