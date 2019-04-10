@@ -1,5 +1,6 @@
-package nl.tudelft.gogreen.server;
+package nl.tudelft.gogreen.server.auth;
 
+import nl.tudelft.gogreen.server.Main;
 import org.springframework.security.crypto.bcrypt.BCrypt;
 
 import java.sql.Connection;
