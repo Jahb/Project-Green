@@ -1,5 +1,9 @@
 package nl.tudelft.gogreen.client;
 
+import java.io.IOException;
+import java.net.URL;
+import java.util.ResourceBundle;
+
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXListCell;
 import javafx.collections.FXCollections;
@@ -16,16 +20,15 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.util.Callback;
+import nl.tudelft.gogreen.client.ScoreGraph.UndecoratedGraph;
 import nl.tudelft.gogreen.client.communication.Api;
 import nl.tudelft.gogreen.shared.DateHolder;
 import nl.tudelft.gogreen.shared.DatePeriod;
 
-import java.io.IOException;
-import java.net.URL;
-import java.util.ResourceBundle;
-
 public class LeaderboardController implements Initializable {
 
+    @FXML
+    private AnchorPane notificationPane;
     @FXML
     private JFXButton timeframeButton;
     @FXML
@@ -47,9 +50,23 @@ public class LeaderboardController implements Initializable {
         URL url = Main.class.getResource("/LeaderboardGUI.fxml");
         System.out.println(url);
         AnchorPane root = FXMLLoader.load(url);
-        BorderPane topPane = (BorderPane) root.getChildren().get(2);
+        BorderPane topPane = (BorderPane) root.getChildren().get(1);
+
+        root.getChildren().remove(2);
+        createGraph(root);
+
+
         IconButton.addBackButton(topPane);
         return new Scene(root, Main.getWidth(), Main.getHeight());
+    }
+
+    private void createGraph(AnchorPane root) {
+        ScoreGraph graph1 = new ScoreGraph(500, 200, 400, 400);
+        root.getChildren().add(graph1.getPane());
+        UndecoratedGraph graph = graph1.getGraph();
+        graph.setData(new double[]{0, 20, 20, 60, 80, 80, 120});
+        graph.standardizeY(250);
+        graph.drawGraph();
     }
 
     /**
@@ -59,6 +76,11 @@ public class LeaderboardController implements Initializable {
      * @param resources ResourceBundle
      */
     public void initialize(URL location, ResourceBundle resources) {
+
+        //testing notifications
+        Main.showMessage(notificationPane, "You have opened the leaderboard");
+
+
         XYChart.Series<Integer, Integer> weekly = new XYChart.Series<>();
         scoreChart.setLegendVisible(false);
 
@@ -132,7 +154,6 @@ public class LeaderboardController implements Initializable {
 
 
     }
-
 }
 
 

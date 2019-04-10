@@ -1,4 +1,3 @@
-
 .list-view .list-cell:empty {
     -fx-background-color: transparent;
 }

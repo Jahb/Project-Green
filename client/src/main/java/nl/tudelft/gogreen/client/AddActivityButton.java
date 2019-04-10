@@ -277,9 +277,9 @@ class AddActivityButton {
             hackTooltipStartTiming(tooltip);
             tooltip.setStyle(
                     "-fx-background-color:#52EA7F; " +
-                    "-fx-font-weight:bold; " +
-                    "-fx-text-color:white;" +
-                    "-fx-font-size:20");
+                            "-fx-font-weight:bold; " +
+                            "-fx-text-color:white;" +
+                            "-fx-font-size:20");
             Tooltip.install(button.getStackPane(), tooltip);
         }
 

@@ -1,11 +1,18 @@
 package nl.tudelft.gogreen.client;
 
+import com.jfoenix.controls.JFXButton;
+import com.jfoenix.controls.JFXDrawer;
+import com.jfoenix.controls.JFXTextField;
 import com.mashape.unirest.http.exceptions.UnirestException;
 import javafx.application.Platform;
+import javafx.event.EventHandler;
+import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.fxml.Initializable;
+import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -13,12 +20,17 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
+import javafx.scene.text.TextAlignment;
 import nl.tudelft.gogreen.client.communication.Api;
+
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.ResourceBundle;
 import java.util.function.Consumer;
+
 
 /**
  * MainScreen object.
@@ -26,10 +38,22 @@ import java.util.function.Consumer;
  * @author Kamron Geijsen
  * @version 4.20.21
  */
-public class MainScreen {
+public class MainScreen implements Initializable{
 
+    public static String[] strings = new String[7];
+    @FXML
+    public HBox topLeftButtons;
+    @FXML
+    public JFXDrawer notificationBox= new JFXDrawer();
+    @FXML
+    public AnchorPane notificationPane;
+    @FXML
+    public JFXButton searchButton;
+    @FXML
+    public JFXTextField searchField;
+    @FXML
+    public VBox container;
     private Scene scene;
-
     private Ring ringMain;
     private Ring ringPrevious;
     private Ring ringNext;
@@ -62,14 +86,14 @@ public class MainScreen {
         BorderPane baseLayer = (BorderPane) root.getChildren().get(0);
         AnchorPane mainRingPane = (AnchorPane) baseLayer.getCenter();
         BorderPane topPane = (BorderPane) baseLayer.getTop();
-        HBox topButtons = (HBox) topPane.getRight();
+        HBox topRightButtons = (HBox) topPane.getRight();
 
-        AnchorPane overlayLayer = (AnchorPane) root.getChildren().get(1);
+        AnchorPane overlayLayer = (AnchorPane) root.getChildren().get(2);
         helpText = (TextArea) overlayLayer.getChildren().get(0);
         BorderPane buttonsPanel = (BorderPane) overlayLayer.getChildren().get(1);
 
         addRings(mainRingPane);
-        addTopMenuButtons(topButtons);
+        addTopMenuButtons(topRightButtons);
         addIconButtons(buttonsPanel);
         addActivityButton(overlayLayer);
 
@@ -95,6 +119,21 @@ public class MainScreen {
         });
         return scene;
     }
+
+    /**
+     * toggles between showing and hiding dropdown menu
+     */
+    private static void toggleNotifications(JFXDrawer notificationBox){
+        if(!notificationBox.isShown()){
+            notificationBox.open();
+            notificationBox.setMouseTransparent(false);
+        }
+        else{
+            notificationBox.close();
+            notificationBox.setMouseTransparent(true);
+        }
+    }
+
 
     private void addRings(AnchorPane anchorPane) {
         ringMain = new Ring((int) (150 * .75), 150, Main.getWidth() / 2, 200, "MAIN");
@@ -173,29 +212,119 @@ public class MainScreen {
     /**
      * Method which adds button to HBox on TopRight of MainScreen.
      *
-     * @param hbox A Hbox Container.
+     * @param rightHbox A Hbox Container.
      */
-    private void addTopMenuButtons(HBox hbox) {
+    private void addTopMenuButtons(HBox rightHbox) {
         IconButton helpButton = new IconButton("Help", 70, 70);
-        BorderPane root = (BorderPane) hbox.getChildren().get(0);
+        BorderPane root = (BorderPane) rightHbox.getChildren().get(0);
         root.setCenter(helpButton.getStackPane());
+        helpButton.setOnClick(event -> helpText.setVisible(!helpText.isVisible()));
 
         IconButton profileButton = new IconButton("Profile", 70, 70);
-        BorderPane r2 = new BorderPane();
-        r2.setCenter(profileButton.getStackPane());
-        hbox.getChildren().add(r2);
+        BorderPane root2 = new BorderPane();
+        root2.setCenter(profileButton.getStackPane());
+        rightHbox.getChildren().add(root2);
         profileButton.setOnClick(event -> Main.openProfileScreen());
 
-        helpButton.setOnClick(event -> helpText.setVisible(!helpText.isVisible()));
+
+    }
+
+    /**
+     * add labels to the vbox
+     */
+    public VBox setLabels() {
+        VBox labelVBox = new VBox();
+        Label title= new Label(" Recent notifications:");
+        title.setMinWidth(350);
+        title.setMinHeight(40);
+        title.setStyle("-fx-font-weight: bold; -fx-background-color: #50e476; -fx-font-size: 20; -fx-text-fill: white");
+        Label empty = new Label(" There are no notifications.");
+        empty.setMinHeight(30);
+        empty.setMinWidth(350);
+        empty.setStyle("-fx-font-size: 16; -fx-text-fill:grey; -fx-background-color: white;");
+        labelVBox.getChildren().add(title);
+        if(strings[0]==null){
+            labelVBox.getChildren().add(empty);
+        }
+        for (String text : strings) {
+            if (text != null) {
+                Label label = new Label(text);
+                label.setMinWidth(350);
+                label.setMinHeight(30);
+                label.setStyle("-fx-border-radius: 1; -fx-border-color: gray; -fx-background-color: white;" +
+                        " -fx-font-weight: bold; -fx-font-size:16");
+                labelVBox.getChildren().add(label);
+            }
+        }
+        return labelVBox;
+    }
+    /**
+     * shows notifications
+     */
+    public void initialize(URL location, ResourceBundle resources){
+        IconButton notificationButton = new IconButton("Bell", 70, 70);
+        topLeftButtons.getChildren().add(notificationButton.getStackPane());
+        notificationButton.setOnClick(event -> {if(notificationBox.isHidden())notificationBox.setSidePane(setLabels());
+        toggleNotifications(notificationBox);});
+        /*
+         * testing notifications
+         */
+        //Main.showMessage(notificationPane, "You have opened the main screen");
+        /*
+         * String array with all usernames TODO retrieve usernames from database to string options
+         */
+        String[] options = {"user1", "asdf", "aaa", "wovuwe", "brrrr", "name", "sample", "sample223", "naaaaaaaaaaame", "namenamename", "username"};
+        searchField.textProperty().addListener((observable, oldValue, newValue) -> {
+            if(container.getChildren().size()>1){
+                container.getChildren().remove(1);
+            }
+            container.getChildren().add(populateDropDownMenu(newValue, options, searchField));
+        });
+
+    }
+
+    /**
+     * Searches for text in an array of strings and returns the matches in a VBox
+     * @param text text currently in the search bar
+     * @param options array of all potential suggestions
+     * @param search the search field itself
+     * @return returns suggestions box
+     */
+    private static VBox populateDropDownMenu(String text, String[] options, JFXTextField search){
+        VBox dropDownMenu = new VBox();
+        dropDownMenu.setStyle("-fx-background-color: white");
+        dropDownMenu.setAlignment(Pos.CENTER);
+
+        for(String option : options){
+            // loop through every String in the array
+            String substring;
+            if(!option.equals(text)){
+            substring = option.substring(0, Math.min(text.length(), option.length()));}
+            else substring = text;
+            if(!text.replace(" ", "").isEmpty() && substring.toUpperCase().equals(text.toUpperCase())){
+                Label label = new Label(option);
+                label.setMinWidth(330);
+                label.setStyle("-fx-border-radius: 1; -fx-border-color: gray;");
+                label.setOnMouseClicked(new EventHandler<MouseEvent>(){
+                        @Override
+                        public void handle(MouseEvent event) {
+                            search.setText(label.getText());
+                        }
+                    }
+                );
+                dropDownMenu.getChildren().add(label); //adds suggestion to VBox
+            }
+        }
+        return dropDownMenu;
     }
 
     private void setUpStreak() {
         //TODO Get Streak Days
         int streakDays = 6;
-        AnchorPane streakPane = (AnchorPane) root.getChildren().get(2);
-        AnchorPane buttonPane = (AnchorPane) streakPane.getChildren().get(0);
+        AnchorPane streakPane = (AnchorPane) root.getChildren().get(3);
+        BorderPane buttonPane = (BorderPane) streakPane.getChildren().get(0);
         Text numDays = (Text) streakPane.getChildren().get(2);
-        Button reward = (Button) buttonPane.getChildren().get(0);
+        JFXButton reward = (JFXButton) buttonPane.getChildren().get(0);
         ImageView streakImg = (ImageView) streakPane.getChildren().get(4);
 
         streakPane.setVisible(true);
@@ -204,16 +333,16 @@ public class MainScreen {
 
         switch (streakDays) {
             case 0:
-                reward.setText("Today Is Your First Day, ComeBack Tomorrow!");
+                reward.setText("Today is your first day, come back tomorrow!");
                 break;
             case 1:
-                reward.setText("Congratulations! You Earned An Extra 10 Points!");
+                reward.setText("Congratulations! You earned an extra 10 Points!");
                 break;
             case 2:
-                reward.setText("Congratulations! You Earned An Extra 15 Points!");
+                reward.setText("Congratulations! You earned an extra 15 Points!");
                 break;
             case 3:
-                reward.setText("Congratulations! You Earned An Extra 25 Points!");
+                reward.setText("Congratulations! You earned an extra 25 Points!");
                 streakImg.setImage(new Image("/images/IconCupSilver.png"));
                 break;
             case 4:
@@ -221,15 +350,15 @@ public class MainScreen {
                 streakImg.setImage(new Image("/images/IconCupSilver.png"));
                 break;
             case 5:
-                reward.setText("Congratulations! You Earned An Extra 60 Points!");
+                reward.setText("Congratulations! You earned an extra 60 Points!");
                 streakImg.setImage(new Image("/images/IconCupSilver.png"));
                 break;
             case 6:
-                reward.setText("Congratulations! You Earned An Extra 80 Points!");
+                reward.setText("Congratulations! You earned an extra 80 Points!");
                 streakImg.setImage(new Image("/images/IconCupGold.png"));
                 break;
             default:
-                reward.setText("Congratulations! You Earned An Extra 100 Points!");
+                reward.setText("Congratulations! You earned an extra 100 Points!");
                 streakImg.setImage(new Image("IconCupGold.png"));
                 break;
         }
