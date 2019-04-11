@@ -16,13 +16,13 @@ public class APILowerTemperatureTest {
 
             float result = CoolClimateApi.LowerTemperature("4");
             float expected = Float.parseFloat("32");
-            assertEquals(expected,result);
+            assertEquals( (int) expected, (int)result);
 
             CoolClimateApi.keysremapping();
 
             float result2 = CoolClimateApi.fetchApiData("Lower Temperature","4");
             float expected2 = Float.parseFloat("32");
-            assertEquals(expected2,result2);
+            assertEquals((int) expected2,(int)result2);
 
 
         } catch (Exception exception) {
