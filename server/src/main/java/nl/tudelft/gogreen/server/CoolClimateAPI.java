@@ -3,26 +3,30 @@ package nl.tudelft.gogreen.server;
 import com.mashape.unirest.http.Unirest;
 import org.json.XML;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.ResourceBundle;
 
 public class CoolClimateAPI {
 
-    private static ResourceBundle resource = ResourceBundle.getBundle("db");
 
     public static float fetchApiData(String feature, String user_input) throws Exception {
 
-        if(feature.equals("Vegetarian Meal")) return VegetarianMeal(user_input);
-        if(feature.equals("Local Product"))  return LocalProduct();
-        if(feature.equals("Usage of Bike")) return UsageofBike();
-        if(feature.equals("Usage of Public Transport")) return UsageofPublicTransport(user_input);
-        if(feature.equals("Lower Temperature")) return LowerTemperature(user_input);
-        if(feature.equals("Solar Panel")) return SolarPanels();
-        if(feature.equals("Recycling")) return Recycling();
+        if (feature.equals("Vegetarian Meal")) return VegetarianMeal(user_input);
+        if (feature.equals("Usage of Bike")) return UsageofBike(user_input);
+        if (feature.equals("Usage of Public Transport")) return UsageofPublicTransport(user_input);
+        if (feature.equals("Lower Temperature")) return LowerTemperature(user_input);
+        if (feature.equals("Smoking")) return Smoking(user_input);
+        if (feature.equals("Recycling")) return Recycling(user_input);
+        if (feature.equals("CFL")) return CFL(user_input);
+        return -1;
+    }
+
+    public static float fetchApiData(String feature) throws Exception {
+
+
+        if (feature.equals("Local Product")) return LocalProduct();
+        if (feature.equals("Solar Panel")) return SolarPanels();
+
         return -1;
     }
 
@@ -52,10 +56,6 @@ public class CoolClimateAPI {
 
     public static float LocalProduct() throws Exception {
 
-        Connection conn = DriverManager.getConnection(
-                resource.getString("Postgresql.datasource.url"),
-                resource.getString("Postgresql.datasource.username"),
-                resource.getString("Postgresql.datasource.password"));
 
         Map<String, String> params = getParams();
 
@@ -64,23 +64,16 @@ public class CoolClimateAPI {
 
         String holder = XML.toJSONObject(Unirest.get(url).headers(params).asString().getBody()).getJSONObject("response").get("input_takeaction_go_organic_myprodcost").toString();
 
-
-        float holderNum = Float.parseFloat(holder) * 1000 * 1000;
-        float result = holderNum / 365 / 3;
+        float holderNum = Float.parseFloat(holder) * 1000;
+        float result = holderNum / 3;
         System.out.println(result);
-        PreparedStatement insertAPI = conn.prepareStatement(resource.getString("qupdateLocalProduct"));
-        insertAPI.setFloat(1, result);
-        insertAPI.execute();
+
 
         return result;
     }
 
-    public static float UsageofBike() throws Exception {
+    public static float UsageofBike(String km) throws Exception {
 
-        Connection conn = DriverManager.getConnection(
-                resource.getString("Postgresql.datasource.url"),
-                resource.getString("Postgresql.datasource.username"),
-                resource.getString("Postgresql.datasource.password"));
 
         Map<String, String> params = getParams();
 
@@ -90,14 +83,9 @@ public class CoolClimateAPI {
         String holder = XML.toJSONObject(Unirest.get(url).headers(params).asString().getBody()).getJSONObject("response").get("result_takeaction_ride_my_bike_driveghgs").toString();
 
 
-        float holderNum = Float.parseFloat(holder) * 1000 * 1000;
-        float result = holderNum / 365; //result in grams per day
+        float holderNum = Float.parseFloat(holder) * 1000;
+        float result = holderNum / 365 * Integer.parseInt(km); //result in grams per day
         System.out.println(result);
-
-        PreparedStatement insertAPI = conn.prepareStatement(resource.getString("qupdateUsageofBike"));
-        insertAPI.setFloat(1, result);
-        insertAPI.execute();
-
         return result;
     }
 
@@ -105,29 +93,12 @@ public class CoolClimateAPI {
     public static float UsageofPublicTransport(String input_miles) throws Exception {
 
 
+        float carC02 = 118; //average car c02 emissions upon https://www.delijn.be/en/overdelijn/organisatie/zorgzaam-ondernemen/milieu/co2-uitstoot-voertuigen.html
 
-        PTmapping(input_miles);
-        Map<String, String> params = new HashMap<>();
-        params.put("accept", "application/json");
-        params.put("app_id", "93af0470");
-        params.put("app_key", "be1dbf535bd450c012e78261cf93c0ad");
-        String url = createUrl();
+        float bus = 75; // average bus c02 emissions upon https://www.delijn.be/en/overdelijn/organisatie/zorgzaam-ondernemen/milieu/co2-uitstoot-voertuigen.html
 
 
-        String holder = XML.toJSONObject(Unirest.get(url).headers(params).asString().getBody()).getJSONObject("response").toString();
-
-
-        //float result = Float.parseFloat(holder);
-        System.out.println(holder);
-        /*float holderNum1 = Float.parseFloat(holder) * 6;
-        float result = holderNum - holderNum1; //result in grams per day
-        System.out.println("the total is: " + holderNum + " and the public transport one: " + holderNum1 + " and the result is: " + result);
-
-        PreparedStatement insertAPI = conn.prepareStatement(resource.getString("qupdateUsageofPublicTransport"));
-        insertAPI.setFloat(1, result);
-        insertAPI.execute();
-*/
-        return 0;
+        return (carC02 - bus) * Float.parseFloat(input_miles);
     }
 
     public static float LowerTemperature(String input_footprint_housing_cdd) throws Exception {
@@ -146,7 +117,7 @@ public class CoolClimateAPI {
 
         System.out.println(holder); //that is kwuse
         float result = Float.parseFloat(holder);
-        result = result*800;
+        result = result * 800;
         System.out.println(result);
 
         return result;
@@ -155,50 +126,47 @@ public class CoolClimateAPI {
 
     public static float SolarPanels() throws Exception {
 
-        Connection conn = DriverManager.getConnection(
-                resource.getString("Postgresql.datasource.url"),
-                resource.getString("Postgresql.datasource.username"),
-                resource.getString("Postgresql.datasource.password"));
 
-        Map<String, String> params = getParams();
+        SPmapping();
+        Map<String, String> params = new HashMap<>();
+        params.put("accept", "application/json");
+        params.put("app_id", "93af0470");
+        params.put("app_key", "be1dbf535bd450c012e78261cf93c0ad");
+        String url = createUrl();
 
-        String url = getUrl();
 
+        String holder = XML.toJSONObject(Unirest.get(url).headers(params).asString().getBody()).getJSONObject("response").get("result_electricity_direct").toString();
 
-        String holder = XML.toJSONObject(Unirest.get(url).headers(params).asString().getBody()).getJSONObject("response").get("result_takeaction_purchase_green_electricity_kwhCO2yr").toString();
+        float result = Float.parseFloat(holder) * 1000; //transform from tones to grams
 
-        float holderNum = Float.parseFloat(holder) * 1000 * 1000; //transform from tones to grams
-        float result = holderNum / 365; //transform from yearly to daily
+        System.out.println(result / 15);
 
-        PreparedStatement insertAPI = conn.prepareStatement(resource.getString("qupdateSolarPanels"));
-        insertAPI.setFloat(1, result);
-        insertAPI.execute();
-
-        return result;
+        return result / 15;
     }
 
-    public static float Recycling() throws Exception {
 
-        Connection conn = DriverManager.getConnection(
-                resource.getString("Postgresql.datasource.url"),
-                resource.getString("Postgresql.datasource.username"),
-                resource.getString("Postgresql.datasource.password"));
+    public static float Recycling(String kg) throws Exception {
 
-        Map<String, String> params = getParams();
+        float C02perKG = Float.parseFloat("6"); //avg C02 consumption per kg of waste https://timeforchange.org/plastic-bags-and-plastic-bottles-CO2-emissions
 
-        String url = getUrl();
+        return C02perKG * Float.parseFloat(kg);
+    }
+
+    public static float Smoking(String numberofCigarretes) throws Exception {
 
 
-        String holder = XML.toJSONObject(Unirest.get(url).headers(params).asString().getBody()).getJSONObject("response").get("result_watersewage").toString();
+        float C02percigarrete = Float.parseFloat("0.6"); //avg C02 consumption per cigarretes upon http://palebluedot.llc/carbon-copy/2015/10/14/the-carbon-footprint-of-cigarettes
 
-        float holderNum = Float.parseFloat(holder) * 1000 * 1000; //transform from tones to grams
-        float result = holderNum / 365 / 3; //transform from yearly to daily
-        System.out.println(result);
-        PreparedStatement insertAPI = conn.prepareStatement(resource.getString("qupdateRecycling"));
-        insertAPI.setFloat(1, result);
-        insertAPI.execute();
 
-        return result;
+        return C02percigarrete * Float.parseFloat(numberofCigarretes);
+    }
+
+    public static float CFL(String numberOFCFL) throws Exception {
+
+
+        float C02perCFL = Float.parseFloat("350"); //avg C02 consumption per led per day upon https://www.flickr.com/photos/carbonquilt/8229755738
+
+        return C02perCFL * Float.parseFloat(numberOFCFL);
     }
 
     public static Map<String, String> getParams() {
@@ -242,7 +210,7 @@ public class CoolClimateAPI {
             "input_footprint_transportation_airtotal=",
             "input_footprint_transportation_publictrans=",
             "input_footprint_shopping_food_fruitvegetables=",
-            "input_footprint_transportation_bus="
+            "input_footprint_housing_electricity_kwh="
 
 
     };
@@ -255,7 +223,7 @@ public class CoolClimateAPI {
      * practicing eco driving.
      */
     private static String[] takeActionKeys = {
-            "input_takeaction_switch_to_cfl=0",
+
             "input_takeaction_maintain_my_vehicles=0",
             "input_takeaction_more_efficient_vehicle=0",
             "input_takeaction_reduce_air_travel=0",
@@ -272,7 +240,7 @@ public class CoolClimateAPI {
             "input_takeaction_take_public_transportation=1",
             "input_takeaction_take_public_transportation_type=0",
             "input_takeaction_take_public_transportation_gco2bus=1",
-            "input_takeaction_take_public_transportation_mpg=30"
+            "input_takeaction_take_public_transportation_mpg=30",
 
     };
 
@@ -336,7 +304,9 @@ public class CoolClimateAPI {
             "input_footprint_housing_gco2_per_kwh=1000",
             "input_footprint_housing_naturalgas_dollars=0",
             "input_footprint_housing_heatingoil_dollars=0",
-            "input_footprint_housing_hdd=0"
+            "input_footprint_housing_hdd=0",
+            "input_footprint_shopping_goods_clothing=6666660",
+            "input_footprint_housing_watersewage=20"
 
 
     };
@@ -358,7 +328,7 @@ public class CoolClimateAPI {
     }
 
     public static String getElectrictyBill() {
-        return "10";
+        return "2333";
     }
 
 
@@ -366,27 +336,29 @@ public class CoolClimateAPI {
         calculateTotal(getLocation(), getInputSize(), getIncome(), getSquarefeet(),
                 getElectrictyBill(), "0", "0",
                 "0", "0",
-                input_footprint_shopping_food_fruitvegetables, "0");
+                input_footprint_shopping_food_fruitvegetables, "0", "0", "0");
     }
+
     public static void LTmapping(String input_footprint_housing_cdd) {
         calculateTotal(getLocation(), getInputSize(), getIncome(), getSquarefeet(),
                 getElectrictyBill(), input_footprint_housing_cdd, "0",
                 "0", "0",
-                "0", "0");
+                "0", "0", "0", "0");
     }
 
-    public static void PTmapping(String input_miles) {
+    public static void SPmapping() {
         calculateTotal(getLocation(), getInputSize(), getIncome(), getSquarefeet(),
                 getElectrictyBill(), "0", "0",
                 "0", "0",
-                "0", input_miles);
+                "0", getElectrictyBill(), "0", "0");
     }
+
 
     public static void calculateTotal(String location, String inputSize, String input_income,
                                       String input_footprint_housing_squarefeet, String input_footprint_housing_electricity_dollars, String input_footprint_housing_cdd,
                                       String input_footprint_transportation_miles1, String input_footprint_transportation_airtotal,
                                       String input_footprint_transportation_publictrans, String input_footprint_shopping_food_fruitvegetables,
-                                      String input_miles ) {
+                                      String electrictyWhats, String carpooldistance, String a) {
 
         keys[0] += location;// User inputs their zip code
         keys[1] += inputSize;
@@ -406,7 +378,7 @@ public class CoolClimateAPI {
         keys[15] += input_footprint_transportation_airtotal;
         keys[16] += input_footprint_transportation_publictrans;
         keys[17] += input_footprint_shopping_food_fruitvegetables;
-        keys[18] += input_miles;
+        keys[18] += electrictyWhats;
 
 
     }
@@ -428,7 +400,7 @@ public class CoolClimateAPI {
         }
 
         for (int i = 0; i < takeActionKeys.length; i++) {
-            if (i == takeActionKeys.length - 1){
+            if (i == takeActionKeys.length - 1) {
                 result += takeActionKeys[i];
                 break;
             }

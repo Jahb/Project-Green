@@ -14,6 +14,6 @@ public class Main {
     public static void main(String[] args) throws Exception {
         Connection conn = DriverManager.getConnection(resource.getString("Postgresql.datasource.url"), resource.getString("Postgresql.datasource.username"), resource.getString("Postgresql.datasource.password"));
         //SpringApplication.run(Main.class, args);
-        CoolClimateAPI.UsageofPublicTransport("100");
+        CoolClimateAPI.LEDS();
     }
 }
