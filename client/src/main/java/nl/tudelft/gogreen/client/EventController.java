@@ -104,7 +104,12 @@ public class EventController implements Initializable {
                 ((JFXDatePicker) base.getChildren().get(3)).getValue().format(dateFormat));
         createEvent.setVisible(false);
         new Thread(() -> Api.current.newEvent(newEvent)).start();
-        allEvents.add(newEvent);
+        new Thread(() -> {
+            List<EventItem> all = Api.current.getAllEvents();
+            List<EventItem> user = Api.current.getUserEvents();
+            Platform.runLater(() -> allEvents.addAll(all));
+            Platform.runLater(() -> userEvents.addAll(user));
+        }).start();
     }
 
     /**
