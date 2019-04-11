@@ -1,6 +1,7 @@
 package nl.tudelft.gogreen.server;
 
 import java.sql.Connection;
+import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.text.DateFormat;
@@ -18,12 +19,21 @@ public class NewFeature {
     private static ResourceBundle resource = ResourceBundle.getBundle("db");
 
     public static String adding_feature(String username, String feature, String user_input) throws Exception {
-        float points = C02toPoints(CoolClimateApi.fetchApiData(feature, user_input));
+
+        Connection conn = DriverManager.getConnection(
+                resource.getString("Postgresql.datasource.url"),
+                resource.getString("Postgresql.datasource.username"),
+                resource.getString("Postgresql.datasource.password"));
+        float points = C02toPoints(CoolClimateApi.fetchApiData(feature, user_input, getId(username,conn)));
         return aadding_feature(username, feature, points);
     }
 
     public static String adding_feature(String username, String feature) throws Exception {
-        float points = C02toPoints(CoolClimateApi.fetchApiData(feature));
+        Connection conn = DriverManager.getConnection(
+                resource.getString("Postgresql.datasource.url"),
+                resource.getString("Postgresql.datasource.username"),
+                resource.getString("Postgresql.datasource.password"));
+        float points = C02toPoints(CoolClimateApi.fetchApiData(feature, getId(username,conn)));
         return aadding_feature(username, feature, points);
     }
 

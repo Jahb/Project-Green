@@ -3,9 +3,14 @@ package nl.tudelft.gogreen.server;
 import com.mashape.unirest.http.Unirest;
 import org.json.XML;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.ResourceBundle;
+
+import static java.sql.DriverManager.getConnection;
 
 public class CoolClimateApi {
 
@@ -17,32 +22,33 @@ public class CoolClimateApi {
      * @return returns the needed data
      * @throws Exception raises error when unable to access database
      */
-    public static float fetchApiData(String feature, String user_input) throws Exception {
+    public static float fetchApiData(String feature, String user_input,int id) throws Exception {
 
-        if (feature.equals("Vegetarian Meal")) return VegetarianMeal(user_input);
+        if (feature.equals("Vegetarian Meal")) return VegetarianMeal(user_input,id);
         if (feature.equals("Usage of Bike")) return UsageofBike(user_input);
         if (feature.equals("Usage of Public Transport")) return UsageofPublicTransport(user_input);
-        if (feature.equals("Lower Temperature")) return LowerTemperature(user_input);
+        if (feature.equals("Lower Temperature")) return LowerTemperature(user_input,id);
         if (feature.equals("Smoking")) return Smoking(user_input);
         if (feature.equals("Recycling")) return Recycling(user_input);
         if (feature.equals("CFL")) return CFL(user_input);
         return -1;
     }
 
-    public static float fetchApiData(String feature) throws Exception {
+
+    public static float fetchApiData(String feature,int id) throws Exception {
 
 
         if (feature.equals("Local Product")) return LocalProduct();
-        if (feature.equals("Solar Panels")) return SolarPanels();
+        if (feature.equals("Solar Panels")) return SolarPanels(id);
 
         return -1;
     }
 
 
-    public static float VegetarianMeal(String input_footprint_shopping_food_fruitvegetables) throws Exception {
+    public static float VegetarianMeal(String input_footprint_shopping_food_fruitvegetables,int id) throws Exception {
 
 
-        VMmapping(input_footprint_shopping_food_fruitvegetables);
+        VMmapping(input_footprint_shopping_food_fruitvegetables, id);
 
         Map<String, String> params = new HashMap<>();
         params.put("accept", "application/json");
@@ -113,11 +119,11 @@ public class CoolClimateApi {
         return (carC02 - bus) * Float.parseFloat(input_miles);
     }
 
-    public static float LowerTemperature(String input_footprint_housing_cdd) throws Exception {
+    public static float LowerTemperature(String input_footprint_housing_cdd,int id) throws Exception {
 
         System.out.println("In lower temperature with input: " + input_footprint_housing_cdd);
 
-        LTmapping(input_footprint_housing_cdd);
+        LTmapping(input_footprint_housing_cdd, id);
 
         Map<String, String> params = new HashMap<>();
         params.put("accept", "application/json");
@@ -138,10 +144,10 @@ public class CoolClimateApi {
     }
 
 
-    public static float SolarPanels() throws Exception {
+    public static float SolarPanels(int id) throws Exception {
 
 
-        SPmapping();
+        SPmapping( id);
         Map<String, String> params = new HashMap<>();
         params.put("accept", "application/json");
         params.put("app_id", "93af0470");
@@ -207,35 +213,35 @@ public class CoolClimateApi {
 
 
     private static String[] keys = {
-            "input_location=",                               // User inputs their zip code
-            "input_size=",                            // The number of people that live in the user's house
-            "input_footprint_household_adults=",            // How many adults occupy the user's house
-            "input_footprint_household_children=",
-            "input_income=",                              // User inputs their income
-            "input_footprint_housing_squarefeet=",       // How large is the user's house
-            "input_footprint_housing_electricity_dollars=",
-            "input_footprint_housing_cdd=",               // Days that the house is cooled/year
-            "input_footprint_transportation_miles1=",
-            "input_footprint_transportation_mpg1=",
-            "input_footprint_housing_electricity_kwh=",
-            "input_footprint_shopping_food_fruitvegetables="
+        "input_location=",                               // User inputs their zip code
+        "input_size=",                            // The number of people that live in the user's house
+        "input_footprint_household_adults=",            // How many adults occupy the user's house
+        "input_footprint_household_children=",
+        "input_income=",                              // User inputs their income
+        "input_footprint_housing_squarefeet=",       // How large is the user's house
+        "input_footprint_housing_electricity_dollars=",
+        "input_footprint_housing_cdd=",               // Days that the house is cooled/year
+        "input_footprint_transportation_miles1=",
+        "input_footprint_transportation_mpg1=",
+        "input_footprint_housing_electricity_kwh=",
+        "input_footprint_shopping_food_fruitvegetables="
 
 
     };
 
     private static String[] keysLT = {
-            "input_location=NY",                               // User inputs their zip code
-            "input_size=10",                            // The number of people that live in the user's house
-            "input_footprint_household_adults=10",            // How many adults occupy the user's house
-            "input_footprint_household_children=0",
-            "input_income=10",                              // User inputs their income
-            "input_footprint_housing_squarefeet=10",       // How large is the user's house
-            "input_footprint_housing_electricity_dollars=0",
-            "input_footprint_housing_cdd=",               // Days that the house is cooled/year
-            "input_footprint_transportation_miles1=20",
-            "input_footprint_transportation_mpg1=30",
-            "input_footprint_housing_electricity_kwh=0",
-            "input_footprint_shopping_food_fruitvegetables=0"
+        "input_location=NY",                               // User inputs their zip code
+        "input_size=10",                            // The number of people that live in the user's house
+        "input_footprint_household_adults=10",            // How many adults occupy the user's house
+        "input_footprint_household_children=0",
+        "input_income=10",                              // User inputs their income
+        "input_footprint_housing_squarefeet=10",       // How large is the user's house
+        "input_footprint_housing_electricity_dollars=0",
+        "input_footprint_housing_cdd=",               // Days that the house is cooled/year
+        "input_footprint_transportation_miles1=20",
+        "input_footprint_transportation_mpg1=30",
+        "input_footprint_housing_electricity_kwh=0",
+        "input_footprint_shopping_food_fruitvegetables=0"
 
 
     };
@@ -292,70 +298,69 @@ public class CoolClimateApi {
      * {@link #keys} to receive user input.
      */
     private static String[] requiredKeys = {
-            "input_location_mode=1",                                        // 1 = Zip code
-            "internal_state_abbreviation=NY",
-            "input_changed=0",                                              // Meaningless variable
-            "input_footprint_transportation_num_vehicles=3",  // Number of vehicles is assumed to be 3
-            "input_footprint_transportation_fuel1=1",        //if 0mpg is input then that car gets deleted
-            "input_footprint_transportation_fuel2=1",
-            "input_footprint_transportation_fuel3=1",
-            "input_footprint_transportation_miles4=0",
-            "input_footprint_transportation_mpg4=0",
-            "input_footprint_transportation_fuel4=0",
-            "input_footprint_transportation_miles5=0",
-            "input_footprint_transportation_mpg5=0",
-            "input_footprint_transportation_fuel5=0",
-            "input_footprint_transportation_miles6=0",
-            "input_footprint_transportation_mpg6=0",
-            "input_footprint_transportation_fuel6=0",
-            "input_footprint_transportation_miles7=0",
-            "input_footprint_transportation_mpg7=0",
-            "input_footprint_transportation_fuel7=0",
-            "input_footprint_transportation_miles8=0",
-            "input_footprint_transportation_mpg8=0",
-            "input_footprint_transportation_fuel8=0",
-            "input_footprint_transportation_miles9=0",
-            "input_footprint_transportation_mpg9=0",
-            "input_footprint_transportation_fuel9=0",
-            "input_footprint_transportation_miles10=0",
-            "input_footprint_transportation_mpg10=0",
-            "input_footprint_transportation_fuel10=0",
-            "input_footprint_transportation_airtype=simple", // Total miles covered for air
-            "input_footprint_transportation_groundtype=simple", // Total miles for public transportation
-            "input_footprint_housing_electricity_type=0",                   // In $/year
-            "input_footprint_housing_cleanpercent=0",                       // Assume no clean energy
-            "input_footprint_housing_naturalgas_type=0",                    // In $/year
-            "input_footprint_housing_heatingoil_type=0",                    // In $/year
-            "input_footprint_housing_heatingoil_dollars_per_gallon=4", //Average, heating oil is $4/gallon
-            "input_footprint_shopping_food_meattype=simple",           // Meat consumed by the user
-            "input_footprint_shopping_food_meatfisheggs=0", // Calories eaten daily of meat, fish and eggs
-            "input_footprint_shopping_food_dairy=0",                      // Calories eaten daily of dairy
-            "input_footprint_shopping_food_otherfood=0",                    // Calories per day other food
-            "input_footprint_shopping_food_cereals=0",                      // Calories per day cereals
-            "input_footprint_shopping_goods_default_furnitureappliances=0",// Furniture/appliances cost/yr
-            "input_footprint_shopping_goods_default_clothing=0",            // Clothing cost/year
-            "input_footprint_shopping_goods_default_other_entertainment=0", // Entertainment cost/year
-            "input_footprint_shopping_goods_default_other_office=0",        // Office supplies cost/year
-            "input_footprint_shopping_goods_default_other_personalcare=0",  // Personal care cost/year
-            "input_footprint_shopping_goods_default_other_autoparts=0",     // Auto cost/year
-            "input_footprint_shopping_goods_default_other_medical=0",
-            "input_footprint_shopping_goods_type=advanced",
-            "input_footprint_shopping_goods_total=0",        // No input by the user, sum of the subtotals
-            "input_footprint_shopping_services_type=simple",
-            "input_footprint_shopping_services_total=0", // How much the user spends on services per year
-            "input_footprint_housing_gco2_per_kwh=1000",
-            "input_footprint_housing_naturalgas_dollars=0",
-            "input_footprint_housing_heatingoil_dollars=0",
-            "input_footprint_housing_hdd=0",
-            "input_footprint_shopping_goods_clothing=6666660",
-            "input_footprint_housing_watersewage=20",
-            "input_footprint_transportation_miles2=0",
-            "input_footprint_transportation_mpg2=0",
-            "input_footprint_transportation_miles3=0",
-            "input_footprint_transportation_mpg3=0",
-            "input_footprint_transportation_airtotal=0",
-            "input_footprint_transportation_publictrans=0"
-
+    "input_location_mode=1",                                        // 1 = Zip code
+    "internal_state_abbreviation=NY",
+    "input_changed=0",                                              // Meaningless variable
+    "input_footprint_transportation_num_vehicles=3",  // Number of vehicles is assumed to be 3
+    "input_footprint_transportation_fuel1=1",        //if 0mpg is input then that car gets deleted
+    "input_footprint_transportation_fuel2=1",
+    "input_footprint_transportation_fuel3=1",
+    "input_footprint_transportation_miles4=0",
+    "input_footprint_transportation_mpg4=0",
+    "input_footprint_transportation_fuel4=0",
+    "input_footprint_transportation_miles5=0",
+    "input_footprint_transportation_mpg5=0",
+    "input_footprint_transportation_fuel5=0",
+    "input_footprint_transportation_miles6=0",
+    "input_footprint_transportation_mpg6=0",
+    "input_footprint_transportation_fuel6=0",
+    "input_footprint_transportation_miles7=0",
+    "input_footprint_transportation_mpg7=0",
+    "input_footprint_transportation_fuel7=0",
+    "input_footprint_transportation_miles8=0",
+    "input_footprint_transportation_mpg8=0",
+    "input_footprint_transportation_fuel8=0",
+    "input_footprint_transportation_miles9=0",
+    "input_footprint_transportation_mpg9=0",
+    "input_footprint_transportation_fuel9=0",
+    "input_footprint_transportation_miles10=0",
+    "input_footprint_transportation_mpg10=0",
+    "input_footprint_transportation_fuel10=0",
+    "input_footprint_transportation_airtype=simple", // Total miles covered for air
+    "input_footprint_transportation_groundtype=simple", // Total miles for public transportation
+    "input_footprint_housing_electricity_type=0",                   // In $/year
+    "input_footprint_housing_cleanpercent=0",                       // Assume no clean energy
+    "input_footprint_housing_naturalgas_type=0",                    // In $/year
+    "input_footprint_housing_heatingoil_type=0",                    // In $/year
+    "input_footprint_housing_heatingoil_dollars_per_gallon=4", //Average, heating oil is $4/gallon
+    "input_footprint_shopping_food_meattype=simple",           // Meat consumed by the user
+    "input_footprint_shopping_food_meatfisheggs=0", // Calories eaten daily of meat, fish and eggs
+    "input_footprint_shopping_food_dairy=0",                      // Calories eaten daily of dairy
+    "input_footprint_shopping_food_otherfood=0",                    // Calories per day other food
+    "input_footprint_shopping_food_cereals=0",                      // Calories per day cereals
+    "input_footprint_shopping_goods_default_furnitureappliances=0",// Furniture/appliances cost/yr
+    "input_footprint_shopping_goods_default_clothing=0",            // Clothing cost/year
+    "input_footprint_shopping_goods_default_other_entertainment=0", // Entertainment cost/year
+    "input_footprint_shopping_goods_default_other_office=0",        // Office supplies cost/year
+    "input_footprint_shopping_goods_default_other_personalcare=0",  // Personal care cost/year
+    "input_footprint_shopping_goods_default_other_autoparts=0",     // Auto cost/year
+    "input_footprint_shopping_goods_default_other_medical=0",
+    "input_footprint_shopping_goods_type=advanced",
+    "input_footprint_shopping_goods_total=0",        // No input by the user, sum of the subtotals
+    "input_footprint_shopping_services_type=simple",
+    "input_footprint_shopping_services_total=0", // How much the user spends on services per year
+    "input_footprint_housing_gco2_per_kwh=1000",
+    "input_footprint_housing_naturalgas_dollars=0",
+    "input_footprint_housing_heatingoil_dollars=0",
+    "input_footprint_housing_hdd=0",
+    "input_footprint_shopping_goods_clothing=6666660",
+    "input_footprint_housing_watersewage=20",
+    "input_footprint_transportation_miles2=0",
+    "input_footprint_transportation_mpg2=0",
+    "input_footprint_transportation_miles3=0",
+    "input_footprint_transportation_mpg3=0",
+    "input_footprint_transportation_airtotal=0",
+    "input_footprint_transportation_publictrans=0"
 
 
     };
@@ -363,22 +368,18 @@ public class CoolClimateApi {
     public static String getLocation() {
         return "NY";
     }
-    public static String getInputSize() throws Exception{
-        return "10";
-    }
 
-    public static String getIncome() throws Exception{
-        return "10";
-    }
 
-    /*public static String getInputSize() throws Exception{
+
+
+    public static String getInputSize(int id) throws Exception{
         Connection conn = getConnection(
                 resource.getString("Postgresql.datasource.url"),
                 resource.getString("Postgresql.datasource.username"),
                 resource.getString("Postgresql.datasource.password"));
 
         PreparedStatement insertData = conn.prepareStatement(resource.getString("qInputSize"));
-        insertData.setInt(1, 0);
+        insertData.setInt(1, id);
         ResultSet rs = insertData.executeQuery();
 
         int save = 0;
@@ -389,18 +390,17 @@ public class CoolClimateApi {
         String returnstring = Integer.toString(save);
         return returnstring;
 
-    }  */
+    }
 
 
-
-    /*public static String getIncome() throws Exception{
+    public static String getIncome(int id) throws Exception{
         Connection conn = getConnection(
                 resource.getString("Postgresql.datasource.url"),
                 resource.getString("Postgresql.datasource.username"),
                 resource.getString("Postgresql.datasource.password"));
 
         PreparedStatement insertData = conn.prepareStatement(resource.getString("qIncome"));
-        insertData.setInt(1, 0);
+        insertData.setInt(1, id);
         ResultSet rs = insertData.executeQuery();
 
         int save = 0;
@@ -410,7 +410,7 @@ public class CoolClimateApi {
 
         String returnstring = Integer.toString(save);
         return returnstring;
-    }*/
+    }
 
 
     public static String getSquarefeet() {
@@ -422,22 +422,22 @@ public class CoolClimateApi {
     }
 
 
-    public static void VMmapping(String input_footprint_shopping_food_fruitvegetables) throws Exception {
-        calculateTotal(getLocation(), getInputSize(), getIncome(), getSquarefeet(),
+    public static void VMmapping(String input_footprint_shopping_food_fruitvegetables,int id) throws Exception {
+        calculateTotal(getLocation(), getInputSize(id), getIncome(id), getSquarefeet(),
                 getElectrictyBill(), "0", "0",
                 "0", "0",
                 input_footprint_shopping_food_fruitvegetables, "0");
     }
 
-    public static void LTmapping(String input_footprint_housing_cdd) throws Exception {
-        calculateTotal(getLocation(), getInputSize(), getIncome(), getSquarefeet(),
+    public static void LTmapping(String input_footprint_housing_cdd,int id) throws Exception {
+        calculateTotal(getLocation(), getInputSize(id), getIncome(id), getSquarefeet(),
                 getElectrictyBill(), input_footprint_housing_cdd, "0",
                 "0", "0",
                 "0", "0");
     }
 
-    public static void SPmapping() throws Exception {
-        calculateTotal(getLocation(), getInputSize(), getIncome(), getSquarefeet(),
+    public static void SPmapping(int id) throws Exception {
+        calculateTotal(getLocation(), getInputSize(id), getIncome(id), getSquarefeet(),
                 getElectrictyBill(), "0", "0",
                 "0", "0",
                 "0", getElectrictyBill());

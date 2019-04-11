@@ -114,12 +114,13 @@ public class Statistics {
 
     /**
      * Inserts the data from the Entry Quiz into the database table.
-     * @param id user's id
+     *
+     * @param id            user's id
      * @param monthlyIncome the monthly income of the user
      * @param householdSize the household size of the user
-     * @param ownVehicle if the user owns a vehicle or not
-     * @param energyBill the annual energy bill of the user
-     * @param houseSurface user's house surface
+     * @param ownVehicle    if the user owns a vehicle or not
+     * @param energyBill    the annual energy bill of the user
+     * @param houseSurface  user's house surface
      * @throws Exception raises error if unable to access database
      */
     public static void insertQuizData(int id, int monthlyIncome,
@@ -132,29 +133,29 @@ public class Statistics {
 
         PreparedStatement insertData = conn.prepareStatement(resource.getString("qQuizData"));
         insertData.setInt(1, id);
-        insertData.setInt(2,monthlyIncome);
-        insertData.setInt(3,householdSize);
-        insertData.setBoolean(4,ownVehicle);
-        insertData.setInt(5,energyBill);
-        insertData.setInt(6,houseSurface);
+        insertData.setInt(2, monthlyIncome);
+        insertData.setInt(3, householdSize);
+        insertData.setBoolean(4, ownVehicle);
+        insertData.setInt(5, energyBill);
+        insertData.setInt(6, houseSurface);
 
         insertData.execute();
     }
 
-    public static List<Pair<String,Date>> retrieveFeaturesHistory(int id) throws Exception{
+    public static List<Pair<String, Date>> retrieveFeaturesHistory(int id) throws Exception {
         Connection conn = getConnection(
                 resource.getString("Postgresql.datasource.url"),
                 resource.getString("Postgresql.datasource.username"),
                 resource.getString("Postgresql.datasource.password"));
 
         PreparedStatement insertData = conn.prepareStatement(resource.getString("qRetrieveFH"));
-        insertData.setInt(1,id);
+        insertData.setInt(1, id);
 
         ResultSet rs = insertData.executeQuery();
 
-        List<Pair<String,Date>> list = new ArrayList<>();
+        List<Pair<String, Date>> list = new ArrayList<>();
         while (rs.next()) {
-            Pair<String,Date> pair = new Pair<String, Date>(rs.getString(1),rs.getDate(2));
+            Pair<String, Date> pair = new Pair<String, Date>(rs.getString(1), rs.getDate(2));
             list.add(pair);
         }
         return list;

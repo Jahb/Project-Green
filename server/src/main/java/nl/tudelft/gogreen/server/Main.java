@@ -1,5 +1,6 @@
 package nl.tudelft.gogreen.server;
 
+import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 import java.sql.Connection;
@@ -19,7 +20,7 @@ public class Main {
         Connection conn = DriverManager.getConnection(resource.getString(
                 "Postgresql.datasource.url"), resource.getString("Postgresql.datasource.username"),
                 resource.getString("Postgresql.datasource.password"));
-        //SpringApplication.run(Main.class, args);
-        CoolClimateApi.LowerTemperature("20");
+        SpringApplication.run(Main.class, args);
+
     }
 }
