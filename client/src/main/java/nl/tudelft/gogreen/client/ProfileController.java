@@ -52,8 +52,6 @@ public class ProfileController implements Initializable {
     @FXML
     private JFXListView<ListItem> followerList;
     @FXML
-    private JFXTextField searchFollowers;
-    @FXML
     private Button achievementsButton;
     @FXML
     private JFXListView<String> activityList;
@@ -111,7 +109,7 @@ public class ProfileController implements Initializable {
             topRightBox.getChildren().remove(position);
         } else {
             //TODO retrieve position of user compared to following
-            position.setText("Position: #10");
+            position.setText("Position: #" + Api.current.getPosition());
         }
         if (Api.current.getFollowing().keySet().stream().noneMatch(s -> s.equals(this.username))) {
             follow.setText("Follow");
