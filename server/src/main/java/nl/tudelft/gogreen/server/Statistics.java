@@ -1,8 +1,13 @@
 package nl.tudelft.gogreen.server;
 
+import javafx.util.Pair;
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 import java.util.ResourceBundle;
 
 import static java.sql.DriverManager.getConnection;
@@ -134,6 +139,25 @@ public class Statistics {
         insertData.setInt(6,houseSurface);
 
         insertData.execute();
+    }
+
+    public static List<Pair<String,Date>> retrieveFeaturesHistory(int id) throws Exception{
+        Connection conn = getConnection(
+                resource.getString("Postgresql.datasource.url"),
+                resource.getString("Postgresql.datasource.username"),
+                resource.getString("Postgresql.datasource.password"));
+
+        PreparedStatement insertData = conn.prepareStatement(resource.getString("qRetrieveFH"));
+        insertData.setInt(1,id);
+
+        ResultSet rs = insertData.executeQuery();
+
+        List<Pair<String,Date>> list = new ArrayList<>();
+        while (rs.next()) {
+            Pair<String,Date> pair = new Pair<String, Date>(rs.getString(1),rs.getDate(2));
+            list.add(pair);
+        }
+        return list;
     }
 
 
