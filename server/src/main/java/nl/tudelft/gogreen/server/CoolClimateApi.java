@@ -3,12 +3,18 @@ package nl.tudelft.gogreen.server;
 import com.mashape.unirest.http.Unirest;
 import org.json.XML;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.ResourceBundle;
+
+import static java.sql.DriverManager.getConnection;
 
 public class CoolClimateApi {
 
-
+    private static ResourceBundle resource = ResourceBundle.getBundle("db");
     /**
      * fetches the API Data.
      * @param feature the feature input
@@ -16,32 +22,32 @@ public class CoolClimateApi {
      * @return returns the needed data
      * @throws Exception raises error when unable to access database
      */
-    public static float fetchApiData(String feature, String user_input) throws Exception {
+    public static float fetchApiData(String feature, String user_input,int id) throws Exception {
 
-        if (feature.equals("Vegetarian Meal")) return VegetarianMeal(user_input);
+        if (feature.equals("Vegetarian Meal")) return VegetarianMeal(user_input,id);
         if (feature.equals("Usage of Bike")) return UsageofBike(user_input);
         if (feature.equals("Usage of Public Transport")) return UsageofPublicTransport(user_input);
-        if (feature.equals("Lower Temperature")) return LowerTemperature(user_input);
+        if (feature.equals("Lower Temperature")) return LowerTemperature(user_input,id);
         if (feature.equals("Smoking")) return Smoking(user_input);
         if (feature.equals("Recycling")) return Recycling(user_input);
         if (feature.equals("CFL")) return CFL(user_input);
         return -1;
     }
 
-    public static float fetchApiData(String feature) throws Exception {
+    public static float fetchApiData(String feature,int id) throws Exception {
 
 
         if (feature.equals("Local Product")) return LocalProduct();
-        if (feature.equals("Solar Panels")) return SolarPanels();
+        if (feature.equals("Solar Panels")) return SolarPanels(id);
 
         return -1;
     }
 
 
-    public static float VegetarianMeal(String input_footprint_shopping_food_fruitvegetables) throws Exception {
+    public static float VegetarianMeal(String input_footprint_shopping_food_fruitvegetables,int id) throws Exception {
 
 
-        VMmapping(input_footprint_shopping_food_fruitvegetables);
+        VMmapping(input_footprint_shopping_food_fruitvegetables, id);
 
         Map<String, String> params = new HashMap<>();
         params.put("accept", "application/json");
@@ -109,9 +115,9 @@ public class CoolClimateApi {
         return (carC02 - bus) * Float.parseFloat(input_miles);
     }
 
-    public static float LowerTemperature(String input_footprint_housing_cdd) throws Exception {
+    public static float LowerTemperature(String input_footprint_housing_cdd,int id) throws Exception {
 
-        LTmapping(input_footprint_housing_cdd);
+        LTmapping(input_footprint_housing_cdd,id);
 
         Map<String, String> params = new HashMap<>();
         params.put("accept", "application/json");
@@ -131,10 +137,10 @@ public class CoolClimateApi {
     }
 
 
-    public static float SolarPanels() throws Exception {
+    public static float SolarPanels(int id) throws Exception {
 
 
-        SPmapping();
+        SPmapping(id);
         Map<String, String> params = new HashMap<>();
         params.put("accept", "application/json");
         params.put("app_id", "93af0470");
@@ -321,13 +327,45 @@ public class CoolClimateApi {
         return "NY";
     }
 
-    public static String getInputSize() {
-        return "2";
+    public static String getInputSize(int id) throws Exception{
+        Connection conn = getConnection(
+                resource.getString("Postgresql.datasource.url"),
+                resource.getString("Postgresql.datasource.username"),
+                resource.getString("Postgresql.datasource.password"));
+
+        PreparedStatement insertData = conn.prepareStatement(resource.getString("qInputSize"));
+        insertData.setInt(1, id);
+        ResultSet rs = insertData.executeQuery();
+
+        int save = 0;
+        while (rs.next()) {
+            save = rs.getInt(1);
+        }
+
+        String returnstring = Integer.toString(save);
+        return returnstring;
+
     }
 
-    public static String getIncome() {
-        return "100";
+    public static String getIncome(int id) throws Exception{
+        Connection conn = getConnection(
+                resource.getString("Postgresql.datasource.url"),
+                resource.getString("Postgresql.datasource.username"),
+                resource.getString("Postgresql.datasource.password"));
+
+        PreparedStatement insertData = conn.prepareStatement(resource.getString("qIncome"));
+        insertData.setInt(1, id);
+        ResultSet rs = insertData.executeQuery();
+
+        int save = 0;
+        while (rs.next()) {
+            save = rs.getInt(1);
+        }
+
+        String returnstring = Integer.toString(save);
+        return returnstring;
     }
+
 
     public static String getSquarefeet() {
         return "10";
@@ -338,22 +376,22 @@ public class CoolClimateApi {
     }
 
 
-    public static void VMmapping(String input_footprint_shopping_food_fruitvegetables) {
-        calculateTotal(getLocation(), getInputSize(), getIncome(), getSquarefeet(),
+    public static void VMmapping(String input_footprint_shopping_food_fruitvegetables,int id) throws Exception {
+        calculateTotal(getLocation(), getInputSize(id), getIncome(id), getSquarefeet(),
                 getElectrictyBill(), "0", "0",
                 "0", "0",
                 input_footprint_shopping_food_fruitvegetables, "0", "0", "0");
     }
 
-    public static void LTmapping(String input_footprint_housing_cdd) {
-        calculateTotal(getLocation(), getInputSize(), getIncome(), getSquarefeet(),
+    public static void LTmapping(String input_footprint_housing_cdd,int id) throws Exception {
+        calculateTotal(getLocation(), getInputSize(id), getIncome(id), getSquarefeet(),
                 getElectrictyBill(), input_footprint_housing_cdd, "0",
                 "0", "0",
                 "0", "0", "0", "0");
     }
 
-    public static void SPmapping() {
-        calculateTotal(getLocation(), getInputSize(), getIncome(), getSquarefeet(),
+    public static void SPmapping(int id) throws Exception {
+        calculateTotal(getLocation(), getInputSize(id), getIncome(id), getSquarefeet(),
                 getElectrictyBill(), "0", "0",
                 "0", "0",
                 "0", getElectrictyBill(), "0", "0");
