@@ -52,17 +52,17 @@ public class AchievementsController implements Initializable {
         //TODO Add achievements to the list which contains all achievements
         allAchievementsList.clear();
         allAchievementsList.add(
-                new ListItem("achievement1", "images/IconCupGold.png", "Not Yet"));
+                new ListItem("achievement1", "images/IconCupGold.png", "Description 1"));
         allAchievementsList.add(
-                new ListItem("achievement2", "images/IconCupGold.png", "13/04/2019"));
+                new ListItem("achievement2", "images/IconCupGold.png", "Description 2"));
         allAchievementsList.add(
-                new ListItem("achievement3", "images/IconCupGold.png", "Not Yet"));
+                new ListItem("achievement3", "images/IconCupGold.png", "Description 3"));
         allAchievementsList.add(
-                new ListItem("achievement4", "images/IconCupGold.png", "13/04/2019"));
+                new ListItem("achievement4", "images/IconCupGold.png", "Description 4"));
         userAchievementsList.add(
-                new ListItem("achievement2", "images/IconCupGold.png", "13/04/2019"));
+                new ListItem("achievement2", "images/IconCupGold.png", "Description 2"));
         userAchievementsList.add(
-                new ListItem("achievement4", "images/IconCupGold.png", "13/04/2019"));
+                new ListItem("achievement4", "images/IconCupGold.png", "Description 4"));
         allAchievements.setCellFactory(param -> new Cell());
         userAchievements.setCellFactory(param -> new Cell());
 
@@ -81,7 +81,7 @@ public class AchievementsController implements Initializable {
             super.updateItem(item, bool);
             if (item != null && !bool) {
                 setGraphic(ListItem.imageView(item));
-                setText(item.getName() + "\nCompleted: " + item.getStatus());
+                setText(item.getName() + "\n" + item.getStatus());
 
                 if (!item.getStatus().equals("Not Yet")) {
                     this.setStyle("-fx-background-color: #38ba5c;" +
