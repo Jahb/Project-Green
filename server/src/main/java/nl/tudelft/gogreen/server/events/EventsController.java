@@ -1,5 +1,6 @@
-package nl.tudelft.gogreen.server;
+package nl.tudelft.gogreen.server.events;
 
+import nl.tudelft.gogreen.server.Main;
 import nl.tudelft.gogreen.shared.EventItem;
 import nl.tudelft.gogreen.shared.MessageHolder;
 import org.springframework.security.core.context.SecurityContextHolder;

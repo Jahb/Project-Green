@@ -1,4 +1,6 @@
-package nl.tudelft.gogreen.server;
+package nl.tudelft.gogreen.server.features;
+
+import nl.tudelft.gogreen.server.Main;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -6,15 +8,12 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.ResourceBundle;
+import java.util.*;
 
 import static java.sql.DriverManager.getConnection;
 
 
 public class NewFeature {
-
 
 
     /**
@@ -41,6 +40,13 @@ public class NewFeature {
         return String.valueOf(total);
     }
 
+    /**
+     * Get the total points of a user by username.
+     *
+     * @param username the username of the user
+     * @return the total points of the user
+     * @throws Exception when something goes wrong
+     */
     public static int getTotal(String username) throws Exception {
         Connection conn = getConnection(
                 Main.resource.getString("Postgresql.datasource.url"),
@@ -52,21 +58,56 @@ public class NewFeature {
         return total;
     }
 
+    /**
+     * Get the id of a user by username
+     *
+     * @param username the username
+     * @return the userid
+     */
     public static int getUID(String username) {
         try {
-            Connection conn = getConnection(
+            int id;
+            try (Connection conn = getConnection(
                     Main.resource.getString("Postgresql.datasource.url"),
                     Main.resource.getString("Postgresql.datasource.username"),
-                    Main.resource.getString("Postgresql.datasource.password"));
-            int id = getId(username, conn);
-            conn.close();
+                    Main.resource.getString("Postgresql.datasource.password"))) {
+                id = getId(username, conn);
+            }
             return id;
-        }catch (Exception ex){
+        } catch (Exception ex) {
             ex.printStackTrace();
         }
         return -1;
     }
 
+
+    /**
+     * Get the points spread out per category
+     *
+     * @param username the username of the user you want the points for
+     * @return an array of points
+     */
+    public static int[] getPontsPerCategory(String username) {
+        int[] res = new int[4];
+
+        try (Connection conn = getConnection(
+                Main.resource.getString("Postgresql.datasource.url"),
+                Main.resource.getString("Postgresql.datasource.username"),
+                Main.resource.getString("Postgresql.datasource.password"))) {
+            int id = getId(username, conn);
+            PreparedStatement getId = conn.prepareStatement(Main.resource.getString("qPontsPerCategory"));
+            getId.setInt(1, id);
+            ResultSet rs = getId.executeQuery();
+            rs.next();
+            for (int i : Arrays.asList(0, 1, 2, 3)) {
+                res[i] = rs.getInt(i + 1);
+            }
+            System.out.println(Arrays.toString(res));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return res;
+    }
 
     /**
      * Method which given a username returns its id.
@@ -79,7 +120,7 @@ public class NewFeature {
     public static int getId(String username, Connection conn) throws SQLException {
         int id = -1;
 
-        System.out.println("the username is: " + username);
+        //System.out.println("the username is: " + username);
         PreparedStatement getId = conn.prepareStatement(Main.resource.getString("qgetId"));
         getId.setString(1, username);
         ResultSet rs = getId.executeQuery();
@@ -108,6 +149,8 @@ public class NewFeature {
         while (rs.next()) {
             category = rs.getInt(1);
         }
+
+        System.out.println(category);
 
         return category;
 
@@ -144,7 +187,7 @@ public class NewFeature {
                 PreparedStatement updatec2 =
                         conn.prepareStatement(Main.resource.getString("qactualizec2"));
                 updatec2.setInt(1, points);
-                updatec2.setInt(2, points);
+                updatec2.setInt(2, id);
                 updatec2.execute();
                 break;
 
@@ -152,7 +195,7 @@ public class NewFeature {
                 PreparedStatement updatec3 =
                         conn.prepareStatement(Main.resource.getString("qactualizec3"));
                 updatec3.setInt(1, points);
-                updatec3.setInt(2, points);
+                updatec3.setInt(2, id);
                 updatec3.execute();
                 break;
 
@@ -160,7 +203,7 @@ public class NewFeature {
                 PreparedStatement updatec4 =
                         conn.prepareStatement(Main.resource.getString("qactualizec4"));
                 updatec4.setInt(1, points);
-                updatec4.setInt(2, points);
+                updatec4.setInt(2, id);
                 updatec4.execute();
                 break;
             default:

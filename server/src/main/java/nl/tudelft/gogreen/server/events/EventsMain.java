@@ -1,5 +1,7 @@
-package nl.tudelft.gogreen.server;
+package nl.tudelft.gogreen.server.events;
 
+import nl.tudelft.gogreen.server.Main;
+import nl.tudelft.gogreen.server.features.NewFeature;
 import nl.tudelft.gogreen.shared.EventItem;
 
 import java.sql.Connection;
@@ -8,7 +10,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.ResourceBundle;
 
 public class EventsMain {
 

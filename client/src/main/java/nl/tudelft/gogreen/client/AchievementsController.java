@@ -34,7 +34,7 @@ public class AchievementsController implements Initializable {
         URL url = Main.class.getResource("/AchievementsGUI.fxml");
         System.out.println(url);
         AnchorPane root = FXMLLoader.load(url);
-        BorderPane topPane = (BorderPane) root.getChildren().get(1);
+        BorderPane topPane = (BorderPane) root.getChildren().get(0);
         IconButton.addBackButton(topPane);
         return new Scene(root, Main.getWidth(), Main.getHeight());
     }

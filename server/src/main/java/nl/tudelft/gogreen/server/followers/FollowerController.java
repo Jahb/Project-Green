@@ -1,5 +1,8 @@
-package nl.tudelft.gogreen.server;
+package nl.tudelft.gogreen.server.followers;
 
+import nl.tudelft.gogreen.server.Main;
+import nl.tudelft.gogreen.server.features.NewFeature;
+import nl.tudelft.gogreen.server.Utils;
 import nl.tudelft.gogreen.shared.MessageHolder;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -32,8 +35,9 @@ public class FollowerController {
     @PostMapping("/follow")
     public MessageHolder<Boolean> follow(String username) {
         List<Integer> users = Utils.verifyUsersValid(getCurrentUser(), username);
+        System.out.println(users);
         if (users.stream().anyMatch(integer -> integer == -1)) {
-            return new MessageHolder<>("Follow", false);
+            return new MessageHolder<>(users.toString(), false);
         }
         try {
             Following.Follow(users.get(0), users.get(1));

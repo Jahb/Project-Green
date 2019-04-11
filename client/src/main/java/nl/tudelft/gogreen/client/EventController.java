@@ -63,7 +63,7 @@ public class EventController implements Initializable {
      * @throws IOException IO Exception may be thrown
      */
     public Scene getScene() throws IOException {
-        URL url = Main.class.getResource("/event.fxml");
+        URL url = Main.class.getResource("/EventScreen.fxml");
         FXMLLoader loader = new FXMLLoader(url);
         loader.getController();
 
