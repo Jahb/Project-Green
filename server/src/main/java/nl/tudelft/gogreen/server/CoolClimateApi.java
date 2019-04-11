@@ -123,14 +123,15 @@ public class CoolClimateApi {
         params.put("accept", "application/json");
         params.put("app_id", "93af0470");
         params.put("app_key", "be1dbf535bd450c012e78261cf93c0ad");
-        String url = createUrlLT();
+        String url = createUrlLT(input_footprint_housing_cdd);
 
 
         String holder = XML.toJSONObject(Unirest.get(url).headers(params).asString().getBody()).getJSONObject("response").get("result_takeaction_thermostat_summer_kwhuse").toString();
-
+        keysLT = keys;
 
         float result = Float.parseFloat(holder)*800;
 
+        if(Integer.valueOf(input_footprint_housing_cdd) != result/8) return Float.parseFloat(input_footprint_housing_cdd)*8;
         System.out.println("The result is: " + result);
         keysremapping();
         return result;
@@ -230,7 +231,7 @@ public class CoolClimateApi {
             "input_income=10",                              // User inputs their income
             "input_footprint_housing_squarefeet=10",       // How large is the user's house
             "input_footprint_housing_electricity_dollars=0",
-            "input_footprint_housing_cdd=4",               // Days that the house is cooled/year
+            "input_footprint_housing_cdd=",               // Days that the house is cooled/year
             "input_footprint_transportation_miles1=20",
             "input_footprint_transportation_mpg1=30",
             "input_footprint_housing_electricity_kwh=0",
@@ -465,9 +466,11 @@ public class CoolClimateApi {
 
 
     }
-    public static String createUrlLT() {
+    public static String createUrlLT(String input) {
         String result = "https://apis.berkeley.edu/coolclimate/footprint?";
+
         for (int i = 0; i < keysLT.length; i++) {
+            if(i==7) result += keysLT[i] + input +  "&";
 
             result += keysLT[i] + "&";
 
