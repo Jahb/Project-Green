@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.function.Consumer;
 
 import javafx.animation.AnimationTimer;
-import javafx.animation.FillTransition;
+import javafx.animation.FadeTransition;
 import javafx.animation.TranslateTransition;
 import javafx.collections.SetChangeListener.Change;
 import javafx.geometry.Insets;
@@ -54,7 +54,7 @@ class AddActivityButton {
 
     private TranslateTransition slideUp;
     private TranslateTransition stayPut;
-    private FillTransition toAddFade;
+    private FadeTransition toAddFade;
 
     private TextField metadataBox;
     private HBox metadataPane;
@@ -131,7 +131,15 @@ class AddActivityButton {
         addButton.setLayoutY(130);
         addButton.setPrefWidth(125);
         addButton.setPrefHeight(60);
-//        toAddFade = new FillTransition(new Duration(200), addButton, IconButton.colorMouseOver, IconButton.color)
+        AnchorPane fadeBackground = new AnchorPane();
+        fadeBackground.setBackground(new Background(new BackgroundFill(IconButton.color.interpolate(new Color(1,1,1,1), .5), new CornerRadii(0), Insets.EMPTY)));
+        fadeBackground.setLayoutX(600.0 * 15 / 16 - 125 - 20);
+        fadeBackground.setLayoutY(130);
+        fadeBackground.setPrefWidth(125);
+        fadeBackground.setPrefHeight(60);
+        toAddFade = new FadeTransition(new Duration(200), addButton);
+        toAddFade.setToValue(1);
+        toAddFade.setFromValue(0);
         addButton.setOnMouseClicked(event -> handler.accept(toAdd + ":" + metadataBox.getText()));
 
         specifyButton = new Text("Specify");
@@ -148,7 +156,7 @@ class AddActivityButton {
         animationOverlay.setMouseTransparent(true);
         animationOverlay.setFill(Color.color(238d / 256, 238d / 256, 238d / 256));
 
-        activityButtonPane = new AnchorPane(backgroundPane, metadataPane, specifyButton, addButton);
+        activityButtonPane = new AnchorPane(backgroundPane, metadataPane, specifyButton, fadeBackground, addButton);
 
         activityButtonPane.setPrefWidth((double) (600 * 15 / 16));
         activityButtonPane.setPrefHeight(height);
@@ -207,6 +215,7 @@ class AddActivityButton {
     private void setToAdd(String name, String category) {
         toAdd = category + ":" + name;
         addButtonIcon.setImage(new Image("Images/Icon" + name.replaceAll("\\-|\n| ", "") + ".png"));
+        toAddFade.playFromStart();
     }
 
     /**
