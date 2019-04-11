@@ -54,8 +54,6 @@ public class CoolClimateApi {
                 .getJSONObject("response").get("result_food_fruitsveg").toString();
 
 
-
-        System.out.println(holder);
         float result = Float.parseFloat(holder);
 
         System.out.println(result);
