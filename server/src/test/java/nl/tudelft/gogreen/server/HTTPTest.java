@@ -53,7 +53,7 @@ public class HTTPTest {
         this.mockMvc.perform(post("/user/new")
                 .param("username", "test").param("password", "kees")).andDo(print()).andExpect(status().isOk());
         this.mockMvc.perform(post("/login").param("username", "test").param("password", "kees")).andDo(print()).andExpect(status().isOk());
-        this.mockMvc.perform(post("/feature/new").param("feature", "Vegetarian Meal")).andDo(print()).andExpect(status().isUnauthorized());
+        this.mockMvc.perform(post("/feature/new").param("feature", "Vegetarian Meal")).andDo(print()).andExpect(status().isOk());
         this.mockMvc.perform(post("/feature/total")).andDo(print()).andExpect(status().isOk());
         this.mockMvc.perform(post("/logout")).andDo(print()).andExpect(status().isOk());
         this.mockMvc.perform(post("/login").param("username", "test").param("password", "keesa")).andDo(print()).andExpect(status().isUnauthorized());
@@ -62,7 +62,7 @@ public class HTTPTest {
     @Test
     public void abFeature() throws Exception {
         this.mockMvc.perform(post("/login").param("username", "test").param("password", "kees")).andDo(print()).andExpect(status().isOk());
-        this.mockMvc.perform(post("/feature/new").param("feature", "Vegetarian Meal")).andDo(print()).andExpect(status().isUnauthorized());
+        this.mockMvc.perform(post("/feature/new").param("feature", "Vegetarian Meal")).andDo(print()).andExpect(status().isOk());
         this.mockMvc.perform(post("/feature/total")).andDo(print()).andExpect(status().isOk());
     }
 

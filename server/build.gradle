@@ -19,8 +19,11 @@ dependencies {
     compile 'com.mashape.unirest:unirest-java:1.4.9'
     compile group: 'org.apache.httpcomponents', name: 'httpclient', version: '4.5.7'
 
-    testCompile "org.mockito:mockito-core:2.+"
+    testImplementation 'org.mockito:mockito-core:2.26.0'
+    testImplementation 'net.bytebuddy:byte-buddy:1.9.12'
+    testImplementation 'net.bytebuddy:byte-buddy-agent:1.9.12'
 }
+
 
 bootJar {
     baseName = shadowJar.baseName
