@@ -16,8 +16,9 @@ public class insertQuizDataTest {
         try(
 
                 Connection conn = DriverManager.getConnection(resource.getString("Postgresql.datasource.url"), resource.getString("Postgresql.datasource.username"), resource.getString("Postgresql.datasource.password"))){
+            CreateUser.create_user("paul","paul");
 
-            Statistics.insertQuizData(1,20,20,true,20,20,20,20);
+            Statistics.insertQuizData(NewFeature.getId("paul",conn),20,20,true,20,20);
 
             PreparedStatement result = conn.prepareStatement(resource.getString("qReturnQuiz"));
 
@@ -32,9 +33,11 @@ public class insertQuizDataTest {
 
             PreparedStatement result2 = conn.prepareStatement(resource.getString("qDeleteQuiz"));
             result2.execute();
+
+            CreateUser.delete_user(NewFeature.getId("paul",conn),conn);
         }
         catch (Exception exception){
-            System.out.println("Error!");
+            System.out.print(exception.getMessage());
         }
     }
 

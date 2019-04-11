@@ -160,6 +160,11 @@ public class CreateUser {
         delUserTable.setInt(1, id);
         delUserTable.execute();
 
+        PreparedStatement delQuizTable =
+                conn.prepareStatement(resource.getString("qDeleteQuizTable"));
+        delQuizTable.setInt(1, id);
+        delQuizTable.execute();
+
         return true;
 
     }

@@ -107,10 +107,19 @@ public class Statistics {
         return result;
     }
 
+    /**
+     * Inserts the data from the Entry Quiz into the database table.
+     * @param id user's id
+     * @param monthlyIncome the monthly income of the user
+     * @param householdSize the household size of the user
+     * @param ownVehicle if the user owns a vehicle or not
+     * @param energyBill the annual energy bill of the user
+     * @param houseSurface user's house surface
+     * @throws Exception raises error if unable to access database
+     */
     public static void insertQuizData(int id, int monthlyIncome,
                                       int householdSize, boolean ownVehicle,
-                                      int energyBill,int traveledMiles,
-                                      int fuelEconomy, int houseSurface) throws Exception {
+                                      int energyBill, int houseSurface) throws Exception {
         Connection conn = getConnection(
                 resource.getString("Postgresql.datasource.url"),
                 resource.getString("Postgresql.datasource.username"),
@@ -122,9 +131,7 @@ public class Statistics {
         insertData.setInt(3,householdSize);
         insertData.setBoolean(4,ownVehicle);
         insertData.setInt(5,energyBill);
-        insertData.setInt(6,traveledMiles);
-        insertData.setInt(7,fuelEconomy);
-        insertData.setInt(8,houseSurface);
+        insertData.setInt(6,houseSurface);
 
         insertData.execute();
     }
