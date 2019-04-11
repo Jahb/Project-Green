@@ -14,20 +14,18 @@
    <children>
       <BorderPane prefHeight="115.0" prefWidth="1000.0" style="-fx-background-color: #38ba5c;" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <center>
-            <Label alignment="CENTER" prefHeight="78.0" prefWidth="726.0" text="Getting Started" textFill="WHITE" BorderPane.alignment="CENTER">
+            <Label alignment="CENTER_RIGHT" prefHeight="103.0" prefWidth="514.0" text="User Settings" textFill="WHITE" BorderPane.alignment="CENTER">
                <font>
                   <Font name="System Bold" size="70.0" />
                </font>
-               <graphic>
-                  <ImageView fitHeight="102.0" fitWidth="102.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@images/IconQuiz.png" />
-                     </image>
-                  </ImageView>
-               </graphic>
             </Label>
          </center>
       </BorderPane>
+      <ImageView fitHeight="156.0" fitWidth="181.0" layoutX="175.0" layoutY="-17.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@images/IconQuiz.png" />
+         </image>
+      </ImageView>
       <AnchorPane layoutY="116.0" prefHeight="50.0" prefWidth="1000.0" style="-fx-background-color: #50e476;" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="115.0">
          <children>
             <Label layoutX="14.0" layoutY="14.0" text="Help us provide accurate data by answering a few questions:" textFill="WHITE">

@@ -14,7 +14,7 @@
 
 <AnchorPane fx:id="rootPane" prefHeight="721.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="nl.tudelft.gogreen.client.LeaderboardController">
    <children>
-      <ListView fx:id="leaderboardList" layoutX="40.0" layoutY="196.0" prefHeight="464.0" prefWidth="381.0" stylesheets="ListStyle.css" AnchorPane.bottomAnchor="61.0" AnchorPane.leftAnchor="40.0" AnchorPane.rightAnchor="579.0" AnchorPane.topAnchor="196.0" />
+      <ListView fx:id="leaderboardList" layoutX="40.0" layoutY="239.0" prefHeight="437.0" prefWidth="400.0" stylesheets="ListStyle.css" AnchorPane.bottomAnchor="45.0" AnchorPane.leftAnchor="40.0" AnchorPane.topAnchor="240.0" />
       <BorderPane prefHeight="115.0" prefWidth="608.0" style="-fx-background-color: #38ba5c;" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <padding>
             <Insets top="5.0" />
@@ -28,7 +28,7 @@
           <NumberAxis fx:id="y" label="CO2 Reduction" side="LEFT" />
         </yAxis>
       </LineChart>
-      <JFXButton fx:id="timeframeButton" layoutX="40.0" layoutY="134.0" mnemonicParsing="false" prefHeight="51.0" prefWidth="381.0" style="-fx-font-size: 24; -fx-text-fill: white; -fx-background-color:#50E476;-fx-font-weight: bold;   -fx-background-radius: 25 25 25 25" text="View Monthly Data" AnchorPane.topAnchor="134.0" />
+      <JFXButton fx:id="timeframeButton" layoutX="40.0" layoutY="134.0" minHeight="50.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="400.0" style="-fx-font-size: 25;" stylesheets="@LargeButton.css" text="View Monthly Data" AnchorPane.topAnchor="175.0" />
       <AnchorPane maxHeight="115.0" mouseTransparent="true" prefHeight="115.0" prefWidth="812.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
          <children>
             <Label alignment="CENTER" layoutX="291.0" prefHeight="115.0" prefWidth="587.0" text="Leaderboard" textFill="WHITE" AnchorPane.topAnchor="0.0">
@@ -44,6 +44,20 @@
          </children>
       </AnchorPane>
       <AnchorPane fx:id="notificationPane" layoutX="39.0" layoutY="626.0" prefHeight="60.0" prefWidth="381.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="39.0" />
+      <AnchorPane layoutX="188.0" layoutY="45.0" prefHeight="50.0" prefWidth="1000.0" style="-fx-background-color: #50e476;" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="115.0">
+         <children>
+            <Label alignment="CENTER" layoutX="540.0" layoutY="5.0" prefHeight="40.0" prefWidth="360.0" text="Personal Progress:" textFill="WHITE" AnchorPane.bottomAnchor="5.0" AnchorPane.topAnchor="5.0">
+               <font>
+                  <Font name="System Bold Italic" size="24.0" />
+               </font>
+            </Label>
+            <Label alignment="CENTER" layoutX="59.0" layoutY="14.0" prefHeight="40.0" prefWidth="360.0" text="User Rankings:" textFill="WHITE" AnchorPane.topAnchor="5.0">
+               <font>
+                  <Font name="System Bold Italic" size="24.0" />
+               </font>
+            </Label>
+         </children>
+      </AnchorPane>
    </children>
 
 </AnchorPane>

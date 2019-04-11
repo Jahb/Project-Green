@@ -60,7 +60,7 @@ public class LeaderboardController implements Initializable {
     }
 
     private void createGraph(AnchorPane root) {
-        ScoreGraph graph1 = new ScoreGraph(500, 200, 400, 400);
+        ScoreGraph graph1 = new ScoreGraph(500, 175, 475, 500);
         root.getChildren().add(graph1.getPane());
         UndecoratedGraph graph = graph1.getGraph();
         graph.setData(new double[]{0, 20, 20, 60, 80, 80, 120});
