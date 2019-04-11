@@ -135,11 +135,11 @@ public class Main extends Application {
         }
     }
 
-    static void openQuizScreen(){
-        try{
+    static void openQuizScreen() {
+        try {
             stage.setScene(quizController.getScene());
-        }   catch (IOException ex) {
-        pageOpenError(ex);
+        } catch (IOException ex) {
+            pageOpenError(ex);
         }
     }
 
@@ -182,10 +182,11 @@ public class Main extends Application {
 
     /**
      * Method used to show notifications to the user. Notification appears in the selected pane and disappears if clicked.
+     *
      * @param message text to show inside the notification box
      */
     @FXML
-    public static void showMessage(Pane pane, String message){
+    public static void showMessage(Pane pane, String message) {
         JFXSnackbar snackbar = new JFXSnackbar(pane);
         snackbar.getStylesheets().add("NotificationCSS.css");
         snackbar.show(message, "Close", 4000, new EventHandler<ActionEvent>() {
@@ -194,11 +195,11 @@ public class Main extends Application {
                 snackbar.close();
             }
         });
-        for(int i=MainScreen.strings.length-1; i>0; i--){
-            MainScreen.strings[i]= MainScreen.strings[i-1];
+        for (int i = MainScreen.strings.length - 1; i > 0; i--) {
+            MainScreen.strings[i] = MainScreen.strings[i - 1];
         }
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("hh:mm");
         LocalDateTime now = LocalDateTime.now();
-        MainScreen.strings[0]= " "+dtf.format(now)+" "+message;
+        MainScreen.strings[0] = " " + dtf.format(now) + " " + message;
     }
 }
