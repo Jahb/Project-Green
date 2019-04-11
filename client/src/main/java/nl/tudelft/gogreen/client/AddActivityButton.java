@@ -314,7 +314,7 @@ class AddActivityButton {
 
             @Override
             public void handle(long time) {
-                progress = (time - startTime) / 1000_000_000d;
+                progress = (time - startTime) / 200_000_000d;
                 progress = Math.min(1, progress);
                 
                 List<Node> children = subCategories.getChildren();
