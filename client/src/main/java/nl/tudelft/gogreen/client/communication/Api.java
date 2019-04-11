@@ -344,6 +344,59 @@ public class Api {
         return holder.getData();
     }
 
+    public List<EventItem> getAllEvents() {
+        return getEventItems("/event/list");
+    }
+
+    private List<EventItem> getEventItems(String url) {
+        String res;
+        Map<String, Object> params = new HashMap<>();
+        res = this.post(baseUrl + url, params);
+        MessageHolder<List<EventItem>> holder =
+                gson.fromJson(res, new TypeToken<MessageHolder<List<EventItem>>>() {
+                }.getType());
+
+        return holder.getData();
+    }
+
+    public List<EventItem> getUserEvents() {
+        return getEventItems("/event/user");
+    }
+
+    public boolean newEvent(EventItem event) {
+        String res;
+        Map<String, Object> params = new HashMap<>();
+        params.put("name", event.getName());
+        params.put("description", event.getDescription());
+        params.put("date", event.getDate());
+        params.put("time", event.getTime());
+        res = this.post(baseUrl + "/event/new", params);
+        MessageHolder<Boolean> holder =
+                gson.fromJson(res, new TypeToken<MessageHolder<Boolean>>() {
+                }.getType());
+
+        return holder.getData();
+    }
+
+    public boolean joinEvent(String event) {
+        return eventAction(event, "/event/join");
+    }
+
+    private boolean eventAction(String event, String url) {
+        String res;
+        Map<String, Object> params = new HashMap<>();
+        params.put("eventName", event);
+        res = this.post(baseUrl + url, params);
+        MessageHolder<Boolean> holder =
+                gson.fromJson(res, new TypeToken<MessageHolder<Boolean>>() {
+                }.getType());
+
+        return holder.getData();
+    }
+
+    public boolean leaveEvent(String event) {
+        return eventAction(event, "/event/leave");
+    }
 
     private void wsInit() {
         String url = baseUrl.replace("http", "ws") + "/ws";
