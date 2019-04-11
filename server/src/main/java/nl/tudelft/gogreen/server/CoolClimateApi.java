@@ -12,11 +12,11 @@ public class CoolClimateApi {
     /**
      * fetches the API Data.
      * @param feature the feature input
-     * @param userinput the user input
+     * @param user_input the user input
      * @return returns the needed data
      * @throws Exception raises error when unable to access database
      */
-    public static float fetchApiData(String feature, String userinput) throws Exception {
+    public static float fetchApiData(String feature, String user_input) throws Exception {
 
         if (feature.equals("Vegetarian Meal")) return VegetarianMeal(user_input);
         if (feature.equals("Usage of Bike")) return UsageofBike(user_input);
