@@ -341,14 +341,13 @@ public class Api {
     }
 
     public List<EventItem> getAllEvents() {
+        return getEventItems("/event/list");
+    }
+
+    private List<EventItem> getEventItems(String url) {
         String res;
         Map<String, Object> params = new HashMap<>();
-        try {
-            res = this.post(baseUrl + "/event/list", params);
-        } catch (UnirestException e) {
-            e.printStackTrace();
-            return Collections.emptyList();
-        }
+        res = this.post(baseUrl + url, params);
         MessageHolder<List<EventItem>> holder =
                 gson.fromJson(res, new TypeToken<MessageHolder<List<EventItem>>>() {
                 }.getType());
@@ -357,19 +356,7 @@ public class Api {
     }
 
     public List<EventItem> getUserEvents() {
-        String res;
-        Map<String, Object> params = new HashMap<>();
-        try {
-            res = this.post(baseUrl + "/event/user", params);
-        } catch (UnirestException e) {
-            e.printStackTrace();
-            return Collections.emptyList();
-        }
-        MessageHolder<List<EventItem>> holder =
-                gson.fromJson(res, new TypeToken<MessageHolder<List<EventItem>>>() {
-                }.getType());
-
-        return holder.getData();
+        return getEventItems("/event/user");
     }
 
     public boolean newEvent(EventItem event) {
@@ -379,12 +366,7 @@ public class Api {
         params.put("description", event.getDescription());
         params.put("date", event.getDate());
         params.put("time", event.getTime());
-        try {
-            res = this.post(baseUrl + "/event/new", params);
-        } catch (UnirestException e) {
-            e.printStackTrace();
-            return false;
-        }
+        res = this.post(baseUrl + "/event/new", params);
         MessageHolder<Boolean> holder =
                 gson.fromJson(res, new TypeToken<MessageHolder<Boolean>>() {
                 }.getType());
@@ -393,15 +375,14 @@ public class Api {
     }
 
     public boolean joinEvent(String event) {
+        return eventAction(event, "/event/join");
+    }
+
+    private boolean eventAction(String event, String url) {
         String res;
         Map<String, Object> params = new HashMap<>();
         params.put("eventName", event);
-        try {
-            res = this.post(baseUrl + "/event/join", params);
-        } catch (UnirestException e) {
-            e.printStackTrace();
-            return false;
-        }
+        res = this.post(baseUrl + url, params);
         MessageHolder<Boolean> holder =
                 gson.fromJson(res, new TypeToken<MessageHolder<Boolean>>() {
                 }.getType());
@@ -410,20 +391,7 @@ public class Api {
     }
 
     public boolean leaveEvent(String event) {
-        String res;
-        Map<String, Object> params = new HashMap<>();
-        params.put("eventName", event);
-        try {
-            res = this.post(baseUrl + "/event/leave", params);
-        } catch (UnirestException e) {
-            e.printStackTrace();
-            return false;
-        }
-        MessageHolder<Boolean> holder =
-                gson.fromJson(res, new TypeToken<MessageHolder<Boolean>>() {
-                }.getType());
-
-        return holder.getData();
+        return eventAction(event, "/event/leave");
     }
 
     private String remap(String feature) {
