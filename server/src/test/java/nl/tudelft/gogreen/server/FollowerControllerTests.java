@@ -1,5 +1,6 @@
 package nl.tudelft.gogreen.server;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import nl.tudelft.gogreen.server.auth.CreateUser;
 import nl.tudelft.gogreen.server.events.EventsMain;
 import nl.tudelft.gogreen.server.followers.FollowerController;
@@ -10,6 +11,7 @@ import org.mockito.Mockito;
 import org.mockito.Spy;
 import org.mockito.junit.MockitoJUnitRunner;
 
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.util.Locale;
@@ -20,7 +22,7 @@ import java.util.ResourceBundle;
 public class FollowerControllerTests {
 
     @Spy
-    private FollowerController cs = new FollowerController();
+    private FollowerController cs = new FollowerController(new ObjectMapper());
 
     @Before
     public void before() {
@@ -33,7 +35,7 @@ public class FollowerControllerTests {
     }
 
     @Test
-    public void aafollowerTest() {
+    public void aafollowerTest() throws IOException {
         Assert.assertTrue(cs.follow("kees1").getData());
     }
 
