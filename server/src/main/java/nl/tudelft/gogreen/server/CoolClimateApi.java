@@ -15,10 +15,12 @@ import static java.sql.DriverManager.getConnection;
 public class CoolClimateApi {
 
     private static ResourceBundle resource = ResourceBundle.getBundle("db");
+
     /**
      * fetches the API Data.
-     * @param feature the feature input
-     * @param user_input the user input
+     *
+     * @param feature    the feature input
+     * @param userinput the user input
      * @return returns the needed data
      * @throws Exception raises error when unable to access database
      */
@@ -68,7 +70,11 @@ public class CoolClimateApi {
         return result;
     }
 
-
+    /**
+     * Returns the number of points of LocalProduct.
+     * @return points
+     * @throws Exception raises error if unable to access database
+     */
     public static float LocalProduct() throws Exception {
 
 
@@ -77,7 +83,9 @@ public class CoolClimateApi {
         String url = getUrl();
 
 
-        String holder = XML.toJSONObject(Unirest.get(url).headers(params).asString().getBody()).getJSONObject("response").get("input_takeaction_go_organic_myprodcost").toString();
+        String holder = XML.toJSONObject(Unirest.get(url).headers(params).asString()
+                .getBody()).getJSONObject("response")
+                .get("input_takeaction_go_organic_myprodcost").toString();
 
         float holderNum = Float.parseFloat(holder) * 1000;
         float result = holderNum / 3;
@@ -88,6 +96,12 @@ public class CoolClimateApi {
         return result;
     }
 
+    /**
+     * Retrieve the number of points of UsageBike.
+     * @param km number of km
+     * @return the points
+     * @throws Exception raises error if unable to access database
+     */
     public static float UsageofBike(String km) throws Exception {
 
 
@@ -135,9 +149,10 @@ public class CoolClimateApi {
         String holder = XML.toJSONObject(Unirest.get(url).headers(params).asString().getBody()).getJSONObject("response").get("result_takeaction_thermostat_summer_kwhuse").toString();
         keysLT = keys;
 
-        float result = Float.parseFloat(holder)*800;
+        float result = Float.parseFloat(holder) * 800;
 
-        if(Integer.valueOf(input_footprint_housing_cdd) != result/8) return Float.parseFloat(input_footprint_housing_cdd)*8;
+        if (Integer.valueOf(input_footprint_housing_cdd) != result / 8)
+            return Float.parseFloat(input_footprint_housing_cdd) * 8;
         System.out.println("The result is: " + result);
         keysremapping();
         return result;
@@ -157,12 +172,13 @@ public class CoolClimateApi {
 
         String holder = XML.toJSONObject(Unirest.get(url).headers(params).asString().getBody()).getJSONObject("response").get("result_electricity_direct").toString();
 
-        float result = Float.parseFloat(holder) *1000;
+        float result = Float.parseFloat(holder) * 1000;
         System.out.println(result / 15);
         keysremapping();
         return result / 15;
     }
-    public static  void keysremapping(){
+
+    public static void keysremapping() {
         keys = keys2;
     }
 
@@ -247,18 +263,18 @@ public class CoolClimateApi {
     };
 
     private static String[] keys2 = {
-            "input_location=",                               // User inputs their zip code
-            "input_size=",                            // The number of people that live in the user's house
-            "input_footprint_household_adults=",            // How many adults occupy the user's house
-            "input_footprint_household_children=",
-            "input_income=",                              // User inputs their income
-            "input_footprint_housing_squarefeet=",       // How large is the user's house
-            "input_footprint_housing_electricity_dollars=",
-            "input_footprint_housing_cdd=",               // Days that the house is cooled/year
-            "input_footprint_transportation_miles1=",
-            "input_footprint_transportation_mpg1=",
-            "input_footprint_housing_electricity_kwh=",
-            "input_footprint_shopping_food_fruitvegetables="
+        "input_location=",                               // User inputs their zip code
+        "input_size=",                            // The number of people that live in the user's house
+        "input_footprint_household_adults=",            // How many adults occupy the user's house
+        "input_footprint_household_children=",
+        "input_income=",                              // User inputs their income
+        "input_footprint_housing_squarefeet=",       // How large is the user's house
+        "input_footprint_housing_electricity_dollars=",
+        "input_footprint_housing_cdd=",               // Days that the house is cooled/year
+        "input_footprint_transportation_miles1=",
+        "input_footprint_transportation_mpg1=",
+        "input_footprint_housing_electricity_kwh=",
+        "input_footprint_shopping_food_fruitvegetables="
 
 
     };
@@ -271,24 +287,24 @@ public class CoolClimateApi {
      * practicing eco driving.
      */
     private static String[] takeActionKeys = {
-            "input_takeaction_switch_to_cfl=0",
-            "input_takeaction_maintain_my_vehicles=0",
-            "input_takeaction_more_efficient_vehicle=0",
-            "input_takeaction_reduce_air_travel=0",
-            "input_takeaction_telecommute_to_work=0",
-            "input_takeaction_thermostat_summer=0",
-            "input_takeaction_offset_housing=0",
-            "input_takeaction_energy_star_fridge=0",
-            "input_takeaction_thermostat_winter=0",
-            "input_takeaction_offset_transportation=0",
-            "input_takeaction_ride_my_bike=0",
-            "input_takeaction_purchase_green_electricity=0",
-            "input_takeaction_carpool_to_work=0",
-            "input_takeaction_practice_eco_driving=0",
-            "input_takeaction_take_public_transportation=1",
-            "input_takeaction_take_public_transportation_type=0",
-            "input_takeaction_take_public_transportation_gco2bus=1",
-            "input_takeaction_take_public_transportation_mpg=30",
+        "input_takeaction_switch_to_cfl=0",
+        "input_takeaction_maintain_my_vehicles=0",
+        "input_takeaction_more_efficient_vehicle=0",
+        "input_takeaction_reduce_air_travel=0",
+        "input_takeaction_telecommute_to_work=0",
+        "input_takeaction_thermostat_summer=0",
+        "input_takeaction_offset_housing=0",
+        "input_takeaction_energy_star_fridge=0",
+        "input_takeaction_thermostat_winter=0",
+        "input_takeaction_offset_transportation=0",
+        "input_takeaction_ride_my_bike=0",
+        "input_takeaction_purchase_green_electricity=0",
+        "input_takeaction_carpool_to_work=0",
+        "input_takeaction_practice_eco_driving=0",
+        "input_takeaction_take_public_transportation=1",
+        "input_takeaction_take_public_transportation_type=0",
+        "input_takeaction_take_public_transportation_gco2bus=1",
+        "input_takeaction_take_public_transportation_mpg=30",
 
     };
 
@@ -464,13 +480,13 @@ public class CoolClimateApi {
         keys[10] += electrictyWhats;
 
 
-
     }
+
     public static String createUrlLT(String input) {
         String result = "https://apis.berkeley.edu/coolclimate/footprint?";
 
         for (int i = 0; i < keysLT.length; i++) {
-            if(i==7) result += keysLT[i] + input +  "&";
+            if (i == 7) result += keysLT[i] + input + "&";
 
             result += keysLT[i] + "&";
 
