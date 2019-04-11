@@ -1,8 +1,12 @@
 package nl.tudelft.gogreen.server;
 
+import nl.tudelft.gogreen.server.auth.CreateUser;
+import nl.tudelft.gogreen.server.features.NewFeature;
 import org.hamcrest.Matchers;
+import org.junit.FixMethodOrder;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.junit.runners.MethodSorters;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -22,6 +26,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @RunWith(SpringRunner.class)
 @SpringBootTest
 @AutoConfigureMockMvc
+@FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class HTTPTest {
 
     @Autowired
@@ -37,7 +42,7 @@ public class HTTPTest {
     }
 
     @Test
-    public void testUserLogin() throws Exception {
+    public void aaUserLogin() throws Exception {
         Connection conn = DriverManager.getConnection(
                 resource.getString("Postgresql.datasource.url"),
                 resource.getString("Postgresql.datasource.username"),
@@ -48,9 +53,45 @@ public class HTTPTest {
         this.mockMvc.perform(post("/user/new")
                 .param("username", "test").param("password", "kees")).andDo(print()).andExpect(status().isOk());
         this.mockMvc.perform(post("/login").param("username", "test").param("password", "kees")).andDo(print()).andExpect(status().isOk());
-        this.mockMvc.perform(post("/feature/new").param("feature", "Vegetarian Meal")).andDo(print()).andExpect(status().isUnauthorized());
+        this.mockMvc.perform(post("/feature/new").param("feature", "Vegetarian Meal")).andDo(print()).andExpect(status().isOk());
+        this.mockMvc.perform(post("/feature/total")).andDo(print()).andExpect(status().isOk());
+        this.mockMvc.perform(post("/logout")).andDo(print()).andExpect(status().isOk());
+        this.mockMvc.perform(post("/login").param("username", "test").param("password", "keesa")).andDo(print()).andExpect(status().isUnauthorized());
+    }
+
+    @Test
+    public void abFeature() throws Exception {
+        this.mockMvc.perform(post("/login").param("username", "test").param("password", "kees")).andDo(print()).andExpect(status().isOk());
+        this.mockMvc.perform(post("/feature/new").param("feature", "Vegetarian Meal")).andDo(print()).andExpect(status().isOk());
         this.mockMvc.perform(post("/feature/total")).andDo(print()).andExpect(status().isOk());
     }
 
+
+    @Test
+    public void bbFollower() throws Exception {
+        Connection conn = DriverManager.getConnection(
+                Main.resource.getString("Postgresql.datasource.url"),
+                Main.resource.getString("Postgresql.datasource.username"),
+                Main.resource.getString("Postgresql.datasource.password"));
+        int id = NewFeature.getId("test2", conn);
+        if (id != -1)
+            CreateUser.delete_user(id, conn);
+        this.mockMvc.perform(post("/user/new")
+                .param("username", "test2").param("password", "kees")).andDo(print()).andExpect(status().isOk());
+        this.mockMvc.perform(post("/user/new")
+                .param("username", "test").param("password", "kees")).andDo(print()).andExpect(status().isOk());
+        this.mockMvc.perform(post("/login").param("username", "test").param("password", "kees")).andDo(print()).andExpect(status().isOk());
+
+        this.mockMvc.perform(post("/follow/follow")
+                .param("username", "test")).andDo(print()).andExpect(status().isOk());
+        this.mockMvc.perform(post("/follow/following")
+                .param("username", "test")).andDo(print()).andExpect(status().isOk());
+        this.mockMvc.perform(post("/follow/followers")
+                .param("username", "test")).andDo(print()).andExpect(status().isOk());
+        this.mockMvc.perform(post("/follow/unfollow")
+                .param("username", "test")).andDo(print()).andExpect(status().isOk());
+        this.mockMvc.perform(post("/follow/activity")
+                .param("username", "test")).andDo(print()).andExpect(status().isOk());
+    }
 
 }

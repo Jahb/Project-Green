@@ -1,6 +1,5 @@
 package nl.tudelft.gogreen.shared;
 
-
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
