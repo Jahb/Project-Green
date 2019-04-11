@@ -57,7 +57,7 @@ public class CoolClimateApi {
         float result = Float.parseFloat(holder);
 
         System.out.println(result);
-
+        keysremapping();
         return result;
     }
 
@@ -76,6 +76,7 @@ public class CoolClimateApi {
         float result = holderNum / 3;
         System.out.println(result);
 
+        keysremapping();
 
         return result;
     }
@@ -94,6 +95,8 @@ public class CoolClimateApi {
         float holderNum = Float.parseFloat(holder) * 1000;
         float result = holderNum / 365 * Integer.parseInt(km); //result in grams per day
         System.out.println(result);
+
+        keysremapping();
         return result;
     }
 
@@ -105,11 +108,13 @@ public class CoolClimateApi {
 
         float bus = 75; // average bus c02 emissions upon https://www.delijn.be/en/overdelijn/organisatie/zorgzaam-ondernemen/milieu/co2-uitstoot-voertuigen.html
 
-
+        keysremapping();
         return (carC02 - bus) * Float.parseFloat(input_miles);
     }
 
     public static float LowerTemperature(String input_footprint_housing_cdd) throws Exception {
+
+        System.out.println("In lower temperature with input: " + input_footprint_housing_cdd);
 
         LTmapping(input_footprint_housing_cdd);
 
@@ -123,10 +128,10 @@ public class CoolClimateApi {
         String holder = XML.toJSONObject(Unirest.get(url).headers(params).asString().getBody()).getJSONObject("response").get("result_takeaction_thermostat_summer_kwhuse").toString();
 
 
-        float result = Float.parseFloat(holder);
-        result = result * 800;
-        System.out.println(result);
+        float result = Float.parseFloat(holder)*800;
 
+        System.out.println(result);
+        keysremapping();
         return result;
     }
 
@@ -146,10 +151,12 @@ public class CoolClimateApi {
 
         float result = Float.parseFloat(holder) *1000;
         System.out.println(result / 15);
-
+        keysremapping();
         return result / 15;
     }
-
+    public static  void keysremapping(){
+        keys = keys2;
+    }
 
     public static float Recycling(String kg) throws Exception {
 
@@ -205,18 +212,28 @@ public class CoolClimateApi {
             "input_income=",                              // User inputs their income
             "input_footprint_housing_squarefeet=",       // How large is the user's house
             "input_footprint_housing_electricity_dollars=",
-            "input_footprint_housing_watersewage=",
             "input_footprint_housing_cdd=",               // Days that the house is cooled/year
             "input_footprint_transportation_miles1=",
             "input_footprint_transportation_mpg1=",
-            "input_footprint_transportation_miles2=",
-            "input_footprint_transportation_mpg2=",
-            "input_footprint_transportation_miles3=",
-            "input_footprint_transportation_mpg3=",
-            "input_footprint_transportation_airtotal=",
-            "input_footprint_transportation_publictrans=",
-            "input_footprint_shopping_food_fruitvegetables=",
-            "input_footprint_housing_electricity_kwh="
+            "input_footprint_housing_electricity_kwh=",
+            "input_footprint_shopping_food_fruitvegetables="
+
+
+    };
+
+    private static String[] keys2 = {
+            "input_location=",                               // User inputs their zip code
+            "input_size=",                            // The number of people that live in the user's house
+            "input_footprint_household_adults=",            // How many adults occupy the user's house
+            "input_footprint_household_children=",
+            "input_income=",                              // User inputs their income
+            "input_footprint_housing_squarefeet=",       // How large is the user's house
+            "input_footprint_housing_electricity_dollars=",
+            "input_footprint_housing_cdd=",               // Days that the house is cooled/year
+            "input_footprint_transportation_miles1=",
+            "input_footprint_transportation_mpg1=",
+            "input_footprint_housing_electricity_kwh=",
+            "input_footprint_shopping_food_fruitvegetables="
 
 
     };
@@ -312,7 +329,14 @@ public class CoolClimateApi {
             "input_footprint_housing_heatingoil_dollars=0",
             "input_footprint_housing_hdd=0",
             "input_footprint_shopping_goods_clothing=6666660",
-            "input_footprint_housing_watersewage=20"
+            "input_footprint_housing_watersewage=20",
+            "input_footprint_transportation_miles2=0",
+            "input_footprint_transportation_mpg2=0",
+            "input_footprint_transportation_miles3=0",
+            "input_footprint_transportation_mpg3=0",
+            "input_footprint_transportation_airtotal=0",
+            "input_footprint_transportation_publictrans=0"
+
 
 
     };
@@ -342,21 +366,21 @@ public class CoolClimateApi {
         calculateTotal(getLocation(), getInputSize(), getIncome(), getSquarefeet(),
                 getElectrictyBill(), "0", "0",
                 "0", "0",
-                input_footprint_shopping_food_fruitvegetables, "0", "0", "0");
+                input_footprint_shopping_food_fruitvegetables, "0");
     }
 
     public static void LTmapping(String input_footprint_housing_cdd) {
         calculateTotal(getLocation(), getInputSize(), getIncome(), getSquarefeet(),
                 getElectrictyBill(), input_footprint_housing_cdd, "0",
                 "0", "0",
-                "0", "0", "0", "0");
+                "0", "0");
     }
 
     public static void SPmapping() {
         calculateTotal(getLocation(), getInputSize(), getIncome(), getSquarefeet(),
                 getElectrictyBill(), "0", "0",
                 "0", "0",
-                "0", getElectrictyBill(), "0", "0");
+                "0", getElectrictyBill());
     }
 
 
@@ -364,7 +388,7 @@ public class CoolClimateApi {
                                       String input_footprint_housing_squarefeet, String input_footprint_housing_electricity_dollars, String input_footprint_housing_cdd,
                                       String input_footprint_transportation_miles1, String input_footprint_transportation_airtotal,
                                       String input_footprint_transportation_publictrans, String input_footprint_shopping_food_fruitvegetables,
-                                      String electrictyWhats, String carpooldistance, String a) {
+                                      String electrictyWhats) {
 
         keys[0] += location;// User inputs their zip code
         keys[1] += inputSize;
@@ -373,18 +397,12 @@ public class CoolClimateApi {
         keys[4] += input_income;
         keys[5] += input_footprint_housing_squarefeet;
         keys[6] += input_footprint_housing_electricity_dollars;
-        keys[7] += 0;
-        keys[8] += input_footprint_housing_cdd;
-        keys[9] += input_footprint_transportation_miles1;
-        keys[10] += 30;
-        keys[11] += 0;
-        keys[12] += 0;
-        keys[13] += 0;
-        keys[14] += 0;
-        keys[15] += input_footprint_transportation_airtotal;
-        keys[16] += input_footprint_transportation_publictrans;
-        keys[17] += input_footprint_shopping_food_fruitvegetables;
-        keys[18] += electrictyWhats;
+        keys[7] += input_footprint_housing_cdd;
+        keys[8] += input_footprint_transportation_miles1;
+        keys[9] += 30;
+        keys[11] += input_footprint_shopping_food_fruitvegetables;
+        keys[10] += electrictyWhats;
+
 
 
     }

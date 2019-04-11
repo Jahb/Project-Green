@@ -18,10 +18,15 @@ public class APILowerTemperatureTest {
             float expected = Float.parseFloat("32");
             assertEquals(expected,result);
 
+            CoolClimateApi.keysremapping();
+
+            float result2 = CoolClimateApi.fetchApiData("Lower Temperature","4");
+            float expected2 = Float.parseFloat("32");
+            assertEquals(expected2,result2);
 
 
         } catch (Exception exception) {
-            System.out.println("Error!");
+            System.out.println(exception.getMessage());
         }
     }
 
