@@ -30,8 +30,6 @@ public class Statistics {
         double[] data = getLastData(id, 7, conn);
         conn.close();
         return data;
-
-
     }
 
     /**
@@ -107,6 +105,28 @@ public class Statistics {
         result[days] = total;
         result[days + 1] = total / days;
         return result;
+    }
+
+    public static void insertQuizData(int id, int monthlyIncome,
+                                      int householdSize, boolean ownVehicle,
+                                      int energyBill,int traveledMiles,
+                                      int fuelEconomy, int houseSurface) throws Exception {
+        Connection conn = getConnection(
+                resource.getString("Postgresql.datasource.url"),
+                resource.getString("Postgresql.datasource.username"),
+                resource.getString("Postgresql.datasource.password"));
+
+        PreparedStatement insertData = conn.prepareStatement(resource.getString("qQuizData"));
+        insertData.setInt(1, id);
+        insertData.setInt(2,monthlyIncome);
+        insertData.setInt(3,householdSize);
+        insertData.setBoolean(4,ownVehicle);
+        insertData.setInt(5,energyBill);
+        insertData.setInt(6,traveledMiles);
+        insertData.setInt(7,fuelEconomy);
+        insertData.setInt(8,houseSurface);
+
+        insertData.execute();
     }
 
 
