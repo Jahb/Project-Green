@@ -6,10 +6,17 @@ import org.json.XML;
 import java.util.HashMap;
 import java.util.Map;
 
-public class CoolClimateAPI {
+public class CoolClimateApi {
 
 
-    public static float fetchApiData(String feature, String user_input) throws Exception {
+    /**
+     * fetches the API Data.
+     * @param feature the feature input
+     * @param userinput the user input
+     * @return returns the needed data
+     * @throws Exception raises error when unable to access database
+     */
+    public static float fetchApiData(String feature, String userinput) throws Exception {
 
         if (feature.equals("Vegetarian Meal")) return VegetarianMeal(user_input);
         if (feature.equals("Usage of Bike")) return UsageofBike(user_input);
@@ -33,8 +40,6 @@ public class CoolClimateAPI {
 
     public static float VegetarianMeal(String input_footprint_shopping_food_fruitvegetables) throws Exception {
 
-        VMmapping(input_footprint_shopping_food_fruitvegetables);
-
         Map<String, String> params = new HashMap<>();
         params.put("accept", "application/json");
         params.put("app_id", "93af0470");
@@ -42,7 +47,9 @@ public class CoolClimateAPI {
         String url = createUrl();
 
 
-        String holder = XML.toJSONObject(Unirest.get(url).headers(params).asString().getBody()).getJSONObject("response").get("result_food_fruitsveg").toString();
+        String holder = XML.toJSONObject(Unirest.get(url).headers(params).asString().getBody())
+                .getJSONObject("response").get("result_food_fruitsveg").toString();
+
 
 
         System.out.println(holder);

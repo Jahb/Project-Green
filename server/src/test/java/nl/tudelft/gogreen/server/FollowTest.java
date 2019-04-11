@@ -32,7 +32,7 @@ public class FollowTest {
 
             int id1 = NewFeature.getId("paul",conn);
             int id2 = NewFeature.getId("pablo",conn);
-            Following.Follow(id1,id2);
+            Following.follow(id1,id2);
 
             boolean result = Following.isFollowing(id1,id2,conn);
 

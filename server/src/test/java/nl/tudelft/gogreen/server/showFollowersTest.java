@@ -35,8 +35,8 @@ public class showFollowersTest {
             int id1 = NewFeature.getId("paul",conn);
             int id2 = NewFeature.getId("pablo",conn);
             int id3 = NewFeature.getId("coco",conn);
-            Following.Follow(id2,id1);
-            Following.Follow(id3,id1);
+            Following.follow(id2,id1);
+            Following.follow(id3,id1);
 
             ArrayList test = new ArrayList();
             test.add(1);

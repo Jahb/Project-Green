@@ -23,7 +23,7 @@ public class UnfollowTest {
 
             int id1 = NewFeature.getId("paul",conn);
             int id2 = NewFeature.getId("pablo",conn);
-            Following.Follow(id1,id2);
+            Following.follow(id1,id2);
 
         }
         catch(Exception e){
@@ -38,7 +38,7 @@ public class UnfollowTest {
             int id1 = NewFeature.getId("paul",conn);
             int id2 = NewFeature.getId("pablo",conn);
 
-            Following.Unfollow(id1,id2);
+            Following.unfollow(id1,id2);
             boolean result = Following.isFollowing(id1,id2,conn);
 
             assertFalse(result);

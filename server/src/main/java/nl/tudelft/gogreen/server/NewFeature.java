@@ -41,7 +41,6 @@ public class NewFeature {
                 resource.getString("Postgresql.datasource.username"),
                 resource.getString("Postgresql.datasource.password"));
 
-
         int id = getId(username, conn);
         newStreak(id, conn);
         actualizingFeatures(conn, feature);
@@ -75,8 +74,8 @@ public class NewFeature {
         OldUserPoints.setFloat(1, id);
         ResultSet OUP = OldUserPoints.executeQuery();
         int total = -1;
-        while (OUP.next()) {
-            total = OUP.getInt(1);
+        while (oup.next()) {
+            total = oup.getInt(1);
         }
         return total;
     }
@@ -217,7 +216,8 @@ public class NewFeature {
             switch (category) {
 
                 case 1:
-                    PreparedStatement createc1 = conn.prepareStatement(resource.getString("qInsertHistory1"));
+                    PreparedStatement createc1 =
+                            conn.prepareStatement(resource.getString("qInsertHistory1"));
                     createc1.setInt(1, id);
                     createc1.setFloat(2, points);
                     createc1.setFloat(3, points);
@@ -225,7 +225,8 @@ public class NewFeature {
                     break;
 
                 case 2:
-                    PreparedStatement createc2 = conn.prepareStatement(resource.getString("qInsertHistory2"));
+                    PreparedStatement createc2 =
+                            conn.prepareStatement(resource.getString("qInsertHistory2"));
                     createc2.setInt(1, id);
                     createc2.setFloat(2, points);
                     createc2.setFloat(3, points);
@@ -233,7 +234,8 @@ public class NewFeature {
                     break;
 
                 case 3:
-                    PreparedStatement createc3 = conn.prepareStatement(resource.getString("qInsertHistory3"));
+                    PreparedStatement createc3 =
+                            conn.prepareStatement(resource.getString("qInsertHistory3"));
                     createc3.setInt(1, id);
                     createc3.setFloat(2, points);
                     createc3.setFloat(3, points);
@@ -241,7 +243,8 @@ public class NewFeature {
                     break;
 
                 case 4:
-                    PreparedStatement createc4 = conn.prepareStatement(resource.getString("qInsertHistory4"));
+                    PreparedStatement createc4 =
+                            conn.prepareStatement(resource.getString("qInsertHistory4"));
                     createc4.setInt(1, id);
                     createc4.setFloat(2, points);
                     createc4.setFloat(3, points);
@@ -314,7 +317,8 @@ public class NewFeature {
      * @throws Exception Raised when an error occurs while accessing the database
      */
     public static void actualizingFeatures(Connection conn, String feature) throws Exception {
-        PreparedStatement getId = conn.prepareStatement(resource.getString("qActualtizingFeatures"));
+        PreparedStatement getId =
+                conn.prepareStatement(resource.getString("qActualtizingFeatures"));
         getId.setString(1, feature);
         getId.execute();
 
@@ -363,12 +367,14 @@ public class NewFeature {
         }
         System.out.println("the day is: " + lastDay);
         if (lastDay == null || (!isToday(lastDay) && !isYesterday(lastDay))) {
-            PreparedStatement resetStreak = conn.prepareStatement(resource.getString("qInsertStreak"));
+            PreparedStatement resetStreak =
+                    conn.prepareStatement(resource.getString("qInsertStreak"));
             resetStreak.setInt(1, id);
             resetStreak.execute();
         } else if (isYesterday(lastDay)) {
 
-            PreparedStatement addOneToStreak = conn.prepareStatement(resource.getString("qUpdateStreak"));
+            PreparedStatement addOneToStreak =
+                    conn.prepareStatement(resource.getString("qUpdateStreak"));
             addOneToStreak.setInt(1, id);
             addOneToStreak.execute();
         }
@@ -388,7 +394,8 @@ public class NewFeature {
                 resource.getString("Postgresql.datasource.url"),
                 resource.getString("Postgresql.datasource.username"),
                 resource.getString("Postgresql.datasource.password"));
-        PreparedStatement getStreak = conn.prepareStatement(resource.getString("qRetrievingStreakDays"));
+        PreparedStatement getStreak =
+                conn.prepareStatement(resource.getString("qRetrievingStreakDays"));
         getStreak.setInt(1, id);
         int numDays = 0;
         ResultSet numDaysRS = getStreak.executeQuery();
@@ -401,17 +408,19 @@ public class NewFeature {
     }
 
     /**
-     * Method which returns the total per category. Send c1 for category 1,..., c'n' for category 'n'.
+     * Method which returns the total per category.
+     * Send c1 for category 1,..., c'n' for category 'n'.
      *
-     * @param id
-     * @param category
-     * @param conn
-     * @return
-     * @throws Exception
+     * @param id the id
+     * @param category the category
+     * @param conn connection to database
+     * @return the total per category
+     * @throws Exception raises exception if unable to access database
      */
     public static int getTotalCategory1(int id, String category, Connection conn) throws Exception {
 
-        PreparedStatement getTotalCategory1 = conn.prepareStatement("select ? from user_points where user_id = ?");
+        PreparedStatement getTotalCategory1 =
+                conn.prepareStatement("select ? from user_points where user_id = ?");
         getTotalCategory1.setString(1, category);
         getTotalCategory1.setInt(2, id);
         ResultSet points = getTotalCategory1.executeQuery();

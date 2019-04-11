@@ -34,8 +34,8 @@ public class countFollowingTest {
             int id1 = NewFeature.getId("paul",conn);
             int id2 = NewFeature.getId("pablo",conn);
             int id3 = NewFeature.getId("coco",conn);
-            Following.Follow(id1,id2);
-            Following.Follow(id1,id3);
+            Following.follow(id1,id2);
+            Following.follow(id1,id3);
 
             int number = Following.countAllFollowing(id1,conn);
             assertTrue(number == 2);
