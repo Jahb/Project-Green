@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import com.jfoenix.controls.JFXListView?>
-<?import com.jfoenix.controls.JFXTextField?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
@@ -73,8 +72,8 @@
          </opaqueInsets>
       </BorderPane>
       <AnchorPane layoutX="673.0" layoutY="197.0" prefHeight="523.0" prefWidth="327.0" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="197.0">
-            <JFXListView fx:id="followerList" layoutX="14.0" layoutY="108.0" prefHeight="408.0" prefWidth="300.0" stylesheets="@ListStyle.css" AnchorPane.bottomAnchor="7.0" AnchorPane.topAnchor="108.0" />
-            <JFXTextField fx:id="searchFollowers" focusColor="#50e476" layoutX="14.0" layoutY="65.0" prefHeight="36.0" prefWidth="300.0" promptText="Search Followers" />
+            <JFXListView fx:id="followerList" layoutX="14.0" layoutY="77.0" prefHeight="439.0" prefWidth="300.0" stylesheets="@ListStyle.css" AnchorPane.bottomAnchor="7.0" AnchorPane.topAnchor="77.0" />
+            <Label id="niceLabel" fx:id="followersLabel" alignment="CENTER" layoutX="14.0" layoutY="20.0" prefHeight="50.0" prefWidth="183.0" style="-fx-background-radius: 25;" text="Followers" textAlignment="CENTER" textOverrun="CENTER_ELLIPSIS" />
             <Label id="niceLabel" fx:id="followersLabel" alignment="CENTER" layoutX="14.0" layoutY="20.0" prefHeight="50.0" prefWidth="183.0" style="-fx-background-radius: 25;" text="Followers" textAlignment="CENTER" textOverrun="CENTER_ELLIPSIS" />
             <Button id="button2" fx:id="followingButton" layoutX="207.0" layoutY="34.0" mnemonicParsing="false" onAction="#followersClicked" prefHeight="31.0" prefWidth="102.0" text="Following" />
       </AnchorPane>

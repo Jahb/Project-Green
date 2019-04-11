@@ -3,9 +3,11 @@ package nl.tudelft.gogreen.client.communication;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
+
 import com.mashape.unirest.http.ObjectMapper;
 import com.mashape.unirest.http.Unirest;
 import com.mashape.unirest.http.exceptions.UnirestException;
+
 import nl.tudelft.gogreen.shared.DateHolder;
 import nl.tudelft.gogreen.shared.DatePeriod;
 import nl.tudelft.gogreen.shared.MessageHolder;
@@ -22,14 +24,12 @@ public class Api {
     /**
      * The currently used api, so we only have to change the value once...
      */
-    public static Api current = getTestApi();
-
 
     public static Gson gson = new GsonBuilder().setPrettyPrinting().create();
+    public static Api current = getTestApi();
+    private static Api api;
 
     private int position;
-
-    private static Api api;
 
     private String username;
 
@@ -284,10 +284,11 @@ public class Api {
     }
 
     /**
-     * Get the position of the user on their leaderboard
+     * Get the position of the user on their leaderboard.
+     *
      * @return the users position
      */
-    public int getPosition(){
+    public int getPosition() {
         return position;
     }
 
