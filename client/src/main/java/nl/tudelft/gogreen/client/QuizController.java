@@ -26,15 +26,9 @@ public class QuizController implements Initializable {
     @FXML
     public JFXSlider vehicleSlider;
     @FXML
-    public JFXSlider mileSlider;
-    @FXML
-    public JFXSlider economySlider;
-    @FXML
     public JFXSlider billSlider;
     @FXML
-    public Label mileLabel;
-    @FXML
-    public Label economyLabel;
+    public JFXSlider surfaceSlider;
     @FXML
     public JFXButton defaultButton;
     @FXML
@@ -69,27 +63,6 @@ public class QuizController implements Initializable {
                 }
             }
         });
-
-        /**
-         * disable last 3 sliders when vehicleSlider is set to "No"
-         */
-        ChangeListener<Number> listener = new ChangeListener<Number>() {
-            public void changed(ObservableValue<? extends Number> ov,
-                                Number oldVal, Number newVal) {
-                if (newVal.intValue() < 0.5) {
-                    economySlider.setDisable(true);
-                    mileSlider.setDisable(true);
-                    mileLabel.setStyle("-fx-text-fill: gray");
-                    economyLabel.setStyle("-fx-text-fill: gray");
-                } else {
-                    economySlider.setDisable(false);
-                    mileSlider.setDisable(false);
-                    mileLabel.setStyle("-fx-text-fill: black");
-                    economyLabel.setStyle("-fx-text-fill: black");
-                }
-            }
-        };
-        vehicleSlider.valueProperty().addListener(listener);
     }
 
     /**
@@ -111,6 +84,12 @@ public class QuizController implements Initializable {
      */
     public void useDefaults() {
         Main.openMainScreen();
+        //TODO connect values to database (these should use the average)
+        int surface= -1;
+        int size= -1;
+        int vehicle=-1;
+        int income=-1;
+        int bill=-1;
     }
 
     /**
@@ -118,5 +97,16 @@ public class QuizController implements Initializable {
      */
     public void useSaved() {
         Main.openMainScreen();
+        //TODO connect values to database(actual values on the ints)
+        int surface= (int) surfaceSlider.getValue();
+        int size = (int) sizeSlider.getValue();
+        int vehicle = (int) vehicleSlider.getValue();
+        int income = (int) incomeSlider.getValue();
+        int bill = (int) billSlider.getValue();
+        System.out.print(income+"\n");
+        System.out.print(size+"\n");
+        System.out.print(bill+"\n");
+        System.out.print(surface+"\n");
+        System.out.print(vehicle+"\n");
     }
 }

@@ -34,7 +34,7 @@
                </font>
             </Label>
          </children></AnchorPane>
-      <VBox layoutX="56.0" layoutY="165.0" prefHeight="415.0" prefWidth="480.0" spacing="15.0" AnchorPane.bottomAnchor="135.0" AnchorPane.leftAnchor="60.0" AnchorPane.topAnchor="175.0">
+      <VBox layoutX="56.0" layoutY="165.0" prefHeight="415.0" prefWidth="480.0" spacing="20.0" AnchorPane.bottomAnchor="130.0" AnchorPane.leftAnchor="60.0" AnchorPane.topAnchor="195.0">
          <children>
             <Label minHeight="55.0" minWidth="50.0" prefHeight="45.0" prefWidth="481.0" text="• What is your monthly income?">
                <font>
@@ -51,38 +51,32 @@
                   <Font size="20.0" />
                </font>
             </Label>
+            <Label minHeight="55.0" text="• What is the surface of your house? (square meters)">
+               <font>
+                  <Font size="20.0" />
+               </font>
+            </Label>
             <Label minHeight="55.0" prefHeight="50.0" prefWidth="493.0" text="• Do you own a vehicle?">
-               <font>
-                  <Font size="20.0" />
-               </font>
-            </Label>
-            <Label fx:id="mileLabel" minHeight="55.0" prefHeight="50.0" prefWidth="493.0" text="• How many miles did you travel by vehicle last year?">
-               <font>
-                  <Font size="20.0" />
-               </font>
-            </Label>
-            <Label fx:id="economyLabel" minHeight="55.0" prefHeight="55.0" prefWidth="478.0" text="• What is your vehicle's fuel economy? (miles / gallon)">
                <font>
                   <Font size="20.0" />
                </font>
             </Label>
          </children>
       </VBox>
-      <VBox layoutX="552.0" layoutY="165.0" prefHeight="415.0" AnchorPane.bottomAnchor="130.0" AnchorPane.leftAnchor="560.0" AnchorPane.rightAnchor="70.0" AnchorPane.topAnchor="180.0">
+      <VBox layoutX="552.0" layoutY="165.0" prefHeight="451.0" prefWidth="370.0" spacing="10.0" AnchorPane.bottomAnchor="130.0" AnchorPane.leftAnchor="560.0" AnchorPane.rightAnchor="70.0" AnchorPane.topAnchor="200.0">
          <children>
-            <JFXSlider fx:id="incomeSlider" blockIncrement="0.0" majorTickUnit="20000.0" max="120000.0" minHeight="70.0" minorTickCount="1" prefHeight="55.0" prefWidth="358.0" showTickLabels="true" showTickMarks="true" snapToTicks="true" stylesheets="@LargeButton.css" />
-            <JFXSlider fx:id="sizeSlider" blockIncrement="0.0" majorTickUnit="1.0" max="5.0" min="1.0" minHeight="70.0" minorTickCount="0" showTickLabels="true" snapToTicks="true" stylesheets="@LargeButton.css" value="1.0" />
-            <JFXSlider fx:id="billSlider" blockIncrement="1.0" majorTickUnit="400.0" max="2000.0" minHeight="70.0" showTickLabels="true" showTickMarks="true" snapToTicks="true" stylesheets="@LargeButton.css" value="1.0" />
-            <JFXSlider fx:id="vehicleSlider" blockIncrement="1.0" majorTickUnit="1.0" max="1.0" minHeight="70.0" minorTickCount="0" showTickLabels="true" snapToTicks="true" stylesheets="@LargeButton.css" value="1.0" />
-            <JFXSlider fx:id="mileSlider" majorTickUnit="20000.0" max="100000.0" minHeight="70.0" minorTickCount="1" showTickLabels="true" showTickMarks="true" snapToTicks="true" stylesheets="@LargeButton.css" />
-            <JFXSlider fx:id="economySlider" majorTickUnit="10.0" minHeight="70.0" minorTickCount="1" showTickLabels="true" showTickMarks="true" snapToTicks="true" stylesheets="@LargeButton.css" />
+            <JFXSlider fx:id="incomeSlider" blockIncrement="0.0" majorTickUnit="20000.0" max="120000.0" minHeight="65.0" minorTickCount="1" prefHeight="55.0" prefWidth="358.0" showTickLabels="true" showTickMarks="true" snapToTicks="true" stylesheets="@LargeButton.css" />
+            <JFXSlider fx:id="sizeSlider" blockIncrement="0.0" majorTickUnit="1.0" max="5.0" min="1.0" minHeight="65.0" minorTickCount="0" showTickLabels="true" snapToTicks="true" stylesheets="@LargeButton.css" value="1.0" />
+            <JFXSlider fx:id="billSlider" blockIncrement="1.0" majorTickUnit="400.0" max="2000.0" minHeight="65.0" showTickLabels="true" showTickMarks="true" snapToTicks="true" stylesheets="@LargeButton.css" value="1.0" />
+            <JFXSlider fx:id="surfaceSlider" blockIncrement="1.0" majorTickUnit="200.0" max="1000.0" minHeight="65.0" minorTickCount="1" showTickLabels="true" showTickMarks="true" snapToTicks="true" stylesheets="@LargeButton.css" />
+            <JFXSlider fx:id="vehicleSlider" blockIncrement="1.0" majorTickUnit="1.0" max="1.0" minHeight="65.0" minorTickCount="0" showTickLabels="true" snapToTicks="true" stylesheets="@LargeButton.css" value="1.0" />
          </children></VBox>
-      <JFXButton fx:id="saveButton" layoutX="560.0" layoutY="612.0" mnemonicParsing="false" prefHeight="70.0" prefWidth="370.0" stylesheets="@LargeButton.css" text="Save settings" textFill="WHITE" AnchorPane.rightAnchor="70.0">
+      <JFXButton fx:id="saveButton" layoutX="560.0" layoutY="612.0" mnemonicParsing="false" prefHeight="70.0" prefWidth="370.0" stylesheets="@LargeButton.css" text="Save settings" textFill="WHITE" AnchorPane.bottomAnchor="45.0" AnchorPane.rightAnchor="70.0">
          <font>
             <Font name="System Bold" size="25.0" />
          </font>
       </JFXButton>
-      <JFXButton fx:id="defaultButton" layoutX="60.0" layoutY="612.0" mnemonicParsing="false" prefHeight="70.0" prefWidth="370.0" stylesheets="@LargeButton.css" text="Use defaults" textFill="WHITE" AnchorPane.leftAnchor="60.0">
+      <JFXButton fx:id="defaultButton" layoutX="60.0" layoutY="612.0" mnemonicParsing="false" prefHeight="70.0" prefWidth="370.0" stylesheets="@LargeButton.css" text="Use defaults" textFill="WHITE" AnchorPane.bottomAnchor="45.0" AnchorPane.leftAnchor="60.0">
          <font>
             <Font name="System Bold" size="25.0" />
          </font>
