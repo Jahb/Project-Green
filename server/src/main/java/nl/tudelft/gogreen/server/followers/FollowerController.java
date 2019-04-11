@@ -1,5 +1,6 @@
 package nl.tudelft.gogreen.server.followers;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import nl.tudelft.gogreen.server.Main;
 import nl.tudelft.gogreen.server.Utils;
@@ -36,7 +37,7 @@ public class FollowerController {
         this.mapper = mapper;
     }
 
-    private String getCurrentUser() {
+    public String getCurrentUser() {
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
         String username;
