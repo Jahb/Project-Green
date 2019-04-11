@@ -1,14 +1,9 @@
 package nl.tudelft.gogreen.server;
 
+import junit.framework.TestCase;
 import org.junit.Test;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.util.ResourceBundle;
-
-import static org.junit.Assert.assertEquals;
 
 public class APIUsagePublicTransportTest {
 
@@ -16,16 +11,12 @@ public class APIUsagePublicTransportTest {
 
     @Test
     public void UsagePublicTransport() {
-        try (Connection conn = DriverManager.getConnection(resource.getString("Postgresql.datasource.url"), resource.getString("Postgresql.datasource.username"), resource.getString("Postgresql.datasource.password"))){
+        try {
 
-            CoolClimateApi.UsageofPublicTransport("1");
-            PreparedStatement usagetransport = conn.prepareStatement(resource.getString("qUsageTransport"));
-            ResultSet rs = usagetransport.executeQuery();
-            float result = 0;
-            while (rs.next()) {
-                result = rs.getFloat(1);
-            }
-            assertEquals(result,607.24585,607.24585);
+            float result = CoolClimateApi.UsageofPublicTransport("1");
+            float expected = Float.parseFloat("43");
+            TestCase.assertEquals(expected, result);
+
             System.out.println(result);
 
 

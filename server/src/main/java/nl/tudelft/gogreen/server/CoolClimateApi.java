@@ -32,13 +32,16 @@ public class CoolClimateApi {
 
 
         if (feature.equals("Local Product")) return LocalProduct();
-        if (feature.equals("Solar Panel")) return SolarPanels();
+        if (feature.equals("Solar Panels")) return SolarPanels();
 
         return -1;
     }
 
 
     public static float VegetarianMeal(String input_footprint_shopping_food_fruitvegetables) throws Exception {
+
+
+        VMmapping(input_footprint_shopping_food_fruitvegetables);
 
         Map<String, String> params = new HashMap<>();
         params.put("accept", "application/json");
@@ -122,7 +125,6 @@ public class CoolClimateApi {
         String holder = XML.toJSONObject(Unirest.get(url).headers(params).asString().getBody()).getJSONObject("response").get("result_takeaction_thermostat_summer_kwhuse").toString();
 
 
-        System.out.println(holder); //that is kwuse
         float result = Float.parseFloat(holder);
         result = result * 800;
         System.out.println(result);
@@ -144,8 +146,7 @@ public class CoolClimateApi {
 
         String holder = XML.toJSONObject(Unirest.get(url).headers(params).asString().getBody()).getJSONObject("response").get("result_electricity_direct").toString();
 
-        float result = Float.parseFloat(holder) * 1000; //transform from tones to grams
-
+        float result = Float.parseFloat(holder) *1000;
         System.out.println(result / 15);
 
         return result / 15;
@@ -230,7 +231,7 @@ public class CoolClimateApi {
      * practicing eco driving.
      */
     private static String[] takeActionKeys = {
-
+            "input_takeaction_switch_to_cfl=0",
             "input_takeaction_maintain_my_vehicles=0",
             "input_takeaction_more_efficient_vehicle=0",
             "input_takeaction_reduce_air_travel=0",
