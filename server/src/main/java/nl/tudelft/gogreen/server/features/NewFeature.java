@@ -117,7 +117,7 @@ public class NewFeature {
      * @return returns the id
      * @throws Exception raised if an error occurs while accessing the database
      */
-    public static int getId(String username, Connection conn) throws Exception {
+    public static int getId(String username, Connection conn) throws SQLException {
         int id = -1;
 
         //System.out.println("the username is: " + username);

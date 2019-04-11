@@ -9,6 +9,7 @@ dependencies {
     compile project(':library')
     compile("org.springframework.boot:spring-boot-starter-web")
     implementation "org.springframework.boot:spring-boot-starter-security"
+    implementation "org.springframework.boot:spring-boot-starter-websocket"
 
     compile group: 'org.postgresql', name: 'postgresql', version: '42.2.5'
     compile group: 'org.springframework.security', name: 'spring-security-crypto', version: '3.1.0.RELEASE'

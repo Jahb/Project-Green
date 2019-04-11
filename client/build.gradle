@@ -11,6 +11,7 @@ dependencies {
     testCompile "com.github.tomakehurst:wiremock-jre8:2.22.0"
     // https://mvnrepository.com/artifact/com.jfoenix/jfoenix
     compile group: 'com.jfoenix', name: 'jfoenix', version: '8.0.1'
+    compile "org.java-websocket:Java-WebSocket:1.4.0"
 
 
 }

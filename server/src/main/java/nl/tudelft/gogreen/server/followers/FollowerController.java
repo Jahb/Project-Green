@@ -1,30 +1,45 @@
 package nl.tudelft.gogreen.server.followers;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import nl.tudelft.gogreen.server.Main;
-import nl.tudelft.gogreen.server.features.NewFeature;
 import nl.tudelft.gogreen.server.Utils;
+import nl.tudelft.gogreen.server.features.NewFeature;
+import nl.tudelft.gogreen.server.websocket.LiveConnections;
 import nl.tudelft.gogreen.shared.MessageHolder;
+import nl.tudelft.gogreen.shared.PingPacket;
+import nl.tudelft.gogreen.shared.PingPacketData;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.socket.TextMessage;
+import org.springframework.web.socket.WebSocketSession;
 
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
-import java.util.*;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/follow")
 public class FollowerController {
 
+    private ObjectMapper mapper;
+
+    public FollowerController(@Autowired ObjectMapper mapper) {
+        this.mapper = mapper;
+    }
 
     public String getCurrentUser() {
-        Object principal = SecurityContextHolder
-                .getContext()
-                .getAuthentication()
-                .getPrincipal();
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
         String username;
         if (principal instanceof UserDetails) {
             username = ((UserDetails) principal).getUsername();
@@ -35,7 +50,7 @@ public class FollowerController {
     }
 
     @PostMapping("/follow")
-    public MessageHolder<Boolean> follow(String username) {
+    public MessageHolder<Boolean> follow(String username) throws IOException {
         List<Integer> users = Utils.verifyUsersValid(getCurrentUser(), username);
         System.out.println(users);
         if (users.stream().anyMatch(integer -> integer == -1)) {
@@ -47,6 +62,10 @@ public class FollowerController {
             e.printStackTrace();
             return new MessageHolder<>("Follow", false);
         }
+        PingPacket msg = new PingPacket(PingPacketData.FOLLOWER, getCurrentUser());
+        WebSocketSession sess = LiveConnections.sessionMap.get(username);
+        if (sess != null)
+            sess.sendMessage(new TextMessage(mapper.writeValueAsString(msg)));
         return new MessageHolder<>("Follow", true);
     }
 

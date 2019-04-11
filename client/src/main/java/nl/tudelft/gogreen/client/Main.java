@@ -2,6 +2,7 @@ package nl.tudelft.gogreen.client;
 
 import com.jfoenix.controls.JFXSnackbar;
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -49,7 +50,10 @@ public class Main extends Application {
 
         openLoginScreen();
         stage.show();
-
+        stage.setOnCloseRequest(event -> {
+            Platform.exit();
+            System.exit(0);
+        });
         System.out.println("Initialization code took " +
                 ((System.nanoTime() - startTime) / 1000000 / 1000.0) + "s");
     }
