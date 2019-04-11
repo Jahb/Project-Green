@@ -6,14 +6,22 @@ import java.util.function.Consumer;
 
 import javafx.animation.AnimationTimer;
 import javafx.animation.TranslateTransition;
+import javafx.collections.SetChangeListener.Change;
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Node;
+import javafx.scene.control.TextField;
+import javafx.scene.control.TextFormatter;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
+import javafx.scene.layout.Border;
+import javafx.scene.layout.BorderStroke;
+import javafx.scene.layout.BorderStrokeStyle;
 import javafx.scene.layout.CornerRadii;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
@@ -30,7 +38,7 @@ import javafx.util.Duration;
  */
 class AddActivityButton {
 
-    static final int height = 250;
+    static final int height = 270;
 
     private Consumer<String> handler;
 
@@ -45,6 +53,8 @@ class AddActivityButton {
 
     private TranslateTransition slideUp;
     private TranslateTransition stayPut;
+    
+    private TextField metadataBox;
 
     private HashSet<Node> allNodes = new HashSet<>(31);
 
@@ -67,18 +77,42 @@ class AddActivityButton {
         });
         backgroundPane.setLayoutY(0);
 
-        Text text = new Text("Record new GREEN activity");
-        text.setX(50);
-        text.setY(35);
+        
+        
+        
+        Text text = new Text("kcal");
         text.setFont(Font.font("Calibri", FontWeight.BOLD, 23));
         text.setMouseTransparent(true);
-        text.setVisible(false);// TODO
+        
+        metadataBox = new TextField();
+        metadataBox.setFont(Font.font("Calibri", FontWeight.BOLD, 23));
+        metadataBox.setTextFormatter(new TextFormatter<Change>(event -> {
+        	Color borderColor;
+        	String afterType = event.getControlNewText();
+        	if(afterType.equals(""))
+        		afterType = "0";
+        	try {
+        		Float.parseFloat(afterType);
+        		if(afterType.contains("e"))
+        			throw new NumberFormatException();
+        		borderColor = Color.GRAY;
+			} catch (NumberFormatException exception) {
+				borderColor = Color.RED;
+			}
+        	metadataBox.setBorder(new Border(new BorderStroke(borderColor, BorderStrokeStyle.SOLID, new CornerRadii(5), null)));
+        	return event;
+        }));
+        
+        HBox metadataPane = new HBox(metadataBox, text);
+        metadataPane.setLayoutX(50);
+        metadataPane.setLayoutY(150);
+        metadataPane.setAlignment(Pos.CENTER_LEFT);
 
         animationOverlay = new Rectangle(0, 0, 600.0 * 31 / 32, 200);
         animationOverlay.setMouseTransparent(true);
         animationOverlay.setFill(Color.color(238d / 256, 238d / 256, 238d / 256));
 
-        activityButtonPane = new AnchorPane(backgroundPane, text);
+        activityButtonPane = new AnchorPane(backgroundPane, metadataPane);
 
         activityButtonPane.setPrefWidth((double) (600 * 15 / 16));
         activityButtonPane.setPrefHeight(height);
@@ -106,7 +140,6 @@ class AddActivityButton {
         slideUp.setByY(-height);
         stayPut.setByY(height);
 
-        allNodes.add(activityButtonPane);
         allNodes.add(text);
         allNodes.add(backgroundPane);
         allNodes.add(animationOverlay);
@@ -216,7 +249,7 @@ class AddActivityButton {
             if(!hasSubcategories)
                 return;
             
-            background.addEventHandler(MouseEvent.MOUSE_PRESSED, event -> {
+            background.addEventHandler(MouseEvent.MOUSE_ENTERED, event -> {
                 foodButton.closeDropDown();
                 transportButton.closeDropDown();
                 energyButton.closeDropDown();
@@ -236,12 +269,12 @@ class AddActivityButton {
             if (name.equals("Food")) {
                 addSubCategoryButton("Vegetarian");
                 addSubCategoryButton("Local-\nproduce");
-                addSubCategoryButton("Help"); //
+//                addSubCategoryButton("Help"); //
             }
             if (name.equals("Transport")) {
                 addSubCategoryButton("Bike");
                 addSubCategoryButton("Public \ntransport");
-                addSubCategoryButton("Help"); // Carpool
+//                addSubCategoryButton("Help"); // Carpool
             }
             if (name.equals("Energy")) {
                 addSubCategoryButton("Solarpanel");
@@ -251,7 +284,7 @@ class AddActivityButton {
             if (name.equals("Habit")) {
                 addSubCategoryButton("Recycle");
                 addSubCategoryButton("No Smoking");
-                addSubCategoryButton("Help");
+//                addSubCategoryButton("Help");
             }
         }
 
@@ -290,6 +323,8 @@ class AddActivityButton {
             allNodes.add(icon);
             allNodes.add(name);
             allNodes.add(subCategories);
+            for(Node n : subCategories.getChildren())
+            	allNodes.add(n);
         }
 
         private void closeDropDown() {
