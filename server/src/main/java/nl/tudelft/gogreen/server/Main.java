@@ -1,5 +1,6 @@
 package nl.tudelft.gogreen.server;
 
+import nl.tudelft.gogreen.server.api.CoolClimateAPI;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 

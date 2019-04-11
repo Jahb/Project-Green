@@ -60,14 +60,10 @@ public class MainScreen implements Initializable {
     private AnchorPane root;
     // TODO handler for each subcategory
     private Consumer<String> handler = name -> {
-        try {
-            //Line below this one used to be res = API...... removed for checkStyle
-            Api.current.addFeature(name);
-            System.out.println(name);
-            updateRingValues();
-        } catch (UnirestException e) {
-            e.printStackTrace();
-        }
+        //Line below this one used to be res = API...... removed for checkStyle
+        Api.current.addFeature(name);
+        System.out.println(name);
+        updateRingValues();
     };
     //TODO handler for each ring category
     private Consumer<String> ringHandler = name -> System.out.println("EXE [" + name + "]");

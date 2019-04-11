@@ -1,5 +1,7 @@
-package nl.tudelft.gogreen.server;
+package nl.tudelft.gogreen.server.statistics;
 
+import nl.tudelft.gogreen.server.Main;
+import nl.tudelft.gogreen.server.Utils;
 import nl.tudelft.gogreen.shared.DateHolder;
 import nl.tudelft.gogreen.shared.MessageHolder;
 import nl.tudelft.gogreen.shared.DatePeriod;
@@ -11,14 +13,13 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
-import java.util.ResourceBundle;
 
 @RestController
 @RequestMapping("/stats")
 public class StatsController {
 
 
-    private String getCurrentUser() {
+    public String getCurrentUser() {
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         String username;
         if (principal instanceof UserDetails) {
