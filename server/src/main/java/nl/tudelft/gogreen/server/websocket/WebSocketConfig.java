@@ -1,4 +1,4 @@
-package nl.tudelft.gogreen.server;
+package nl.tudelft.gogreen.server.websocket;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

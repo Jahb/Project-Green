@@ -1,6 +1,7 @@
-package nl.tudelft.gogreen.server;
+package nl.tudelft.gogreen.server.api;
 
 import com.mashape.unirest.http.Unirest;
+import nl.tudelft.gogreen.server.Main;
 import org.json.XML;
 
 import java.sql.Connection;

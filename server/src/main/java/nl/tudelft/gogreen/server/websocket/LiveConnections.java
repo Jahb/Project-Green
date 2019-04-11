@@ -1,4 +1,4 @@
-package nl.tudelft.gogreen.server;
+package nl.tudelft.gogreen.server.websocket;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import javafx.collections.FXCollections;

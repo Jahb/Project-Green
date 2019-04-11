@@ -1,5 +1,6 @@
 package nl.tudelft.gogreen.server;
 
+import nl.tudelft.gogreen.server.features.NewFeature;
 import org.junit.Before;
 import org.junit.Test;
 

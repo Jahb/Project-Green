@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXListView?>
+<?import com.jfoenix.controls.JFXTextField?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.shape.Circle?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<AnchorPane prefHeight="720.0" prefWidth="1000.0" stylesheets="@Common.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="nl.tudelft.gogreen.client.ProfileController">
+      <AnchorPane layoutY="-4.0" prefHeight="197.0" prefWidth="1000.0" style="-fx-background-color: #50e476;" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+            <BorderPane layoutX="18.0" layoutY="120.0" prefHeight="73.0" prefWidth="968.0" AnchorPane.leftAnchor="18.0" AnchorPane.rightAnchor="14.0">
+               <left>
+                  <Text fx:id="todayPoints" fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Todays Points: 00000" wrappingWidth="271.00000190734863" BorderPane.alignment="CENTER">
+                     <font>
+                        <Font name="System Bold Italic" size="27.0" />
+                     </font>
+                  </Text>
+               </left>
+               <center>
+                  <Text fx:id="avgPoints" fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Daily Avg: 00000" wrappingWidth="225.00000190734863" BorderPane.alignment="CENTER">
+                     <font>
+                        <Font name="System Bold Italic" size="27.0" />
+                     </font>
+                  </Text>
+               </center>
+               <right>
+                  <HBox fx:id="topRightBox" alignment="CENTER" prefHeight="73.0" prefWidth="332.0" BorderPane.alignment="CENTER">
+                        <Text fx:id="position" fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Position: #10" wrappingWidth="181.0000240802765">
+                           <font>
+                              <Font name="System Bold Italic" size="27.0" />
+                           </font>
+                        </Text>
+                        <Button id="button2" fx:id="follow" graphicTextGap="10.0" mnemonicParsing="false" onAction="#followClicked" prefHeight="48.0" prefWidth="181.0" stylesheets="@Common.css" text="UnFollow" />
+                  </HBox>
+               </right>
+            </BorderPane>
+      </AnchorPane>
+      <BorderPane fx:id="topBar" prefHeight="124.0" prefWidth="986.0" style="-fx-background-color: #38ba5c;" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <left>
+            <BorderPane fx:id="buttonPane" prefHeight="119.0" prefWidth="129.0" BorderPane.alignment="CENTER">
+               <opaqueInsets>
+                  <Insets />
+               </opaqueInsets></BorderPane>
+         </left>
+         <center>
+            <Text fx:id="titleText" fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Username's Profile" textAlignment="CENTER" wrappingWidth="649.42822265625" BorderPane.alignment="CENTER">
+               <font>
+                  <Font name="System Bold" size="71.0" />
+               </font>
+            </Text>
+         </center>
+         <right>
+            <ImageView fx:id="profilePicture" fitHeight="100.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true" BorderPane.alignment="CENTER">
+                  <Image url="@images/ppLvl3.png" />
+               <BorderPane.margin>
+                  <Insets right="10.0" />
+               </BorderPane.margin>
+            </ImageView>
+         </right>
+         <padding>
+            <Insets left="10.0" />
+         </padding>
+         <opaqueInsets>
+            <Insets />
+         </opaqueInsets>
+      </BorderPane>
+      <AnchorPane layoutX="673.0" layoutY="197.0" prefHeight="523.0" prefWidth="327.0" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="197.0">
+            <JFXListView fx:id="followerList" layoutX="14.0" layoutY="108.0" prefHeight="408.0" prefWidth="300.0" stylesheets="@ListStyle.css" AnchorPane.bottomAnchor="7.0" AnchorPane.topAnchor="108.0" />
+            <JFXTextField fx:id="searchFollowers" focusColor="#50e476" layoutX="14.0" layoutY="65.0" prefHeight="36.0" prefWidth="300.0" promptText="Search Followers" />
+            <Label id="niceLabel" fx:id="followersLabel" alignment="CENTER" layoutX="14.0" layoutY="20.0" prefHeight="50.0" prefWidth="183.0" style="-fx-background-radius: 25;" text="Followers" textAlignment="CENTER" textOverrun="CENTER_ELLIPSIS" />
+            <Button id="button2" fx:id="followingButton" layoutX="207.0" layoutY="34.0" mnemonicParsing="false" onAction="#followersClicked" prefHeight="31.0" prefWidth="102.0" text="Following" />
+      </AnchorPane>
+      <AnchorPane layoutY="609.0" prefHeight="143.0" prefWidth="683.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="317.0">
+            <Label id="niceLabel" alignment="CENTER" contentDisplay="CENTER" layoutX="14.0" layoutY="14.0" prefHeight="48.0" prefWidth="370.0" text="Recent Achievements" />
+            <Button id="button2" fx:id="achievementsButton" layoutX="527.0" layoutY="31.0" mnemonicParsing="false" text="All Achievements" />
+            <BorderPane fx:id="achievementsBorder" layoutX="14.0" layoutY="70.0" prefHeight="65.0" prefWidth="662.0" style="-fx-background-color: white; -fx-border-color: lightgray;">
+               <left>
+                  <HBox fx:id="achievment1" prefHeight="100.0" prefWidth="200.0" BorderPane.alignment="CENTER" />
+               </left>
+               <center>
+                  <HBox fx:id="achievement2" prefHeight="100.0" prefWidth="200.0" BorderPane.alignment="CENTER" />
+               </center>
+               <right>
+                  <HBox fx:id="achievement3" prefHeight="100.0" prefWidth="200.0" BorderPane.alignment="CENTER" />
+               </right>
+            </BorderPane>
+      </AnchorPane>
+      <AnchorPane layoutY="197.0" prefHeight="410.0" prefWidth="321.0" AnchorPane.bottomAnchor="145.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="197.0">
+            <Label id="niceLabel" alignment="CENTER" layoutX="36.0" layoutY="26.0" prefHeight="45.0" prefWidth="256.0" text="Recent Activity" />
+            <JFXListView id="smallList" fx:id="activityList" layoutX="19.0" layoutY="92.0" prefHeight="277.0" prefWidth="283.0" stylesheets="@ListStyle.css" />
+      </AnchorPane>
+      <BorderPane fx:id="ringPane" layoutX="321.0" layoutY="197.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="385.0" prefWidth="360.0" AnchorPane.bottomAnchor="138.0" AnchorPane.leftAnchor="321.0" AnchorPane.rightAnchor="319.0" AnchorPane.topAnchor="197.0">
+         <center>
+            <Circle fill="DODGERBLUE" radius="151.0" stroke="BLACK" strokeType="INSIDE" BorderPane.alignment="CENTER" />
+         </center>
+         <padding>
+            <Insets bottom="50.0" left="50.0" right="50.0" top="100.0" />
+         </padding>
+      </BorderPane>
+</AnchorPane>

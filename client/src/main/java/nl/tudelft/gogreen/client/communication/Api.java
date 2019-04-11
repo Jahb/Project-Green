@@ -28,6 +28,8 @@ public class Api {
 
     public static Gson gson = new GsonBuilder().setPrettyPrinting().create();
 
+    private int position;
+
     private static Api api;
 
     private static CookieStore cookies = new BasicCookieStore();
@@ -95,9 +97,11 @@ public class Api {
 
         MessageHolder<Boolean> holder = gson.fromJson(res, new TypeToken<MessageHolder<Boolean>>() {
         }.getType());
-        if (holder.getData()) {
+        System.out.println(this.username);
+        if (holder.getData() && this.username == null) {
             this.username = username;
             wsInit();
+            System.out.println(this.username);
         }
         return holder.getData();
     }
@@ -166,21 +170,18 @@ public class Api {
      * @param username the username to find
      * @return the co2 saved
      */
-    private int getFor(String username) {
+    private List<Integer> getFor(String username) {
         String res;
         Map<String, Object> params = new HashMap<>();
         params.put("username", username);
         try {
-            res = this.post(baseUrl + "/follow/activity", params);
+            res = this.post(baseUrl + "/feature/points", params);
         } catch (UnirestException e) {
             e.printStackTrace();
-            return 0;
+            return Arrays.asList(0, 0, 0, 0);
         }
-        MessageHolder<Integer> holder = gson.fromJson(res, new TypeToken<MessageHolder<Integer>>() {
+        MessageHolder<List<Integer>> holder = gson.fromJson(res, new TypeToken<MessageHolder<List<Integer>>>() {
         }.getType());
-        if (followers.containsKey("username")) {
-            followers.put(username, holder.getData());
-        }
 
         return holder.getData();
     }
@@ -216,21 +217,24 @@ public class Api {
      */
     public double[] getRingSegmentValues(String ringName) {
         if (ringName.equals("MAIN")) {
-            return new double[]{getTotal(), 0, 0};
+            List<Integer> res = getFor(getUsername());
+            return new double[]{res.get(0), res.get(1), res.get(2)};
         }
 
         if (ringName.equals("NEXT")) {
             if (getUsernameNext() == null) {
                 return new double[]{333, 334, 333};
             }
-            return new double[]{getFor(getUsernameNext()), 0, 0};
+            List<Integer> res = getFor(getUsernameNext());
+            return new double[]{res.get(0), res.get(1), res.get(2)};
         }
 
         if (ringName.equals("PREVIOUS")) {
             if (getUsernamePrevious() == null) {
                 return new double[]{333, 334, 333};
             }
-            return new double[]{getFor(getUsernamePrevious()), 0, 0};
+            List<Integer> res = getFor(getUsernamePrevious());
+            return new double[]{res.get(0), res.get(1), res.get(2)};
         }
         return null;
     }
@@ -250,6 +254,7 @@ public class Api {
                 followers.entrySet().stream()
                         .sorted(Map.Entry.comparingByValue()).collect(Collectors.toList());
         yeet.removeIf(it -> it.getValue() > myTotal);
+        position = followers.size() - yeet.size() + 1;
         if (yeet.size() == 0) return null;
         return yeet.get(0) == null ? null : yeet.get(0).getKey();
 
@@ -281,9 +286,18 @@ public class Api {
      * @return now you know
      */
     public String getUsername() {
+        System.out.println(this.username);
         return this.username;
     }
 
+    /**
+     * Get the position of the user on their leaderboard
+     *
+     * @return the users position
+     */
+    public int getPosition() {
+        return position;
+    }
 
     /**
      * Follow another user to compare your progress with theirs.
@@ -411,7 +425,8 @@ public class Api {
 
     /**
      * Register a new notification, it is added to the list so don't add it twice!
-     * @param type the notification type to respond to
+     *
+     * @param type     the notification type to respond to
      * @param runnable the MessageRunnable to execute
      */
     public void registerNotification(PingPacketData type, MessageRunnable runnable) {

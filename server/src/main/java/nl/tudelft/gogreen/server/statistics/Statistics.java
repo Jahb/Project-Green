@@ -1,4 +1,6 @@
-package nl.tudelft.gogreen.server;
+package nl.tudelft.gogreen.server.statistics;
+
+import nl.tudelft.gogreen.server.Main;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;

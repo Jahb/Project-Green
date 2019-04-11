@@ -1,12 +1,14 @@
-package nl.tudelft.gogreen.server;
+package nl.tudelft.gogreen.server.followers;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import nl.tudelft.gogreen.server.Main;
+import nl.tudelft.gogreen.server.Utils;
+import nl.tudelft.gogreen.server.features.NewFeature;
+import nl.tudelft.gogreen.server.websocket.LiveConnections;
 import nl.tudelft.gogreen.shared.MessageHolder;
 import nl.tudelft.gogreen.shared.PingPacket;
 import nl.tudelft.gogreen.shared.PingPacketData;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -18,7 +20,10 @@ import org.springframework.web.socket.WebSocketSession;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
-import java.util.*;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @RestController
@@ -46,8 +51,9 @@ public class FollowerController {
     @PostMapping("/follow")
     public MessageHolder<Boolean> follow(String username) throws IOException {
         List<Integer> users = Utils.verifyUsersValid(getCurrentUser(), username);
+        System.out.println(users);
         if (users.stream().anyMatch(integer -> integer == -1)) {
-            return new MessageHolder<>("Follow", false);
+            return new MessageHolder<>(users.toString(), false);
         }
         try {
             Following.Follow(users.get(0), users.get(1));
