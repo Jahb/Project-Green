@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -19,7 +20,7 @@ import java.util.List;
 public class EventsController {
 
 
-    private String getCurrentUser() {
+    public String getCurrentUser() {
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         String username;
         if (principal instanceof UserDetails) {
@@ -45,13 +46,16 @@ public class EventsController {
     }
 
     @PostMapping("/list")
-    public MessageHolder<List<EventItem>> list() throws SQLException {
-        Connection conn = DriverManager.getConnection(
+    public MessageHolder<List<EventItem>> list() {
+        List<EventItem> items = new ArrayList<>();
+        try (Connection conn = DriverManager.getConnection(
                 Main.resource.getString("Postgresql.datasource.url"),
                 Main.resource.getString("Postgresql.datasource.username"),
-                Main.resource.getString("Postgresql.datasource.password"));
-        List<EventItem> items = EventsMain.get_events(conn);
-        conn.close();
+                Main.resource.getString("Postgresql.datasource.password"))) {
+            items.addAll(EventsMain.get_events(conn));
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
         return new MessageHolder<>("Events", items);
     }
 
