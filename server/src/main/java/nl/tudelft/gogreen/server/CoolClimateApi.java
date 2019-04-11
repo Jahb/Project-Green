@@ -371,46 +371,82 @@ public class CoolClimateApi {
         return "10";
     }
 
-    /*public static String getInputSize() throws Exception{
-        Connection conn = getConnection(
-                resource.getString("Postgresql.datasource.url"),
-                resource.getString("Postgresql.datasource.username"),
-                resource.getString("Postgresql.datasource.password"));
-
-        PreparedStatement insertData = conn.prepareStatement(resource.getString("qInputSize"));
-        insertData.setInt(1, 0);
-        ResultSet rs = insertData.executeQuery();
-
-        int save = 0;
-        while (rs.next()) {
-            save = rs.getInt(1);
-        }
-
-        String returnstring = Integer.toString(save);
-        return returnstring;
-
-    }  */
-
-
-
-    /*public static String getIncome() throws Exception{
-        Connection conn = getConnection(
-                resource.getString("Postgresql.datasource.url"),
-                resource.getString("Postgresql.datasource.username"),
-                resource.getString("Postgresql.datasource.password"));
-
-        PreparedStatement insertData = conn.prepareStatement(resource.getString("qIncome"));
-        insertData.setInt(1, 0);
-        ResultSet rs = insertData.executeQuery();
-
-        int save = 0;
-        while (rs.next()) {
-            save = rs.getInt(1);
-        }
-
-        String returnstring = Integer.toString(save);
-        return returnstring;
-    }*/
+//    public static String getInputSize(int id) throws Exception{
+//        Connection conn = getConnection(
+//                resource.getString("Postgresql.datasource.url"),
+//                resource.getString("Postgresql.datasource.username"),
+//                resource.getString("Postgresql.datasource.password"));
+//
+//        PreparedStatement insertData = conn.prepareStatement(resource.getString("qInputSize"));
+//        insertData.setInt(1, id);
+//        ResultSet rs = insertData.executeQuery();
+//
+//        int save = 0;
+//        while (rs.next()) {
+//            save = rs.getInt(1);
+//        }
+//
+//        String returnstring = Integer.toString(save);
+//        return returnstring;
+//
+//    }
+//
+//    public static String getIncome(int id) throws Exception{
+//        Connection conn = getConnection(
+//                resource.getString("Postgresql.datasource.url"),
+//                resource.getString("Postgresql.datasource.username"),
+//                resource.getString("Postgresql.datasource.password"));
+//
+//        PreparedStatement insertData = conn.prepareStatement(resource.getString("qIncome"));
+//        insertData.setInt(1, id);
+//        ResultSet rs = insertData.executeQuery();
+//
+//        int save = 0;
+//        while (rs.next()) {
+//            save = rs.getInt(1);
+//        }
+//
+//        String returnstring = Integer.toString(save);
+//        return returnstring;
+//    }
+//
+//    public static String getSquarefeet(int id) throws Exception{
+//        Connection conn = getConnection(
+//                resource.getString("Postgresql.datasource.url"),
+//                resource.getString("Postgresql.datasource.username"),
+//                resource.getString("Postgresql.datasource.password"));
+//
+//        PreparedStatement insertData = conn.prepareStatement(resource.getString("qSquarefeet"));
+//        insertData.setInt(1, id);
+//        ResultSet rs = insertData.executeQuery();
+//
+//        int save = 0;
+//        while (rs.next()) {
+//            save = rs.getInt(1);
+//        }
+//
+//        String returnstring = Integer.toString(save);
+//        return returnstring;
+//    }
+//
+//    public static String getElectrictyBill(int id) throws Exception{
+//        Connection conn = getConnection(
+//                resource.getString("Postgresql.datasource.url"),
+//                resource.getString("Postgresql.datasource.username"),
+//                resource.getString("Postgresql.datasource.password"));
+//
+//        PreparedStatement insertData = conn.prepareStatement(resource.getString("qElectricityBill"));
+//        insertData.setInt(1, id);
+//        ResultSet rs = insertData.executeQuery();
+//
+//        int save = 0;
+//        while (rs.next()) {
+//            save = rs.getInt(1);
+//        }
+//
+//        String returnstring = Integer.toString(save);
+//        return returnstring;
+//    }
 
 
     public static String getSquarefeet() {
