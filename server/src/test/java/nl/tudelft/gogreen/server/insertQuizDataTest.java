@@ -16,11 +16,13 @@ public class insertQuizDataTest {
         try(
 
                 Connection conn = DriverManager.getConnection(resource.getString("Postgresql.datasource.url"), resource.getString("Postgresql.datasource.username"), resource.getString("Postgresql.datasource.password"))){
+            CreateUser.deleteAllUsers(conn);
             CreateUser.create_user("paul","paul");
 
             Statistics.insertQuizData(NewFeature.getId("paul",conn),20,20,true,20,20);
 
             PreparedStatement result = conn.prepareStatement(resource.getString("qReturnQuiz"));
+            result.setInt(1,NewFeature.getId("paul",conn));
 
             ResultSet rs = result.executeQuery();
 
@@ -32,6 +34,7 @@ public class insertQuizDataTest {
             assertEquals(monthly,20);
 
             PreparedStatement result2 = conn.prepareStatement(resource.getString("qDeleteQuiz"));
+            result2.setInt(1,NewFeature.getId("paul",conn));
             result2.execute();
 
             CreateUser.delete_user(NewFeature.getId("paul",conn),conn);

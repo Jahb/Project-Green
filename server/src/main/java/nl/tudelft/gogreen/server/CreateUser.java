@@ -145,6 +145,11 @@ public class CreateUser {
         delFeaturesHistory.setInt(1, id);
         delFeaturesHistory.execute();
 
+        PreparedStatement delQuizTable =
+                conn.prepareStatement(resource.getString("qDeleteQuizTable"));
+        delQuizTable.setInt(1, id);
+        delQuizTable.execute();
+
         PreparedStatement delUserHistory =
                 conn.prepareStatement(resource.getString("qDeleteUserHistory"));
         delUserHistory.setInt(1, id);
@@ -159,11 +164,6 @@ public class CreateUser {
                 conn.prepareStatement(resource.getString("qDeleteUserTable"));
         delUserTable.setInt(1, id);
         delUserTable.execute();
-
-        PreparedStatement delQuizTable =
-                conn.prepareStatement(resource.getString("qDeleteQuizTable"));
-        delQuizTable.setInt(1, id);
-        delQuizTable.execute();
 
         return true;
 
