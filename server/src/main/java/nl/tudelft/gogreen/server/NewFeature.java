@@ -18,12 +18,12 @@ public class NewFeature {
     private static ResourceBundle resource = ResourceBundle.getBundle("db");
 
     public static String adding_feature(String username, String feature, String user_input) throws Exception {
-        float points = C02toPoints(CoolClimateAPI.fetchApiData(feature, user_input));
+        float points = C02toPoints(CoolClimateApi.fetchApiData(feature, user_input));
         return aadding_feature(username, feature, points);
     }
 
     public static String adding_feature(String username, String feature) throws Exception {
-        float points = C02toPoints(CoolClimateAPI.fetchApiData(feature));
+        float points = C02toPoints(CoolClimateApi.fetchApiData(feature));
         return aadding_feature(username, feature, points);
     }
 
@@ -74,8 +74,8 @@ public class NewFeature {
         OldUserPoints.setFloat(1, id);
         ResultSet OUP = OldUserPoints.executeQuery();
         int total = -1;
-        while (oup.next()) {
-            total = oup.getInt(1);
+        while (OUP.next()) {
+            total = OUP.getInt(1);
         }
         return total;
     }
