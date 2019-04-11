@@ -1,6 +1,5 @@
 package nl.tudelft.gogreen.client;
 
-import com.jfoenix.controls.JFXListCell;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -11,7 +10,6 @@ import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
-import javafx.util.Callback;
 
 import java.io.IOException;
 import java.net.URL;
@@ -20,9 +18,14 @@ import java.util.ResourceBundle;
 public class AchievementsController implements Initializable {
 
     @FXML
-    private ListView<ListItem> achievementsList = new ListView<>();
+    public ListView<ListItem> userAchievements = new ListView<>();
+    @FXML
+    private ListView<ListItem> allAchievements = new ListView<>();
 
-    private final ObservableList<ListItem> items = FXCollections.observableArrayList();
+    private final ObservableList<ListItem> allAchievementsList = FXCollections
+            .observableArrayList();
+    private final ObservableList<ListItem> userAchievementsList = FXCollections
+            .observableArrayList();
 
     /**
      * Returns the Achievements Scene.
@@ -46,32 +49,52 @@ public class AchievementsController implements Initializable {
      * @param resources A ResourceBundle
      */
     public void initialize(URL location, ResourceBundle resources) {
-        items.clear();
-        items.add(new ListItem("achievement1", "images/achievementImage.png", "2/10"));
-        items.add(new ListItem("achievement2", "images/achievementImage.png", "50/100"));
-        items.add(new ListItem("achievement3", "images/achievementImage.png", "Completed"));
-        achievementsList.setCellFactory(new Callback<ListView<ListItem>, ListCell<ListItem>>() {
+        //TODO Add achievements to the list which contains all achievements
+        allAchievementsList.clear();
+        allAchievementsList.add(
+                new ListItem("achievement1", "images/IconCupGold.png", "Not Yet"));
+        allAchievementsList.add(
+                new ListItem("achievement2", "images/IconCupGold.png", "13/04/2019"));
+        allAchievementsList.add(
+                new ListItem("achievement3", "images/IconCupGold.png", "Not Yet"));
+        allAchievementsList.add(
+                new ListItem("achievement4", "images/IconCupGold.png", "13/04/2019"));
+        userAchievementsList.add(
+                new ListItem("achievement2", "images/IconCupGold.png", "13/04/2019"));
+        userAchievementsList.add(
+                new ListItem("achievement4", "images/IconCupGold.png", "13/04/2019"));
+        allAchievements.setCellFactory(param -> new Cell());
+        userAchievements.setCellFactory(param -> new Cell());
 
-            @Override
-            public ListCell<ListItem> call(ListView<ListItem> arg0) {
-                JFXListCell<ListItem> cell = new JFXListCell<ListItem>() {
-                    @Override
-                    public void updateItem(ListItem item, boolean bool) {
-                        super.updateItem(item, bool);
-                        if (item != null && !bool) {
-                            setGraphic(ListItem.imageView(item));
-                            setText(item.getName() + "\nProgress: " + item.getStatus());
-                        } else {
-                            setText(null);
-                            setGraphic(null);
-                        }
-                    }
-                };
-                cell.setEditable(true);
-                return cell;
+        allAchievements.setItems(allAchievementsList);
+        userAchievements.setItems(userAchievementsList);
+    }
+
+    class Cell extends ListCell<ListItem> {
+
+        private Cell() {
+            super();
+        }
+
+        @Override
+        public void updateItem(ListItem item, boolean bool) {
+            super.updateItem(item, bool);
+            if (item != null && !bool) {
+                setGraphic(ListItem.imageView(item));
+                setText(item.getName() + "\nCompleted: " + item.getStatus());
+
+                if (!item.getStatus().equals("Not Yet")) {
+                    this.setStyle("-fx-background-color: #38ba5c;" +
+                            "-fx-text-fill: white;");
+                } else {
+                    this.setStyle("-fx-background-color: whitesmoke;" +
+                            "-fx-text-fill: black;");
+                }
+            } else {
+                setText(null);
+                setGraphic(null);
             }
-        });
-        achievementsList.setItems(items);
+        }
     }
 
 }
