@@ -20,7 +20,7 @@ public class CoolClimateApi {
      * fetches the API Data.
      *
      * @param feature    the feature input
-     * @param userinput the user input
+     * @param user_input the user input
      * @return returns the needed data
      * @throws Exception raises error when unable to access database
      */
@@ -66,7 +66,7 @@ public class CoolClimateApi {
 
         float result = Float.parseFloat(holder);
 
-        
+
         System.out.println(result);
         keysremapping();
         return result;
