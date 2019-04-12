@@ -15,7 +15,7 @@ public class CoolClimateApi {
      * fetches the API Data.
      *
      * @param feature    the feature input
-     * @param user_input the user input
+     * @param userinput the user input
      * @return returns the needed data
      * @throws Exception raises error when unable to access database
      */
@@ -189,7 +189,7 @@ public class CoolClimateApi {
     public static float SolarPanels() throws Exception {
 
 
-        SPmapping();
+        SPmapping( );
         Map<String, String> params = new HashMap<>();
         params.put("accept", "application/json");
         params.put("app_id", "93af0470");
