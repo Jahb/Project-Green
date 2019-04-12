@@ -28,13 +28,13 @@ public class APILowerTemperatureTest {
             p.setInt(5,10);
             p.setInt(6,10);
             p.execute();
-            float result = CoolClimateApi.LowerTemperature("4",NewFeature.getId("paul",conn));
+            float result = CoolClimateApi.LowerTemperature("4");
             float expected = Float.parseFloat("32");
             assertEquals( (int) expected, (int)result);
 
             CoolClimateApi.keysremapping();
 
-            float result2 = CoolClimateApi.fetchApiData("Lower Temperature","4", NewFeature.getId("paul",conn));
+            float result2 = CoolClimateApi.fetchApiData("Lower Temperature","4");
             float expected2 = Float.parseFloat("32");
             assertEquals((int) expected2,(int)result2);
 
