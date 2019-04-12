@@ -19,6 +19,21 @@ Jahson O'Dwyer Wha Binda
 Kamron Geijsen
 <img src="/doc/images/KamronGeijsen.png"  width="120">
 
+##Project Features
+
+###Alongside the functionality required for the project, we have also added the following features:
+* User rings that serve as visual representation of CO2 saved and refresh every day
+* The ability to view the rings of followed users (2 users- one ahead and one behind, based on current daily score) and see their CO2 savings distribution by category
+* A streak system that rewards users with bonus points based on the number of consecutive days in which they fill the ring in order to encourage them to reduce CO2 production every day
+* A quiz that allows users to provide personal information, if they wish to do so, which is used to provide more accurate data regarding their CO2 emissions
+* Notification system that lets users know when someone follows them, when they complete an achievement or when their ranking changes relative to the users they are following
+* A notification log that shows recent notifications and the time when they were received
+* The ability users see their progress over a period of time through a personal graph
+* Leaderboard with functionality for switching the time period (week, month, year) for both the user rankings and the personal graph
+* The option for users to recover their password through email in case they forget it
+* An event screen that enables users to create custom events, specifying a name, time, date and description, and to browse and join events of users that they are following
+* Predictive search functionality that lets users see potential matches when searching for a profile to follow
+* An user profile complete with statistics, the most recent achievements and recent activities that helped reduce CO2 emissions
 
 ## PDP's
 
