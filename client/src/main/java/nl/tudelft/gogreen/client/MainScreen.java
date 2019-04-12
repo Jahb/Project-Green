@@ -258,6 +258,9 @@ public class MainScreen implements Initializable {
     public void initialize(URL location, ResourceBundle resources) {
         IconButton notificationButton = new IconButton("Bell", 70, 70);
         topLeftButtons.getChildren().add(notificationButton.getStackPane());
+        IconButton quizButton = new IconButton("Quiz", 70, 70);
+        topLeftButtons.getChildren().add(quizButton.getStackPane());
+        quizButton.setOnClick(event -> Main.openQuizScreen());
         notificationButton.setOnClick(event -> {
             if (notificationBox.isHidden()) notificationBox.setSidePane(setLabels());
             toggleNotifications(notificationBox);
@@ -265,9 +268,9 @@ public class MainScreen implements Initializable {
         /*
          * testing notifications
          */
-        //Main.showMessage(notificationPane, "You have opened the main screen");
+        Main.showMessage(notificationPane, "You have opened the main screen");
         /*
-         * String array with all usernames TODO retrieve usernames from database to string options
+         * String array with all usernames TODO retrieve usernames from database to string options (maybe move this to server)
          */
         String[] options = {"user1", "asdf", "aaa", "wovuwe", "brrrr", "name", "sample", "sample223", "naaaaaaaaaaame", "namenamename", "username"};
         searchField.textProperty().addListener((observable, oldValue, newValue) -> {

@@ -3,7 +3,6 @@ package nl.tudelft.gogreen.client;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
-
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXListCell;
 import javafx.collections.FXCollections;
@@ -32,8 +31,6 @@ public class LeaderboardController implements Initializable {
     @FXML
     private JFXButton timeframeButton;
     @FXML
-    private LineChart<Integer, Double> scoreChart;
-    @FXML
     private ListView<ListItem> leaderboardList = new ListView<>();
     private final ObservableList<ListItem> items = FXCollections.observableArrayList();
 
@@ -51,8 +48,6 @@ public class LeaderboardController implements Initializable {
         System.out.println(url);
         AnchorPane root = FXMLLoader.load(url);
         BorderPane topPane = (BorderPane) root.getChildren().get(1);
-
-        root.getChildren().remove(2);
         createGraph(root);
 
 
@@ -61,7 +56,7 @@ public class LeaderboardController implements Initializable {
     }
 
     private void createGraph(AnchorPane root) {
-        ScoreGraph graph1 = new ScoreGraph(500, 200, 400, 400);
+        ScoreGraph graph1 = new ScoreGraph(500, 175, 475, 500);
         root.getChildren().add(graph1.getPane());
         UndecoratedGraph graph = graph1.getGraph();
         graph.setData(new double[]{0, 20, 20, 60, 80, 80, 120});
@@ -82,7 +77,6 @@ public class LeaderboardController implements Initializable {
 
 
         XYChart.Series<Integer, Integer> weekly = new XYChart.Series<>();
-        scoreChart.setLegendVisible(false);
 
         weekly.getData().add(new XYChart.Data<>(1, 24));
         weekly.getData().add(new XYChart.Data<>(2, 15));
@@ -99,16 +93,17 @@ public class LeaderboardController implements Initializable {
         this.leaderboardList.setSkin(skin);
 
         timeframeButton.setOnMouseClicked(event -> {
+            if(timeframeButton.getText().equals("View Monthly Data")) timeframeButton.setText("View Yearly Data");
+            else if(timeframeButton.getText().equals("View Yearly Data")) timeframeButton.setText("View Weekly Data");
+            else timeframeButton.setText("View Monthly Data");
+
             currentDatePeriod = currentDatePeriod.getNext();
             DateHolder dates = Api.current.getDatesFor(currentDatePeriod);
 
             XYChart.Series<Integer, Double> data = new XYChart.Series<>();
-            scoreChart.getData().clear();
             for (int i = 0; i < dates.getDays(); i++) {
                 data.getData().add(new XYChart.Data<>(dates.getDays() - i, dates.getData()[i]));
             }
-            scoreChart.getData().add(data);
-            scoreChart.getXAxis().setLabel(currentDatePeriod.name());
             switch (currentDatePeriod) {
                 case WEEK:
                 case MONTH:
@@ -149,10 +144,6 @@ public class LeaderboardController implements Initializable {
         leaderboardList.setEditable(true);
 
         leaderboardList.setItems(items);
-
-        scoreChart.getXAxis().setTickLabelsVisible(false);
-
-
     }
 }
 
