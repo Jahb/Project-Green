@@ -51,18 +51,16 @@ public class AchievementsController implements Initializable {
     public void initialize(URL location, ResourceBundle resources) {
         //TODO Add achievements to the list which contains all achievements
         allAchievementsList.clear();
-        allAchievementsList.add(
-                new ListItem("achievement1", "images/IconCupGold.png", "Not Yet"));
-        allAchievementsList.add(
-                new ListItem("achievement2", "images/IconCupGold.png", "13/04/2019"));
-        allAchievementsList.add(
-                new ListItem("achievement3", "images/IconCupGold.png", "Not Yet"));
-        allAchievementsList.add(
-                new ListItem("achievement4", "images/IconCupGold.png", "13/04/2019"));
-        userAchievementsList.add(
-                new ListItem("achievement2", "images/IconCupGold.png", "13/04/2019"));
-        userAchievementsList.add(
-                new ListItem("achievement4", "images/IconCupGold.png", "13/04/2019"));
+        ListItem ach1 =  new ListItem("achievement1", "images/IconCupGold.png", "Description 1");
+        ListItem ach2 =  new ListItem("achievement2", "images/IconCupGold.png", "Description 2");
+        ListItem ach3 =  new ListItem("achievement3", "images/IconCupGold.png", "Description 3");
+        ListItem ach4 = new ListItem("achievement4", "images/IconCupGold.png", "Description 4");
+        allAchievementsList.add(ach1);
+        allAchievementsList.add(ach2);
+        allAchievementsList.add(ach3);
+        allAchievementsList.add(ach4);
+        userAchievementsList.add(ach2);
+        userAchievementsList.add(ach4);
         allAchievements.setCellFactory(param -> new Cell());
         userAchievements.setCellFactory(param -> new Cell());
 
@@ -81,9 +79,9 @@ public class AchievementsController implements Initializable {
             super.updateItem(item, bool);
             if (item != null && !bool) {
                 setGraphic(ListItem.imageView(item));
-                setText(item.getName() + "\nCompleted: " + item.getStatus());
+                setText(item.getName() + "\n" + item.getStatus());
 
-                if (!item.getStatus().equals("Not Yet")) {
+                if (userAchievementsList.contains(item)) {
                     this.setStyle("-fx-background-color: #38ba5c;" +
                             "-fx-text-fill: white;");
                 } else {
