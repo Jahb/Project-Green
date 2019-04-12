@@ -1,13 +1,17 @@
 package nl.tudelft.gogreen.client;
 
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.function.Consumer;
+
+import com.jfoenix.controls.JFXTextField;
 
 import javafx.animation.AnimationTimer;
 import javafx.animation.FadeTransition;
 import javafx.animation.TranslateTransition;
 import javafx.collections.SetChangeListener.Change;
+import javafx.css.CssMetaData;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
@@ -56,9 +60,10 @@ class AddActivityButton {
     private TranslateTransition stayPut;
     private FadeTransition toAddFade;
 
-    private TextField metadataBox;
+    private JFXTextField metadataBox;
     private HBox metadataPane;
     private Text specifyButton;
+    private Text metadataUnit;
     private ImageView addButtonIcon;
     private String toAdd;
 
@@ -83,35 +88,39 @@ class AddActivityButton {
         });
         backgroundPane.setLayoutY(0);
 
-        Text metadataUnit = new Text("  kcal");
+        metadataUnit = new Text("");
         metadataUnit.setFont(Font.font("Calibri", FontWeight.BOLD, 23));
         metadataUnit.setMouseTransparent(true);
-        metadataBox = new TextField();
+        metadataBox = new JFXTextField();
         metadataBox.setFont(Font.font("Calibri", FontWeight.BOLD, 23));
-        metadataBox.setPromptText("value");
+        metadataBox.setPrefWidth(200);
         metadataBox.setTextFormatter(new TextFormatter<Change<String>>(event -> {
-            Color borderColor;
             String afterType = event.getControlNewText();
             if (afterType.equals(""))
                 afterType = "0";
             try {
                 Float.parseFloat(afterType);
-                if (afterType.contains("e"))
+                if (afterType.contains("e") || afterType.contains("d") || afterType.contains("f"))
                     throw new NumberFormatException();
-                borderColor = Color.GRAY;
+                metadataBox.setStyle("-fx-text-inner-color: black");
             } catch (NumberFormatException exception) {
-                borderColor = Color.RED;
+            	metadataBox.setStyle("-fx-text-inner-color: red");
             }
-            metadataBox.setBorder(
-                    new Border(new BorderStroke(borderColor, BorderStrokeStyle.SOLID, new CornerRadii(5), null)));
             return event;
         }));
-        metadataPane = new HBox(metadataBox, metadataUnit);
+//        ImageView metadataBackIcon = new ImageView("Images/IconBack.png");
+//        metadataBackIcon.setFitWidth(50);
+//        metadataBackIcon.setFitHeight(50);
+//        metadataBackIcon.setOnMouseClicked(event -> setMetadataVisible(false));
+        IconButton metadataBackIcon = new IconButton("Back", 50, 50);
+        metadataBackIcon.setOnClick(event -> setMetadataVisible(false));
+        metadataPane = new HBox(metadataBackIcon.getStackPane(), metadataBox, metadataUnit);
         metadataPane.setLayoutX(50);
         metadataPane.setLayoutY(130);
         metadataPane.setPrefHeight(60);
         metadataPane.setAlignment(Pos.CENTER_LEFT);
         metadataPane.setVisible(false);
+        
 
         Text addButtonText = new Text("Add");
         addButtonText.setFill(Color.WHITE);
@@ -127,13 +136,13 @@ class AddActivityButton {
         addButtonIcon.setMouseTransparent(true);
         AnchorPane addButton = new AnchorPane(addButtonText, addButtonIcon);
         addButton.setBackground(new Background(new BackgroundFill(IconButton.color, new CornerRadii(0), Insets.EMPTY)));
-        addButton.setLayoutX(600.0 * 15 / 16 - 125 - 20);
+        addButton.setLayoutX(600.0 * 31 / 32 - 125 - 40);
         addButton.setLayoutY(130);
         addButton.setPrefWidth(125);
         addButton.setPrefHeight(60);
         AnchorPane fadeBackground = new AnchorPane();
         fadeBackground.setBackground(new Background(new BackgroundFill(IconButton.color.interpolate(new Color(1,1,1,1), .5), new CornerRadii(0), Insets.EMPTY)));
-        fadeBackground.setLayoutX(600.0 * 15 / 16 - 125 - 20);
+        fadeBackground.setLayoutX(600.0 * 31 / 32 - 125 - 40);
         fadeBackground.setLayoutY(130);
         fadeBackground.setPrefWidth(125);
         fadeBackground.setPrefHeight(60);
@@ -146,8 +155,8 @@ class AddActivityButton {
         specifyButton.setFill(Color.BLACK);
         specifyButton.setFont(Font.font("Calibri", FontWeight.BOLD, 23));
         specifyButton.setUnderline(true);
-        specifyButton.setX(50);
-        specifyButton.setY(160);
+        specifyButton.setX(55);
+        specifyButton.setY(165);
         specifyButton.setOnMouseEntered(event -> specifyButton.setFill(Color.GRAY));
         specifyButton.setOnMouseExited(event -> specifyButton.setFill(Color.BLACK));
         specifyButton.setOnMousePressed(event -> setMetadataVisible(true));
@@ -186,12 +195,17 @@ class AddActivityButton {
 
         allNodes.add(metadataUnit);
         allNodes.add(metadataBox);
+        allNodes.add(metadataBackIcon.getStackPane());
+        allNodes.add(metadataBackIcon.getStackPane().getChildren().get(0));
         allNodes.add(metadataPane);
         allNodes.add(specifyButton);
         allNodes.add(addButton);
         allNodes.add(backgroundPane);
         allNodes.add(animationOverlay);
+        
+        
     }
+
 
     boolean contains(Node node) {
         return allNodes.contains(node);
@@ -204,18 +218,22 @@ class AddActivityButton {
     Pane getPane() {
         return activityButtonPane;
     }
-
+    
+    
     private void setMetadataVisible(boolean visible) {
-        if (visible) {
-            metadataPane.setVisible(true);
-            specifyButton.setVisible(false);
+        metadataPane.setVisible(visible);
+        specifyButton.setVisible(!visible);
+        if(visible) {
+        	metadataBox.clear();
+        	
         }
     }
 
-    private void setToAdd(String name, String category) {
+    private void setToAdd(String name, String category, String unit) {
         toAdd = category + ":" + name;
         addButtonIcon.setImage(new Image("Images/Icon" + name.replaceAll("\\-|\n| ", "") + ".png"));
         toAddFade.playFromStart();
+        metadataUnit.setText("  "+unit);
     }
 
     /**
@@ -247,6 +265,7 @@ class AddActivityButton {
         activityButtonPane.setVisible(false);
         activityButtonPane.setTranslateY(0);
         animationOverlay.setTranslateY(0);
+        setMetadataVisible(false);
     }
 
     private class CategoryButton {
@@ -308,12 +327,8 @@ class AddActivityButton {
                 return;
 
             background.addEventHandler(MouseEvent.MOUSE_ENTERED, event -> {
-                foodButton.closeDropDown();
-                transportButton.closeDropDown();
-                energyButton.closeDropDown();
-                habitButton.closeDropDown();
-
                 openDropDown();
+                background.setMouseTransparent(true);
             });
 
             subCategories = new AnchorPane();
@@ -323,25 +338,26 @@ class AddActivityButton {
             subCategories.setPrefWidth(145);
             subCategories.setBackground(new Background(
                     new BackgroundFill(new Color(1, 1, 1, .95), new CornerRadii(15, 15, 0, 0, false), Insets.EMPTY)));
+            subCategories.setOnMouseExited(event -> closeDropDown());
 
             if (name.equals("Food")) {
-                addSubCategoryButton("Vegetarian");
-                addSubCategoryButton("Local-\nproduce");
+                addSubCategoryButton("Vegetarian", "kcal");
+                addSubCategoryButton("Local-\nproduce", "kcal");
 //                addSubCategoryButton("Help"); //
             }
             if (name.equals("Transport")) {
-                addSubCategoryButton("Bike");
-                addSubCategoryButton("Public \ntransport");
+                addSubCategoryButton("Bike", "km");
+                addSubCategoryButton("Public \ntransport", "km");
 //                addSubCategoryButton("Help"); // Carpool
             }
             if (name.equals("Energy")) {
-                addSubCategoryButton("Solarpanel");
-                addSubCategoryButton("Help"); // CFL
-                addSubCategoryButton("Help"); // Lower temp
+                addSubCategoryButton("Solarpanel", "kW/day");
+                addSubCategoryButton("Help", ""); // CFL
+                addSubCategoryButton("Help", ""); // Lower temp
             }
             if (name.equals("Habit")) {
-                addSubCategoryButton("Recycle");
-                addSubCategoryButton("No Smoking");
+                addSubCategoryButton("Recycle", "kg");
+                addSubCategoryButton("No Smoking", "amount");
 //                addSubCategoryButton("Help");
             }
         }
@@ -369,7 +385,7 @@ class AddActivityButton {
             background.setBackground(new Background(bf));
         }
 
-        private void addSubCategoryButton(String name) {
+        private void addSubCategoryButton(String name, String unit) {
             CategoryButton button = new CategoryButton(name, CategoryButtonCornerType.CENTER, 0, false);
             button.background.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
                 foodButton.closeDropDown();
@@ -377,13 +393,13 @@ class AddActivityButton {
                 energyButton.closeDropDown();
                 habitButton.closeDropDown();
 
-                setToAdd(button.name.getText(), this.name.getText());
+                setToAdd(button.name.getText().replaceAll("\n", ""), this.name.getText(), unit);
             });
             subCategories.getChildren().add(button.background);
             button.background.toBack();
         }
 
-        void addNodes(AnchorPane anchorPane) {
+		void addNodes(AnchorPane anchorPane) {
             anchorPane.getChildren().addAll(subCategories, background);
             allNodes.add(background);
             allNodes.add(icon);
@@ -401,9 +417,22 @@ class AddActivityButton {
             }
             subCategories.setTranslateY(0);
             subCategories.setPrefHeight(80);
+            background.setMouseTransparent(false);
         }
 
         private void openDropDown() {
+        	System.out.println(this.name);
+        	if(this != foodButton)
+            foodButton.closeDropDown();
+        	if(this != transportButton)
+            transportButton.closeDropDown();
+        	if(this != energyButton)
+            energyButton.closeDropDown();
+        	if(this != habitButton)
+            habitButton.closeDropDown();
+        	if(this.subCategories.isVisible())
+        		return;
+        	
             subCategories.setVisible(true);
             startTime = System.nanoTime();
             timer.start();
