@@ -48,27 +48,32 @@ public class Ring {
     private AnimationTimer timer = new AnimationTimer() {
         @Override
         public void handle(long time) {
-            double progress = (time - timerStart) / (3_000_000_000d / MAXPOINTS);
+            final double progress = Math.min((time - timerStart) / 2_000_000_000d, 1);
+
             double startAngle = 0;
-
-            if (progress > MAXPOINTS)
-                timer.stop();
-
             for (RingSegment rs : segments) {
-                if (rs.delta == 0)
+                if (rs.delta == 0) {
+                    rs.arc.setStartAngle(90 + startAngle);
+                    rs.updateHoverText(startAngle, rs.points);
+                    startAngle += rs.arc.getLength();
                     continue;
+                }
                 rs.arc.setStartAngle(90 + startAngle);
-                double animationLength = Math.max(-1, Math.min(progress / rs.delta, 1));
-                rs.arc.setLength((rs.points + smoothFormula(animationLength) * rs.delta) * -360 / MAXPOINTS);
+                final double animationLength = Math.max(-1, Math.min(1,
+                        progress * MAXPOINTS / rs.delta));
+                final double showPoints = rs.points + smoothFormula(animationLength) * rs.delta;
+                rs.arc.setLength(showPoints / MAXPOINTS * -360);
+                rs.updateHoverText(startAngle, showPoints);
+                startAngle += rs.arc.getLength();
 
-                if (animationLength == 1 || animationLength == -1) {
+                if (Math.abs(animationLength) == 1) {
                     rs.points += rs.delta;
                     rs.delta = 0;
-
                 }
-                rs.updateHoverText(startAngle, rs.points + smoothFormula(animationLength) * rs.delta);
-                startAngle += rs.arc.getLength();
             }
+
+            if (progress > 1)
+                timer.stop();
         }
 
         private double smoothFormula(double num) {
@@ -108,9 +113,10 @@ public class Ring {
         textPane = new StackPane(temporaryUsername);
         textPane.setLayoutX(50);
         textPane.setLayoutY(centerOffs * 2 + 5);
-        textPane.setBackground(new Background(new BackgroundFill(new Color(1, 1, 1, .9), new CornerRadii(10), null)));
-        textPane.setBorder(
-                new Border(new BorderStroke(Color.DARKGRAY, BorderStrokeStyle.SOLID, new CornerRadii(10), null)));
+        textPane.setBackground(new Background(new BackgroundFill(
+                new Color(1, 1, 1, .9), new CornerRadii(10), null)));
+        textPane.setBorder(new Border(new BorderStroke(
+                Color.DARKGRAY, BorderStrokeStyle.SOLID, new CornerRadii(10), null)));
         textPane.setPadding(new Insets(5, 0, 5, 0));
         temporaryUsername.setFont(Font.font("Calibri", FontWeight.BOLD, 30));
         temporaryUsername.setY(30);
@@ -151,6 +157,11 @@ public class Ring {
         pane.setLayoutX(centerX - outerCircle.getRadius());
     }
 
+    /**
+     * Sets the name of the owner of the Ring.
+     * 
+     * @param username name to set
+     */
     public void setUsername(String username) {
         if (name.equals("MAIN") || username == null || username.equals("")) {
             textPane.setVisible(false);
@@ -163,24 +174,44 @@ public class Ring {
         updateEmblem();
     }
 
-    void setSegmentValues(double... newValues) throws ArrayIndexOutOfBoundsException {
+    /**
+     * Sets all the values of the Ring.
+     * 
+     * @param newValues values to set
+     */
+    public void setSegmentValues(double... newValues) {
         for (int i = 0; i < newValues.length; i++) {
             segments.get(i).delta = newValues[i] - segments.get(i).points;
         }
-
     }
 
-    public void updateEmblem() {
-        emblem.setImage(ProfileEmblem.getImage(totalPoints / MAXPOINTS));
+    /**
+     * Sets all the values of the Ring.
+     * 
+     * @param newValues values to set
+     */
+    public void addToSegmentValues(double... newValues) {
+        for (int i = 0; i < newValues.length; i++) {
+            segments.get(i).delta = newValues[i];
+        }
+    }
+
+    private void updateEmblem() {
+        emblem.setImage(ProfileEmblem.getImage((int) (totalPoints / MAXPOINTS * 4 + 1)));
     }
 
     public String getName() {
         return name;
     }
 
+    /**
+     * Starts the ring animation.
+     * 
+     */
     public void startAnimation() {
         isEmpty();
         updateEmblem();
+
         timerStart = System.nanoTime();
         timer.start();
     }
@@ -250,9 +281,11 @@ public class Ring {
             Text text = new Text(name + ": " + points);
             text.setFont(new Font(centerOffs / 5));
             hoverText = new StackPane(text);
-            BackgroundFill bgf = new BackgroundFill(new Color(1, 1, 1, .95), new CornerRadii(5), null);
+            BackgroundFill bgf = new BackgroundFill(
+                    new Color(1, 1, 1, .95), new CornerRadii(5), null);
             hoverText.setBackground(new Background(bgf));
-            hoverText.setBorder(new Border(new BorderStroke(Color.DARKGRAY, BorderStrokeStyle.SOLID, null, null)));
+            hoverText.setBorder(new Border(new BorderStroke(
+                    Color.DARKGRAY, BorderStrokeStyle.SOLID, null, null)));
             hoverText.setPadding(new Insets(0, 5, 0, 5));
             hoverText.setAlignment(Pos.TOP_CENTER);
             hoverText.setMouseTransparent(true);
@@ -265,19 +298,19 @@ public class Ring {
             double height = hoverText.getLayoutBounds().getHeight();
 
             final double r = (startAngle / 360 + (.25 - points / MAXPOINTS / 2)) * Math.PI * 2;
-            double x = Math.cos(r) * centerOffs * .90;
-            double y = -Math.sin(r) * centerOffs * .90;
+            double xpos = Math.cos(r) * centerOffs * .90;
+            double ypos = -Math.sin(r) * centerOffs * .90;
 
-            if (x < 0)
-                x -= width;
-            if (y < 0)
-                y -= height;
-            hoverText.setLayoutX(centerOffs + x);
-            hoverText.setLayoutY(centerOffs + y);
+            if (xpos < 0)
+                xpos -= width;
+            if (ypos < 0)
+                ypos -= height;
+            hoverText.setLayoutX(centerOffs + xpos);
+            hoverText.setLayoutY(centerOffs + ypos);
             if (ringName.equals("MAIN"))
-                text.setText(name + ": " + (int) (points));
+                text.setText(name + ": " + (int) points);
             else
-                text.setText("" + (int) (points));
+                text.setText("" + (int) points);
         }
 
         void addNodes(Pane root) {
@@ -288,7 +321,8 @@ public class Ring {
         void addTransitions() {
             Color mouseOver = blend(color);
             Transition brighten = new FillTransition(Duration.millis(200), arc, color, mouseOver);
-            Transition resetColor = new FillTransition(Duration.millis(100), arc, mouseOver, color);
+            Transition resetColor = new FillTransition(
+                    Duration.millis(100), arc, mouseOver, color);
 
             arc.setOnMouseEntered(event -> {
                 resetColor.jumpTo(Duration.millis(100));
@@ -302,7 +336,8 @@ public class Ring {
                 hoverText.setVisible(false);
             });
 
-            arc.addEventFilter(MouseEvent.MOUSE_PRESSED, event -> handler.accept(ringName + ":" + name));
+            arc.addEventFilter(MouseEvent.MOUSE_PRESSED,
+                event -> handler.accept(ringName + ":" + name));
         }
     }
 
