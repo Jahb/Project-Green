@@ -3,6 +3,7 @@ package nl.tudelft.gogreen.server.auth;
 import nl.tudelft.gogreen.server.events.EventsMain;
 import nl.tudelft.gogreen.server.followers.Following;
 import nl.tudelft.gogreen.server.Main;
+import nl.tudelft.gogreen.server.statistics.Statistics;
 import org.springframework.security.crypto.bcrypt.BCrypt;
 
 import java.sql.*;
@@ -115,30 +116,52 @@ public class CreateUser {
      */
 
 
+    /**
+     * Method which deletes the user with given id.
+     *
+     * @param id   of the user to be deleted
+     * @param conn Connection to the database
+     * @return Returns true if the user is correctly delete it
+     * @throws Exception raises when error accessing the database
+     */
+
+
     public static boolean delete_user(int id, Connection conn) throws Exception {
 
 
-        PreparedStatement delObjective = conn.prepareStatement(Main.resource.getString("qDeleteObjective"));
+
+        PreparedStatement delObjective =
+                conn.prepareStatement(Main.resource.getString("qDeleteObjective"));
         delObjective.setInt(1, id);
         delObjective.execute();
 
-        PreparedStatement delHabits = conn.prepareStatement(Main.resource.getString("qDeleteHabits"));
+        PreparedStatement delHabits =
+                conn.prepareStatement(Main.resource.getString("qDeleteHabits"));
         delHabits.setInt(1, id);
         delHabits.execute();
 
-        PreparedStatement delStreak = conn.prepareStatement(Main.resource.getString("qDeleteStreak"));
+        PreparedStatement delStreak =
+                conn.prepareStatement(Main.resource.getString("qDeleteStreak"));
         delStreak.setInt(1, id);
         delStreak.execute();
 
-        PreparedStatement delUserPoints = conn.prepareStatement(Main.resource.getString("qDeleteUserPoints"));
+        PreparedStatement delUserPoints =
+                conn.prepareStatement(Main.resource.getString("qDeleteUserPoints"));
         delUserPoints.setInt(1, id);
         delUserPoints.execute();
 
-        PreparedStatement delFeaturesHistory = conn.prepareStatement(Main.resource.getString("qDeleteFeaturesHistory"));
+        PreparedStatement delFeaturesHistory =
+                conn.prepareStatement(Main.resource.getString("qDeleteFeaturesHistory"));
         delFeaturesHistory.setInt(1, id);
         delFeaturesHistory.execute();
 
-        PreparedStatement delUserHistory = conn.prepareStatement(Main.resource.getString("qDeleteUserHistory"));
+        PreparedStatement delQuizTable =
+                conn.prepareStatement(Main.resource.getString("qDeleteQuizTable"));
+        delQuizTable.setInt(1, id);
+        delQuizTable.execute();
+
+        PreparedStatement delUserHistory =
+                conn.prepareStatement(Main.resource.getString("qDeleteUserHistory"));
         delUserHistory.setInt(1, id);
         delUserHistory.execute();
 
@@ -147,7 +170,9 @@ public class CreateUser {
 
         Following.deleteAllFollows(id, conn);
 
-        PreparedStatement delUserTable = conn.prepareStatement(Main.resource.getString("qDeleteUserTable"));
+
+        PreparedStatement delUserTable =
+                conn.prepareStatement(Main.resource.getString("qDeleteUserTable"));
         delUserTable.setInt(1, id);
         delUserTable.execute();
 
@@ -178,4 +203,6 @@ public class CreateUser {
         }
         return true;
     }
+
+
 }

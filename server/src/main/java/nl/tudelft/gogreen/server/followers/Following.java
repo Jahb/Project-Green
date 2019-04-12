@@ -7,6 +7,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.ResourceBundle;
 
 import static java.sql.DriverManager.getConnection;
@@ -15,7 +16,13 @@ public class Following {
 
 
 
-    public static void Follow(int id1, int id2) throws Exception {
+    /**
+     * Method for following someone.
+     * @param id1 id of user1
+     * @param id2 id of user2
+     * @throws Exception raises exception if unable to access database
+     */
+    public static void follow(int id1, int id2) throws Exception {
 
         Connection conn = getConnection(
                 Main.resource.getString("Postgresql.datasource.url"),
@@ -32,7 +39,13 @@ public class Following {
 
     }
 
-    public static void Unfollow(int id1, int id2) throws Exception {
+    /**
+     * method for user1 to unfollow user 2.
+     * @param id1 id for user 1
+     * @param id2 if for user 2
+     * @throws Exception raises exception if unable to access database
+     */
+    public static void unfollow(int id1, int id2) throws Exception {
 
         Connection conn = getConnection(
                 Main.resource.getString("Postgresql.datasource.url"),
@@ -48,6 +61,14 @@ public class Following {
         conn.close();
     }
 
+    /**
+     * Method that checks if user1 is following user2.
+     * @param id1 id for user1
+     * @param id2 id for user2
+     * @param conn the connection
+     * @return returns true if user1 is following user2 or false otherwise
+     * @throws Exception raises exception if unable to access database
+     */
     public static boolean isFollowing(int id1, int id2, Connection conn) throws Exception {
 
         PreparedStatement isFollowing = conn.prepareStatement(Main.resource.getString("qIsFollowing"));
@@ -59,11 +80,17 @@ public class Following {
             count = counting.getInt(1);
         }
         System.out.println(count);
-        return (count == 1);
+        return count == 1;
 
 
     }
 
+    /**
+     * Method deletes all the following relations of user1.
+     * @param id1 id of user
+     * @param conn connection to database
+     * @throws Exception raises exception if unable to access database
+     */
     public static void deleteAllFollows(int id1, Connection conn) throws Exception {
 
         PreparedStatement delFollowers = conn.prepareStatement(Main.resource.getString("qDelFollowing"));
@@ -72,9 +99,17 @@ public class Following {
         delFollowers.execute();
     }
 
+    /**
+     * Shows a list of all the people a user follows.
+     * @param id1 id of the user
+     * @param conn connection to database
+     * @return returns a list of id's which user follows
+     * @throws Exception raises exception if unable to access database
+     */
     public static ArrayList<Integer> showAllFollowing(int id1, Connection conn) throws Exception {
 
-        PreparedStatement showFollowing = conn.prepareStatement(Main.resource.getString("qShowFollowing"));
+        PreparedStatement showFollowing =
+                conn.prepareStatement(Main.resource.getString("qShowFollowing"));
         showFollowing.setInt(1, id1);
         ArrayList<Integer> result = new ArrayList<>();
         ResultSet rs = showFollowing.executeQuery();
@@ -84,9 +119,17 @@ public class Following {
         return result;
     }
 
+    /**
+     * Shows a list of all the people that follow a user.
+     * @param id1 user's id
+     * @param conn connection to database
+     * @return returns a list of id's of people who follow the user
+     * @throws Exception raises exception if unable to access database
+     */
     public static ArrayList<Integer> showAllFollowers(int id1, Connection conn) throws Exception {
 
-        PreparedStatement showFollowers = conn.prepareStatement(Main.resource.getString("qShowFollowers"));
+        PreparedStatement showFollowers =
+                conn.prepareStatement(Main.resource.getString("qShowFollowers"));
         showFollowers.setInt(1, id1);
         ArrayList<Integer> result = new ArrayList<>();
         ResultSet rs = showFollowers.executeQuery();
@@ -116,6 +159,27 @@ public class Following {
             e.printStackTrace();
         }
         return "error";
+    }
+
+    /**
+     * returns a list of all users.
+     * @return returns the list
+     * @throws Exception raises exception if unable to access database
+     */
+    public static List<String> gettingAllUsers() throws Exception {
+
+        Connection conn = getConnection(
+                Main.resource.getString("Postgresql.datasource.url"),
+                Main.resource.getString("Postgresql.datasource.username"),
+                Main.resource.getString("Postgresql.datasource.password"));
+
+        List<String> users = new ArrayList<String>();
+        PreparedStatement getUsers = conn.prepareStatement("select username from user_table");
+        ResultSet result = getUsers.executeQuery();
+        while (result.next()) {
+            users.add(result.getString(1));
+        }
+        return users;
     }
 
 }

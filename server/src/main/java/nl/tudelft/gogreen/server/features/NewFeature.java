@@ -1,5 +1,6 @@
 package nl.tudelft.gogreen.server.features;
 
+import nl.tudelft.gogreen.server.api.CoolClimateApi;
 import nl.tudelft.gogreen.server.Main;
 
 import java.sql.Connection;
@@ -16,6 +17,12 @@ import static java.sql.DriverManager.getConnection;
 public class NewFeature {
 
 
+
+    public static String adding_feature(String username, String feature, String user_input) throws Exception {
+        float points = C02toPoints(CoolClimateApi.fetchApiData(feature, user_input, getUID(username)));
+        return aadding_feature(username, feature, points);
+    }
+
     /**
      * Initial Structure for the adding a feature functionalities.
      *
@@ -24,7 +31,7 @@ public class NewFeature {
      * @return returns the name of the feature
      * @throws Exception raised if an error occurs while accessing the database
      */
-    public static String adding_feature(String username, String feature) throws Exception {
+    public static String aadding_feature(String username, String feature, float points) throws Exception {
         Connection conn = getConnection(
                 Main.resource.getString("Postgresql.datasource.url"),
                 Main.resource.getString("Postgresql.datasource.username"),
@@ -33,11 +40,17 @@ public class NewFeature {
         newStreak(id, conn);
         actualizingFeatures(conn, feature);
         addingToLog(id, conn, feature);
-        actualizingUserPoints(id, feature, 20, conn);
-        actualizingUserLog(id, feature, 20, conn);
+        actualizingUserPoints(id, feature, points, conn);
+        actualizingUserLog(id, feature, points, conn);
         int total = getTotal(id, conn);
         conn.close();
         return String.valueOf(total);
+    }
+
+    public static float C02toPoints(float points) {
+
+        return points;
+
     }
 
     /**
@@ -58,6 +71,16 @@ public class NewFeature {
         return total;
     }
 
+    public static int getTotal(float id, Connection conn) throws Exception {
+        PreparedStatement OldUserPoints = conn.prepareStatement(Main.resource.getString("qgetTotalUP"));
+        OldUserPoints.setFloat(1, id);
+        ResultSet OUP = OldUserPoints.executeQuery();
+        int total = -1;
+        while (OUP.next()) {
+            total = OUP.getInt(1);
+        }
+            return total;
+        }
     /**
      * Get the id of a user by username
      *
@@ -79,7 +102,6 @@ public class NewFeature {
         }
         return -1;
     }
-
 
     /**
      * Get the points spread out per category
@@ -167,7 +189,7 @@ public class NewFeature {
      * @throws Exception Raised when an error occurs while accessing the database
      */
     public static void actualizingUserPoints(int id, String feature,
-                                             int points, Connection conn) throws Exception {
+                                             float points, Connection conn) throws Exception {
         //actualize user points, join with features table to know which category
         // the feature is and add to total
 
@@ -178,7 +200,9 @@ public class NewFeature {
             case 1:
                 PreparedStatement updatec1 =
                         conn.prepareStatement(Main.resource.getString("qactualizec1"));
-                updatec1.setInt(1, points);
+
+                updatec1.setFloat(1, points);
+
                 updatec1.setInt(2, id);
                 updatec1.execute();
                 break;
@@ -186,7 +210,7 @@ public class NewFeature {
             case 2:
                 PreparedStatement updatec2 =
                         conn.prepareStatement(Main.resource.getString("qactualizec2"));
-                updatec2.setInt(1, points);
+                updatec2.setFloat(1, points);
                 updatec2.setInt(2, id);
                 updatec2.execute();
                 break;
@@ -194,7 +218,8 @@ public class NewFeature {
             case 3:
                 PreparedStatement updatec3 =
                         conn.prepareStatement(Main.resource.getString("qactualizec3"));
-                updatec3.setInt(1, points);
+
+                updatec3.setFloat(1, points);
                 updatec3.setInt(2, id);
                 updatec3.execute();
                 break;
@@ -202,16 +227,20 @@ public class NewFeature {
             case 4:
                 PreparedStatement updatec4 =
                         conn.prepareStatement(Main.resource.getString("qactualizec4"));
-                updatec4.setInt(1, points);
+
+                updatec4.setFloat(1, points);
+
+
                 updatec4.setInt(2, id);
                 updatec4.execute();
                 break;
             default:
-                System.out.println("Wrong category");
+
         }
         PreparedStatement updatectotal =
                 conn.prepareStatement(Main.resource.getString("updatetotalpoints"));
-        updatectotal.setInt(1, points);
+
+        updatectotal.setFloat(1, points);
         updatectotal.setInt(2, id);
         updatectotal.execute();
 
@@ -229,7 +258,7 @@ public class NewFeature {
      */
 
     public static void actualizingUserLog(int id, String feature,
-                                          int points, Connection conn) throws Exception {
+                                          float points, Connection conn) throws Exception {
 
         //actualize user points, join with features table to
         // know which category the feature is and add to total + current_date
@@ -247,38 +276,42 @@ public class NewFeature {
             switch (category) {
 
                 case 1:
+
                     PreparedStatement createc1 = conn.prepareStatement(Main.resource.getString("qInsertHistory1"));
                     createc1.setInt(1, id);
-                    createc1.setInt(2, points);
-                    createc1.setInt(3, points);
+                    createc1.setFloat(2, points);
+                    createc1.setFloat(3, points);
                     createc1.execute();
                     break;
 
                 case 2:
+
                     PreparedStatement createc2 = conn.prepareStatement(Main.resource.getString("qInsertHistory2"));
                     createc2.setInt(1, id);
-                    createc2.setInt(2, points);
-                    createc2.setInt(3, points);
+                    createc2.setFloat(2, points);
+                    createc2.setFloat(3, points);
                     createc2.execute();
                     break;
 
                 case 3:
+
                     PreparedStatement createc3 = conn.prepareStatement(Main.resource.getString("qInsertHistory3"));
                     createc3.setInt(1, id);
-                    createc3.setInt(2, points);
-                    createc3.setInt(3, points);
+                    createc3.setFloat(2, points);
+                    createc3.setFloat(3, points);
                     createc3.execute();
                     break;
 
                 case 4:
+
                     PreparedStatement createc4 = conn.prepareStatement(Main.resource.getString("qInsertHistory4"));
                     createc4.setInt(1, id);
-                    createc4.setInt(2, points);
-                    createc4.setInt(3, points);
+                    createc4.setFloat(2, points);
+                    createc4.setFloat(3, points);
                     createc4.execute();
                     break;
                 default:
-                    System.out.println("Wrong category");
+
 
             }
 
@@ -289,7 +322,8 @@ public class NewFeature {
 
                     PreparedStatement upd1History =
                             conn.prepareStatement(Main.resource.getString("qUpdateHistory1"));
-                    upd1History.setInt(1, points);
+
+                    upd1History.setFloat(1, points);
                     upd1History.setInt(2, id);
                     upd1History.execute();
 
@@ -299,7 +333,8 @@ public class NewFeature {
 
                     PreparedStatement upd2History =
                             conn.prepareStatement(Main.resource.getString("qUpdateHistory2"));
-                    upd2History.setInt(1, points);
+
+                    upd2History.setFloat(1, points);
                     upd2History.setInt(2, id);
                     upd2History.execute();
 
@@ -308,7 +343,8 @@ public class NewFeature {
                 case 3:
                     PreparedStatement upd3History =
                             conn.prepareStatement(Main.resource.getString("qUpdateHistory3"));
-                    upd3History.setInt(1, points);
+
+                    upd3History.setFloat(1, points);
                     upd3History.setInt(2, id);
                     upd3History.execute();
                     break;
@@ -316,19 +352,21 @@ public class NewFeature {
                 case 4:
                     PreparedStatement upd4History =
                             conn.prepareStatement(Main.resource.getString("qUpdateHistory4"));
-                    upd4History.setInt(1, points);
+
+                    upd4History.setFloat(1, points);
                     upd4History.setInt(2, id);
                     upd4History.execute();
                     break;
 
                 default:
-                    System.out.println("Wrong category");
+
 
             }
 
             PreparedStatement hupdatectotal =
                     conn.prepareStatement(Main.resource.getString("updatetotalhistory"));
-            hupdatectotal.setInt(1, points);
+
+            hupdatectotal.setFloat(1, points);
             hupdatectotal.setInt(2, id);
             hupdatectotal.execute();
 
@@ -344,6 +382,7 @@ public class NewFeature {
      * @throws Exception Raised when an error occurs while accessing the database
      */
     public static void actualizingFeatures(Connection conn, String feature) throws Exception {
+
         PreparedStatement getId = conn.prepareStatement(Main.resource.getString("qActualtizingFeatures"));
         getId.setString(1, feature);
         getId.execute();
@@ -393,6 +432,7 @@ public class NewFeature {
         }
         System.out.println("the day is: " + lastDay);
         if (lastDay == null || (!isToday(lastDay) && !isYesterday(lastDay))) {
+
             PreparedStatement resetStreak = conn.prepareStatement(Main.resource.getString("qInsertStreak"));
             resetStreak.setInt(1, id);
             resetStreak.execute();
@@ -405,17 +445,56 @@ public class NewFeature {
 
     }
 
-    public static int getTotal(int id, Connection conn) throws Exception {
-        PreparedStatement OldUserPoints = conn.prepareStatement(Main.resource.getString("qgetTotalUP"));
-        OldUserPoints.setInt(1, id);
-        ResultSet OUP = OldUserPoints.executeQuery();
+    /**
+     * Method which returns the number of Streak of the given user.
+     *
+     * @param id of the user
+     * @return Returns the number of days as an int
+     */
+    public static int getStreak(int id) throws Exception {
+
+
+        Connection conn = getConnection(
+                Main.resource.getString("Postgresql.datasource.url"),
+                Main.resource.getString("Postgresql.datasource.username"),
+                Main.resource.getString("Postgresql.datasource.password"));
+        PreparedStatement getStreak =
+                conn.prepareStatement(Main.resource.getString("qRetrievingStreakDays"));
+        getStreak.setInt(1, id);
+        int numDays = 0;
+        ResultSet numDaysRS = getStreak.executeQuery();
+        while (numDaysRS.next()) {
+            numDays = numDaysRS.getInt(1);
+        }
+
+        return numDays;
+
+    }
+
+    /**
+     * Method which returns the total per category.
+     * Send c1 for category 1,..., c'n' for category 'n'.
+     *
+     * @param id the id
+     * @param category the category
+     * @param conn connection to database
+     * @return the total per category
+     * @throws Exception raises exception if unable to access database
+     */
+    public static int getTotalCategory1(int id, String category, Connection conn) throws Exception {
+
+        PreparedStatement getTotalCategory1 =
+                conn.prepareStatement("select ? from user_points where user_id = ?");
+        getTotalCategory1.setString(1, category);
+        getTotalCategory1.setInt(2, id);
+        ResultSet points = getTotalCategory1.executeQuery();
         int total = -1;
-        while (OUP.next()) {
-            total = OUP.getInt(1);
+
+        while (points.next()) {
+            total = points.getInt(1);
         }
         return total;
     }
-
 
     /**
      * Method which given a certain day, checks if this one is the current day.

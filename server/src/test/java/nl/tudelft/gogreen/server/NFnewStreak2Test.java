@@ -55,6 +55,7 @@ public class NFnewStreak2Test {
                 days = rs.getInt(1);
             }
 
+
             assertTrue(days == 2);
 
         } catch (Exception exception) {
