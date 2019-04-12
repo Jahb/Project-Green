@@ -27,7 +27,9 @@ Checkstyle configurartion that checks the Google coding conventions (https://goo
             <property name="ignorePattern" value="^package.*|^import.*|a href|href|http://|https://|ftp://"/>
             <property name="max" value="100"/>
         </module>
-        <module name="AvoidStarImport"/>
+        <module name="AvoidStarImport">
+            <property name="allowClassImports" value="true"/>
+        </module>
         <module name="OneTopLevelClass"/>
         <module name="NoLineWrap"/>
         <module name="EmptyBlock">

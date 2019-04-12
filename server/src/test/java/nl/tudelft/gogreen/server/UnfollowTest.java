@@ -1,5 +1,8 @@
 package nl.tudelft.gogreen.server;
 
+import nl.tudelft.gogreen.server.auth.CreateUser;
+import nl.tudelft.gogreen.server.features.NewFeature;
+import nl.tudelft.gogreen.server.followers.Following;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -26,7 +29,7 @@ public class UnfollowTest {
 
             int id1 = NewFeature.getId("paul",conn);
             int id2 = NewFeature.getId("pablo",conn);
-            Following.Follow(id1,id2);
+            Following.follow(id1,id2);
 
         }
         catch(Exception e){
@@ -41,7 +44,7 @@ public class UnfollowTest {
             int id1 = NewFeature.getId("paul",conn);
             int id2 = NewFeature.getId("pablo",conn);
 
-            Following.Unfollow(id1,id2);
+            Following.unfollow(id1,id2);
             boolean result = Following.isFollowing(id1,id2,conn);
 
             assertFalse(result);

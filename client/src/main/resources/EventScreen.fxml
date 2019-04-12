@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXDatePicker?>
+<?import com.jfoenix.controls.JFXListView?>
+<?import com.jfoenix.controls.JFXTextArea?>
+<?import com.jfoenix.controls.JFXTextField?>
+<?import com.jfoenix.controls.JFXTimePicker?>
+<?import javafx.geometry.Rectangle2D?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.shape.Circle?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<AnchorPane prefHeight="720.0" prefWidth="1000.0" stylesheets="@Common.css" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="nl.tudelft.gogreen.client.EventController">
+      <AnchorPane prefHeight="188.0" prefWidth="1000.0" style="-fx-background-color: #50e476;" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+            <Text fill="WHITE" layoutX="470.0" layoutY="176.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Browse Events:">
+               <font>
+                  <Font name="System Bold Italic" size="62.0" />
+               </font>
+            </Text>
+            <Text fill="WHITE" layoutX="14.0" layoutY="176.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Your Events:">
+               <font>
+                  <Font name="System Bold Italic" size="62.0" />
+               </font>
+            </Text>
+      </AnchorPane>
+      <AnchorPane prefHeight="118.0" prefWidth="1000.0" style="-fx-background-color: #38ba5c;" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+            <Text fill="WHITE" layoutX="421.0" layoutY="88.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Events">
+               <font>
+                  <Font name="System Bold" size="88.0" />
+               </font>
+            </Text>
+            <ImageView fitHeight="117.0" fitWidth="123.0" layoutX="304.0" layoutY="1.0" pickOnBounds="true" preserveRatio="true" scaleX="1.4" scaleY="1.4">
+                  <Image url="@images/IconEvent.png" />
+               <viewport>
+                  <Rectangle2D height="500.0" width="500.0" />
+               </viewport>
+            </ImageView>
+      </AnchorPane>
+      <BorderPane fx:id="buttonPane" prefHeight="112.0" prefWidth="123.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0" />
+      <AnchorPane layoutY="192.0" prefHeight="369.0" prefWidth="375.0" style="-fx-background-color: lightgray;" AnchorPane.bottomAnchor="159.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="192.0">
+            <JFXListView fx:id="eventList" layoutX="14.0" layoutY="22.0" prefHeight="325.0" prefWidth="344.0" AnchorPane.bottomAnchor="22.0" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="17.0" AnchorPane.topAnchor="22.0" />
+      </AnchorPane>
+      <AnchorPane layoutX="390.0" layoutY="193.0" prefHeight="529.0" prefWidth="610.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="390.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="193.0">
+            <JFXListView fx:id="fullEventList" layoutX="33.0" layoutY="29.0" prefHeight="465.0" prefWidth="544.0" AnchorPane.bottomAnchor="33.0" AnchorPane.leftAnchor="33.0" AnchorPane.rightAnchor="33.0" AnchorPane.topAnchor="29.0" />
+      </AnchorPane>
+      <AnchorPane layoutY="561.0" prefHeight="171.0" prefWidth="378.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0">
+            <BorderPane layoutY="45.0" prefHeight="159.0" prefWidth="171.0">
+               <center>
+                  <Circle fill="#50e476" radius="77.0" stroke="TRANSPARENT" strokeType="INSIDE" BorderPane.alignment="CENTER" />
+               </center></BorderPane>
+            <AnchorPane layoutX="171.0" layoutY="45.0" prefHeight="159.0" prefWidth="131.0">
+                  <Text fill="#50e476" layoutX="-14.0" layoutY="70.0" strokeType="OUTSIDE" strokeWidth="0.0" text=" Create New  Event" textAlignment="CENTER" wrappingWidth="203.216796875">
+                     <font>
+                        <Font name="System Bold" size="35.0" />
+                     </font>
+                  </Text>
+            </AnchorPane>
+      </AnchorPane>
+      <AnchorPane layoutX="375.0" layoutY="191.0" prefHeight="534.0" prefWidth="15.0" style="-fx-background-color: #50e476;" AnchorPane.bottomAnchor="0.0" AnchorPane.topAnchor="191.0" />
+      <AnchorPane fx:id="createEvent" layoutX="92.0" layoutY="119.0" prefHeight="587.0" prefWidth="408.0" style="-fx-background-color: whitesmoke; -fx-background-radius: 50; -fx-border-color: #50e476; -fx-border-width: 10; -fx-border-radius: 40;" visible="false" AnchorPane.bottomAnchor="14.0" AnchorPane.leftAnchor="92.0">
+            <BorderPane layoutX="55.0" layoutY="430.0" prefHeight="110.0" prefWidth="110.0">
+               <center>
+                  <Circle fill="#50e476" radius="55.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" BorderPane.alignment="CENTER" />
+               </center>
+            </BorderPane>
+            <BorderPane layoutX="265.0" layoutY="430.0" prefHeight="110.0" prefWidth="110.0">
+               <center>
+                  <Circle fill="#50e476" radius="55.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" BorderPane.alignment="CENTER" />
+               </center>
+            </BorderPane>
+            <JFXTextField layoutX="55.0" layoutY="123.0" prefHeight="31.0" prefWidth="320.0" promptText="Event Name" fx:id="newEventName" />
+            <JFXDatePicker defaultColor="#50e476" layoutX="55.0" layoutY="176.0" prefHeight="31.0" prefWidth="320.0" promptText="Event Date" fx:id="newEventDate" />
+            <JFXTextArea layoutX="55.0" layoutY="286.0" prefHeight="110.0" prefWidth="320.0" promptText="Event Description" fx:id="newEventDesc" />
+            <JFXTimePicker defaultColor="#50e476" layoutX="55.0" layoutY="226.0" prefHeight="31.0" prefWidth="320.0" promptText="Event Time" fx:id="newEventTime" />
+            <Text fill="#50e476" layoutX="47.0" layoutY="81.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Enter Event Details Below">
+               <font>
+                  <Font name="System Bold Italic" size="28.0" />
+               </font>
+            </Text>
+      </AnchorPane>
+</AnchorPane>

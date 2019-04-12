@@ -8,9 +8,14 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
 public class Homepage {
+
+    public String getHomeString(){
+        return "<h1>Home!</h1>";
+    }
+
     @RequestMapping(value = "/", produces = MediaType.TEXT_HTML_VALUE)
     @ResponseBody
     public String home() {
-        return "<h1>Home!</h1>";
+        return getHomeString();
     }
 }

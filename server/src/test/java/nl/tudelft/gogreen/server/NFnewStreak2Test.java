@@ -1,6 +1,8 @@
 package nl.tudelft.gogreen.server;
 
 
+import nl.tudelft.gogreen.server.auth.CreateUser;
+import nl.tudelft.gogreen.server.features.NewFeature;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -52,6 +54,7 @@ public class NFnewStreak2Test {
             while (rs.next()) {
                 days = rs.getInt(1);
             }
+
 
             assertTrue(days == 2);
 

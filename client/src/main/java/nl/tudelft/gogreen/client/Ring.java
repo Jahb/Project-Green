@@ -96,13 +96,13 @@ public class Ring {
         innerCircle.setCenterX(centerOffs);
         innerCircle.setCenterY(centerOffs);
         innerCircle.setRadius(innerRadius);
-        innerCircle.setFill(Color.LIGHTGRAY);
+        innerCircle.setFill(Color.WHITE);
         innerCircle.setStroke(Color.BLACK);
 
         outerCircle.setCenterX(centerOffs);
         outerCircle.setCenterY(centerOffs);
         outerCircle.setRadius(outerRadius);
-        outerCircle.setFill(Color.GRAY);
+        outerCircle.setFill(Color.LIGHTGREY);
         outerCircle.setStroke(Color.BLACK);
 
         addSegment(Color.LIME, "Food");

@@ -1,5 +1,8 @@
 package nl.tudelft.gogreen.server;
 
+import nl.tudelft.gogreen.server.auth.CreateUser;
+import nl.tudelft.gogreen.server.features.NewFeature;
+import nl.tudelft.gogreen.server.followers.Following;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -23,7 +26,7 @@ public class isFollowingTest {
             CreateUser.deleteAllUsers(conn);
             CreateUser.create_user("paul", "paul");
             CreateUser.create_user("pablo", "pablo");
-            Following.Follow(NewFeature.getId("paul",conn), NewFeature.getId("pablo",conn));
+            Following.follow(NewFeature.getId("paul",conn), NewFeature.getId("pablo",conn));
         }
         catch(Exception e){
             System.out.println(e.getMessage());

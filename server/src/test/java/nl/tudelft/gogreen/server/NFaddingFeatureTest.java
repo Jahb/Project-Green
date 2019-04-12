@@ -1,5 +1,7 @@
 package nl.tudelft.gogreen.server;
 
+import nl.tudelft.gogreen.server.auth.CreateUser;
+import nl.tudelft.gogreen.server.features.NewFeature;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -31,7 +33,7 @@ public class NFaddingFeatureTest {
                 access1 = rs.getInt(1);
             }
 
-            NewFeature.adding_feature("MJ","Vegetarian Meal");
+            NewFeature.aadding_feature("MJ","Vegetarian Meal",20);
 
             PreparedStatement streakDateNumber = conn.prepareStatement(Main.resource.getString("qReturnDays2"));
             streakDateNumber.setInt(1,  id);

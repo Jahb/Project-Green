@@ -1,6 +1,9 @@
 package nl.tudelft.gogreen.server;
 
 
+import nl.tudelft.gogreen.server.auth.CreateUser;
+import nl.tudelft.gogreen.server.events.EventsMain;
+import nl.tudelft.gogreen.server.features.NewFeature;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -16,15 +19,10 @@ import static org.junit.Assert.assertEquals;
 public class events_mainTest {
 
 
-
-    @Before
-    public void replaceDb(){
-        Main.resource = ResourceBundle.getBundle("db", Locale.GERMANY);
-
-    }
-
     @Before
     public void createOnlyUser() {
+        Main.resource = ResourceBundle.getBundle("db", Locale.GERMANY);
+
         try (Connection conn = DriverManager.getConnection(Main.resource.getString("Postgresql.datasource.url"), Main.resource.getString("Postgresql.datasource.username"), Main.resource.getString("Postgresql.datasource.password"))){
 
 
@@ -40,7 +38,7 @@ public class events_mainTest {
     public void getMaxId() {
         try(Connection conn = DriverManager.getConnection(Main.resource.getString("Postgresql.datasource.url"), Main.resource.getString("Postgresql.datasource.username"), Main.resource.getString("Postgresql.datasource.password"))) {
 
-            assertEquals(0,EventsMain.getMaxId(conn));
+            assertEquals(0, EventsMain.getMaxId(conn));
         } catch (Exception exception) {
             System.out.println("Error!");
         }

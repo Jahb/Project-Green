@@ -1,6 +1,5 @@
 package nl.tudelft.gogreen.client;
 
-import com.jfoenix.controls.JFXListCell;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -11,7 +10,6 @@ import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
-import javafx.util.Callback;
 
 import java.io.IOException;
 import java.net.URL;
@@ -20,9 +18,14 @@ import java.util.ResourceBundle;
 public class AchievementsController implements Initializable {
 
     @FXML
-    private ListView<ListItem> achievementsList = new ListView<>();
+    public ListView<ListItem> userAchievements = new ListView<>();
+    @FXML
+    private ListView<ListItem> allAchievements = new ListView<>();
 
-    private final ObservableList<ListItem> items = FXCollections.observableArrayList();
+    private final ObservableList<ListItem> allAchievementsList = FXCollections
+            .observableArrayList();
+    private final ObservableList<ListItem> userAchievementsList = FXCollections
+            .observableArrayList();
 
     /**
      * Returns the Achievements Scene.
@@ -34,7 +37,7 @@ public class AchievementsController implements Initializable {
         URL url = Main.class.getResource("/AchievementsGUI.fxml");
         System.out.println(url);
         AnchorPane root = FXMLLoader.load(url);
-        BorderPane topPane = (BorderPane) root.getChildren().get(1);
+        BorderPane topPane = (BorderPane) root.getChildren().get(0);
         IconButton.addBackButton(topPane);
         return new Scene(root, Main.getWidth(), Main.getHeight());
     }
@@ -46,32 +49,50 @@ public class AchievementsController implements Initializable {
      * @param resources A ResourceBundle
      */
     public void initialize(URL location, ResourceBundle resources) {
-        items.clear();
-        items.add(new ListItem("achievement1", "images/achievementImage.png", "2/10"));
-        items.add(new ListItem("achievement2", "images/achievementImage.png", "50/100"));
-        items.add(new ListItem("achievement3", "images/achievementImage.png", "Completed"));
-        achievementsList.setCellFactory(new Callback<ListView<ListItem>, ListCell<ListItem>>() {
+        //TODO Add achievements to the list which contains all achievements
+        allAchievementsList.clear();
+        ListItem ach1 =  new ListItem("achievement1", "images/IconCupGold.png", "Description 1");
+        ListItem ach2 =  new ListItem("achievement2", "images/IconCupGold.png", "Description 2");
+        ListItem ach3 =  new ListItem("achievement3", "images/IconCupGold.png", "Description 3");
+        ListItem ach4 = new ListItem("achievement4", "images/IconCupGold.png", "Description 4");
+        allAchievementsList.add(ach1);
+        allAchievementsList.add(ach2);
+        allAchievementsList.add(ach3);
+        allAchievementsList.add(ach4);
+        userAchievementsList.add(ach2);
+        userAchievementsList.add(ach4);
+        allAchievements.setCellFactory(param -> new Cell());
+        userAchievements.setCellFactory(param -> new Cell());
 
-            @Override
-            public ListCell<ListItem> call(ListView<ListItem> arg0) {
-                JFXListCell<ListItem> cell = new JFXListCell<ListItem>() {
-                    @Override
-                    public void updateItem(ListItem item, boolean bool) {
-                        super.updateItem(item, bool);
-                        if (item != null && !bool) {
-                            setGraphic(ListItem.imageView(item));
-                            setText(item.getName() + "\nProgress: " + item.getStatus());
-                        } else {
-                            setText(null);
-                            setGraphic(null);
-                        }
-                    }
-                };
-                cell.setEditable(true);
-                return cell;
+        allAchievements.setItems(allAchievementsList);
+        userAchievements.setItems(userAchievementsList);
+    }
+
+    class Cell extends ListCell<ListItem> {
+
+        private Cell() {
+            super();
+        }
+
+        @Override
+        public void updateItem(ListItem item, boolean bool) {
+            super.updateItem(item, bool);
+            if (item != null && !bool) {
+                setGraphic(ListItem.imageView(item));
+                setText(item.getName() + "\n" + item.getStatus());
+
+                if (userAchievementsList.contains(item)) {
+                    this.setStyle("-fx-background-color: #38ba5c;" +
+                            "-fx-text-fill: white;");
+                } else {
+                    this.setStyle("-fx-background-color: whitesmoke;" +
+                            "-fx-text-fill: black;");
+                }
+            } else {
+                setText(null);
+                setGraphic(null);
             }
-        });
-        achievementsList.setItems(items);
+        }
     }
 
 }
