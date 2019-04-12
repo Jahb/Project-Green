@@ -1,5 +1,8 @@
 package nl.tudelft.gogreen.server;
 
+import nl.tudelft.gogreen.server.auth.CreateUser;
+import nl.tudelft.gogreen.server.features.NewFeature;
+import nl.tudelft.gogreen.server.statistics.Statistics;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -7,6 +10,7 @@ import org.junit.Test;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
+import java.util.Locale;
 import java.util.ResourceBundle;
 
 import static org.junit.Assert.assertEquals;
@@ -14,10 +18,12 @@ import static org.junit.Assert.assertNotEquals;
 
 public class SDataLastWeekTest {
 
-    private static ResourceBundle resource = ResourceBundle.getBundle("db");
+
 
     @Before
     public void createUser() {
+        Main.resource = ResourceBundle.getBundle("db", Locale.GERMANY);
+
         try {
             CreateUser.create_user("Russell", "Westbrook");
         } catch (Exception e) {
@@ -27,12 +33,12 @@ public class SDataLastWeekTest {
     @Test
     public void getLastWeekData() {
 
-        try (Connection conn = DriverManager.getConnection(resource.getString("Postgresql.datasource.url"), resource.getString("Postgresql.datasource.username"), resource.getString("Postgresql.datasource.password"))) {
+        try (Connection conn = DriverManager.getConnection(Main.resource.getString("Postgresql.datasource.url"), Main.resource.getString("Postgresql.datasource.username"), Main.resource.getString("Postgresql.datasource.password"))) {
             int id = NewFeature.getId("Russell", conn);
             double[] AllData = Statistics.getLastWeekData(id);
             double totalPoints = AllData[AllData.length-2];
 
-            PreparedStatement insertData = conn.prepareStatement(resource.getString("qInsertWeekData"));
+            PreparedStatement insertData = conn.prepareStatement(Main.resource.getString("qInsertWeekData"));
             insertData.setInt(1,id);
             insertData.execute();
 
@@ -55,7 +61,7 @@ public class SDataLastWeekTest {
     }
     @After
     public void deleteUser(){
-        try (Connection conn = DriverManager.getConnection(resource.getString("Postgresql.datasource.url"), resource.getString("Postgresql.datasource.username"), resource.getString("Postgresql.datasource.password"))) {
+        try (Connection conn = DriverManager.getConnection(Main.resource.getString("Postgresql.datasource.url"), Main.resource.getString("Postgresql.datasource.username"), Main.resource.getString("Postgresql.datasource.password"))) {
             CreateUser.delete_user(NewFeature.getId("Russell", conn),conn);
         }
         catch (Exception e){

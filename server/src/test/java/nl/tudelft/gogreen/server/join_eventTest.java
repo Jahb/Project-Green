@@ -1,25 +1,36 @@
 package nl.tudelft.gogreen.server;
 
 
+import nl.tudelft.gogreen.server.auth.CreateUser;
+import nl.tudelft.gogreen.server.events.EventsMain;
+import nl.tudelft.gogreen.server.features.NewFeature;
 import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.util.Locale;
 import java.util.ResourceBundle;
 
 import static org.junit.Assert.assertEquals;
 
 
 public class join_eventTest {
-    private static ResourceBundle resource = ResourceBundle.getBundle("db");
 
+
+
+    @Before
+    public void replaceDb(){
+        Main.resource = ResourceBundle.getBundle("db", Locale.GERMANY);
+
+    }
 
     @After
     public void delete() {
-        try (Connection conn = DriverManager.getConnection(resource.getString("Postgresql.datasource.url"), resource.getString("Postgresql.datasource.username"), resource.getString("Postgresql.datasource.password"))) {
+        try (Connection conn = DriverManager.getConnection(Main.resource.getString("Postgresql.datasource.url"), Main.resource.getString("Postgresql.datasource.username"), Main.resource.getString("Postgresql.datasource.password"))) {
 
 
             int id_creator = NewFeature.getId("creator", conn);
@@ -35,7 +46,7 @@ public class join_eventTest {
 
     @Test
     public void join_eventTest() {
-        try (Connection conn = DriverManager.getConnection(resource.getString("Postgresql.datasource.url"), resource.getString("Postgresql.datasource.username"), resource.getString("Postgresql.datasource.password"))) {
+        try (Connection conn = DriverManager.getConnection(Main.resource.getString("Postgresql.datasource.url"), Main.resource.getString("Postgresql.datasource.username"), Main.resource.getString("Postgresql.datasource.password"))) {
 
             CreateUser.create_user("creator", "test");
             CreateUser.create_user("participant", "test");

@@ -1,5 +1,6 @@
 package nl.tudelft.gogreen.server;
 
+import nl.tudelft.gogreen.server.api.CoolClimateApi;
 import org.junit.Test;
 
 import java.util.ResourceBundle;
@@ -8,7 +9,6 @@ import static junit.framework.TestCase.assertEquals;
 
 public class AAPISolarPanelsTest {
 
-    private static ResourceBundle resource = ResourceBundle.getBundle("db");
 
     @Test
     public void SolarPanels() {

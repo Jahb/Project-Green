@@ -3,19 +3,18 @@ package nl.tudelft.gogreen.client.communication;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
-
 import com.mashape.unirest.http.ObjectMapper;
 import com.mashape.unirest.http.Unirest;
 import com.mashape.unirest.http.exceptions.UnirestException;
+import nl.tudelft.gogreen.shared.*;
+import org.apache.http.client.CookieStore;
+import org.apache.http.impl.client.BasicCookieStore;
+import org.apache.http.impl.client.HttpClients;
+import org.java_websocket.client.WebSocketClient;
+import org.java_websocket.handshake.ServerHandshake;
 
-import nl.tudelft.gogreen.shared.DateHolder;
-import nl.tudelft.gogreen.shared.DatePeriod;
-import nl.tudelft.gogreen.shared.MessageHolder;
-
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.net.URI;
+import java.util.*;
 import java.util.stream.Collectors;
 
 
@@ -24,12 +23,14 @@ public class Api {
     /**
      * The currently used api, so we only have to change the value once...
      */
-    public static Api current = getTestApi();
-
 
     public static Gson gson = new GsonBuilder().setPrettyPrinting().create();
-
+    public static Api current = getTestApi();
     private static Api api;
+
+    private int position;
+
+    private static CookieStore cookies = new BasicCookieStore();
 
     private String username;
 
@@ -57,7 +58,10 @@ public class Api {
         remapper.put("Recycle", "Recycling");
         remapper.put("NoSmoking", "Lower Temperature");
 
-
+        for (PingPacketData d : PingPacketData.values()) {
+            notifications.put(d, new ArrayList<>());
+        }
+        this.registerNotification(PingPacketData.FOLLOWER, System.out::println);
     }
 
 
@@ -67,10 +71,15 @@ public class Api {
      * @param url    the url to request
      * @param params a map of params
      * @return a string with the data needed
-     * @throws UnirestException if unirest fucks up in a bad way?
      */
-    private String post(String url, Map<String, Object> params) throws UnirestException {
-        String holder = Unirest.post(url).fields(params).asString().getBody();
+    private String post(String url, Map<String, Object> params) {
+
+        String holder = "";
+        try {
+            holder = Unirest.post(url).fields(params).asString().getBody();
+        } catch (UnirestException e) {
+            e.printStackTrace();
+        }
         System.out.println(holder);
         return holder;
     }
@@ -81,9 +90,8 @@ public class Api {
      * @param username the username
      * @param password the password (what did you expect?)
      * @return true if success, false otherwise
-     * @throws UnirestException if unirest fucks up in a bad way?
      */
-    public boolean login(String username, String password) throws UnirestException {
+    public boolean login(String username, String password) {
         Map<String, Object> maps = new HashMap<>();
         maps.put("username", username);
         maps.put("password", password);
@@ -91,8 +99,11 @@ public class Api {
 
         MessageHolder<Boolean> holder = gson.fromJson(res, new TypeToken<MessageHolder<Boolean>>() {
         }.getType());
-        if (holder.getData()) {
+        System.out.println(this.username);
+        if (holder.getData() && this.username == null) {
             this.username = username;
+            wsInit();
+            System.out.println(this.username);
         }
         return holder.getData();
     }
@@ -103,9 +114,8 @@ public class Api {
      * @param username the new username
      * @param password the password
      * @return true if success, false otherwise
-     * @throws UnirestException if unirest fucks up in a bad way?
      */
-    public boolean register(String username, String password) throws UnirestException {
+    public boolean register(String username, String password) {
         Map<String, Object> maps = new HashMap<>();
         maps.put("username", username);
         maps.put("password", password);
@@ -124,9 +134,8 @@ public class Api {
      *
      * @param featureName the name of the feature, should really be an Enum...
      * @return the current total points
-     * @throws UnirestException if unirest fucks up in a bad way?
      */
-    public int addFeature(String featureName) throws UnirestException {
+    public int addFeature(String featureName) {
         Map<String, Object> maps = new HashMap<>();
         maps.put("feature", remap(featureName));
         String res = this.post(baseUrl + "/feature/new", maps);
@@ -142,13 +151,7 @@ public class Api {
      * @return the total amount of points
      */
     public int getTotal() {
-        String res;
-        try {
-            res = this.post(baseUrl + "/feature/total", new HashMap<>());
-        } catch (UnirestException e) {
-            e.printStackTrace();
-            return 0;
-        }
+        String res = this.post(baseUrl + "/feature/total", new HashMap<>());
         MessageHolder<Integer> holder = gson.fromJson(res, new TypeToken<MessageHolder<Integer>>() {
         }.getType());
 
@@ -161,21 +164,12 @@ public class Api {
      * @param username the username to find
      * @return the co2 saved
      */
-    private int getFor(String username) {
-        String res;
+    public List<Integer> getFor(String username) {
         Map<String, Object> params = new HashMap<>();
         params.put("username", username);
-        try {
-            res = this.post(baseUrl + "/follow/activity", params);
-        } catch (UnirestException e) {
-            e.printStackTrace();
-            return 0;
-        }
-        MessageHolder<Integer> holder = gson.fromJson(res, new TypeToken<MessageHolder<Integer>>() {
+        String res = this.post(baseUrl + "/feature/points", params);
+        MessageHolder<List<Integer>> holder = gson.fromJson(res, new TypeToken<MessageHolder<List<Integer>>>() {
         }.getType());
-        if (followers.containsKey("username")) {
-            followers.put(username, holder.getData());
-        }
 
         return holder.getData();
     }
@@ -187,14 +181,9 @@ public class Api {
      * @return the information requested
      */
     public DateHolder getDatesFor(DatePeriod period) {
-        String res;
         Map<String, Object> params = new HashMap<>();
         params.put("days", period);
-        try {
-            res = this.post(baseUrl + "/stats", params);
-        } catch (UnirestException e) {
-            return new DateHolder(new double[]{0, 0, 0, 0, 0, 0, 0, 0, 0});
-        }
+        String res = this.post(baseUrl + "/stats", params);
         MessageHolder<DateHolder> holder =
                 gson.fromJson(res, new TypeToken<MessageHolder<DateHolder>>() {
                 }.getType());
@@ -211,21 +200,24 @@ public class Api {
      */
     public double[] getRingSegmentValues(String ringName) {
         if (ringName.equals("MAIN")) {
-            return new double[]{getTotal(), 0, 0};
+            List<Integer> res = getFor(getUsername());
+            return new double[]{res.get(0), res.get(1), res.get(2)};
         }
 
         if (ringName.equals("NEXT")) {
             if (getUsernameNext() == null) {
                 return new double[]{333, 334, 333};
             }
-            return new double[]{getFor(getUsernameNext()), 0, 0};
+            List<Integer> res = getFor(getUsernameNext());
+            return new double[]{res.get(0), res.get(1), res.get(2)};
         }
 
         if (ringName.equals("PREVIOUS")) {
             if (getUsernamePrevious() == null) {
                 return new double[]{333, 334, 333};
             }
-            return new double[]{getFor(getUsernamePrevious()), 0, 0};
+            List<Integer> res = getFor(getUsernamePrevious());
+            return new double[]{res.get(0), res.get(1), res.get(2)};
         }
         return null;
     }
@@ -245,6 +237,7 @@ public class Api {
                 followers.entrySet().stream()
                         .sorted(Map.Entry.comparingByValue()).collect(Collectors.toList());
         yeet.removeIf(it -> it.getValue() > myTotal);
+        position = followers.size() - yeet.size() + 1;
         if (yeet.size() == 0) return null;
         return yeet.get(0) == null ? null : yeet.get(0).getKey();
 
@@ -276,9 +269,18 @@ public class Api {
      * @return now you know
      */
     public String getUsername() {
+        System.out.println(this.username);
         return this.username;
     }
 
+    /**
+     * Get the position of the user on their leaderboard.
+     *
+     * @return the users position
+     */
+    public int getPosition() {
+        return position;
+    }
 
     /**
      * Follow another user to compare your progress with theirs.
@@ -287,20 +289,8 @@ public class Api {
      * @return a boolean indicating success
      */
     public boolean follow(String username) {
-        String res;
-        Map<String, Object> params = new HashMap<>();
-        params.put("username", username);
-        try {
-            res = this.post(baseUrl + "/follow/follow", params);
-        } catch (UnirestException e) {
-            e.printStackTrace();
-            return false;
-        }
-        MessageHolder<Boolean> holder =
-                gson.fromJson(res, new TypeToken<MessageHolder<Boolean>>() {
-                }.getType());
-        followDirty = holder.getData();
-        return holder.getData();
+        return getfollow(username, "/follow/follow");
+
     }
 
     /**
@@ -310,19 +300,18 @@ public class Api {
      * @return whether you can be happy now
      */
     public boolean unfollow(String username) {
-        String res;
+
+        return getfollow(username, "/follow/unfollow");
+
+    }
+
+    private boolean getfollow(String username, String url) {
         Map<String, Object> params = new HashMap<>();
         params.put("username", username);
-        try {
-            res = this.post(baseUrl + "/follow/unfollow", params);
-        } catch (UnirestException e) {
-            e.printStackTrace();
-            return false;
-        }
+        String res = this.post(baseUrl + url, params);
         MessageHolder<Boolean> holder =
                 gson.fromJson(res, new TypeToken<MessageHolder<Boolean>>() {
                 }.getType());
-
         return holder.getData();
     }
 
@@ -332,19 +321,7 @@ public class Api {
      * @return your followers
      */
     public Map<String, Integer> getFollowers() {
-        String res;
-        Map<String, Object> params = new HashMap<>();
-        try {
-            res = this.post(baseUrl + "/follow/followers", params);
-        } catch (UnirestException e) {
-            e.printStackTrace();
-            return Collections.emptyMap();
-        }
-        MessageHolder<Map<String, Integer>> holder =
-                gson.fromJson(res, new TypeToken<MessageHolder<Map<String, Integer>>>() {
-                }.getType());
-
-        return holder.getData();
+        return getStringIntegerMap("/follow/followers");
     }
 
     /**
@@ -353,19 +330,129 @@ public class Api {
      * @return the peeps you're following
      */
     public Map<String, Integer> getFollowing() {
+        return getStringIntegerMap("/follow/following");
+    }
+
+    private Map<String, Integer> getStringIntegerMap(String s) {
         String res;
         Map<String, Object> params = new HashMap<>();
-        try {
-            res = this.post(baseUrl + "/follow/following", params);
-        } catch (UnirestException e) {
-            e.printStackTrace();
-            return Collections.emptyMap();
-        }
+        res = this.post(baseUrl + s, params);
         MessageHolder<Map<String, Integer>> holder =
                 gson.fromJson(res, new TypeToken<MessageHolder<Map<String, Integer>>>() {
                 }.getType());
 
         return holder.getData();
+    }
+
+    public List<EventItem> getAllEvents() {
+        return getEventItems("/event/list");
+    }
+
+    private List<EventItem> getEventItems(String url) {
+        String res;
+        Map<String, Object> params = new HashMap<>();
+        res = this.post(baseUrl + url, params);
+        MessageHolder<List<EventItem>> holder =
+                gson.fromJson(res, new TypeToken<MessageHolder<List<EventItem>>>() {
+                }.getType());
+
+        return holder.getData();
+    }
+
+    public List<EventItem> getUserEvents() {
+        return getEventItems("/event/user");
+    }
+
+    public boolean newEvent(EventItem event) {
+        String res;
+        Map<String, Object> params = new HashMap<>();
+        params.put("name", event.getName());
+        params.put("description", event.getDescription());
+        params.put("date", event.getDate());
+        params.put("time", event.getTime());
+        res = this.post(baseUrl + "/event/new", params);
+        MessageHolder<Boolean> holder =
+                gson.fromJson(res, new TypeToken<MessageHolder<Boolean>>() {
+                }.getType());
+
+        return holder.getData();
+    }
+
+    public boolean joinEvent(String event) {
+        return eventAction(event, "/event/join");
+    }
+
+    private boolean eventAction(String event, String url) {
+        String res;
+        Map<String, Object> params = new HashMap<>();
+        params.put("eventName", event);
+        res = this.post(baseUrl + url, params);
+        MessageHolder<Boolean> holder =
+                gson.fromJson(res, new TypeToken<MessageHolder<Boolean>>() {
+                }.getType());
+
+        return holder.getData();
+    }
+
+    public boolean leaveEvent(String event) {
+        return eventAction(event, "/event/leave");
+    }
+
+    private void wsInit() {
+        String url = baseUrl.replace("http", "ws") + "/ws";
+        Map<String, String> cooks = new HashMap<>();
+        cookies.getCookies().forEach(cookie -> cooks.put(cookie.getName(), cookie.getValue()));
+
+        WebSocketClient client = new WebSocketClient(URI.create(url), cooks) {
+            @Override
+            public void onOpen(ServerHandshake handshakedata) {
+                this.send(gson.toJson(new PingPacket(PingPacketData.OPEN, Api.this.username)));
+
+            }
+
+            @Override
+            public void onMessage(String message) {
+                PingPacket packet = gson.fromJson(message, PingPacket.class);
+                System.out.println(packet);
+                notifications.get(packet.getDataType()).forEach(it -> it.run(packet.getData()));
+            }
+
+            @Override
+            public void onClose(int code, String reason, boolean remote) {
+
+            }
+
+            @Override
+            public void onError(Exception ex) {
+
+            }
+        };
+        client.connect();
+
+    }
+
+    private Map<PingPacketData, List<MessageRunnable>> notifications = new HashMap<>();
+
+    /**
+     * Register a new notification, it is added to the list so don't add it twice!
+     *
+     * @param type     the notification type to respond to
+     * @param runnable the MessageRunnable to execute
+     */
+    public void registerNotification(PingPacketData type, MessageRunnable runnable) {
+        notifications.get(type).add(runnable);
+    }
+
+    /**
+     * The basic notification class
+     */
+    public interface MessageRunnable {
+        /**
+         * The called method when a notification is received
+         *
+         * @param data The data to receive, is always a string but may be json encoded data.
+         */
+        void run(String data);
     }
 
     private String remap(String feature) {
@@ -408,6 +495,7 @@ public class Api {
                 return gson.toJson(value);
             }
         });
+        Unirest.setHttpClient(HttpClients.custom().setDefaultCookieStore(cookies).build());
     }
 
 }

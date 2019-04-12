@@ -6,7 +6,6 @@ import java.util.ResourceBundle;
 
 public class MApiFecthData2Test {
 
-    private static ResourceBundle resource = ResourceBundle.getBundle("db");
 
     @Test
     public void apiFecthDataTest() {

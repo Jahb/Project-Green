@@ -1,7 +1,7 @@
 package nl.tudelft.gogreen.server;
 
 import nl.tudelft.gogreen.server.auth.AuthHandler;
-import nl.tudelft.gogreen.server.auth.VerifyUser;
+import nl.tudelft.gogreen.server.auth.LogIn;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationProvider;
@@ -49,7 +49,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
             String pass = authentication.getCredentials().toString();
             boolean check = false;
             try {
-                check = VerifyUser.logIn(name,pass);
+                check = LogIn.log_in(name,pass);
             } catch (Exception e) {
                 e.printStackTrace();
             }

@@ -1,10 +1,13 @@
 package nl.tudelft.gogreen.server;
 
+import nl.tudelft.gogreen.server.auth.CreateUser;
+import nl.tudelft.gogreen.server.features.NewFeature;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
 import java.sql.*;
+import java.util.Locale;
 import java.util.ResourceBundle;
 
 import static org.junit.Assert.assertEquals;
@@ -12,12 +15,12 @@ import static org.junit.Assert.assertNotEquals;
 
 public class NFactualizingUserLog2Test {
 
-    private static ResourceBundle resource = ResourceBundle.getBundle("db");
+
 
     @Test
     public void actualizingUserPoints(){
-        try(Connection conn = DriverManager.getConnection(resource.getString("Postgresql.datasource.url"),
-                resource.getString("Postgresql.datasource.username"), resource.getString("Postgresql.datasource.password"))) {
+        try(Connection conn = DriverManager.getConnection(Main.resource.getString("Postgresql.datasource.url"),
+                Main.resource.getString("Postgresql.datasource.username"), Main.resource.getString("Postgresql.datasource.password"))) {
             int id = NewFeature.getId("MJ", conn);
 
             NewFeature.actualizingUserLog(id, "Usage of Bike", 20, conn);
@@ -40,6 +43,7 @@ public class NFactualizingUserLog2Test {
 
     @Before
     public void createOnlyUser() throws Exception {
+        Main.resource = ResourceBundle.getBundle("db", Locale.GERMANY);
 
             CreateUser.create_user("MJ","MJ");
 
@@ -49,7 +53,7 @@ public class NFactualizingUserLog2Test {
 
     @After
     public void deleteUser() throws Exception{
-        try(Connection conn = DriverManager.getConnection(resource.getString("Postgresql.datasource.url"), resource.getString("Postgresql.datasource.username"), resource.getString("Postgresql.datasource.password"))) {
+        try(Connection conn = DriverManager.getConnection(Main.resource.getString("Postgresql.datasource.url"), Main.resource.getString("Postgresql.datasource.username"), Main.resource.getString("Postgresql.datasource.password"))) {
             CreateUser.delete_user(NewFeature.getId("MJ",conn),conn);
         }
         catch(Exception e){

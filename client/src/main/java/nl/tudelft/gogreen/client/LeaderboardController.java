@@ -1,5 +1,8 @@
 package nl.tudelft.gogreen.client;
 
+import java.io.IOException;
+import java.net.URL;
+import java.util.ResourceBundle;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXListCell;
 import javafx.collections.FXCollections;
@@ -16,20 +19,17 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.util.Callback;
+import nl.tudelft.gogreen.client.ScoreGraph.UndecoratedGraph;
 import nl.tudelft.gogreen.client.communication.Api;
 import nl.tudelft.gogreen.shared.DateHolder;
 import nl.tudelft.gogreen.shared.DatePeriod;
 
-import java.io.IOException;
-import java.net.URL;
-import java.util.ResourceBundle;
-
 public class LeaderboardController implements Initializable {
 
     @FXML
-    private JFXButton timeframeButton;
+    private AnchorPane notificationPane;
     @FXML
-    private LineChart<Integer, Double> scoreChart;
+    private JFXButton timeframeButton;
     @FXML
     private ListView<ListItem> leaderboardList = new ListView<>();
     private final ObservableList<ListItem> items = FXCollections.observableArrayList();
@@ -47,9 +47,21 @@ public class LeaderboardController implements Initializable {
         URL url = Main.class.getResource("/LeaderboardGUI.fxml");
         System.out.println(url);
         AnchorPane root = FXMLLoader.load(url);
-        BorderPane topPane = (BorderPane) root.getChildren().get(2);
+        BorderPane topPane = (BorderPane) root.getChildren().get(1);
+        createGraph(root);
+
+
         IconButton.addBackButton(topPane);
         return new Scene(root, Main.getWidth(), Main.getHeight());
+    }
+
+    private void createGraph(AnchorPane root) {
+        ScoreGraph graph1 = new ScoreGraph(500, 175, 475, 500);
+        root.getChildren().add(graph1.getPane());
+        UndecoratedGraph graph = graph1.getGraph();
+        graph.setData(new double[]{0, 20, 20, 60, 80, 80, 120});
+        graph.standardizeY(250);
+        graph.drawGraph();
     }
 
     /**
@@ -59,8 +71,12 @@ public class LeaderboardController implements Initializable {
      * @param resources ResourceBundle
      */
     public void initialize(URL location, ResourceBundle resources) {
+
+        //testing notifications
+        Main.showMessage(notificationPane, "You have opened the leaderboard");
+
+
         XYChart.Series<Integer, Integer> weekly = new XYChart.Series<>();
-        scoreChart.setLegendVisible(false);
 
         weekly.getData().add(new XYChart.Data<>(1, 24));
         weekly.getData().add(new XYChart.Data<>(2, 15));
@@ -77,16 +93,17 @@ public class LeaderboardController implements Initializable {
         this.leaderboardList.setSkin(skin);
 
         timeframeButton.setOnMouseClicked(event -> {
+            if(timeframeButton.getText().equals("View Monthly Data")) timeframeButton.setText("View Yearly Data");
+            else if(timeframeButton.getText().equals("View Yearly Data")) timeframeButton.setText("View Weekly Data");
+            else timeframeButton.setText("View Monthly Data");
+
             currentDatePeriod = currentDatePeriod.getNext();
             DateHolder dates = Api.current.getDatesFor(currentDatePeriod);
 
             XYChart.Series<Integer, Double> data = new XYChart.Series<>();
-            scoreChart.getData().clear();
             for (int i = 0; i < dates.getDays(); i++) {
                 data.getData().add(new XYChart.Data<>(dates.getDays() - i, dates.getData()[i]));
             }
-            scoreChart.getData().add(data);
-            scoreChart.getXAxis().setLabel(currentDatePeriod.name());
             switch (currentDatePeriod) {
                 case WEEK:
                 case MONTH:
@@ -127,12 +144,7 @@ public class LeaderboardController implements Initializable {
         leaderboardList.setEditable(true);
 
         leaderboardList.setItems(items);
-
-        scoreChart.getXAxis().setTickLabelsVisible(false);
-
-
     }
-
 }
 
 

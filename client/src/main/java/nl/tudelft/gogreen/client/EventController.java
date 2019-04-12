@@ -2,6 +2,11 @@ package nl.tudelft.gogreen.client;
 
 import static javafx.scene.layout.Priority.ALWAYS;
 
+import com.jfoenix.controls.JFXDatePicker;
+import com.jfoenix.controls.JFXTextArea;
+import com.jfoenix.controls.JFXTextField;
+import com.jfoenix.controls.JFXTimePicker;
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -13,13 +18,20 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
+import nl.tudelft.gogreen.client.communication.Api;
 import nl.tudelft.gogreen.shared.EventItem;
 
 import java.io.IOException;
 import java.net.URL;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeFormatterBuilder;
+import java.util.Date;
+import java.util.List;
 import java.util.ResourceBundle;
 
 public class EventController implements Initializable {
+
+    private AnchorPane root;
 
     @FXML
     public ListView<EventItem> eventList;
@@ -27,11 +39,22 @@ public class EventController implements Initializable {
     public ListView<EventItem> fullEventList;
     @FXML
     public AnchorPane createEvent;
+    @FXML
     public BorderPane buttonPane;
+    @FXML
+    public JFXTextField newEventName;
+    @FXML
+    public JFXDatePicker newEventDate;
+    @FXML
+    public JFXTextArea newEventDesc;
+    @FXML
+    public JFXTimePicker newEventTime;
 
     private ObservableList<EventItem> allEvents = FXCollections.observableArrayList();
     private ObservableList<EventItem> userEvents = FXCollections.observableArrayList();
 
+    private DateTimeFormatter timeFormat = DateTimeFormatter.ofPattern("HH:mm");
+    private DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
     /**
      * Returns ProfileGUI Scene.
@@ -40,10 +63,11 @@ public class EventController implements Initializable {
      * @throws IOException IO Exception may be thrown
      */
     public Scene getScene() throws IOException {
-        URL url = Main.class.getResource("/event.fxml");
+        URL url = Main.class.getResource("/EventScreen.fxml");
         FXMLLoader loader = new FXMLLoader(url);
         loader.getController();
-        AnchorPane root = loader.load();
+
+        root = loader.load();
         System.out.println(url);
         BorderPane buttonPane = (BorderPane) root.getChildren().get(2);
         IconButton.addBackButton(buttonPane);
@@ -72,10 +96,20 @@ public class EventController implements Initializable {
     }
 
     private void addNewEvent() {
+        AnchorPane base = (AnchorPane) root.getChildren().get(7);
+
+        EventItem newEvent = new EventItem(((JFXTextField) base.getChildren().get(2)).getText(),
+                ((JFXTextArea) base.getChildren().get(4)).getText(),
+                ((JFXTimePicker) base.getChildren().get(5)).getValue().format(timeFormat),
+                ((JFXDatePicker) base.getChildren().get(3)).getValue().format(dateFormat));
         createEvent.setVisible(false);
-        //TODO for adding event to DataBase
-        System.out.println("Adding Event");
-        //Not sure if this help but a new EventItem Object should be created
+        new Thread(() -> Api.current.newEvent(newEvent)).start();
+        new Thread(() -> {
+            List<EventItem> all = Api.current.getAllEvents();
+            List<EventItem> user = Api.current.getUserEvents();
+            Platform.runLater(() -> allEvents.addAll(all));
+            Platform.runLater(() -> userEvents.addAll(user));
+        }).start();
     }
 
     /**
@@ -88,23 +122,13 @@ public class EventController implements Initializable {
      */
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        new Thread(() -> {
+            List<EventItem> all = Api.current.getAllEvents();
+            List<EventItem> user = Api.current.getUserEvents();
+            Platform.runLater(() -> allEvents.addAll(all));
+            Platform.runLater(() -> userEvents.addAll(user));
+        }).start();
 
-        //Dummy data for the allEvents List.
-        EventItem event1 = new EventItem("Hippy Bullshit At the Park",
-                "We do it at the park",
-                "12:45am",
-                "10/12/2019");
-        EventItem event2 = new EventItem("Going to the beach to pick up trash and shit",
-                "IDK lets go green",
-                "13:40pm",
-                "5/2/2018");
-        EventItem event3 = new EventItem("Lonely dudes who just wanna go green",
-                "We sad and want some tree GFs",
-                "11:14pm",
-                "1/1/2020");
-
-
-        allEvents.addAll(event1, event2, event3);
         fullEventList.setItems(allEvents);
         fullEventList.setCellFactory(param -> new Cell(userEvents));
 
@@ -160,8 +184,8 @@ public class EventController implements Initializable {
         }
 
         private void joinEvent(ObservableList<EventItem> events) {
-            //TODO for event join
             events.add(getItem());
+            new Thread(() -> Api.current.joinEvent(getItem().getName())).start();
         }
 
         private void leaveEvent() {

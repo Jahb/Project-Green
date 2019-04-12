@@ -1,13 +1,13 @@
 package nl.tudelft.gogreen.server;
 
 import junit.framework.TestCase;
+import nl.tudelft.gogreen.server.api.CoolClimateApi;
 import org.junit.Test;
 
 import java.util.ResourceBundle;
 
 public class APIVegetarianMealTest {
 
-    private static ResourceBundle resource = ResourceBundle.getBundle("db");
 
     @Test
     public void VegetarianMealTest() {

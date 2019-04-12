@@ -9,10 +9,11 @@ import java.util.ResourceBundle;
 
 @SpringBootApplication
 public class Main {
-    private static ResourceBundle resource = ResourceBundle.getBundle("db");
+    public static ResourceBundle resource = ResourceBundle.getBundle("db");
 
     /**
      * Main method that runs the app.
+     *
      * @param args String
      * @throws Exception raises exception if unable to access database
      */

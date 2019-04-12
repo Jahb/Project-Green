@@ -1,5 +1,6 @@
 package nl.tudelft.gogreen.server;
 
+import nl.tudelft.gogreen.server.api.CoolClimateApi;
 import org.junit.Test;
 
 import static junit.framework.TestCase.assertEquals;

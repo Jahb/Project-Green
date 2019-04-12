@@ -1,6 +1,8 @@
 package nl.tudelft.gogreen.server;
 
 
+import nl.tudelft.gogreen.server.auth.CreateUser;
+import nl.tudelft.gogreen.server.features.NewFeature;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -9,18 +11,21 @@ import java.sql.*;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Locale;
 import java.util.ResourceBundle;
 
 import static junit.framework.TestCase.assertTrue;
 
 
 public class NFnewStreakTest {
-    private static ResourceBundle resource = ResourceBundle.getBundle("db");
+
 
 
     @Before
     public void createOnlyUser() {
-        try(Connection conn = DriverManager.getConnection(resource.getString("Postgresql.datasource.url"), resource.getString("Postgresql.datasource.username"), resource.getString("Postgresql.datasource.password"))) {
+        Main.resource = ResourceBundle.getBundle("db", Locale.GERMANY);
+
+        try(Connection conn = DriverManager.getConnection(Main.resource.getString("Postgresql.datasource.url"), Main.resource.getString("Postgresql.datasource.username"), Main.resource.getString("Postgresql.datasource.password"))) {
 
 
             CreateUser.deleteAllUsers(conn);
@@ -33,20 +38,20 @@ public class NFnewStreakTest {
 
     @Test
     public void main() {
-        try( Connection conn = DriverManager.getConnection(resource.getString("Postgresql.datasource.url"), resource.getString("Postgresql.datasource.username"), resource.getString("Postgresql.datasource.password"))) {
+        try( Connection conn = DriverManager.getConnection(Main.resource.getString("Postgresql.datasource.url"), Main.resource.getString("Postgresql.datasource.username"), Main.resource.getString("Postgresql.datasource.password"))) {
 
             int id = NewFeature.getId("coco",conn);
 
 
 
-            PreparedStatement updateStreakDate = conn.prepareStatement(resource.getString("qInsertStreakDate"));
+            PreparedStatement updateStreakDate = conn.prepareStatement(Main.resource.getString("qInsertStreakDate"));
             java.util.Date date =  getYesterday();
             java.sql.Date date2 = convertUtilToSql(date);
             updateStreakDate.setDate(1,  date2);
 
             updateStreakDate.execute();
             NewFeature.newStreak(id,conn);
-            PreparedStatement returnDate = conn.prepareStatement(resource.getString("qReturnDate"));
+            PreparedStatement returnDate = conn.prepareStatement(Main.resource.getString("qReturnDate"));
             returnDate.setInt(1,id);
             ResultSet rs = returnDate.executeQuery();
             Date Date = null;
@@ -62,7 +67,7 @@ public class NFnewStreakTest {
     }
     @After
     public void deleteUser(){
-        try(Connection conn = DriverManager.getConnection(resource.getString("Postgresql.datasource.url"), resource.getString("Postgresql.datasource.username"), resource.getString("Postgresql.datasource.password"))) {
+        try(Connection conn = DriverManager.getConnection(Main.resource.getString("Postgresql.datasource.url"), Main.resource.getString("Postgresql.datasource.username"), Main.resource.getString("Postgresql.datasource.password"))) {
 
             CreateUser.delete_user(NewFeature.getId("coco", conn), conn);
 

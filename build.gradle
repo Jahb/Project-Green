@@ -73,6 +73,13 @@ task jacocoRootReport(type: JacocoReport) {
         csv.enabled = false
     }
 
+    afterEvaluate {
+        classDirectories.setFrom(files(classDirectories.files.collect {
+            fileTree(dir: it,
+                    exclude: ['**/client/*.class'])
+        }))
+    }
+
     onlyIf = {
         true
     }

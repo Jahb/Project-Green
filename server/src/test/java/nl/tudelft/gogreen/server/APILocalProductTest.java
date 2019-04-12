@@ -1,6 +1,7 @@
 package nl.tudelft.gogreen.server;
 
 import junit.framework.TestCase;
+import nl.tudelft.gogreen.server.api.CoolClimateApi;
 import org.junit.Test;
 
 public class APILocalProductTest {

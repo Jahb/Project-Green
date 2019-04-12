@@ -1,5 +1,6 @@
 package nl.tudelft.gogreen.server;
 
+import nl.tudelft.gogreen.server.statistics.Achievements;
 import org.junit.Test;
 
 import java.sql.Connection;

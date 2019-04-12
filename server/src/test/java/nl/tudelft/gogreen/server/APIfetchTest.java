@@ -1,25 +1,33 @@
 package nl.tudelft.gogreen.server;
 
+import nl.tudelft.gogreen.server.api.CoolClimateApi;
+import org.junit.Before;
 import org.junit.Test;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.util.Locale;
 import java.util.ResourceBundle;
 
 import static org.junit.Assert.assertEquals;
 
 public class APIfetchTest {
 
-    private static ResourceBundle resource = ResourceBundle.getBundle("db");
+@Before
+public void fix(){
+    Main.resource = ResourceBundle.getBundle("db", Locale.GERMANY);
+
+}
 
     @Test
     public void UsageBikeTest() {
-        try (Connection conn = DriverManager.getConnection(resource.getString("Postgresql.datasource.url"), resource.getString("Postgresql.datasource.username"), resource.getString("Postgresql.datasource.password"))){
+
+        try (Connection conn = DriverManager.getConnection(Main.resource.getString("Postgresql.datasource.url"), Main.resource.getString("Postgresql.datasource.username"), Main.resource.getString("Postgresql.datasource.password"))){
 
             CoolClimateApi.fetchApiData(null,null);
-            PreparedStatement fetch = conn.prepareStatement(resource.getString("qVegetarianMeal"));
+            PreparedStatement fetch = conn.prepareStatement(Main.resource.getString("qVegetarianMeal"));
             ResultSet rs = fetch.executeQuery();
             float result = 0;
             while (rs.next()) {
@@ -27,7 +35,7 @@ public class APIfetchTest {
             }
             assertEquals(result,698.3132,698.3132);
 
-            PreparedStatement fetch2 = conn.prepareStatement(resource.getString("qLocalProduct"));
+            PreparedStatement fetch2 = conn.prepareStatement(Main.resource.getString("qLocalProduct"));
             ResultSet rs2 = fetch2.executeQuery();
             float result2 = 0;
             while (rs2.next()) {

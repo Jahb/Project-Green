@@ -1,4 +1,3 @@
-
 .list-view .list-cell:empty {
     -fx-background-color: transparent;
 }
@@ -14,8 +13,16 @@
     -fx-cell-size: 115;
     -fx-border-width: 1px;
     -fx-border-color: lightgray;
-    -fx-border-radius: 10 10 10 10;  -fx-background-radius: 10 10 10 10;
 }
+#smallList .list-cell:filled{
+    -fx-graphic-text-gap: 20;
+    -fx-font-size:15;
+    -fx-font-weight: bold;
+    -fx-cell-size: 50;
+    -fx-border-width: 1px;
+    -fx-border-color: lightgray;
+}
+
 .list-view .list-cell:filled:selected{
     -fx-background-color: #52EA7F;
     -fx-text-fill: white;
@@ -24,7 +31,6 @@
 .list-view {
     -fx-background-color:whitesmoke;
     -fx-border-width: 1;
-    -fx-border-radius: 10 10 10 10;
     -fx-border-color: lightgray;
     -fx-background-insets: 0;
 }

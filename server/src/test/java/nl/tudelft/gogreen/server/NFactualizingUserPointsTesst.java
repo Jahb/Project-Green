@@ -1,11 +1,14 @@
 package nl.tudelft.gogreen.server;
 
+import nl.tudelft.gogreen.server.auth.CreateUser;
+import nl.tudelft.gogreen.server.features.NewFeature;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.util.Locale;
 import java.util.ResourceBundle;
 
 import static org.junit.Assert.assertEquals;
@@ -13,12 +16,12 @@ import static org.junit.Assert.assertNotEquals;
 
 public class NFactualizingUserPointsTesst {
 
-    private static ResourceBundle resource = ResourceBundle.getBundle("db");
+
 
     @Test
     public void actualizingUserLog(){
-        try(Connection conn = DriverManager.getConnection(resource.getString("Postgresql.datasource.url"),
-                resource.getString("Postgresql.datasource.username"), resource.getString("Postgresql.datasource.password"))) {
+        try(Connection conn = DriverManager.getConnection(Main.resource.getString("Postgresql.datasource.url"),
+                Main.resource.getString("Postgresql.datasource.username"), Main.resource.getString("Postgresql.datasource.password"))) {
             int id = NewFeature.getId("MJ", conn);
             NewFeature.actualizingUserPoints(id, "Vegetarian Meal", 20, conn);
             int oldTotal = NewFeature.getTotal("MJ");
@@ -59,6 +62,7 @@ public class NFactualizingUserPointsTesst {
 
     @Before
     public void createOnlyUser() throws Exception {
+        Main.resource = ResourceBundle.getBundle("db", Locale.GERMANY);
 
         CreateUser.create_user("MJ","MJ");
 
@@ -68,7 +72,7 @@ public class NFactualizingUserPointsTesst {
 
     @After
     public void deleteUser() throws Exception{
-        try(Connection conn = DriverManager.getConnection(resource.getString("Postgresql.datasource.url"), resource.getString("Postgresql.datasource.username"), resource.getString("Postgresql.datasource.password"))) {
+        try(Connection conn = DriverManager.getConnection(Main.resource.getString("Postgresql.datasource.url"), Main.resource.getString("Postgresql.datasource.username"), Main.resource.getString("Postgresql.datasource.password"))) {
             CreateUser.delete_user(NewFeature.getId("MJ",conn),conn);
         }
         catch(Exception e){

@@ -1,26 +1,35 @@
 package nl.tudelft.gogreen.server;
 
+import nl.tudelft.gogreen.server.api.CoolClimateApi;
+import nl.tudelft.gogreen.server.auth.CreateUser;
+import nl.tudelft.gogreen.server.features.NewFeature;
+import org.junit.Before;
 import org.junit.Test;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
+import java.util.Locale;
 import java.util.ResourceBundle;
 
 import static junit.framework.TestCase.assertEquals;
 
 public class APILowerTemperatureTest {
 
-    private static ResourceBundle resource = ResourceBundle.getBundle("db");
+    @Before
+    public void fix(){
+        Main.resource = ResourceBundle.getBundle("db", Locale.GERMANY);
+
+    }
 
     @Test
     public void LowerTemperature() {
         try(  Connection conn = DriverManager.getConnection(
-                resource.getString("Postgresql.datasource.url"),
-                resource.getString("Postgresql.datasource.username"),
-                resource.getString("Postgresql.datasource.password"))) {
+                Main.resource.getString("Postgresql.datasource.url"),
+                Main.resource.getString("Postgresql.datasource.username"),
+                Main.resource.getString("Postgresql.datasource.password"))) {
             CreateUser.create_user("paul","paul");
-            PreparedStatement p = conn.prepareStatement(resource.getString("qQuizData"));
+            PreparedStatement p = conn.prepareStatement(Main.resource.getString("qQuizData"));
             p.setInt(1, NewFeature.getId("paul",conn));
             p.setInt(2, 10);
             p.setInt(3,10);

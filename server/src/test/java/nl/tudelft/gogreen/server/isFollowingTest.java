@@ -1,22 +1,28 @@
 package nl.tudelft.gogreen.server;
 
+import nl.tudelft.gogreen.server.auth.CreateUser;
+import nl.tudelft.gogreen.server.features.NewFeature;
+import nl.tudelft.gogreen.server.followers.Following;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.util.Locale;
 import java.util.ResourceBundle;
 
 import static junit.framework.TestCase.assertTrue;
 
 
 public class isFollowingTest {
-    private static ResourceBundle resource = ResourceBundle.getBundle("db");
+
 
     @Before
     public void createUsers(){
-        try (Connection conn = DriverManager.getConnection(resource.getString("Postgresql.datasource.url"), resource.getString("Postgresql.datasource.username"), resource.getString("Postgresql.datasource.password"))) {
+        Main.resource = ResourceBundle.getBundle("db", Locale.GERMANY);
+
+        try (Connection conn = DriverManager.getConnection(Main.resource.getString("Postgresql.datasource.url"), Main.resource.getString("Postgresql.datasource.username"), Main.resource.getString("Postgresql.datasource.password"))) {
             CreateUser.deleteAllUsers(conn);
             CreateUser.create_user("paul", "paul");
             CreateUser.create_user("pablo", "pablo");
@@ -29,7 +35,7 @@ public class isFollowingTest {
 
     @Test
     public void isFollowing() {
-        try (Connection conn = DriverManager.getConnection(resource.getString("Postgresql.datasource.url"), resource.getString("Postgresql.datasource.username"), resource.getString("Postgresql.datasource.password"))) {
+        try (Connection conn = DriverManager.getConnection(Main.resource.getString("Postgresql.datasource.url"), Main.resource.getString("Postgresql.datasource.username"), Main.resource.getString("Postgresql.datasource.password"))) {
             boolean result = Following.isFollowing(0,1,conn);
 
             assertTrue(result);
@@ -41,7 +47,7 @@ public class isFollowingTest {
 
     @After
     public void deleteUsers() {
-        try (Connection conn = DriverManager.getConnection(resource.getString("Postgresql.datasource.url"), resource.getString("Postgresql.datasource.username"), resource.getString("Postgresql.datasource.password"))) {
+        try (Connection conn = DriverManager.getConnection(Main.resource.getString("Postgresql.datasource.url"), Main.resource.getString("Postgresql.datasource.username"), Main.resource.getString("Postgresql.datasource.password"))) {
             CreateUser.delete_user(NewFeature.getId("paul",conn),conn);
             CreateUser.delete_user(NewFeature.getId("pablo",conn),conn);
         } catch (Exception e) {

@@ -1,0 +1,31 @@
+			Week 9 meeting notes
+
+
+Chairman: Kamron Geijsen
+Secretary: Vlad Florea
+
+Use money for gauging energy consumption instead of KW.
+Quiz information should be saved in the database.
+Quiz should have a slider for square meters.
+Streaks should be for completing the ring everyday, method should be used when ring is full on clientside.
+
+Search bar, intro quiz and notifications need to be connected to server. 
+
+Possibly move search logic to server-side.
+
+Show recent achievements based on the actual ones.
+
+We should make dropdown notifications menu on the main screen.
+
+Leaderboard needs to be connected to server.
+
+GUI team has decided to help with server connections.
+
+Achievement icons need to be created.
+
+Achievements need to be implemented both client and server side.
+
+We should finish the project by Friday and focus on the presentation afterwards.
+
+GUI should be finished by Tuesday.
+
