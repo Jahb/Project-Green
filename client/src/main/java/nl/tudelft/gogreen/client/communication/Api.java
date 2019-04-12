@@ -206,7 +206,7 @@ public class Api {
 
         if (ringName.equals("NEXT")) {
             if (getUsernameNext() == null) {
-                return new double[]{333, 334, 333};
+                return new double[]{0, 0, 0, 0};
             }
             List<Integer> res = getFor(getUsernameNext());
             return new double[]{res.get(0), res.get(1), res.get(2)};
@@ -214,7 +214,7 @@ public class Api {
 
         if (ringName.equals("PREVIOUS")) {
             if (getUsernamePrevious() == null) {
-                return new double[]{333, 334, 333};
+            	return new double[]{250, 250, 250, 250};
             }
             List<Integer> res = getFor(getUsernamePrevious());
             return new double[]{res.get(0), res.get(1), res.get(2)};
