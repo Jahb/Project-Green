@@ -38,7 +38,7 @@ public class getTotalCategoryTest {
 
             int id = NewFeature.getId("paul", conn);
             int oldTotal = NewFeature.getTotalCategory1(id,"c1",conn);
-            NewFeature.adding_feature("paul", "Vegetarian Meal","20");
+            NewFeature.aadding_feature("paul", "Vegetarian Meal",20);
             int newTotal = NewFeature.getTotalCategory1(id,"c1",conn);
             assertNotEquals(oldTotal,newTotal);
             oldTotal +=20;

@@ -17,35 +17,35 @@ import static junit.framework.TestCase.assertEquals;
 public class APILowerTemperatureTest {
 
     @Before
-    public void fix(){
+    public void fix() {
         Main.resource = ResourceBundle.getBundle("db", Locale.GERMANY);
 
     }
 
     @Test
     public void LowerTemperature() {
-        try(  Connection conn = DriverManager.getConnection(
+        try (Connection conn = DriverManager.getConnection(
                 Main.resource.getString("Postgresql.datasource.url"),
                 Main.resource.getString("Postgresql.datasource.username"),
                 Main.resource.getString("Postgresql.datasource.password"))) {
-            CreateUser.create_user("paul","paul");
+            CreateUser.create_user("paul", "paul");
             PreparedStatement p = conn.prepareStatement(Main.resource.getString("qQuizData"));
-            p.setInt(1, NewFeature.getId("paul",conn));
+            p.setInt(1, NewFeature.getId("paul", conn));
             p.setInt(2, 10);
-            p.setInt(3,10);
+            p.setInt(3, 10);
             p.setBoolean(4, true);
-            p.setInt(5,10);
-            p.setInt(6,10);
+            p.setInt(5, 10);
+            p.setInt(6, 10);
             p.execute();
-            float result = CoolClimateApi.LowerTemperature("4");
+            float result = CoolClimateApi.LowerTemperature("4", 0);
             float expected = Float.parseFloat("32");
-            assertEquals( (int) expected, (int)result);
+            assertEquals((int) expected, (int) result);
 
             CoolClimateApi.keysremapping();
 
-            float result2 = CoolClimateApi.fetchApiData("Lower Temperature","4");
+            float result2 = CoolClimateApi.fetchApiData("Lower Temperature", "4", 0);
             float expected2 = Float.parseFloat("32");
-            assertEquals((int) expected2,(int)result2);
+            assertEquals((int) expected2, (int) result2);
 
 
         } catch (Exception exception) {

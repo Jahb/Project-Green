@@ -33,7 +33,7 @@ public class NFaddingFeatureTest {
                 access1 = rs.getInt(1);
             }
 
-            NewFeature.adding_feature("MJ","Vegetarian Meal","20");
+            NewFeature.aadding_feature("MJ","Vegetarian Meal",20);
 
             PreparedStatement streakDateNumber = conn.prepareStatement(Main.resource.getString("qReturnDays2"));
             streakDateNumber.setInt(1,  id);

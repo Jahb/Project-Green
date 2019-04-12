@@ -26,7 +26,7 @@ public void fix(){
 
         try (Connection conn = DriverManager.getConnection(Main.resource.getString("Postgresql.datasource.url"), Main.resource.getString("Postgresql.datasource.username"), Main.resource.getString("Postgresql.datasource.password"))){
 
-            CoolClimateApi.fetchApiData(null,null);
+            CoolClimateApi.fetchApiData("Vegatarian Meal","0", 0);
             PreparedStatement fetch = conn.prepareStatement(Main.resource.getString("qVegetarianMeal"));
             ResultSet rs = fetch.executeQuery();
             float result = 0;

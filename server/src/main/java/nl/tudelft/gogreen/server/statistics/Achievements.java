@@ -1,5 +1,7 @@
 package nl.tudelft.gogreen.server.statistics;
 
+import nl.tudelft.gogreen.server.Main;
+
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -9,7 +11,6 @@ import java.util.ResourceBundle;
 
 public class Achievements {
 
-    private static ResourceBundle resource = ResourceBundle.getBundle("db");
 
     /**
      * addAchievement for an user.
@@ -20,11 +21,11 @@ public class Achievements {
     public static void addAchievement(int id, int achievementid) throws Exception {
 
         Connection conn = DriverManager.getConnection(
-                resource.getString("Postgresql.datasource.url"),
-                resource.getString("Postgresql.datasource.username"),
-                resource.getString("Postgresql.datasource.password"));
+                Main.resource.getString("Postgresql.datasource.url"),
+                Main.resource.getString("Postgresql.datasource.username"),
+                Main.resource.getString("Postgresql.datasource.password"));
 
-        PreparedStatement add = conn.prepareStatement(resource.getString("qAddAchievement"));
+        PreparedStatement add = conn.prepareStatement(Main.resource.getString("qAddAchievement"));
         add.setInt(1, id);
         add.setInt(2, achievementid);
         add.execute();
@@ -40,11 +41,11 @@ public class Achievements {
      */
     public static void deleteAchievement(int id, int achievementid) throws Exception {
         Connection conn = DriverManager.getConnection(
-                resource.getString("Postgresql.datasource.url"),
-                resource.getString("Postgresql.datasource.username"),
-                resource.getString("Postgresql.datasource.password"));
+                Main.resource.getString("Postgresql.datasource.url"),
+                Main.resource.getString("Postgresql.datasource.username"),
+                Main.resource.getString("Postgresql.datasource.password"));
 
-        PreparedStatement delete = conn.prepareStatement(resource.getString("qDeleteAchievement"));
+        PreparedStatement delete = conn.prepareStatement(Main.resource.getString("qDeleteAchievement"));
         delete.setInt(1, id);
         delete.setInt(2, achievementid);
         delete.execute();
@@ -58,11 +59,11 @@ public class Achievements {
      */
     public static ArrayList<String> showAllAchievements() throws Exception {
         Connection conn = DriverManager.getConnection(
-                resource.getString("Postgresql.datasource.url"),
-                resource.getString("Postgresql.datasource.username"),
-                resource.getString("Postgresql.datasource.password"));
+                Main.resource.getString("Postgresql.datasource.url"),
+                Main.resource.getString("Postgresql.datasource.username"),
+                Main.resource.getString("Postgresql.datasource.password"));
 
-        PreparedStatement show = conn.prepareStatement(resource.getString("qSelectName"));
+        PreparedStatement show = conn.prepareStatement(Main.resource.getString("qSelectName"));
         ArrayList<String> result = new ArrayList<>();
         ResultSet rs = show.executeQuery();
         while (rs.next()) {
@@ -79,11 +80,11 @@ public class Achievements {
      */
     public static ArrayList<Integer> showAchievementsForUser(int id) throws Exception {
         Connection conn = DriverManager.getConnection(
-                resource.getString("Postgresql.datasource.url"),
-                resource.getString("Postgresql.datasource.username"),
-                resource.getString("Postgresql.datasource.password"));
+                Main.resource.getString("Postgresql.datasource.url"),
+                Main.resource.getString("Postgresql.datasource.username"),
+                Main.resource.getString("Postgresql.datasource.password"));
 
-        PreparedStatement show = conn.prepareStatement(resource.getString("qShowAchievement"));
+        PreparedStatement show = conn.prepareStatement(Main.resource.getString("qShowAchievement"));
         show.setInt(1, id);
         ArrayList<Integer> result = new ArrayList<>();
         ResultSet rs = show.executeQuery();

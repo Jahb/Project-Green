@@ -19,10 +19,9 @@ public class NewFeature {
 
 
     public static String adding_feature(String username, String feature, String user_input) throws Exception {
-        float points = C02toPoints(CoolClimateApi.fetchApiData(feature, user_input));
+        float points = C02toPoints(CoolClimateApi.fetchApiData(feature, user_input, getUID(username)));
         return aadding_feature(username, feature, points);
     }
-
 
     /**
      * Initial Structure for the adding a feature functionalities.
