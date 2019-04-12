@@ -117,7 +117,9 @@ public class CoolClimateApi {
         String url = getUrl();
 
 
-        String holder = XML.toJSONObject(Unirest.get(url).headers(params).asString().getBody()).getJSONObject("response").get("result_takeaction_ride_my_bike_driveghgs").toString();
+        String holder = XML.toJSONObject(Unirest.get(url).headers(params)
+                .asString().getBody()).getJSONObject("response")
+                .get("result_takeaction_ride_my_bike_driveghgs").toString();
 
 
         float holderNum = Float.parseFloat(holder) * 1000;
@@ -128,8 +130,13 @@ public class CoolClimateApi {
         return result;
     }
 
-
-    public static float UsageofPublicTransport(String input_miles) throws Exception {
+    /**
+     * Retrieves the points of UsageofPublicTransport.
+     * @param inputmiles the number of miles
+     * @return the points
+     * @throws Exception raises error if unable to access database
+     */
+    public static float UsageofPublicTransport(String inputmiles) throws Exception {
 
 
         float carC02 = 118; //average car c02 emissions upon https://www.delijn.be/en/overdelijn/organisatie/zorgzaam-ondernemen/milieu/co2-uitstoot-voertuigen.html
@@ -137,35 +144,47 @@ public class CoolClimateApi {
         float bus = 75; // average bus c02 emissions upon https://www.delijn.be/en/overdelijn/organisatie/zorgzaam-ondernemen/milieu/co2-uitstoot-voertuigen.html
 
         keysremapping();
-        return (carC02 - bus) * Float.parseFloat(input_miles);
+        return (carC02 - bus) * Float.parseFloat(inputmiles);
     }
 
-    public static float LowerTemperature(String input_footprint_housing_cdd) throws Exception {
+    /**
+     * Retrieves the points of LowerTemperature.
+     * @param inputfootprinthousingcdd the footprint
+     * @return the points
+     * @throws Exception raises error if unable to access database
+     */
+    public static float LowerTemperature(String inputfootprinthousingcdd) throws Exception {
 
-        System.out.println("In lower temperature with input: " + input_footprint_housing_cdd);
+        System.out.println("In lower temperature with input: " + inputfootprinthousingcdd);
 
-        LTmapping(input_footprint_housing_cdd);
+        LTmapping(inputfootprinthousingcdd);
 
         Map<String, String> params = new HashMap<>();
         params.put("accept", "application/json");
         params.put("app_id", "93af0470");
         params.put("app_key", "be1dbf535bd450c012e78261cf93c0ad");
-        String url = createUrlLT(input_footprint_housing_cdd);
+        String url = createUrlLT(inputfootprinthousingcdd);
 
 
-        String holder = XML.toJSONObject(Unirest.get(url).headers(params).asString().getBody()).getJSONObject("response").get("result_takeaction_thermostat_summer_kwhuse").toString();
+        String holder = XML.toJSONObject(Unirest.get(url)
+                .headers(params).asString().getBody()).getJSONObject("response")
+                .get("result_takeaction_thermostat_summer_kwhuse").toString();
         keysLT = keys;
 
         float result = Float.parseFloat(holder) * 800;
 
-        if (Integer.valueOf(input_footprint_housing_cdd) != result / 8)
-            return Float.parseFloat(input_footprint_housing_cdd) * 8;
+        if (Integer.valueOf(inputfootprinthousingcdd) != result / 8)
+            return Float.parseFloat(inputfootprinthousingcdd) * 8;
         System.out.println("The result is: " + result);
         keysremapping();
         return result;
     }
 
-
+    /**
+     * Retrieves the points for SolarPanels.
+     * @return the points
+     * @throws Exception raises error if unable to access database
+     */
     public static float SolarPanels() throws Exception {
 
 
@@ -177,7 +196,9 @@ public class CoolClimateApi {
         String url = createUrl();
 
 
-        String holder = XML.toJSONObject(Unirest.get(url).headers(params).asString().getBody()).getJSONObject("response").get("result_electricity_direct").toString();
+        String holder = XML.toJSONObject(Unirest
+                .get(url).headers(params).asString().getBody())
+                .getJSONObject("response").get("result_electricity_direct").toString();
 
         float result = Float.parseFloat(holder) * 1000;
         System.out.println(result / 15);
@@ -189,30 +210,52 @@ public class CoolClimateApi {
         keys = keys2;
     }
 
+    /**
+     * Retrieves the points from Recycling.
+     * @param kg the number of kg
+     * @return the points
+     * @throws Exception raises error if unable to access database
+     */
     public static float Recycling(String kg) throws Exception {
 
-        float C02perKG = Float.parseFloat("6"); //avg C02 consumption per kg of waste https://timeforchange.org/plastic-bags-and-plastic-bottles-CO2-emissions
+        float carbon = Float.parseFloat("6"); //avg C02 consumption per kg of waste https://timeforchange.org/plastic-bags-and-plastic-bottles-CO2-emissions
 
-        return C02perKG * Float.parseFloat(kg);
+        return carbon * Float.parseFloat(kg);
     }
 
+    /**
+     * Points for Smoking.
+     * @param numberofCigarretes number of cigarretes
+     * @return the points
+     * @throws Exception raises error if unable to access database
+     */
     public static float Smoking(String numberofCigarretes) throws Exception {
 
 
-        float C02percigarrete = Float.parseFloat("0.6"); //avg C02 consumption per cigarretes upon http://palebluedot.llc/carbon-copy/2015/10/14/the-carbon-footprint-of-cigarettes
+        float carbon = Float.parseFloat("0.6"); //avg C02 consumption per cigarretes upon http://palebluedot.llc/carbon-copy/2015/10/14/the-carbon-footprint-of-cigarettes
 
 
-        return C02percigarrete * Float.parseFloat(numberofCigarretes);
+        return carbon * Float.parseFloat(numberofCigarretes);
     }
 
+    /**
+     * Points for CFL.
+     * @param numberOFCFL number of CFL
+     * @return the points
+     * @throws Exception raises error if unable to access database
+     */
     public static float CFL(String numberOFCFL) throws Exception {
 
 
-        float C02perCFL = Float.parseFloat("350"); //avg C02 consumption per led per day upon https://www.flickr.com/photos/carbonquilt/8229755738
+        float carbon = Float.parseFloat("350"); //avg C02 consumption per led per day upon https://www.flickr.com/photos/carbonquilt/8229755738
 
-        return C02perCFL * Float.parseFloat(numberOFCFL);
+        return carbon * Float.parseFloat(numberOFCFL);
     }
 
+    /**
+     * Requests for the API.
+     * @return the params
+     */
     public static Map<String, String> getParams() {
         Map<String, String> params = new HashMap<>();
         params.put("accept", "application/json");
@@ -226,55 +269,26 @@ public class CoolClimateApi {
     }
 
     /**
-     * Filled in by user answering questions in the survey and applied to API. Questions receive user
-     * information about their current zip code, how many people live in their household (adults,
-     * children), annual income, square footage of home, yearly expenditures on each utility
-     * (electricity, heating, water), how many days per year the household uses heat and cooling,
-     * personal vehicle usage and mpg (up to 3 vehicles) and final questions about how many miles the
+     * Filled in by user answering questions in the survey and applied to API.
+     * Questions receive user
+     * information about their current zip code,
+     * how many people live in their household (adults,
+     * children), annual income, square footage of home,
+     * yearly expenditures on each utility
+     * (electricity, heating, water),
+     * how many days per year the household uses heat and cooling,
+     * personal vehicle usage and mpg (up to 3 vehicles)
+     * and final questions about how many miles the
      * user acquires through air travel and public transportation.
      */
 
 
     private static String[] keys = {
-            "input_location=",                               // User inputs their zip code
-            "input_size=",                            // The number of people that live in the user's house
-            "input_footprint_household_adults=",            // How many adults occupy the user's house
-            "input_footprint_household_children=",
-            "input_income=",                              // User inputs their income
-            "input_footprint_housing_squarefeet=",       // How large is the user's house
-            "input_footprint_housing_electricity_dollars=",
-            "input_footprint_housing_cdd=",               // Days that the house is cooled/year
-            "input_footprint_transportation_miles1=",
-            "input_footprint_transportation_mpg1=",
-            "input_footprint_housing_electricity_kwh=",
-            "input_footprint_shopping_food_fruitvegetables="
-
-
-    };
-
-    private static String[] keysLT = {
-            "input_location=NY",                               // User inputs their zip code
-            "input_size=10",                            // The number of people that live in the user's house
-            "input_footprint_household_adults=10",            // How many adults occupy the user's house
-            "input_footprint_household_children=0",
-            "input_income=10",                              // User inputs their income
-            "input_footprint_housing_squarefeet=10",       // How large is the user's house
-            "input_footprint_housing_electricity_dollars=0",
-            "input_footprint_housing_cdd=",               // Days that the house is cooled/year
-            "input_footprint_transportation_miles1=20",
-            "input_footprint_transportation_mpg1=30",
-            "input_footprint_housing_electricity_kwh=0",
-            "input_footprint_shopping_food_fruitvegetables=0"
-
-
-    };
-
-    private static String[] keys2 = {
-        "input_location=",                               // User inputs their zip code
-        "input_size=",                            // The number of people that live in the user's house
-        "input_footprint_household_adults=",            // How many adults occupy the user's house
+        "input_location=",       // User inputs their zip code
+        "input_size=",        // The number of people that live in the user's house
+        "input_footprint_household_adults=",   // How many adults occupy the user's house
         "input_footprint_household_children=",
-        "input_income=",                              // User inputs their income
+        "input_income=",                      // User inputs their income
         "input_footprint_housing_squarefeet=",       // How large is the user's house
         "input_footprint_housing_electricity_dollars=",
         "input_footprint_housing_cdd=",               // Days that the house is cooled/year
@@ -286,8 +300,43 @@ public class CoolClimateApi {
 
     };
 
+    private static String[] keysLT = {
+        "input_location=NY",    // User inputs their zip code
+        "input_size=10",     // The number of people that live in the user's house
+        "input_footprint_household_adults=10", // How many adults occupy the user's house
+        "input_footprint_household_children=0",
+        "input_income=10",        // User inputs their income
+        "input_footprint_housing_squarefeet=10",       // How large is the user's house
+        "input_footprint_housing_electricity_dollars=0",
+        "input_footprint_housing_cdd=",               // Days that the house is cooled/year
+        "input_footprint_transportation_miles1=20",
+        "input_footprint_transportation_mpg1=30",
+        "input_footprint_housing_electricity_kwh=0",
+        "input_footprint_shopping_food_fruitvegetables=0"
+
+
+    };
+
+    private static String[] keys2 = {
+        "input_location=",                 // User inputs their zip code
+        "input_size=",        // The number of people that live in the user's house
+        "input_footprint_household_adults=",  // How many adults occupy the user's house
+        "input_footprint_household_children=",
+        "input_income=",                              // User inputs their income
+        "input_footprint_housing_squarefeet=",       // How large is the user's house
+        "input_footprint_housing_electricity_dollars=",
+        "input_footprint_housing_cdd=",       // Days that the house is cooled/year
+        "input_footprint_transportation_miles1=",
+        "input_footprint_transportation_mpg1=",
+        "input_footprint_housing_electricity_kwh=",
+        "input_footprint_shopping_food_fruitvegetables="
+
+
+    };
+
     /**
-     * Implemented by the user selecting tasks that have been completed to reduce their annual carbon
+     * Implemented by the user selecting tasks that have been completed
+     * to reduce their annual carbon
      * footprint.These actions include switching to cfl (compact fluorescent light), maintaining
      * maintenance on vehicles, reducing air travel, telecommuting to work, reducing days using the
      * thermostat in winter and summer, riding their bike instead of driving, carpooling, and
@@ -325,7 +374,7 @@ public class CoolClimateApi {
         "internal_state_abbreviation=NY",
         "input_changed=0",                                              // Meaningless variable
         "input_footprint_transportation_num_vehicles=3",  // Number of vehicles is assumed to be 3
-        "input_footprint_transportation_fuel1=1",        //if 0mpg is input then that car gets deleted
+        "input_footprint_transportation_fuel1=1", //if 0mpg is input then that car gets deleted
         "input_footprint_transportation_fuel2=1",
         "input_footprint_transportation_fuel3=1",
         "input_footprint_transportation_miles4=0",
@@ -355,23 +404,33 @@ public class CoolClimateApi {
         "input_footprint_housing_cleanpercent=0",                       // Assume no clean energy
         "input_footprint_housing_naturalgas_type=0",                    // In $/year
         "input_footprint_housing_heatingoil_type=0",                    // In $/year
-        "input_footprint_housing_heatingoil_dollars_per_gallon=4", //Average, heating oil is $4/gallon
+        "input_footprint_housing_heatingoil_dollars_per_gallon=4",
+        //Average, heating oil is $4/gallon
         "input_footprint_shopping_food_meattype=simple",           // Meat consumed by the user
-        "input_footprint_shopping_food_meatfisheggs=0", // Calories eaten daily of meat, fish and eggs
-        "input_footprint_shopping_food_dairy=0",                      // Calories eaten daily of dairy
-        "input_footprint_shopping_food_otherfood=0",                    // Calories per day other food
-        "input_footprint_shopping_food_cereals=0",                      // Calories per day cereals
-        "input_footprint_shopping_goods_default_furnitureappliances=0",// Furniture/appliances cost/yr
+        "input_footprint_shopping_food_meatfisheggs=0",
+        // Calories eaten daily of meat, fish and eggs
+        "input_footprint_shopping_food_dairy=0",
+        // Calories eaten daily of dairy
+        "input_footprint_shopping_food_otherfood=0",
+        // Calories per day other food
+        "input_footprint_shopping_food_cereals=0",
+        // Calories per day cereals
+        "input_footprint_shopping_goods_default_furnitureappliances=0",
+        // Furniture/appliances cost/yr
         "input_footprint_shopping_goods_default_clothing=0",            // Clothing cost/year
-        "input_footprint_shopping_goods_default_other_entertainment=0", // Entertainment cost/year
-        "input_footprint_shopping_goods_default_other_office=0",        // Office supplies cost/year
+        "input_footprint_shopping_goods_default_other_entertainment=0",
+        // Entertainment cost/year
+        "input_footprint_shopping_goods_default_other_office=0",
+        // Office supplies cost/year
         "input_footprint_shopping_goods_default_other_personalcare=0",  // Personal care cost/year
         "input_footprint_shopping_goods_default_other_autoparts=0",     // Auto cost/year
         "input_footprint_shopping_goods_default_other_medical=0",
         "input_footprint_shopping_goods_type=advanced",
-        "input_footprint_shopping_goods_total=0",        // No input by the user, sum of the subtotals
+        "input_footprint_shopping_goods_total=0",
+        // No input by the user, sum of the subtotals
         "input_footprint_shopping_services_type=simple",
-        "input_footprint_shopping_services_total=0", // How much the user spends on services per year
+        "input_footprint_shopping_services_total=0",
+        // How much the user spends on services per year
         "input_footprint_housing_gco2_per_kwh=1000",
         "input_footprint_housing_naturalgas_dollars=0",
         "input_footprint_housing_heatingoil_dollars=0",
@@ -464,7 +523,8 @@ public class CoolClimateApi {
 //                resource.getString("Postgresql.datasource.username"),
 //                resource.getString("Postgresql.datasource.password"));
 //
-//        PreparedStatement insertData = conn.prepareStatement(resource.getString("qElectricityBill"));
+//        PreparedStatement insertData = conn.prepareStatement(resource
+// .getString("qElectricityBill"));
 //        insertData.setInt(1, id);
 //        ResultSet rs = insertData.executeQuery();
 //
