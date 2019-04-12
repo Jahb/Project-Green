@@ -200,21 +200,24 @@ public class Api {
      */
     public double[] getRingSegmentValues(String ringName) {
         if (ringName.equals("MAIN")) {
-            return new double[]{getTotal(), 0, 0, 0};
+            List<Integer> res = getFor(getUsername());
+            return new double[]{res.get(0), res.get(1), res.get(2)};
         }
 
         if (ringName.equals("NEXT")) {
             if (getUsernameNext() == null) {
                 return new double[]{0, 0, 0, 0};
             }
-            return new double[]{getFor(getUsernameNext()), 0, 0, 0};
+            List<Integer> res = getFor(getUsernameNext());
+            return new double[]{res.get(0), res.get(1), res.get(2)};
         }
 
         if (ringName.equals("PREVIOUS")) {
             if (getUsernamePrevious() == null) {
             	return new double[]{250, 250, 250, 250};
             }
-            return new double[]{getFor(getUsernamePrevious()), 0, 0, 0};
+            List<Integer> res = getFor(getUsernamePrevious());
+            return new double[]{res.get(0), res.get(1), res.get(2)};
         }
         return null;
     }
