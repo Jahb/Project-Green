@@ -12,20 +12,19 @@ import java.sql.DriverManager;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
-import static junit.framework.TestCase.assertTrue;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotEquals;
 
 
-public class FollowTest {
-
+public class gettingAllUsersTest {
 
     @Before
-    public void createUsers(){
+    public void createUser(){
         Main.resource = ResourceBundle.getBundle("db", Locale.GERMANY);
 
         try (Connection conn = DriverManager.getConnection(Main.resource.getString("Postgresql.datasource.url"), Main.resource.getString("Postgresql.datasource.username"), Main.resource.getString("Postgresql.datasource.password"))) {
-            CreateUser.deleteAllUsers(conn);
             CreateUser.create_user("paul", "paul");
-            CreateUser.create_user("pablo", "pablo");
+
         }
         catch(Exception e){
             System.out.println(e.getMessage());
@@ -33,16 +32,14 @@ public class FollowTest {
     }
 
     @Test
-    public void isFollowing() {
+    public void getAllUsers() {
         try (Connection conn = DriverManager.getConnection(Main.resource.getString("Postgresql.datasource.url"), Main.resource.getString("Postgresql.datasource.username"), Main.resource.getString("Postgresql.datasource.password"))) {
-
-            int id1 = NewFeature.getId("paul",conn);
-            int id2 = NewFeature.getId("pablo",conn);
-            Following.follow(id1,id2);
-
-            boolean result = Following.isFollowing(id1,id2,conn);
-
-            assertTrue(result);
+            int oldsize = Following.gettingAllUsers().size();
+            CreateUser.create_user("pablo", "pablo");
+            int newsize = Following.gettingAllUsers().size();
+            assertNotEquals(oldsize,newsize);
+            oldsize++;
+            assertEquals(oldsize,newsize);
         }
         catch(Exception e){
             System.out.println(e.getMessage());
@@ -52,13 +49,9 @@ public class FollowTest {
     @After
     public void deleteUsers() {
         try (Connection conn = DriverManager.getConnection(Main.resource.getString("Postgresql.datasource.url"), Main.resource.getString("Postgresql.datasource.username"), Main.resource.getString("Postgresql.datasource.password"))) {
-            int id1 = NewFeature.getId("paul",conn);
-            int id2 = NewFeature.getId("pablo",conn);
+            CreateUser.delete_user(NewFeature.getId("paul",conn),conn);
+            CreateUser.delete_user(NewFeature.getId("pablo",conn),conn);
 
-            CreateUser.delete_user(id1,conn);
-            CreateUser.delete_user(id2,conn);
-
-            Following.deleteAllFollows(id1,conn);
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }

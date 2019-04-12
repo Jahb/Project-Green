@@ -15,15 +15,16 @@ import java.util.List;
 public class FeatureController {
 
     @PostMapping("/new")
-    public MessageHolder<Integer> addNew(@RequestParam String feature) {
+    public MessageHolder<Integer> addNew(@RequestParam String feature, @RequestParam(required = false) String userInput) {
         getUserObject();
         System.out.printf("%s: %s", getUserObject(), feature);
         String feat = "0";
         try {
-            feat = NewFeature.adding_feature(getUserObject(), feature);
+            feat = NewFeature.adding_feature(getUserObject(), feature, userInput);
         } catch (Exception e) {
             e.printStackTrace();
         }
+
         return new MessageHolder<>("Nice!", Integer.parseInt(feat));
     }
 

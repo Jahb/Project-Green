@@ -57,7 +57,7 @@ public class FollowerController {
             return new MessageHolder<>(users.toString(), false);
         }
         try {
-            Following.Follow(users.get(0), users.get(1));
+            Following.follow(users.get(0), users.get(1));
         } catch (Exception e) {
             e.printStackTrace();
             return new MessageHolder<>("Follow", false);
@@ -76,7 +76,7 @@ public class FollowerController {
             return new MessageHolder<>("Unfollow", false);
         }
         try {
-            Following.Unfollow(users.get(0), users.get(1));
+            Following.unfollow(users.get(0), users.get(1));
         } catch (Exception e) {
             e.printStackTrace();
             return new MessageHolder<>("Unfollow", false);

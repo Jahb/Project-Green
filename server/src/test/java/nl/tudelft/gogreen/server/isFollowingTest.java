@@ -26,7 +26,7 @@ public class isFollowingTest {
             CreateUser.deleteAllUsers(conn);
             CreateUser.create_user("paul", "paul");
             CreateUser.create_user("pablo", "pablo");
-            Following.Follow(NewFeature.getId("paul",conn), NewFeature.getId("pablo",conn));
+            Following.follow(NewFeature.getId("paul",conn), NewFeature.getId("pablo",conn));
         }
         catch(Exception e){
             System.out.println(e.getMessage());

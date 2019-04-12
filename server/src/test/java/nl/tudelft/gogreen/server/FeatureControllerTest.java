@@ -34,7 +34,7 @@ public class FeatureControllerTest {
 
     @Test
     public void aaNewTest() {
-        Assert.assertNotEquals(-1, cs.addNew("Local Product").getData().intValue());
+        Assert.assertNotEquals(-1, cs.addNew("Local Product",null).getData().intValue());
     }
 
     @Test
