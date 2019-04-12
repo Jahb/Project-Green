@@ -13,10 +13,10 @@ public class APIVegetarianMealTest {
     public void VegetarianMealTest() {
         try {
 
-            float expected = Float.parseFloat("0.124721");
-            float result = CoolClimateApi.VegetarianMeal("102");
+            float expected = Float.parseFloat("1.24721");
+            float result = CoolClimateApi.VegetarianMeal("1020");
 
-            TestCase.assertEquals(expected,result);
+            TestCase.assertEquals((int) expected, (int) result);
             System.out.println(result);
 
         } catch (Exception exception) {
