@@ -26,8 +26,8 @@ public class retrieveFeaturesHistoryTest {
             Connection conn4 = DriverManager.getConnection(resource.getString("Postgresql.datasource.url"), resource.getString("Postgresql.datasource.username"), resource.getString("Postgresql.datasource.password"));
             CreateUser.deleteAllUsers(conn);
             CreateUser.create_user("paul","paul");
-            NewFeature.adding_feature("paul","Vegetarian Meal","20");
-            NewFeature.adding_feature("paul","Local Product","20");
+            NewFeature.aadding_feature("paul","Vegetarian Meal",20);
+            NewFeature.aadding_feature("paul","Local Product",20);
             List<Pair<String,Date>> list = Statistics.retrieveFeaturesHistory(NewFeature.getId("paul",conn4));
 
 //            DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");

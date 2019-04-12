@@ -15,7 +15,7 @@ public class FeatureController {
     public MessageHolder<Integer> addNew(@RequestParam String feature) throws Exception {
         getUserObject();
         System.out.printf("%s: %s",  getUserObject(), feature);
-        String feat = NewFeature.adding_feature( getUserObject(), feature,null);
+        String feat = NewFeature.adding_feature( getUserObject(), feature,0);
         return new MessageHolder<>("Nice!", Integer.parseInt(feat));
     }
 

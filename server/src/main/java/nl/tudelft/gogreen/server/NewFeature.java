@@ -18,22 +18,22 @@ public class NewFeature {
 
     private static ResourceBundle resource = ResourceBundle.getBundle("db");
 
-    public static String adding_feature(String username, String feature, String user_input) throws Exception {
+    public static String adding_feature(String username, String feature, String user_input,int id) throws Exception {
 
         Connection conn = DriverManager.getConnection(
                 resource.getString("Postgresql.datasource.url"),
                 resource.getString("Postgresql.datasource.username"),
                 resource.getString("Postgresql.datasource.password"));
-        float points = C02toPoints(CoolClimateApi.fetchApiData(feature, user_input));
+        float points = C02toPoints(CoolClimateApi.fetchApiData(feature, user_input,id));
         return aadding_feature(username, feature, points);
     }
 
-    public static String adding_feature(String username, String feature) throws Exception {
+    public static String adding_feature(String username, String feature,int id) throws Exception {
         Connection conn = DriverManager.getConnection(
                 resource.getString("Postgresql.datasource.url"),
                 resource.getString("Postgresql.datasource.username"),
                 resource.getString("Postgresql.datasource.password"));
-        float points = C02toPoints(CoolClimateApi.fetchApiData(feature));
+        float points = C02toPoints(CoolClimateApi.fetchApiData(feature, id));
         return aadding_feature(username, feature, points);
     }
 

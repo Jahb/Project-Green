@@ -82,6 +82,16 @@ public class CreateUser {
         PreparedStatement userHistory
                 = conn.prepareStatement(resource.getString("qInsertHistory0"));
         userHistory.setInt(1,id);
+
+        PreparedStatement insertquiz = conn.prepareStatement(resource.getString("qQuizData"));
+        insertquiz.setInt(1,id);
+        insertquiz.setInt(2,10);
+        insertquiz.setInt(3,10);
+        insertquiz.setBoolean(4,false);
+        insertquiz.setInt(5,10);
+        insertquiz.setInt(6,10);
+
+
         conn.close();
         return true;
     }

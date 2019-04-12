@@ -3,9 +3,14 @@ package nl.tudelft.gogreen.server;
 import com.mashape.unirest.http.Unirest;
 import org.json.XML;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.ResourceBundle;
+
+import static java.sql.DriverManager.getConnection;
 
 public class CoolClimateApi {
 
@@ -14,17 +19,17 @@ public class CoolClimateApi {
     /**
      * fetches the API Data.
      *
-     * @param feature    the feature input
+     * @param feature   the feature input
      * @param userinput the user input
      * @return returns the needed data
      * @throws Exception raises error when unable to access database
      */
-    public static float fetchApiData(String feature, String userinput) throws Exception {
+    public static float fetchApiData(String feature, String userinput,int id) throws Exception {
 
-        if (feature.equals("Vegetarian Meal")) return VegetarianMeal(userinput);
+        if (feature.equals("Vegetarian Meal")) return VegetarianMeal(userinput,id);
         if (feature.equals("Usage of Bike")) return UsageofBike(userinput);
         if (feature.equals("Usage of Public Transport")) return UsageofPublicTransport(userinput);
-        if (feature.equals("Lower Temperature")) return LowerTemperature(userinput);
+        if (feature.equals("Lower Temperature")) return LowerTemperature(userinput,id);
         if (feature.equals("Smoking")) return Smoking(userinput);
         if (feature.equals("Recycling")) return Recycling(userinput);
         if (feature.equals("CFL")) return CFL(userinput);
@@ -33,15 +38,16 @@ public class CoolClimateApi {
 
     /**
      * Fetching the data from the API.
+     *
      * @param feature the feature's name
      * @return returns -1
      * @throws Exception raises error if unable to access database
      */
-    public static float fetchApiData(String feature) throws Exception {
+    public static float fetchApiData(String feature,int id) throws Exception {
 
 
         if (feature.equals("Local Product")) return LocalProduct();
-        if (feature.equals("Solar Panels")) return SolarPanels();
+        if (feature.equals("Solar Panels")) return SolarPanels(id);
 
         return -1;
     }
@@ -49,15 +55,16 @@ public class CoolClimateApi {
 
     /**
      * Returns the float from VegetarianMeal.
+     *
      * @param inputfootprintshoppingfoodfruitvegetables the footprint
      * @return the result points
      * @throws Exception raises error if unable to access database
      */
-    public static float VegetarianMeal(String inputfootprintshoppingfoodfruitvegetables)
+    public static float VegetarianMeal(String inputfootprintshoppingfoodfruitvegetables,int id)
             throws Exception {
 
 
-        VMmapping(inputfootprintshoppingfoodfruitvegetables);
+        VMmapping(inputfootprintshoppingfoodfruitvegetables, id);
 
         Map<String, String> params = new HashMap<>();
         params.put("accept", "application/json");
@@ -80,6 +87,7 @@ public class CoolClimateApi {
 
     /**
      * Returns the number of points of LocalProduct.
+     *
      * @return points
      * @throws Exception raises error if unable to access database
      */
@@ -106,6 +114,7 @@ public class CoolClimateApi {
 
     /**
      * Retrieve the number of points of UsageBike.
+     *
      * @param km number of km
      * @return the points
      * @throws Exception raises error if unable to access database
@@ -133,6 +142,7 @@ public class CoolClimateApi {
 
     /**
      * Retrieves the points of UsageofPublicTransport.
+     *
      * @param inputmiles the number of miles
      * @return the points
      * @throws Exception raises error if unable to access database
@@ -150,15 +160,16 @@ public class CoolClimateApi {
 
     /**
      * Retrieves the points of LowerTemperature.
+     *
      * @param inputfootprinthousingcdd the footprint
      * @return the points
      * @throws Exception raises error if unable to access database
      */
-    public static float LowerTemperature(String inputfootprinthousingcdd) throws Exception {
+    public static float LowerTemperature(String inputfootprinthousingcdd,int id) throws Exception {
 
         System.out.println("In lower temperature with input: " + inputfootprinthousingcdd);
 
-        LTmapping(inputfootprinthousingcdd);
+        LTmapping(inputfootprinthousingcdd, id);
 
         Map<String, String> params = new HashMap<>();
         params.put("accept", "application/json");
@@ -183,13 +194,14 @@ public class CoolClimateApi {
 
     /**
      * Retrieves the points for SolarPanels.
+     *
      * @return the points
      * @throws Exception raises error if unable to access database
      */
-    public static float SolarPanels() throws Exception {
+    public static float SolarPanels(int id) throws Exception {
 
 
-        SPmapping( );
+        SPmapping(id);
         Map<String, String> params = new HashMap<>();
         params.put("accept", "application/json");
         params.put("app_id", "93af0470");
@@ -213,6 +225,7 @@ public class CoolClimateApi {
 
     /**
      * Retrieves the points from Recycling.
+     *
      * @param kg the number of kg
      * @return the points
      * @throws Exception raises error if unable to access database
@@ -226,6 +239,7 @@ public class CoolClimateApi {
 
     /**
      * Points for Smoking.
+     *
      * @param numberofCigarretes number of cigarretes
      * @return the points
      * @throws Exception raises error if unable to access database
@@ -241,6 +255,7 @@ public class CoolClimateApi {
 
     /**
      * Points for CFL.
+     *
      * @param numberOFCFL number of CFL
      * @return the points
      * @throws Exception raises error if unable to access database
@@ -255,6 +270,7 @@ public class CoolClimateApi {
 
     /**
      * Requests for the API.
+     *
      * @return the params
      */
     public static Map<String, String> getParams() {
@@ -452,91 +468,83 @@ public class CoolClimateApi {
         return "NY";
     }
 
-    public static String getInputSize() throws Exception {
-        return "10";
+
+    public static String getInputSize(int id) throws Exception {
+        Connection conn = getConnection(
+                resource.getString("Postgresql.datasource.url"),
+                resource.getString("Postgresql.datasource.username"),
+                resource.getString("Postgresql.datasource.password"));
+
+        PreparedStatement insertData = conn.prepareStatement(resource.getString("qInputSize"));
+        insertData.setInt(1, id);
+        ResultSet rs = insertData.executeQuery();
+
+        int save = 0;
+        while (rs.next()) {
+            save = rs.getInt(1);
+        }
+
+        String returnstring = Integer.toString(save);
+        return returnstring;
+
     }
 
-    public static String getIncome() throws Exception {
-        return "10";
+    public static String getIncome(int id) throws Exception {
+        Connection conn = getConnection(
+                resource.getString("Postgresql.datasource.url"),
+                resource.getString("Postgresql.datasource.username"),
+                resource.getString("Postgresql.datasource.password"));
+
+        PreparedStatement insertData = conn.prepareStatement(resource.getString("qIncome"));
+        insertData.setInt(1, id);
+        ResultSet rs = insertData.executeQuery();
+
+        int save = 0;
+        while (rs.next()) {
+            save = rs.getInt(1);
+        }
+
+        String returnstring = Integer.toString(save);
+        return returnstring;
     }
 
-//    public static String getInputSize(int id) throws Exception{
-//        Connection conn = getConnection(
-//                resource.getString("Postgresql.datasource.url"),
-//                resource.getString("Postgresql.datasource.username"),
-//                resource.getString("Postgresql.datasource.password"));
-//
-//        PreparedStatement insertData = conn.prepareStatement(resource.getString("qInputSize"));
-//        insertData.setInt(1, id);
-//        ResultSet rs = insertData.executeQuery();
-//
-//        int save = 0;
-//        while (rs.next()) {
-//            save = rs.getInt(1);
-//        }
-//
-//        String returnstring = Integer.toString(save);
-//        return returnstring;
-//
-//    }
-//
-//    public static String getIncome(int id) throws Exception{
-//        Connection conn = getConnection(
-//                resource.getString("Postgresql.datasource.url"),
-//                resource.getString("Postgresql.datasource.username"),
-//                resource.getString("Postgresql.datasource.password"));
-//
-//        PreparedStatement insertData = conn.prepareStatement(resource.getString("qIncome"));
-//        insertData.setInt(1, id);
-//        ResultSet rs = insertData.executeQuery();
-//
-//        int save = 0;
-//        while (rs.next()) {
-//            save = rs.getInt(1);
-//        }
-//
-//        String returnstring = Integer.toString(save);
-//        return returnstring;
-//    }
-//
-//    public static String getSquarefeet(int id) throws Exception{
-//        Connection conn = getConnection(
-//                resource.getString("Postgresql.datasource.url"),
-//                resource.getString("Postgresql.datasource.username"),
-//                resource.getString("Postgresql.datasource.password"));
-//
-//        PreparedStatement insertData = conn.prepareStatement(resource.getString("qSquarefeet"));
-//        insertData.setInt(1, id);
-//        ResultSet rs = insertData.executeQuery();
-//
-//        int save = 0;
-//        while (rs.next()) {
-//            save = rs.getInt(1);
-//        }
-//
-//        String returnstring = Integer.toString(save);
-//        return returnstring;
-//    }
-//
-//    public static String getElectrictyBill(int id) throws Exception{
-//        Connection conn = getConnection(
-//                resource.getString("Postgresql.datasource.url"),
-//                resource.getString("Postgresql.datasource.username"),
-//                resource.getString("Postgresql.datasource.password"));
-//
-//        PreparedStatement insertData = conn.prepareStatement(resource
-// .getString("qElectricityBill"));
-//        insertData.setInt(1, id);
-//        ResultSet rs = insertData.executeQuery();
-//
-//        int save = 0;
-//        while (rs.next()) {
-//            save = rs.getInt(1);
-//        }
-//
-//        String returnstring = Integer.toString(save);
-//        return returnstring;
-//    }
+    public static String getSquarefeet(int id) throws Exception {
+        Connection conn = getConnection(
+                resource.getString("Postgresql.datasource.url"),
+                resource.getString("Postgresql.datasource.username"),
+                resource.getString("Postgresql.datasource.password"));
+
+        PreparedStatement insertData = conn.prepareStatement(resource.getString("qSquarefeet"));
+        insertData.setInt(1, id);
+        ResultSet rs = insertData.executeQuery();
+
+        int save = 0;
+        while (rs.next()) {
+            save = rs.getInt(1);
+        }
+
+        String returnstring = Integer.toString(save);
+        return returnstring;
+    }
+
+    public static String getElectrictyBill(int id) throws Exception {
+        Connection conn = getConnection(
+                resource.getString("Postgresql.datasource.url"),
+                resource.getString("Postgresql.datasource.username"),
+                resource.getString("Postgresql.datasource.password"));
+
+        PreparedStatement insertData = conn.prepareStatement(resource.getString("qElectricityBill"));
+        insertData.setInt(1, id);
+        ResultSet rs = insertData.executeQuery();
+
+        int save = 0;
+        while (rs.next()) {
+            save = rs.getInt(1);
+
+        }
+        String returnstring = Integer.toString(save);
+        return returnstring;
+    }
 
 
     public static String getSquarefeet() {
@@ -548,22 +556,22 @@ public class CoolClimateApi {
     }
 
 
-    public static void VMmapping(String input_footprint_shopping_food_fruitvegetables) throws Exception {
-        calculateTotal(getLocation(), getInputSize(), getIncome(), getSquarefeet(),
+    public static void VMmapping(String input_footprint_shopping_food_fruitvegetables,int id) throws Exception {
+        calculateTotal(getLocation(), getInputSize(id), getIncome(id), getSquarefeet(),
                 getElectrictyBill(), "0", "0",
                 "0", "0",
                 input_footprint_shopping_food_fruitvegetables, "0");
     }
 
-    public static void LTmapping(String input_footprint_housing_cdd) throws Exception {
-        calculateTotal(getLocation(), getInputSize(), getIncome(), getSquarefeet(),
+    public static void LTmapping(String input_footprint_housing_cdd, int id) throws Exception {
+        calculateTotal(getLocation(), getInputSize(id), getIncome(id), getSquarefeet(),
                 getElectrictyBill(), input_footprint_housing_cdd, "0",
                 "0", "0",
                 "0", "0");
     }
 
-    public static void SPmapping() throws Exception {
-        calculateTotal(getLocation(), getInputSize(), getIncome(), getSquarefeet(),
+    public static void SPmapping(int id) throws Exception {
+        calculateTotal(getLocation(), getInputSize(id), getIncome(id), getSquarefeet(),
                 getElectrictyBill(), "0", "0",
                 "0", "0",
                 "0", getElectrictyBill());
@@ -571,7 +579,8 @@ public class CoolClimateApi {
 
 
     public static void calculateTotal(String location, String inputSize, String input_income,
-                                      String input_footprint_housing_squarefeet, String input_footprint_housing_electricity_dollars, String input_footprint_housing_cdd,
+                                      String input_footprint_housing_squarefeet, String input_footprint_housing_electricity_dollars, String
+                                              input_footprint_housing_cdd,
                                       String input_footprint_transportation_miles1, String input_footprint_transportation_airtotal,
                                       String input_footprint_transportation_publictrans, String input_footprint_shopping_food_fruitvegetables,
                                       String electrictyWhats) {

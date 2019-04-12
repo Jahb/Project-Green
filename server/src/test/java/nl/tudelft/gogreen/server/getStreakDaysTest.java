@@ -34,7 +34,7 @@ public class getStreakDaysTest {
 
             int id = NewFeature.getId("paul", conn);
             int oldTotal = NewFeature.getStreak(id);
-            NewFeature.adding_feature("paul", "Vegetarian Meal","20");
+            NewFeature.adding_feature("paul", "Vegetarian Meal", "20", NewFeature.getId("paul", conn));
             int newTotal = NewFeature.getStreak(id);
             assertNotEquals(oldTotal,newTotal);
             assertEquals(0,oldTotal);
