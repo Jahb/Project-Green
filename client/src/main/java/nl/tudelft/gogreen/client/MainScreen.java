@@ -3,9 +3,7 @@ package nl.tudelft.gogreen.client;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXDrawer;
 import com.jfoenix.controls.JFXTextField;
-import com.mashape.unirest.http.exceptions.UnirestException;
 import javafx.application.Platform;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -23,6 +21,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import nl.tudelft.gogreen.client.communication.Api;
+import nl.tudelft.gogreen.shared.PingPacketData;
 
 import java.io.IOException;
 import java.net.URL;
@@ -61,12 +60,16 @@ public class MainScreen implements Initializable {
     // TODO handler for each subcategory
     private Consumer<String> handler = name -> {
         //Line below this one used to be res = API...... removed for checkStyle
-        Api.current.addFeature(name);
+        System.out.println(name);
+        String[] split = name.split(":");
+        Api.current.addFeature(split[1], Integer.parseInt(split[2]));
         System.out.println(name);
         updateRingValues();
     };
     //TODO handler for each ring category
     private Consumer<String> ringHandler = name -> System.out.println("EXE [" + name + "]");
+
+    public static boolean hasShownStreak = false;
 
     /**
      * Creates a scene for MainScreen.
@@ -100,7 +103,7 @@ public class MainScreen implements Initializable {
 
         //Streaks
         //TODO Implement Streaks. condition to check if first login today.
-        if (true) {
+        if (hasShownStreak) {
             setUpStreak();
         }
 
@@ -268,11 +271,11 @@ public class MainScreen implements Initializable {
         /*
          * testing notifications
          */
-        Main.showMessage(notificationPane, "You have opened the main screen");
-        /*
-         * String array with all usernames TODO retrieve usernames from database to string options (maybe move this to server)
-         */
-        String[] options = {"user1", "asdf", "aaa", "wovuwe", "brrrr", "name", "sample", "sample223", "naaaaaaaaaaame", "namenamename", "username"};
+        //Main.showMessage(notificationPane, "You have opened the main screen");
+        Api.current.registerNotification(PingPacketData.FOLLOWER, (data) ->
+                Main.showMessage(notificationPane, "You have a new Follower: " + data));
+
+        String[] options = Api.current.getAllUsers().toArray(new String[0]);
         searchField.textProperty().addListener((observable, oldValue, newValue) -> {
             if (container.getChildren().size() > 1) {
                 container.getChildren().remove(1);
@@ -305,12 +308,7 @@ public class MainScreen implements Initializable {
                 Label label = new Label(option);
                 label.setMinWidth(330);
                 label.setStyle("-fx-border-radius: 1; -fx-border-color: gray;");
-                label.setOnMouseClicked(new EventHandler<MouseEvent>() {
-                                            @Override
-                                            public void handle(MouseEvent event) {
-                                                search.setText(label.getText());
-                                            }
-                                        }
+                label.setOnMouseClicked(event -> search.setText(label.getText())
                 );
                 dropDownMenu.getChildren().add(label); //adds suggestion to VBox
             }
@@ -319,8 +317,8 @@ public class MainScreen implements Initializable {
     }
 
     private void setUpStreak() {
-        //TODO Get Streak Days
-        int streakDays = 6;
+        hasShownStreak = true;
+        int streakDays = Api.current.getStreak();
         AnchorPane streakPane = (AnchorPane) root.getChildren().get(3);
         BorderPane buttonPane = (BorderPane) streakPane.getChildren().get(0);
         Text numDays = (Text) streakPane.getChildren().get(2);

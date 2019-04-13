@@ -58,7 +58,7 @@ public class APITest {
 
     @Test
     public void newFeatureTest() {
-        Assert.assertEquals(10, Api.getTestApi().addFeature("yeet"));
+        Assert.assertEquals(10, Api.getTestApi().addFeature("yeet",1));
     }
 
     @Test

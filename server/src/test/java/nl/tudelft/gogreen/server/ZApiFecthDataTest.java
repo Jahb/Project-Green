@@ -3,6 +3,7 @@ package nl.tudelft.gogreen.server;
 import nl.tudelft.gogreen.server.api.CoolClimateApi;
 import nl.tudelft.gogreen.server.auth.CreateUser;
 import nl.tudelft.gogreen.server.features.NewFeature;
+import org.junit.Before;
 import org.junit.Test;
 
 import java.sql.Connection;
@@ -12,9 +13,14 @@ import java.util.ResourceBundle;
 
 public class ZApiFecthDataTest {
 
+    @Before
+    public void fix(){
+        Main.resource = ResourceBundle.getBundle("db", Locale.GERMANY);
+
+    }
+
     @Test
     public void apiFecthDataTest() {
-        Main.resource = ResourceBundle.getBundle("db", Locale.GERMANY);
 
         try (Connection conn = DriverManager.getConnection(Main.resource.getString("Postgresql.datasource.url"), Main.resource.getString("Postgresql.datasource.username"), Main.resource.getString("Postgresql.datasource.password"))) {
             CreateUser.create_user("paul", "paul");

@@ -1,9 +1,9 @@
 package nl.tudelft.gogreen.server.auth;
 
+import nl.tudelft.gogreen.server.Main;
+import nl.tudelft.gogreen.server.achievements.Achievements;
 import nl.tudelft.gogreen.server.events.EventsMain;
 import nl.tudelft.gogreen.server.followers.Following;
-import nl.tudelft.gogreen.server.Main;
-import nl.tudelft.gogreen.server.statistics.Statistics;
 import org.springframework.security.crypto.bcrypt.BCrypt;
 
 import java.sql.*;
@@ -33,36 +33,43 @@ public class CreateUser {
             String hashpass = BCrypt.hashpw(password, BCrypt.gensalt());
 
 
-            PreparedStatement user = conn.prepareStatement(Main.resource.getString("qInsertUser"));
+            PreparedStatement user =
+                    conn.prepareStatement(Main.resource.getString("qInsertUser"));
             user.setInt(1, id);
             user.setString(2, username);
             user.setString(3, hashpass);
             user.execute();
-            PreparedStatement obj = conn.prepareStatement(Main.resource.getString("qInsertObjective"));
+            PreparedStatement obj =
+                    conn.prepareStatement(Main.resource.getString("qInsertObjective"));
             obj.setInt(1, id);
             obj.setNull(2, Types.VARCHAR);
             obj.execute();
-            PreparedStatement hab1 = conn.prepareStatement(Main.resource.getString("qInsertHabits"));
+            PreparedStatement hab1 =
+                    conn.prepareStatement(Main.resource.getString("qInsertHabits"));
             hab1.setInt(1, id);
             hab1.setString(2, "smoke");
             hab1.setBoolean(3, false);
             hab1.execute();
-            PreparedStatement hab2 = conn.prepareStatement(Main.resource.getString("qInsertHabits2"));
+            PreparedStatement hab2 =
+                    conn.prepareStatement(Main.resource.getString("qInsertHabits2"));
             hab2.setInt(1, id);
             hab2.setString(2, "recycling person");
             hab2.setBoolean(3, false);
             hab2.execute();
-            PreparedStatement hab3 = conn.prepareStatement(Main.resource.getString("qInsertHabits3"));
+            PreparedStatement hab3 =
+                    conn.prepareStatement(Main.resource.getString("qInsertHabits3"));
             hab3.setInt(1, id);
             hab3.setString(2, "use of recycle paper");
             hab3.setBoolean(3, false);
             hab3.execute();
-            PreparedStatement hab4 = conn.prepareStatement(Main.resource.getString("qInsertHabits4"));
+            PreparedStatement hab4 =
+                    conn.prepareStatement(Main.resource.getString("qInsertHabits4"));
             hab4.setInt(1, id);
             hab4.setString(2, "eco-friendly clothes usage");
             hab4.setBoolean(3, false);
             hab4.execute();
-            PreparedStatement streak = conn.prepareStatement(Main.resource.getString("qInsertStreakk"));
+            PreparedStatement streak =
+                    conn.prepareStatement(Main.resource.getString("qInsertStreakk"));
             DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
             Date date = new Date();
             String today = dateFormat.format(date);
@@ -70,7 +77,8 @@ public class CreateUser {
             streak.setDate(2, java.sql.Date.valueOf(today));
             streak.setInt(3, 1);
             streak.execute();
-            PreparedStatement userpoints = conn.prepareStatement(Main.resource.getString("qInsertUserPoints"));
+            PreparedStatement userpoints =
+                    conn.prepareStatement(Main.resource.getString("qInsertUserPoints"));
             userpoints.setInt(1, id);
             userpoints.setInt(2, 0);
             userpoints.setInt(3, 0);
@@ -78,7 +86,8 @@ public class CreateUser {
             userpoints.setInt(5, 0);
             userpoints.setInt(6, 0);
             userpoints.execute();
-            PreparedStatement userHistory = conn.prepareStatement(Main.resource.getString("qInsertHistory0"));
+            PreparedStatement userHistory =
+                    conn.prepareStatement(Main.resource.getString("qInsertHistory0"));
             userHistory.setInt(1, id);
         } catch (SQLException e) {
             return false;
@@ -103,6 +112,7 @@ public class CreateUser {
 
             id = id + 1;
         }
+        conn.close();
         return id;
     }
 
@@ -122,12 +132,11 @@ public class CreateUser {
      * @param id   of the user to be deleted
      * @param conn Connection to the database
      * @return Returns true if the user is correctly delete it
-     * @throws Exception raises when error accessing the database
+     * @throws SQLException raises when error accessing the database
      */
 
 
-    public static boolean delete_user(int id, Connection conn) throws Exception {
-
+    public static boolean delete_user(int id, Connection conn) throws SQLException {
 
 
         PreparedStatement delObjective =
@@ -170,12 +179,19 @@ public class CreateUser {
 
         Following.deleteAllFollows(id, conn);
 
+        for (int achie = 0; achie < 20; achie++) {
+            try {
+                Achievements.deleteAchievement(id, achie);
+            } catch (SQLException ex) {
+                System.out.println("number " + achie + " did not exist?");
+            }
+        }
+
 
         PreparedStatement delUserTable =
                 conn.prepareStatement(Main.resource.getString("qDeleteUserTable"));
         delUserTable.setInt(1, id);
         delUserTable.execute();
-
         return true;
 
     }

@@ -1,9 +1,6 @@
 package nl.tudelft.gogreen.client;
 
-import static javafx.scene.layout.Priority.ALWAYS;
-
 import com.jfoenix.controls.JFXListView;
-import com.jfoenix.controls.JFXTextField;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -17,19 +14,22 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.Pane;
+import javafx.scene.layout.*;
 import javafx.scene.text.Text;
+import javafx.util.Pair;
 import nl.tudelft.gogreen.client.communication.Api;
 import nl.tudelft.gogreen.client.communication.ProfileType;
 
 import java.io.IOException;
 import java.net.URL;
+import java.time.format.DateTimeFormatter;
+import java.time.format.FormatStyle;
+import java.util.Date;
+import java.util.List;
 import java.util.ResourceBundle;
 import java.util.Set;
 import java.util.function.Consumer;
+import java.util.stream.Collectors;
 
 public class ProfileController implements Initializable {
 
@@ -80,8 +80,13 @@ public class ProfileController implements Initializable {
     //TODO handler for each ring category
     private Consumer<String> ringHandler = name -> System.out.println("EXE [" + name + "]");
 
-    private String username = Api.current.getUsername();
     private ProfileType type = ProfileType.CURRENTUSER;
+
+    private static String username;
+
+    public static void setUsername(String username) {
+        ProfileController.username = username;
+    }
 
     /**
      * Called to initialize a controller after its root element has been
@@ -97,37 +102,43 @@ public class ProfileController implements Initializable {
         IconButton.addBackButton(buttonPane);
         achievementsButton.setOnAction(event -> Main.openAchievementsScreen());
         addRing(ringPane);
-        titleText.setText(this.username + "'s Profile");
+        titleText.setText(username + "'s Profile");
         todayPoints.setText("Total Points: " + Api.current.getTotal());
 
         if (this.type == ProfileType.CURRENTUSER) {
             topRightBox.getChildren().remove(follow);
         }
 
-        //TODO Removes Position Text after condition e.g if user is not following.
-        if (false) {
+        if (Api.current.getFollowing(username).keySet().stream().noneMatch(un -> un.equals(username))) {
             topRightBox.getChildren().remove(position);
         } else {
-            //TODO retrieve position of user compared to following
             position.setText("Position: #" + Api.current.getPosition());
         }
-        if (Api.current.getFollowing().keySet().stream().noneMatch(s -> s.equals(this.username))) {
+        if (Api.current.getFollowing(username).keySet().stream().noneMatch(s -> s.equals(username))) {
             follow.setText("Follow");
         }
 
-        //TODO Adding Achievements just pull 3 most recent and call AddAchievements Method
-        ListItem achievement1 = new ListItem(
-                new Image("/images/IconCupGold.png"), "Achievement 1");
-        ListItem achievement2 = new ListItem(
-                new Image("/images/IconCupSilver.png"), "Achievement 2");
-        ListItem achievement3 = new ListItem(
-                new Image("/images/IconCupBronze.png"), "Achievement 3");
-        addAchievements(achievement1, achievement2, achievement3);
+        List<Integer> ach = Api.current.getAchievemens(username);
+        List<String> names = Api.current.getAchievementNames();
+
+        switch (ach.size()) {
+            case 1:
+                addAchievements(new ListItem(new Image("/images/IconCupGold.png"), names.get(ach.get(0) - 1)),
+                        null, null);
+            case 2:
+                addAchievements(new ListItem(new Image("/images/IconCupGold.png"), names.get(ach.get(0) - 1)),
+                        new ListItem(new Image("/images/IconCupGold.png"), names.get(ach.get(1) - 1)),
+                        null);
+            default:
+                addAchievements(new ListItem(new Image("/images/IconCupGold.png"), names.get(ach.get(0) - 1)),
+                        new ListItem(new Image("/images/IconCupGold.png"), names.get(ach.get(1) - 1)),
+                        new ListItem(new Image("/images/IconCupGold.png"), names.get(ach.get(2) - 1)));
+        }
 
 
         new Thread(() -> {
-            Set<String> following = Api.getApi().getFollowing().keySet();
-            Set<String> followers = Api.getApi().getFollowers().keySet();
+            Set<String> following = Api.getApi().getFollowing(username).keySet();
+            Set<String> followers = Api.getApi().getFollowers(username).keySet();
             Platform.runLater(() -> {
                 for (String f : following) {
                     followingArray.add(new ListItem(new Image("/images/addButton.png"), f));
@@ -145,11 +156,17 @@ public class ProfileController implements Initializable {
         followerList.setCellFactory(param -> new Cell());
 
 
-        //TODO Activities List
-        activities.add("13:00 - Did this");
-        activities.add("14:00 - Did That");
-        activities.add("10:00 - Ate a vegetarian meal");
-        activityList.setItems(activities);
+        new Thread(() -> {
+            List<Pair<String, Date>> data = Api.current.getHistoryFor(username);
+            List<String> dates = data.stream().map(it ->
+                    DateTimeFormatter.ofLocalizedTime(FormatStyle.SHORT).format(it.getValue().toInstant())
+                            + " - " + it.getKey()).collect(Collectors.toList());
+            Platform.runLater(() -> {
+                activities.addAll(dates);
+                activityList.setItems(activities);
+
+            });
+        }).start();
 
         profilePicture.setImage(Main.getProfilePicture());
 
@@ -171,23 +188,25 @@ public class ProfileController implements Initializable {
         HBox third = (HBox) achievementsBorder.getRight();
         third.setAlignment(Pos.CENTER);
         Pane pane = new Pane();
-        HBox.setHgrow(pane, ALWAYS);
-
-        ImageView image1 = new ImageView(one.getImage());
-        image1.setFitWidth(50);
-        image1.setFitHeight(50);
-
-        ImageView image2 = new ImageView(two.getImage());
-        image2.setFitHeight(50);
-        image2.setFitWidth(50);
-
-        ImageView image3 = new ImageView(three.getImage());
-        image3.setFitHeight(50);
-        image3.setFitWidth(50);
-
-        first.getChildren().addAll(image1, new Label(one.getText()), pane);
-        second.getChildren().addAll(image2, new Label(two.getText()), pane);
-        third.getChildren().addAll(image3, new Label(three.getText()), pane);
+        HBox.setHgrow(pane, Priority.ALWAYS);
+        if (one != null) {
+            ImageView image1 = new ImageView(one.getImage());
+            image1.setFitWidth(50);
+            image1.setFitHeight(50);
+            first.getChildren().addAll(image1, new Label(one.getText()), pane);
+        }
+        if (two != null) {
+            ImageView image2 = new ImageView(two.getImage());
+            image2.setFitHeight(50);
+            image2.setFitWidth(50);
+            second.getChildren().addAll(image2, new Label(two.getText()), pane);
+        }
+        if (three != null) {
+            ImageView image3 = new ImageView(three.getImage());
+            image3.setFitHeight(50);
+            image3.setFitWidth(50);
+            third.getChildren().addAll(image3, new Label(three.getText()), pane);
+        }
     }
 
     /**
@@ -197,7 +216,7 @@ public class ProfileController implements Initializable {
      * @throws IOException IO Exception may be thrown
      */
     public Scene getScene() throws IOException {
-        System.out.println(this.username);
+        System.out.println(username);
         URL url = Main.class.getResource("/Profile.fxml");
         System.out.println(url);
         AnchorPane root = FXMLLoader.load(url);
@@ -251,8 +270,8 @@ public class ProfileController implements Initializable {
         private Cell() {
             super();
             listCell.getChildren().addAll(image, pane, itemName, pane2);
-            HBox.setHgrow(pane, ALWAYS);
-            HBox.setHgrow(pane2, ALWAYS);
+            HBox.setHgrow(pane, Priority.ALWAYS);
+            HBox.setHgrow(pane2, Priority.ALWAYS);
             listCell.setAlignment(Pos.CENTER);
             followersLabel.setAlignment(Pos.CENTER);
             image.setFitHeight(75);

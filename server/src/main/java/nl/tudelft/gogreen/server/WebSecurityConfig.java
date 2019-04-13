@@ -16,6 +16,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.stereotype.Component;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -44,13 +45,14 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     public static class AuthStuff implements AuthenticationProvider {
 
         @Override
-        public Authentication authenticate(Authentication authentication) throws AuthenticationException {
+        public Authentication authenticate(Authentication authentication)
+                throws AuthenticationException {
             String name = authentication.getName();
             String pass = authentication.getCredentials().toString();
             boolean check = false;
             try {
                 check = LogIn.log_in(name,pass);
-            } catch (Exception e) {
+            } catch (SQLException e) {
                 e.printStackTrace();
             }
             if (!check) return null;

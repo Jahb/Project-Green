@@ -1,8 +1,6 @@
 package nl.tudelft.gogreen.server.websocket;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import nl.tudelft.gogreen.shared.PingPacket;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -17,14 +15,14 @@ import java.util.Map;
 
 @Controller
 public class LiveConnections extends TextWebSocketHandler {
-    public static ObservableList<PingPacket> packets = FXCollections.observableArrayList();
     public static Map<String, WebSocketSession> sessionMap = new HashMap<>();
 
     @Autowired
     private ObjectMapper mapper;
 
     @Override
-    public void handleTextMessage(WebSocketSession session, TextMessage message) throws IOException {
+    public void handleTextMessage(WebSocketSession session,
+                                  TextMessage message) throws IOException {
         PingPacket packet = mapper.readValue(message.getPayload(), PingPacket.class);
         System.out.println(packet.getDataType());
         System.out.println("New connection from " + packet.getData());
@@ -39,11 +37,15 @@ public class LiveConnections extends TextWebSocketHandler {
             case OPEN:
                 sessionMap.put(packet.getData(), session);
                 break;
+            default:
+                break;
         }
     }
 
     @Override
-    public void afterConnectionClosed(WebSocketSession session, CloseStatus status) throws Exception {
-        sessionMap.entrySet().stream().filter(it -> it.getValue().equals(session)).forEach(it -> sessionMap.remove(it.getKey()));
+    public void afterConnectionClosed(WebSocketSession session,
+                                      CloseStatus status) {
+        sessionMap.entrySet().stream().filter(it ->
+                it.getValue().equals(session)).forEach(it -> sessionMap.remove(it.getKey()));
     }
 }

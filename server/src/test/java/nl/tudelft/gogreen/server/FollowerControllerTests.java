@@ -35,18 +35,18 @@ public class FollowerControllerTests {
     }
 
     @Test
-    public void aafollowerTest() throws IOException {
+    public void aafollowerTest() {
         Assert.assertTrue(cs.follow("kees1").getData());
     }
 
     @Test
     public void abfollowerstest() {
-        Assert.assertTrue(cs.followers().getData().isEmpty());
+        Assert.assertTrue(cs.followers("kees").getData().isEmpty());
     }
 
     @Test
     public void bafollowingtest() {
-        Assert.assertEquals(1, cs.following().getData().size());
+        Assert.assertEquals(1, cs.following("kees").getData().size());
     }
 
     @Test

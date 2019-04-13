@@ -1,7 +1,6 @@
 package nl.tudelft.gogreen.client;
 
 import com.jfoenix.controls.JFXTextField;
-import com.mashape.unirest.http.exceptions.UnirestException;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -54,17 +53,14 @@ public class LoginController {
 
     /**
      * Switches to Main Menu After a Successful Login.
-     *
-     * @throws UnirestException Possible Exception Throw.
      */
-    public void login() throws UnirestException {
+    public void login() {
         String un = userField.getText();
         String pw = passwordField.getText();
 
 
         if (Api.current.login(un, pw)) {
-
-            Main.openQuizScreen();
+            Main.openMainScreen();
         } else if (passwordWrong != null) {
             passwordWrong.setVisible(true);
         }
@@ -73,10 +69,8 @@ public class LoginController {
 
     /**
      * Method call on register.
-     *
-     * @throws UnirestException an exception.
      */
-    public void register() throws UnirestException {
+    public void register() {
         String un = userField.getText();
         String pw = passwordField.getText();
         String pw2 = passwordField2.getText();
@@ -94,7 +88,8 @@ public class LoginController {
         }
         if (Api.current.register(un, pw)) {
             if (Api.current.login(un, pw))
-                Main.openMainScreen();
+                Main.openQuizScreen();
+
         }
 
     }

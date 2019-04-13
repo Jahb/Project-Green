@@ -12,12 +12,7 @@ import javafx.scene.control.TextFormatter;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.Background;
-import javafx.scene.layout.BackgroundFill;
-import javafx.scene.layout.CornerRadii;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.Pane;
+import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
@@ -53,7 +48,7 @@ class AddActivityButton {
     private HBox metadataPane;
     private JFXTextField metadataBox;
     private Text metadataUnit;
-    
+
     private AnchorPane addButton;
     private ImageView addButtonIcon;
     private String toAdd;
@@ -62,7 +57,7 @@ class AddActivityButton {
     private TranslateTransition slideUp;
     private TranslateTransition stayPut;
     private FadeTransition toAddFade;
-    
+
     private HashSet<Node> allNodes = new HashSet<>(31);
 
     /**
@@ -95,16 +90,11 @@ class AddActivityButton {
             if (afterType.equals(""))
                 afterType = "0";
             try {
-                float test = Float.parseFloat(afterType);
                 if (afterType.contains("e") || afterType.contains("d") || afterType.contains("f"))
                     throw new NumberFormatException();
-                if (test < 0 || test > 1000)
-                    throw new ArrayIndexOutOfBoundsException();
                 metadataBox.setStyle("-fx-text-inner-color: black");
             } catch (NumberFormatException exception) {
                 metadataBox.setStyle("-fx-text-inner-color: red");
-            } catch (ArrayIndexOutOfBoundsException exception) {
-                metadataBox.setStyle("-fx-text-inner-color: orange");
             }
             return event;
         }));
@@ -132,15 +122,15 @@ class AddActivityButton {
         addButtonIcon.setMouseTransparent(true);
         addButton = new AnchorPane(addButtonText, addButtonIcon);
         addButton.setBackground(new Background(new BackgroundFill(
-            Color.GRAY, new CornerRadii(0), Insets.EMPTY)));
+                Color.GRAY, new CornerRadii(0), Insets.EMPTY)));
         addButton.setLayoutX(600.0 * 31 / 32 - 125 - 40);
         addButton.setLayoutY(130);
         addButton.setPrefWidth(125);
         addButton.setPrefHeight(60);
         AnchorPane fadeBackground = new AnchorPane();
         fadeBackground.setBackground(new Background(new BackgroundFill(
-            IconButton.color.interpolate(new Color(1, 1, 1, 1), .5), 
-            new CornerRadii(0), Insets.EMPTY)));
+                IconButton.color.interpolate(new Color(1, 1, 1, 1), .5),
+                new CornerRadii(0), Insets.EMPTY)));
         fadeBackground.setLayoutX(600.0 * 31 / 32 - 125 - 40);
         fadeBackground.setLayoutY(130);
         fadeBackground.setPrefWidth(125);
@@ -151,7 +141,13 @@ class AddActivityButton {
         addButton.setOnMouseClicked(event -> {
             if (toAdd == null)
                 return;
-            handler.accept(toAdd + ":" + metadataBox.getText());
+            String meta = metadataBox.getText();
+            System.out.println(meta);
+            if (meta == null || !meta.matches("\\d+")) {
+                meta = "0";
+            }
+            handler.accept(toAdd + ":" + meta);
+
             close();
         });
         addButton.addEventHandler(MouseEvent.MOUSE_ENTERED, event -> mouseOver(true));
@@ -173,7 +169,7 @@ class AddActivityButton {
         animationOverlay.setFill(Color.color(238d / 256, 238d / 256, 238d / 256));
 
         activityButtonPane = new AnchorPane(
-            backgroundPane, metadataPane, specifyButton, fadeBackground, addButton);
+                backgroundPane, metadataPane, specifyButton, fadeBackground, addButton);
 
         activityButtonPane.setPrefWidth((double) (600 * 15 / 16));
         activityButtonPane.setPrefHeight(height);
@@ -323,7 +319,7 @@ class AddActivityButton {
         private ImageView icon;
 
         private AnchorPane subCategories;
-        
+
         private long startTime = 0;
         private AnimationTimer timer = new AnimationTimer() {
             private double progress;
@@ -341,8 +337,8 @@ class AddActivityButton {
 
                 for (int i = 0; i < children.size(); i++) {
                     Node node = children.get(i);
-                    node.setTranslateY(Math.max(height - (children.size() - i) * 80 - 80, 
-                        Math.min(height - 80, 10)));
+                    node.setTranslateY(Math.max(height - (children.size() - i) * 80 - 80,
+                            Math.min(height - 80, 10)));
                 }
 
                 if (progress == 1)
@@ -354,8 +350,8 @@ class AddActivityButton {
             }
         };
 
-        CategoryButton(String name, CategoryButtonCornerType type, 
-            int index, boolean hasSubcategories) {
+        CategoryButton(String name, CategoryButtonCornerType type,
+                       int index, boolean hasSubcategories) {
 
             int width = 125;
             int height = 78;
@@ -378,8 +374,8 @@ class AddActivityButton {
             this.name = new Text(name);
             this.name.setX(13);
             this.name.setY(30);
-            this.name.setFont(Font.font("Calibri", 
-                hasSubcategories ? FontWeight.BOLD : FontWeight.NORMAL, 23));
+            this.name.setFont(Font.font("Calibri",
+                    hasSubcategories ? FontWeight.BOLD : FontWeight.NORMAL, 23));
             this.name.setFill(Color.WHITE);
             this.name.setMouseTransparent(true);
 
@@ -415,8 +411,8 @@ class AddActivityButton {
             subCategories.setPrefHeight(80);
             subCategories.setPrefWidth(145);
             subCategories.setBackground(new Background(
-                new BackgroundFill(new Color(1, 1, 1, .95), 
-                new CornerRadii(15, 15, 0, 0, false), Insets.EMPTY)));
+                    new BackgroundFill(new Color(1, 1, 1, .95),
+                            new CornerRadii(15, 15, 0, 0, false), Insets.EMPTY)));
             subCategories.setOnMouseExited(event -> closeDropDown());
 
             if (name.equals("Food")) {
@@ -462,8 +458,8 @@ class AddActivityButton {
         }
 
         private void addSubCategoryButton(String name, String unit) {
-            CategoryButton button = 
-                new CategoryButton(name, CategoryButtonCornerType.CENTER, 0, false);
+            CategoryButton button =
+                    new CategoryButton(name, CategoryButtonCornerType.CENTER, 0, false);
             button.background.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
                 foodButton.closeDropDown();
                 transportButton.closeDropDown();

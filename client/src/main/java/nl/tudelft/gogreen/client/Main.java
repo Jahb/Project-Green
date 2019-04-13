@@ -3,8 +3,6 @@ package nl.tudelft.gogreen.client;
 import com.jfoenix.controls.JFXSnackbar;
 import javafx.application.Application;
 import javafx.application.Platform;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -122,6 +120,7 @@ public class Main extends Application {
      */
     static void openProfileScreen() {
         try {
+            ProfileController.setUsername(Api.current.getUsername());
             stage.setScene(profileScreen.getScene());
         } catch (IOException ex) {
             pageOpenError(ex);
@@ -193,12 +192,7 @@ public class Main extends Application {
     public static void showMessage(Pane pane, String message) {
         JFXSnackbar snackbar = new JFXSnackbar(pane);
         snackbar.getStylesheets().add("NotificationCSS.css");
-        snackbar.show(message, "Close", 4000, new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                snackbar.close();
-            }
-        });
+        snackbar.show(message, "Close", 4000, event -> snackbar.close());
         for (int i = MainScreen.strings.length - 1; i > 0; i--) {
             MainScreen.strings[i] = MainScreen.strings[i - 1];
         }

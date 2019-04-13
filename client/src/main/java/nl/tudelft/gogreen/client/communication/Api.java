@@ -6,6 +6,7 @@ import com.google.gson.reflect.TypeToken;
 import com.mashape.unirest.http.ObjectMapper;
 import com.mashape.unirest.http.Unirest;
 import com.mashape.unirest.http.exceptions.UnirestException;
+import javafx.util.Pair;
 import nl.tudelft.gogreen.shared.*;
 import org.apache.http.client.CookieStore;
 import org.apache.http.impl.client.BasicCookieStore;
@@ -27,10 +28,10 @@ public class Api {
     public static Gson gson = new GsonBuilder().setPrettyPrinting().create();
     public static Api current = getTestApi();
     private static Api api;
+    private static CookieStore cookies = new BasicCookieStore();
 
     private int position;
 
-    private static CookieStore cookies = new BasicCookieStore();
 
     private String username;
 
@@ -43,6 +44,10 @@ public class Api {
 
     private String baseUrl;
 
+    private Map<PingPacketData, List<MessageRunnable>> notifications = new HashMap<>();
+
+    private List<String> achievements;
+
     /**
      * Create a new instance of the api using the provided baseurl.
      *
@@ -50,13 +55,13 @@ public class Api {
      */
     private Api(String baseUrl) {
         this.baseUrl = baseUrl;
-        remapper.put("Localproduce", "Local Product");
+        remapper.put("Local-produce", "Local Product");
         remapper.put("Vegetarian", "Vegetarian Meal");
         remapper.put("Bike", "Usage of Bike");
-        remapper.put("Publictransport", "Usage of Public Transport");
+        remapper.put("Public transport", "Usage of Public Transport");
         remapper.put("Solarpanel", "Solar Panels");
         remapper.put("Recycle", "Recycling");
-        remapper.put("NoSmoking", "Lower Temperature");
+        remapper.put("No Smoking", "Lower Temperature");
 
         for (PingPacketData d : PingPacketData.values()) {
             notifications.put(d, new ArrayList<>());
@@ -130,17 +135,50 @@ public class Api {
     }
 
     /**
+     * Get a list of all users.
+     *
+     * @return a list of all users
+     */
+    public List<String> getAllUsers() {
+        Map<String, Object> maps = new HashMap<>();
+        String res = this.post(baseUrl + "/user/all", maps);
+        MessageHolder<List<String>> holder =
+                gson.fromJson(res,
+                        new TypeToken<MessageHolder<List<String>>>() {
+                        }.getType());
+        System.out.println(holder.getData());
+        return holder.getData();
+    }
+
+    /**
      * Register a feature.
      *
      * @param featureName the name of the feature, should really be an Enum...
      * @return the current total points
      */
-    public int addFeature(String featureName) {
+    public int addFeature(String featureName, int amount) {
         Map<String, Object> maps = new HashMap<>();
         maps.put("feature", remap(featureName));
+        maps.put("userInput", amount);
         String res = this.post(baseUrl + "/feature/new", maps);
-        MessageHolder<Integer> holder = gson.fromJson(res, new TypeToken<MessageHolder<Integer>>() {
-        }.getType());
+        MessageHolder<Integer> holder = gson.fromJson(res,
+                new TypeToken<MessageHolder<Integer>>() {
+                }.getType());
+        System.out.println(holder.getData());
+        return holder.getData();
+    }
+
+    /**
+     * Get the total streak for the current user.
+     *
+     * @return the days of the streak
+     */
+    public int getStreak() {
+        Map<String, Object> maps = new HashMap<>();
+        String res = this.post(baseUrl + "/feature/streak", maps);
+        MessageHolder<Integer> holder = gson.fromJson(res,
+                new TypeToken<MessageHolder<Integer>>() {
+                }.getType());
         System.out.println(holder.getData());
         return holder.getData();
     }
@@ -168,8 +206,9 @@ public class Api {
         Map<String, Object> params = new HashMap<>();
         params.put("username", username);
         String res = this.post(baseUrl + "/feature/points", params);
-        MessageHolder<List<Integer>> holder = gson.fromJson(res, new TypeToken<MessageHolder<List<Integer>>>() {
-        }.getType());
+        MessageHolder<List<Integer>> holder = gson.fromJson(res,
+                new TypeToken<MessageHolder<List<Integer>>>() {
+                }.getType());
 
         return holder.getData();
     }
@@ -185,8 +224,9 @@ public class Api {
         params.put("days", period);
         String res = this.post(baseUrl + "/stats", params);
         MessageHolder<DateHolder> holder =
-                gson.fromJson(res, new TypeToken<MessageHolder<DateHolder>>() {
-                }.getType());
+                gson.fromJson(res,
+                        new TypeToken<MessageHolder<DateHolder>>() {
+                        }.getType());
 
         return holder.getData();
     }
@@ -214,7 +254,7 @@ public class Api {
 
         if (ringName.equals("PREVIOUS")) {
             if (getUsernamePrevious() == null) {
-            	return new double[]{250, 250, 250, 250};
+                return new double[]{250, 250, 250, 250};
             }
             List<Integer> res = getFor(getUsernamePrevious());
             return new double[]{res.get(0), res.get(1), res.get(2)};
@@ -230,7 +270,7 @@ public class Api {
     public String getUsernamePrevious() {
         int myTotal = getTotal();
         if (followDirty) {
-            followers = getFollowing();
+            followers = getFollowing(this.getUsername());
             followDirty = false;
         }
         List<Map.Entry<String, Integer>> yeet =
@@ -251,7 +291,7 @@ public class Api {
     public String getUsernameNext() {
         int myTotal = getTotal();
         if (followDirty) {
-            followers = getFollowing();
+            followers = getFollowing(this.getUsername());
             followDirty = false;
         }
         List<Map.Entry<String, Integer>> yeet =
@@ -320,8 +360,8 @@ public class Api {
      *
      * @return your followers
      */
-    public Map<String, Integer> getFollowers() {
-        return getStringIntegerMap("/follow/followers");
+    public Map<String, Integer> getFollowers(String username) {
+        return getFollow(username, "/follow/followers");
     }
 
     /**
@@ -329,14 +369,14 @@ public class Api {
      *
      * @return the peeps you're following
      */
-    public Map<String, Integer> getFollowing() {
-        return getStringIntegerMap("/follow/following");
+    public Map<String, Integer> getFollowing(String username) {
+        return getFollow(username, "/follow/following");
     }
 
-    private Map<String, Integer> getStringIntegerMap(String s) {
+    private Map<String, Integer> getFollow(String username, String url) {
         String res;
         Map<String, Object> params = new HashMap<>();
-        res = this.post(baseUrl + s, params);
+        res = this.post(baseUrl + url, params);
         MessageHolder<Map<String, Integer>> holder =
                 gson.fromJson(res, new TypeToken<MessageHolder<Map<String, Integer>>>() {
                 }.getType());
@@ -363,14 +403,19 @@ public class Api {
         return getEventItems("/event/user");
     }
 
+    /**
+     * Add a new event.
+     *
+     * @param event the event
+     * @return a boolean indicating success
+     */
     public boolean newEvent(EventItem event) {
-        String res;
         Map<String, Object> params = new HashMap<>();
         params.put("name", event.getName());
         params.put("description", event.getDescription());
         params.put("date", event.getDate());
         params.put("time", event.getTime());
-        res = this.post(baseUrl + "/event/new", params);
+        String res = this.post(baseUrl + "/event/new", params);
         MessageHolder<Boolean> holder =
                 gson.fromJson(res, new TypeToken<MessageHolder<Boolean>>() {
                 }.getType());
@@ -378,6 +423,12 @@ public class Api {
         return holder.getData();
     }
 
+    /**
+     * Join an event.
+     *
+     * @param event the name of the event
+     * @return a boolean indicating success
+     */
     public boolean joinEvent(String event) {
         return eventAction(event, "/event/join");
     }
@@ -394,8 +445,93 @@ public class Api {
         return holder.getData();
     }
 
+    /**
+     * Leave an event.
+     *
+     * @param event the name of the event
+     * @return a boolean indicating success
+     */
     public boolean leaveEvent(String event) {
         return eventAction(event, "/event/leave");
+    }
+
+    /**
+     * Get the history of a user.
+     *
+     * @param username the username to get the history for
+     * @return an array of strings mapped to dates
+     */
+    public List<Pair<String, Date>> getHistoryFor(String username) {
+        String res;
+        Map<String, Object> params = new HashMap<>();
+        params.put("username", username);
+        res = this.post(baseUrl + "/stats/hist", params);
+        MessageHolder<List<Pair<String, Date>>> holder =
+                gson.fromJson(res, new TypeToken<MessageHolder<List<Pair<String, Date>>>>() {
+                }.getType());
+
+        return holder.getData();
+    }
+
+    /**
+     * Add the quiz data to the user.
+     *
+     * @param monthlyIncome the monthly income
+     * @param householdSize the size of the household
+     * @param ownVehicle    if they own a vehicle
+     * @param energyBill    the energy bill
+     * @param houseSurface  the size of the house
+     * @return a boolean indicating success
+     */
+    public boolean insertQuizData(int monthlyIncome,
+                                  int householdSize, boolean ownVehicle,
+                                  int energyBill, int houseSurface) {
+        Map<String, Object> params = new HashMap<>();
+        params.put("monthlyIncome", monthlyIncome);
+        params.put("householdSize", householdSize);
+        params.put("ownVehicle", ownVehicle);
+        params.put("energyBill", energyBill);
+        params.put("houseSurface", houseSurface);
+        String res = this.post(baseUrl + "/stats/hist", params);
+        MessageHolder<Boolean> holder =
+                gson.fromJson(res, new TypeToken<MessageHolder<Boolean>>() {
+                }.getType());
+
+        return holder.getData();
+    }
+
+    /**
+     * Get a list of all achievement names.
+     *
+     * @return a list of all achievement names
+     */
+    public List<String> getAchievementNames() {
+        if (achievements != null) return achievements;
+        String res;
+        Map<String, Object> params = new HashMap<>();
+        res = this.post(baseUrl + "/achievements/names", params);
+        MessageHolder<List<String>> holder =
+                gson.fromJson(res, new TypeToken<MessageHolder<List<String>>>() {
+                }.getType());
+        achievements = holder.getData();
+        return achievements;
+    }
+
+    /**
+     * Get a list of all achievements for the user.
+     *
+     * @return a list of all achievement id's
+     */
+    public List<Integer> getAchievemens(String username) {
+        String res;
+        Map<String, Object> params = new HashMap<>();
+        params.put("username", username);
+        res = this.post(baseUrl + "/achievements/for", params);
+        MessageHolder<List<Integer>> holder =
+                gson.fromJson(res, new TypeToken<MessageHolder<List<Integer>>>() {
+                }.getType());
+
+        return holder.getData();
     }
 
     private void wsInit() {
@@ -431,10 +567,8 @@ public class Api {
 
     }
 
-    private Map<PingPacketData, List<MessageRunnable>> notifications = new HashMap<>();
-
     /**
-     * Register a new notification, it is added to the list so don't add it twice!
+     * Register a new notification, it is added to the list so don't add it twice.
      *
      * @param type     the notification type to respond to
      * @param runnable the MessageRunnable to execute
@@ -444,11 +578,11 @@ public class Api {
     }
 
     /**
-     * The basic notification class
+     * The basic notification class.
      */
     public interface MessageRunnable {
         /**
-         * The called method when a notification is received
+         * The called method when a notification is received.
          *
          * @param data The data to receive, is always a string but may be json encoded data.
          */

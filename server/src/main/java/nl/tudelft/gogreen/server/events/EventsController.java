@@ -20,6 +20,10 @@ import java.util.List;
 public class EventsController {
 
 
+    /**
+     * Get the current user, based on a cookie.
+     * @return the current user
+     */
     public String getCurrentUser() {
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         String username;
@@ -31,20 +35,33 @@ public class EventsController {
         return username;
     }
 
+    /**
+     * Add a new event.
+     * @param name the name of the event
+     * @param description the description of the event
+     * @param date the date of the event, for some reason as a string
+     * @param time the time as an event, see date for why
+     * @return a boolean indicating success
+     */
     @PostMapping("/new")
-    public MessageHolder<Boolean> addNew(String name, String description, String date, String time) {
+    public MessageHolder<Boolean> addNew(String name,
+                                         String description, String date, String time) {
         try (Connection conn = DriverManager.getConnection(
                 Main.resource.getString("Postgresql.datasource.url"),
                 Main.resource.getString("Postgresql.datasource.username"),
                 Main.resource.getString("Postgresql.datasource.password"))) {
             EventsMain.create_event(getCurrentUser(), name, description, date, time, conn);
-        } catch (Exception e) {
+        } catch (SQLException e) {
             return new MessageHolder<>("Create Event", false);
         }
 
         return new MessageHolder<>("Create Event", true);
     }
 
+    /**
+     * Get a list of all events.
+     * @return the list
+     */
     @PostMapping("/list")
     public MessageHolder<List<EventItem>> list() {
         List<EventItem> items = new ArrayList<>();
@@ -59,6 +76,11 @@ public class EventsController {
         return new MessageHolder<>("Events", items);
     }
 
+    /**
+     * get a list of the events the current user has joined.
+     * @return the list of the events
+     * @throws SQLException when there is a database error?
+     */
     @PostMapping("/user")
     public MessageHolder<List<EventItem>> userEvents() throws SQLException {
         Connection conn = DriverManager.getConnection(
@@ -70,6 +92,11 @@ public class EventsController {
         return new MessageHolder<>("Events", items);
     }
 
+    /**
+     * Join an event.
+     * @param eventName the name of the event
+     * @return a boolean indicating success.
+     */
     @PostMapping("/join")
     public MessageHolder<Boolean> join(String eventName) {
         try (Connection conn = DriverManager.getConnection(
@@ -77,13 +104,18 @@ public class EventsController {
                 Main.resource.getString("Postgresql.datasource.username"),
                 Main.resource.getString("Postgresql.datasource.password"))) {
             EventsMain.join_event(getCurrentUser(), eventName, conn);
-        } catch (Exception e) {
+        } catch (SQLException e) {
             return new MessageHolder<>("Join", false);
         }
 
         return new MessageHolder<>("Join", true);
     }
 
+    /**
+     * Leave an event.
+     * @param eventName the name of the event
+     * @return a boolean indicating success
+     */
     @PostMapping("/leave")
     public MessageHolder<Boolean> leave(String eventName) {
         try (Connection conn = DriverManager.getConnection(
@@ -91,7 +123,7 @@ public class EventsController {
                 Main.resource.getString("Postgresql.datasource.username"),
                 Main.resource.getString("Postgresql.datasource.password"))) {
             EventsMain.leave_event(getCurrentUser(), eventName, conn);
-        } catch (Exception e) {
+        } catch (SQLException e) {
             return new MessageHolder<>("Leave", false);
         }
 

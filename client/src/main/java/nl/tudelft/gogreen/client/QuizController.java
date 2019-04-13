@@ -11,6 +11,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
 import javafx.util.StringConverter;
+import nl.tudelft.gogreen.client.communication.Api;
 
 import java.io.IOException;
 import java.net.URL;
@@ -53,14 +54,7 @@ public class QuizController implements Initializable {
             }
 
             public Double fromString(String s) {
-                switch (s) {
-                    case "No":
-                        return 0d;
-                    case "Yes":
-                        return 1d;
-                    default:
-                        return 1d;
-                }
+                return "No".equals(s) ? 0d : 1d;
             }
         });
     }
@@ -84,12 +78,12 @@ public class QuizController implements Initializable {
      */
     public void useDefaults() {
         Main.openMainScreen();
-        //TODO connect values to database (these should use the average)
-        int surface= -1;
-        int size= -1;
-        int vehicle=-1;
-        int income=-1;
-        int bill=-1;
+        int surface = 50;
+        int size = 1;
+        boolean vehicle = true;
+        int income = 1000;
+        int bill = 400;
+        Api.current.insertQuizData(income,size, true,bill,surface);
     }
 
     /**
@@ -97,16 +91,11 @@ public class QuizController implements Initializable {
      */
     public void useSaved() {
         Main.openMainScreen();
-        //TODO connect values to database(actual values on the ints)
-        int surface= (int) surfaceSlider.getValue();
+        int surface = (int) surfaceSlider.getValue();
         int size = (int) sizeSlider.getValue();
-        int vehicle = (int) vehicleSlider.getValue();
+        boolean vehicle = ((int) vehicleSlider.getValue()) == 1;
         int income = (int) incomeSlider.getValue();
         int bill = (int) billSlider.getValue();
-        System.out.print(income+"\n");
-        System.out.print(size+"\n");
-        System.out.print(bill+"\n");
-        System.out.print(surface+"\n");
-        System.out.print(vehicle+"\n");
+        Api.current.insertQuizData(income,size,vehicle,bill,surface);
     }
 }

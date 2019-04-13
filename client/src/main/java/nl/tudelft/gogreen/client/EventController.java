@@ -1,7 +1,5 @@
 package nl.tudelft.gogreen.client;
 
-import static javafx.scene.layout.Priority.ALWAYS;
-
 import com.jfoenix.controls.JFXDatePicker;
 import com.jfoenix.controls.JFXTextArea;
 import com.jfoenix.controls.JFXTextField;
@@ -24,10 +22,10 @@ import nl.tudelft.gogreen.shared.EventItem;
 import java.io.IOException;
 import java.net.URL;
 import java.time.format.DateTimeFormatter;
-import java.time.format.DateTimeFormatterBuilder;
-import java.util.Date;
 import java.util.List;
 import java.util.ResourceBundle;
+
+import static javafx.scene.layout.Priority.ALWAYS;
 
 public class EventController implements Initializable {
 
@@ -104,6 +102,10 @@ public class EventController implements Initializable {
                 ((JFXDatePicker) base.getChildren().get(3)).getValue().format(dateFormat));
         createEvent.setVisible(false);
         new Thread(() -> Api.current.newEvent(newEvent)).start();
+        refreshEvents();
+    }
+
+    private void refreshEvents() {
         new Thread(() -> {
             List<EventItem> all = Api.current.getAllEvents();
             List<EventItem> user = Api.current.getUserEvents();
@@ -122,12 +124,7 @@ public class EventController implements Initializable {
      */
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        new Thread(() -> {
-            List<EventItem> all = Api.current.getAllEvents();
-            List<EventItem> user = Api.current.getUserEvents();
-            Platform.runLater(() -> allEvents.addAll(all));
-            Platform.runLater(() -> userEvents.addAll(user));
-        }).start();
+        refreshEvents();
 
         fullEventList.setItems(allEvents);
         fullEventList.setCellFactory(param -> new Cell(userEvents));
@@ -186,10 +183,12 @@ public class EventController implements Initializable {
         private void joinEvent(ObservableList<EventItem> events) {
             events.add(getItem());
             new Thread(() -> Api.current.joinEvent(getItem().getName())).start();
+            refreshEvents();
         }
 
         private void leaveEvent() {
-            //TODO for event leave
+            Api.current.leaveEvent(getItem().getName());
+            refreshEvents();
             this.getListView().getItems().remove(getItem());
         }
 

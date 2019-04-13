@@ -1,285 +1,16 @@
 package nl.tudelft.gogreen.server.api;
 
 import com.mashape.unirest.http.Unirest;
+import com.mashape.unirest.http.exceptions.UnirestException;
 import nl.tudelft.gogreen.server.Main;
 import org.json.XML;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
+import java.sql.*;
 import java.util.HashMap;
 import java.util.Map;
 
-import static java.sql.DriverManager.getConnection;
-
+@SuppressWarnings("checkstyle:Indentation")
 public class CoolClimateApi {
-
-
-    /**
-     * fetches the API Data.
-     *
-     * @param feature   the feature input
-     * @param userinput the user input
-     * @return returns the needed data
-     * @throws Exception raises error when unable to access database
-     */
-    public static float fetchApiData(String feature, String userinput, int id) throws Exception {
-        switch (feature) {
-            case "Local Product":
-                return LocalProduct();
-            case "Solar Panels":
-                return SolarPanels(id);
-            case "Vegetarian Meal":
-                return VegetarianMeal(userinput, id);
-            case "Usage of Bike":
-                return UsageofBike(userinput);
-            case "Usage of Public Transport":
-                return UsageofPublicTransport(userinput);
-            case "Lower Temperature":
-                return LowerTemperature(userinput, id);
-            case "Smoking":
-                return Smoking(userinput);
-            case "Recycling":
-                return Recycling(userinput);
-            case "CFL":
-                return CFL(userinput);
-            default:
-                return -1;
-        }
-    }
-
-
-    /**
-     * Returns the float from VegetarianMeal.
-     *
-     * @param inputfootprintshoppingfoodfruitvegetables the footprint
-     * @return the result points
-     * @throws Exception raises error if unable to access database
-     */
-    public static float VegetarianMeal(String inputfootprintshoppingfoodfruitvegetables, int id)
-            throws Exception {
-
-
-        VMmapping(inputfootprintshoppingfoodfruitvegetables, id);
-
-        Map<String, String> params = new HashMap<>();
-        params.put("accept", "application/json");
-        params.put("app_id", "93af0470");
-        params.put("app_key", "be1dbf535bd450c012e78261cf93c0ad");
-        String url = createUrl();
-
-
-        String holder = XML.toJSONObject(Unirest.get(url).headers(params).asString().getBody())
-                .getJSONObject("response").get("result_food_fruitsveg").toString();
-
-
-        float result = Float.parseFloat(holder);
-
-
-        System.out.println(result);
-        keysremapping();
-        return result;
-    }
-
-    /**
-     * Returns the number of points of LocalProduct.
-     *
-     * @return points
-     * @throws Exception raises error if unable to access database
-     */
-    public static float LocalProduct() throws Exception {
-
-
-        Map<String, String> params = getParams();
-
-        String url = getUrl();
-
-
-        String holder = XML.toJSONObject(Unirest.get(url).headers(params).asString()
-                .getBody()).getJSONObject("response")
-                .get("input_takeaction_go_organic_myprodcost").toString();
-
-        float holderNum = Float.parseFloat(holder) * 1000;
-        float result = holderNum / 3;
-        System.out.println(result);
-
-        keysremapping();
-
-        return result;
-    }
-
-    /**
-     * Retrieve the number of points of UsageBike.
-     *
-     * @param km number of km
-     * @return the points
-     * @throws Exception raises error if unable to access database
-     */
-    public static float UsageofBike(String km) throws Exception {
-
-
-        Map<String, String> params = getParams();
-
-        String url = getUrl();
-
-
-        String holder = XML.toJSONObject(Unirest.get(url).headers(params)
-                .asString().getBody()).getJSONObject("response")
-                .get("result_takeaction_ride_my_bike_driveghgs").toString();
-
-
-        float holderNum = Float.parseFloat(holder) * 1000;
-        float result = holderNum / 365 * Integer.parseInt(km); //result in grams per day
-        System.out.println(result);
-
-        keysremapping();
-        return result;
-    }
-
-    /**
-     * Retrieves the points of UsageofPublicTransport.
-     *
-     * @param inputmiles the number of miles
-     * @return the points
-     * @throws Exception raises error if unable to access database
-     */
-    public static float UsageofPublicTransport(String inputmiles) throws Exception {
-
-
-        float carC02 = 118; //average car c02 emissions upon https://www.delijn.be/en/overdelijn/organisatie/zorgzaam-ondernemen/milieu/co2-uitstoot-voertuigen.html
-
-        float bus = 75; // average bus c02 emissions upon https://www.delijn.be/en/overdelijn/organisatie/zorgzaam-ondernemen/milieu/co2-uitstoot-voertuigen.html
-
-        keysremapping();
-        return (carC02 - bus) * Float.parseFloat(inputmiles);
-    }
-
-    /**
-     * Retrieves the points of LowerTemperature.
-     *
-     * @param inputfootprinthousingcdd the footprint
-     * @return the points
-     * @throws Exception raises error if unable to access database
-     */
-    public static float LowerTemperature(String inputfootprinthousingcdd, int id) throws Exception {
-
-        System.out.println("In lower temperature with input: " + inputfootprinthousingcdd);
-
-        LTmapping(inputfootprinthousingcdd, id);
-
-        Map<String, String> params = new HashMap<>();
-        params.put("accept", "application/json");
-        params.put("app_id", "93af0470");
-        params.put("app_key", "be1dbf535bd450c012e78261cf93c0ad");
-        String url = createUrlLT(inputfootprinthousingcdd);
-
-
-        String holder = XML.toJSONObject(Unirest.get(url)
-                .headers(params).asString().getBody()).getJSONObject("response")
-                .get("result_takeaction_thermostat_summer_kwhuse").toString();
-        keysLT = keys;
-
-        float result = Float.parseFloat(holder) * 800;
-
-        if (Integer.valueOf(inputfootprinthousingcdd) != result / 8)
-            return Float.parseFloat(inputfootprinthousingcdd) * 8;
-        System.out.println("The result is: " + result);
-        keysremapping();
-        return result;
-    }
-
-    /**
-     * Retrieves the points for SolarPanels.
-     *
-     * @return the points
-     * @throws Exception raises error if unable to access database
-     */
-    public static float SolarPanels(int id) throws Exception {
-
-
-        SPmapping(id);
-        Map<String, String> params = new HashMap<>();
-        params.put("accept", "application/json");
-        params.put("app_id", "93af0470");
-        params.put("app_key", "be1dbf535bd450c012e78261cf93c0ad");
-        String url = createUrl();
-
-
-        String holder = XML.toJSONObject(Unirest
-                .get(url).headers(params).asString().getBody())
-                .getJSONObject("response").get("result_electricity_direct").toString();
-
-        float result = Float.parseFloat(holder) * 1000;
-        System.out.println(result / 15);
-        keysremapping();
-        return result / 15;
-    }
-
-    public static void keysremapping() {
-        keys = keys2;
-    }
-
-    /**
-     * Retrieves the points from Recycling.
-     *
-     * @param kg the number of kg
-     * @return the points
-     * @throws Exception raises error if unable to access database
-     */
-    public static float Recycling(String kg) throws Exception {
-
-        float carbon = Float.parseFloat("6"); //avg C02 consumption per kg of waste https://timeforchange.org/plastic-bags-and-plastic-bottles-CO2-emissions
-
-        return carbon * Float.parseFloat(kg);
-    }
-
-    /**
-     * Points for Smoking.
-     *
-     * @param numberofCigarretes number of cigarretes
-     * @return the points
-     * @throws Exception raises error if unable to access database
-     */
-    public static float Smoking(String numberofCigarretes) throws Exception {
-
-
-        float carbon = Float.parseFloat("0.6"); //avg C02 consumption per cigarretes upon http://palebluedot.llc/carbon-copy/2015/10/14/the-carbon-footprint-of-cigarettes
-
-
-        return carbon * Float.parseFloat(numberofCigarretes);
-    }
-
-    /**
-     * Points for CFL.
-     *
-     * @param numberOFCFL number of CFL
-     * @return the points
-     * @throws Exception raises error if unable to access database
-     */
-    public static float CFL(String numberOFCFL) throws Exception {
-
-
-        float carbon = Float.parseFloat("350"); //avg C02 consumption per led per day upon https://www.flickr.com/photos/carbonquilt/8229755738
-
-        return carbon * Float.parseFloat(numberOFCFL);
-    }
-
-    /**
-     * Requests for the API.
-     *
-     * @return the params
-     */
-    public static Map<String, String> getParams() {
-        Map<String, String> params = new HashMap<>();
-        params.put("accept", "application/json");
-        params.put("app_id", "93af0470");
-        params.put("app_key", "be1dbf535bd450c012e78261cf93c0ad");
-        return params;
-    }
-
-    public static String getUrl() {
-        return "https://apis.berkeley.edu/coolclimate/footprint-sandbox?input_location_mode=2&input_location=New%20York%2C%20NY%2C%20USA&input_income=1&input_size=0&input_footprint_transportation_miles1=13000&input_footprint_transportation_mpg1=6&input_footprint_transportation_fuel1=0&result_takeaction_meat_reduction=1";
-    }
 
     /**
      * Filled in by user answering questions in the survey and applied to API.
@@ -386,8 +117,8 @@ public class CoolClimateApi {
             "input_location_mode=1",                                        // 1 = Zip code
             "internal_state_abbreviation=NY",
             "input_changed=0",                                              // Meaningless variable
-            "input_footprint_transportation_num_vehicles=3",  // Number of vehicles is assumed to be 3
-            "input_footprint_transportation_fuel1=1", //if 0mpg is input then that car gets deleted
+            "input_footprint_transportation_num_vehicles=3",
+            "input_footprint_transportation_fuel1=1",
             "input_footprint_transportation_fuel2=1",
             "input_footprint_transportation_fuel3=1",
             "input_footprint_transportation_miles4=0",
@@ -412,11 +143,11 @@ public class CoolClimateApi {
             "input_footprint_transportation_mpg10=0",
             "input_footprint_transportation_fuel10=0",
             "input_footprint_transportation_airtype=simple", // Total miles covered for air
-            "input_footprint_transportation_groundtype=simple", // Total miles for public transportation
-            "input_footprint_housing_electricity_type=0",                   // In $/year
-            "input_footprint_housing_cleanpercent=0",                       // Assume no clean energy
-            "input_footprint_housing_naturalgas_type=0",                    // In $/year
-            "input_footprint_housing_heatingoil_type=0",                    // In $/year
+            "input_footprint_transportation_groundtype=simple",
+            "input_footprint_housing_electricity_type=0",       // In $/year
+            "input_footprint_housing_cleanpercent=0",
+            "input_footprint_housing_naturalgas_type=0",
+            "input_footprint_housing_heatingoil_type=0",
             "input_footprint_housing_heatingoil_dollars_per_gallon=4",
             //Average, heating oil is $4/gallon
             "input_footprint_shopping_food_meattype=simple",           // Meat consumed by the user
@@ -435,7 +166,7 @@ public class CoolClimateApi {
             // Entertainment cost/year
             "input_footprint_shopping_goods_default_other_office=0",
             // Office supplies cost/year
-            "input_footprint_shopping_goods_default_other_personalcare=0",  // Personal care cost/year
+            "input_footprint_shopping_goods_default_other_personalcare=0",
             "input_footprint_shopping_goods_default_other_autoparts=0",     // Auto cost/year
             "input_footprint_shopping_goods_default_other_medical=0",
             "input_footprint_shopping_goods_type=advanced",
@@ -460,13 +191,278 @@ public class CoolClimateApi {
 
     };
 
-    public static String getLocation() {
+
+    /**
+     * fetches the API Data.
+     *
+     * @param feature   the feature input
+     * @param userinput the user input
+     * @return returns the needed data
+     * @throws SQLException raises error when unable to access database
+     */
+    public static float fetchApiData(String feature, String userinput,
+                                     int id) throws SQLException, UnirestException {
+        switch (feature) {
+            case "Local Product":
+                return localProduct();
+            case "Solar Panels":
+                return solarPanels(id);
+            case "Vegetarian Meal":
+                return vegetarianMeal(userinput, id);
+            case "Usage of Bike":
+                return usageofBike(userinput);
+            case "Usage of Public Transport":
+                return usageofPublicTransport(userinput);
+            case "Lower Temperature":
+                return lowerTemperature(userinput, id);
+            case "smoking":
+                return smoking(userinput);
+            case "recycling":
+                return recycling(userinput);
+            case "cfl":
+                return cfl(userinput);
+            default:
+                return -1;
+        }
+    }
+
+
+    /**
+     * Returns the float from vegetarianMeal.
+     *
+     * @param inputfootprintshoppingfoodfruitvegetables the footprint
+     * @return the result points
+     * @throws SQLException raises error if unable to access database
+     */
+    public static float vegetarianMeal(String inputfootprintshoppingfoodfruitvegetables, int id)
+            throws SQLException, UnirestException {
+
+
+        vmmapping(inputfootprintshoppingfoodfruitvegetables, id);
+
+        Map<String, String> params = new HashMap<>();
+        params.put("accept", "application/json");
+        params.put("app_id", "93af0470");
+        params.put("app_key", "be1dbf535bd450c012e78261cf93c0ad");
+        String url = createUrl();
+
+
+        String holder = XML.toJSONObject(Unirest.get(url).headers(params).asString().getBody())
+                .getJSONObject("response").get("result_food_fruitsveg").toString();
+
+
+        float result = Float.parseFloat(holder);
+
+
+        System.out.println(result);
+        keysRemapping();
+        return result;
+    }
+
+    /**
+     * Returns the number of points of localProduct.
+     *
+     * @return points
+     * @throws SQLException raises error if unable to access database
+     */
+    public static float localProduct() throws UnirestException {
+
+
+        Map<String, String> params = getParams();
+
+        String url = getUrl();
+
+
+        String holder = XML.toJSONObject(Unirest.get(url).headers(params).asString()
+                .getBody()).getJSONObject("response")
+                .get("input_takeaction_go_organic_myprodcost").toString();
+
+        float holderNum = Float.parseFloat(holder) * 1000;
+        float result = holderNum / 3;
+        System.out.println(result);
+
+        keysRemapping();
+
+        return result;
+    }
+
+    /**
+     * Retrieve the number of points of UsageBike.
+     *
+     * @param km number of km
+     * @return the points
+     * @throws UnirestException raises error if unable to access database
+     */
+    public static float usageofBike(String km) throws UnirestException {
+
+
+        Map<String, String> params = getParams();
+
+        String url = getUrl();
+
+
+        String holder = XML.toJSONObject(Unirest.get(url).headers(params)
+                .asString().getBody()).getJSONObject("response")
+                .get("result_takeaction_ride_my_bike_driveghgs").toString();
+
+
+        float holderNum = Float.parseFloat(holder) * 1000;
+        float result = holderNum / 365 * Integer.parseInt(km); //result in grams per day
+        System.out.println(result);
+
+        keysRemapping();
+        return result;
+    }
+
+    /**
+     * Retrieves the points of usageofPublicTransport.
+     *
+     * @param inputmiles the number of miles
+     * @return the points
+     */
+    public static float usageofPublicTransport(String inputmiles) {
+
+
+        float carC02 = 118; //average car c02 emissions upon https://www.delijn.be/en/overdelijn/organisatie/zorgzaam-ondernemen/milieu/co2-uitstoot-voertuigen.html
+
+        float bus = 75; // average bus c02 emissions upon https://www.delijn.be/en/overdelijn/organisatie/zorgzaam-ondernemen/milieu/co2-uitstoot-voertuigen.html
+
+        keysRemapping();
+        return (carC02 - bus) * Float.parseFloat(inputmiles);
+    }
+
+    /**
+     * Retrieves the points of lowerTemperature.
+     *
+     * @param inputfootprinthousingcdd the footprint
+     * @return the points
+     */
+    public static float lowerTemperature(String inputfootprinthousingcdd,
+                                         int id) throws SQLException, UnirestException {
+
+        System.out.println("In lower temperature with input: " + inputfootprinthousingcdd);
+
+        ltmapping(inputfootprinthousingcdd, id);
+
+        Map<String, String> params = new HashMap<>();
+        params.put("accept", "application/json");
+        params.put("app_id", "93af0470");
+        params.put("app_key", "be1dbf535bd450c012e78261cf93c0ad");
+        String url = createUrlLT(inputfootprinthousingcdd);
+
+
+        String holder = XML.toJSONObject(Unirest.get(url)
+                .headers(params).asString().getBody()).getJSONObject("response")
+                .get("result_takeaction_thermostat_summer_kwhuse").toString();
+        keysLT = keys;
+
+        float result = Float.parseFloat(holder) * 800;
+
+        if (Integer.valueOf(inputfootprinthousingcdd) != result / 8)
+            return Float.parseFloat(inputfootprinthousingcdd) * 8;
+        System.out.println("The result is: " + result);
+        keysRemapping();
+        return result;
+    }
+
+    /**
+     * Retrieves the points for solarPanels.
+     *
+     * @return the points
+     * @throws SQLException raises error if unable to access database
+     */
+    public static float solarPanels(int id) throws SQLException, UnirestException {
+
+
+        spmapping(id);
+        Map<String, String> params = new HashMap<>();
+        params.put("accept", "application/json");
+        params.put("app_id", "93af0470");
+        params.put("app_key", "be1dbf535bd450c012e78261cf93c0ad");
+        String url = createUrl();
+
+
+        String holder = XML.toJSONObject(Unirest
+                .get(url).headers(params).asString().getBody())
+                .getJSONObject("response").get("result_electricity_direct").toString();
+
+        float result = Float.parseFloat(holder) * 1000;
+        System.out.println(result / 15);
+        keysRemapping();
+        return result / 15;
+    }
+
+    public static void keysRemapping() {
+        keys = keys2;
+    }
+
+    /**
+     * Retrieves the points from recycling.
+     *
+     * @param kg the number of kg
+     * @return the points
+     */
+    public static float recycling(String kg) {
+
+        float carbon = Float.parseFloat("6"); //avg C02 consumption per kg of waste https://timeforchange.org/plastic-bags-and-plastic-bottles-CO2-emissions
+
+        return carbon * Float.parseFloat(kg);
+    }
+
+    /**
+     * Points for smoking.
+     *
+     * @param numberofCigarretes number of cigarretes
+     * @return the points
+     */
+    public static float smoking(String numberofCigarretes) {
+
+
+        float carbon = Float.parseFloat("0.6"); //avg C02 consumption per cigarretes upon http://palebluedot.llc/carbon-copy/2015/10/14/the-carbon-footprint-of-cigarettes
+
+
+        return carbon * Float.parseFloat(numberofCigarretes);
+    }
+
+    /**
+     * Points for cfl.
+     *
+     * @param numberOfcfl number of cfl
+     * @return the points
+     */
+    public static float cfl(String numberOfcfl) {
+
+
+        float carbon = Float.parseFloat("350"); //avg C02 consumption per led per day upon https://www.flickr.com/photos/carbonquilt/8229755738
+
+        return carbon * Float.parseFloat(numberOfcfl);
+    }
+
+    /**
+     * Requests for the API.
+     *
+     * @return the params
+     */
+    private static Map<String, String> getParams() {
+        Map<String, String> params = new HashMap<>();
+        params.put("accept", "application/json");
+        params.put("app_id", "93af0470");
+        params.put("app_key", "be1dbf535bd450c012e78261cf93c0ad");
+        return params;
+    }
+
+    public static String getUrl() {
+        return "https://apis.berkeley.edu/coolclimate/footprint-sandbox?input_location_mode=2&input_location=New%20York%2C%20NY%2C%20USA&input_income=1&input_size=0&input_footprint_transportation_miles1=13000&input_footprint_transportation_mpg1=6&input_footprint_transportation_fuel1=0&result_takeaction_meat_reduction=1";
+    }
+
+
+    private static String getLocation() {
         return "NY";
     }
 
 
-    public static String getInputSize(int id) throws Exception {
-        Connection conn = getConnection(
+    private static String getInputSize(int id) throws SQLException {
+        Connection conn = DriverManager.getConnection(
                 Main.resource.getString("Postgresql.datasource.url"),
                 Main.resource.getString("Postgresql.datasource.username"),
                 Main.resource.getString("Postgresql.datasource.password"));
@@ -475,18 +471,17 @@ public class CoolClimateApi {
         insertData.setInt(1, id);
         ResultSet rs = insertData.executeQuery();
 
-        int save = 0;
+        int save = 1;
         while (rs.next()) {
             save = rs.getInt(1);
         }
-
-        String returnstring = Integer.toString(save);
-        return returnstring;
+        conn.close();
+        return Integer.toString(save);
 
     }
 
-    public static String getIncome(int id) throws Exception {
-        Connection conn = getConnection(
+    private static String getIncome(int id) throws SQLException {
+        Connection conn = DriverManager.getConnection(
                 Main.resource.getString("Postgresql.datasource.url"),
                 Main.resource.getString("Postgresql.datasource.username"),
                 Main.resource.getString("Postgresql.datasource.password"));
@@ -499,18 +494,18 @@ public class CoolClimateApi {
         while (rs.next()) {
             save = rs.getInt(1);
         }
-
-        String returnstring = Integer.toString(save);
-        return returnstring;
+        conn.close();
+        return Integer.toString(save);
     }
 
-    public static String getSquarefeet(int id) throws Exception {
-        Connection conn = getConnection(
+    private static String getSquarefeet(int id) throws SQLException {
+        Connection conn = DriverManager.getConnection(
                 Main.resource.getString("Postgresql.datasource.url"),
                 Main.resource.getString("Postgresql.datasource.username"),
                 Main.resource.getString("Postgresql.datasource.password"));
 
-        PreparedStatement insertData = conn.prepareStatement(Main.resource.getString("qSquarefeet"));
+        PreparedStatement insertData =
+                conn.prepareStatement(Main.resource.getString("qSquarefeet"));
         insertData.setInt(1, id);
         ResultSet rs = insertData.executeQuery();
 
@@ -518,143 +513,137 @@ public class CoolClimateApi {
         while (rs.next()) {
             save = rs.getInt(1);
         }
-
-        String returnstring = Integer.toString(save);
-        return returnstring;
+conn.close();
+        return Integer.toString(save);
     }
 
-    public static String getElectrictyBill(int id) throws Exception {
-        Connection conn = getConnection(
+    private static String getElectrictyBill(int id) throws SQLException {
+        Connection conn = DriverManager.getConnection(
                 Main.resource.getString("Postgresql.datasource.url"),
                 Main.resource.getString("Postgresql.datasource.username"),
                 Main.resource.getString("Postgresql.datasource.password"));
 
-        PreparedStatement insertData = conn.prepareStatement(Main.resource.getString("qElectricityBill"));
+        PreparedStatement insertData =
+                conn.prepareStatement(Main.resource.getString("qElectricityBill"));
         insertData.setInt(1, id);
         ResultSet rs = insertData.executeQuery();
 
         int save = 0;
         while (rs.next()) {
             save = rs.getInt(1);
-
         }
-        String returnstring = Integer.toString(save);
-        return returnstring;
+        conn.close();
+        return Integer.toString(save);
     }
 
-
-    public static String getSquarefeet() {
-        return "10";
+    private static void vmmapping(String inputFootprintShoppingFoodFruitvegetables,
+                                  int id) throws SQLException {
+        calculateTotal(getInputSize(id), getIncome(id), getSquarefeet(id),
+                getElectrictyBill(id), "0",
+                inputFootprintShoppingFoodFruitvegetables, "0");
     }
 
-    public static String getElectrictyBill() {
-        return "2333";
-    }
-
-
-    public static void VMmapping(String input_footprint_shopping_food_fruitvegetables, int id) throws Exception {
-        calculateTotal(getLocation(), getInputSize(id), getIncome(id), getSquarefeet(),
-                getElectrictyBill(), "0", "0",
-                "0", "0",
-                input_footprint_shopping_food_fruitvegetables, "0");
-    }
-
-    public static void LTmapping(String input_footprint_housing_cdd, int id) throws Exception {
-        calculateTotal(getLocation(), getInputSize(id), getIncome(id), getSquarefeet(),
-                getElectrictyBill(), input_footprint_housing_cdd, "0",
-                "0", "0",
+    private static void ltmapping(String inputFootprintHousingCdd, int id) throws SQLException {
+        calculateTotal(getInputSize(id), getIncome(id), getSquarefeet(id),
+                getElectrictyBill(id), inputFootprintHousingCdd,
                 "0", "0");
     }
 
-    public static void SPmapping(int id) throws Exception {
-        calculateTotal(getLocation(), getInputSize(id), getIncome(id), getSquarefeet(),
-                getElectrictyBill(), "0", "0",
-                "0", "0",
-                "0", getElectrictyBill());
+    private static void spmapping(int id) throws SQLException {
+        calculateTotal(getInputSize(id), getIncome(id), getSquarefeet(id),
+                getElectrictyBill(id), "0",
+                "0", getElectrictyBill(id));
     }
 
 
-    public static void calculateTotal(String location, String inputSize, String input_income,
-                                      String input_footprint_housing_squarefeet, String input_footprint_housing_electricity_dollars, String
-                                              input_footprint_housing_cdd,
-                                      String input_footprint_transportation_miles1, String input_footprint_transportation_airtotal,
-                                      String input_footprint_transportation_publictrans, String input_footprint_shopping_food_fruitvegetables,
-                                      String electrictyWhats) {
+    private static void calculateTotal(String inputSize, String inputIncome,
+                                       String inputFootprintHousingSquarefeet,
+                                       String inputFootprintHousingElectricityDollars,
+                                       String inputFootprintHousingCdd,
+                                       String inputFootprintShoppingFoodFruitvegetables,
+                                       String electrictyWhats) {
 
-        keys[0] += location;// User inputs their zip code
+        keys[0] += "NY";// User inputs their zip code
         keys[1] += inputSize;
         keys[2] += inputSize;
         keys[3] += 0;
-        keys[4] += input_income;
-        keys[5] += input_footprint_housing_squarefeet;
-        keys[6] += input_footprint_housing_electricity_dollars;
-        keys[7] += input_footprint_housing_cdd;
-        keys[8] += input_footprint_transportation_miles1;
+        keys[4] += inputIncome;
+        keys[5] += inputFootprintHousingSquarefeet;
+        keys[6] += inputFootprintHousingElectricityDollars;
+        keys[7] += inputFootprintHousingCdd;
+        keys[8] += "0";
         keys[9] += 30;
-        keys[11] += input_footprint_shopping_food_fruitvegetables;
+        keys[11] += inputFootprintShoppingFoodFruitvegetables;
         keys[10] += electrictyWhats;
 
 
     }
 
-    public static String createUrlLT(String input) {
-        String result = "https://apis.berkeley.edu/coolclimate/footprint?";
+    private static String createUrlLT(String input) {
+        StringBuilder result = new StringBuilder("https://apis.berkeley.edu/coolclimate/footprint?");
 
         for (int i = 0; i < keysLT.length; i++) {
-            if (i == 7) result += keysLT[i] + input + "&";
+            if (i == 7) result.append(keysLT[i]).append(input).append("&");
 
-            result += keysLT[i] + "&";
-
-
-        }
-        for (int i = 0; i < requiredKeys.length; i++) {
-
-
-            result += requiredKeys[i] + "&";
+            result.append(keysLT[i]).append("&");
 
 
         }
+        buildUrl(result, keys);
 
         for (int i = 0; i < takeActionKeys.length; i++) {
             if (i == takeActionKeys.length - 1) {
-                result += takeActionKeys[i];
+                result.append(takeActionKeys[i]);
                 break;
             }
 
-            result += takeActionKeys[i] + "&";
+            result.append(takeActionKeys[i]).append("&");
         }
 
-        return result;
+        return result.toString();
 
     }
 
-    public static String createUrl() {
-        String result = "https://apis.berkeley.edu/coolclimate/footprint?";
-        for (int i = 0; i < keys.length; i++) {
+    private static String createUrl() {
+        StringBuilder result = new StringBuilder("https://apis.berkeley.edu/coolclimate/footprint?");
 
-            result += keys[i] + "&";
+        for (String key : keys) {
+
+            result.append(key).append("&");
 
 
         }
-        for (int i = 0; i < requiredKeys.length; i++) {
+        for (String requiredKey : requiredKeys) {
 
 
-            result += requiredKeys[i] + "&";
+            result.append(requiredKey).append("&");
 
 
         }
 
         for (int i = 0; i < takeActionKeys.length; i++) {
             if (i == takeActionKeys.length - 1) {
-                result += takeActionKeys[i];
+                result.append(takeActionKeys[i]);
                 break;
             }
 
-            result += takeActionKeys[i] + "&";
+            result.append(takeActionKeys[i]).append("&");
         }
 
-        return result;
+        return result.toString();
 
+    }
+
+    private static StringBuilder buildUrl(StringBuilder result, String[]... strings) {
+        for (String[] k : strings) {
+            for (String key : k) {
+
+                result.append(key).append("&");
+
+
+            }
+        }
+        return result;
     }
 
 }
