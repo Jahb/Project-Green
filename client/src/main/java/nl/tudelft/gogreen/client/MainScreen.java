@@ -34,7 +34,7 @@ import java.util.function.Consumer;
  * MainScreen object.
  *
  * @author Kamron Geijsen
- * @version 4.20.21
+ * @version 4.20.24
  */
 public class MainScreen implements Initializable {
 
@@ -144,8 +144,7 @@ public class MainScreen implements Initializable {
         ringPrevious.setUsername(Api.current.getUsernamePrevious());
         anchorPane.getChildren().add(ringPrevious.getPane());
 
-        scene.widthProperty()
-                .addListener((obs, oldVal, newVal) -> {
+        scene.widthProperty().addListener((obs, oldVal, newVal) -> {
                     ringMain.setX(newVal.intValue() / 2);
                     ringNext.setX(120);
                     ringPrevious.setX(newVal.intValue() - 120);
@@ -184,6 +183,14 @@ public class MainScreen implements Initializable {
         activityButton = new AddActivityButton();
         activityButton.setHandler(handler);
         anchorPane.getChildren().add(0, activityButton.getPane());
+        
+        scene.widthProperty().addListener((obs, oldVal, newVal) -> {
+	        activityButton.setX((newVal.longValue()-(600*31/32))/2);
+        });
+        
+        scene.heightProperty().addListener((obs, oldVal, newVal) -> {
+	        activityButton.setY(newVal.longValue()-75);
+        });
     }
 
     private void addIconButtons(BorderPane root) {

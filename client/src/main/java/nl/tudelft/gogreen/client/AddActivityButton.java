@@ -177,7 +177,7 @@ class AddActivityButton {
 
         activityButtonPane.setPrefWidth((double) (600 * 15 / 16));
         activityButtonPane.setPrefHeight(height);
-        activityButtonPane.setLayoutX(500 - 600.0 * 31 / 64);
+        activityButtonPane.setLayoutX((1000 - 600.0 * 31 / 32) / 2);
         activityButtonPane.setLayoutY(720 - 75);
         activityButtonPane.setVisible(false);
 
@@ -222,6 +222,14 @@ class AddActivityButton {
 
     public Pane getPane() {
         return activityButtonPane;
+    }
+    
+    public void setX(double value) {
+        activityButtonPane.setLayoutX(value);
+    }
+    
+    public void setY(double value) {
+        activityButtonPane.setLayoutY(value);
     }
 
     private void setMetadataVisible(boolean visible) {
