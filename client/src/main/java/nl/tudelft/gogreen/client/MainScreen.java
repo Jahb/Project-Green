@@ -282,7 +282,7 @@ public class MainScreen implements Initializable {
             }
             container.getChildren().add(populateDropDownMenu(newValue, options, searchField));
         });
-
+        searchButton.setOnMouseClicked(event -> Api.current.follow(searchField.getText()));
     }
 
     /**
