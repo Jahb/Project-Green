@@ -118,7 +118,7 @@ public class ProfileController implements Initializable {
             follow.setText("Follow");
         }
 
-        List<Integer> ach = Api.current.getAchievemens(username);
+        List<Integer> ach = Api.current.getAchievements(username);
         List<String> names = Api.current.getAchievementNames();
 
         int switchSize;
