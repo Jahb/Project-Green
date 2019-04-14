@@ -3,7 +3,6 @@ package nl.tudelft.gogreen.client;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXDrawer;
 import com.jfoenix.controls.JFXTextField;
-import com.mashape.unirest.http.exceptions.UnirestException;
 import javafx.application.Platform;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -28,7 +27,6 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 import java.util.function.Consumer;
-
 
 /**
  * MainScreen object.
@@ -60,16 +58,17 @@ public class MainScreen implements Initializable {
     private AnchorPane root;
     // TODO handler for each subcategory
     private Consumer<String> handler = name -> {
-        //Line below this one used to be res = API...... removed for checkStyle
+        // Line below this one used to be res = API...... removed for checkStyle
         Api.current.addFeature(name);
         System.out.println(name);
         updateRingValues();
     };
-    //TODO handler for each ring category
+    // TODO handler for each ring category
     private Consumer<String> ringHandler = name -> System.out.println("EXE [" + name + "]");
 
     /**
      * Creates a scene for MainScreen.
+     * 
      */
     public Scene getScene() throws IOException {
         URL url = Main.class.getResource("/MainScreen.fxml");
@@ -91,19 +90,17 @@ public class MainScreen implements Initializable {
         addIconButtons(buttonsPanel);
         addActivityButton(overlayLayer);
 
-
         helpText.setVisible(false);
         overlayLayer.setPrefSize(1000, 720);
 
         overlayLayer.setPickOnBounds(false);
         buttonsPanel.setPickOnBounds(false);
 
-        //Streaks
-        //TODO Implement Streaks. condition to check if first login today.
+        // Streaks
+        // TODO Implement Streaks. condition to check if first login today.
         if (true) {
             setUpStreak();
         }
-
 
         scene.addEventHandler(MouseEvent.MOUSE_PRESSED, event -> {
             Node node = event.getPickResult().getIntersectedNode();
@@ -115,7 +112,8 @@ public class MainScreen implements Initializable {
     }
 
     /**
-     * toggles between showing and hiding dropdown menu
+     * toggles between showing and hiding dropdown menu.
+     * 
      */
     private static void toggleNotifications(JFXDrawer notificationBox) {
         if (!notificationBox.isShown()) {
@@ -126,7 +124,6 @@ public class MainScreen implements Initializable {
             notificationBox.setMouseTransparent(true);
         }
     }
-
 
     private void addRings(AnchorPane anchorPane) {
         ringMain = new Ring((int) (150 * .75), 150, Main.getWidth() / 2, 200, "MAIN");
@@ -145,10 +142,10 @@ public class MainScreen implements Initializable {
         anchorPane.getChildren().add(ringPrevious.getPane());
 
         scene.widthProperty().addListener((obs, oldVal, newVal) -> {
-                    ringMain.setX(newVal.intValue() / 2);
-                    ringNext.setX(120);
-                    ringPrevious.setX(newVal.intValue() - 120);
-                });
+            ringMain.setX(newVal.intValue() / 2);
+            ringNext.setX(120);
+            ringPrevious.setX(newVal.intValue() - 120);
+        });
 
         updateRingValues();
 
@@ -176,20 +173,19 @@ public class MainScreen implements Initializable {
             Platform.runLater(() -> ringPrevious.startAnimation());
         }).start();
 
-
     }
 
     private void addActivityButton(AnchorPane anchorPane) {
         activityButton = new AddActivityButton();
         activityButton.setHandler(handler);
         anchorPane.getChildren().add(0, activityButton.getPane());
-        
+
         scene.widthProperty().addListener((obs, oldVal, newVal) -> {
-	        activityButton.setX((newVal.longValue()-(600*31/32))/2);
+            activityButton.setX((newVal.longValue() - (600 * 31 / 32)) / 2);
         });
-        
+
         scene.heightProperty().addListener((obs, oldVal, newVal) -> {
-	        activityButton.setY(newVal.longValue()-75);
+            activityButton.setY(newVal.longValue() - 75);
         });
     }
 
@@ -197,7 +193,6 @@ public class MainScreen implements Initializable {
         IconButton leaderboardButton = new IconButton("Leaderboard", 150, 150);
         IconButton addButton = new IconButton("Add", 600, 150);
         IconButton eventButton = new IconButton("Event", 150, 150);
-
 
         root.setLeft(leaderboardButton.getStackPane());
         root.setCenter(addButton.getStackPane());
@@ -226,18 +221,19 @@ public class MainScreen implements Initializable {
         rightHbox.getChildren().add(root2);
         profileButton.setOnClick(event -> Main.openProfileScreen());
 
-
     }
 
     /**
-     * add labels to the vbox
+     * Add labels to the vbox.
+     * 
      */
     public VBox setLabels() {
         VBox labelVBox = new VBox();
         Label title = new Label(" Recent notifications:");
         title.setMinWidth(350);
         title.setMinHeight(40);
-        title.setStyle("-fx-font-weight: bold; -fx-background-color: #50e476; -fx-font-size: 20; -fx-text-fill: white");
+        title.setStyle("-fx-font-weight: bold; -fx-background-color: #50e476; " +
+            "-fx-font-size: 20; -fx-text-fill: white");
         Label empty = new Label(" There are no notifications.");
         empty.setMinHeight(30);
         empty.setMinWidth(350);
@@ -251,8 +247,8 @@ public class MainScreen implements Initializable {
                 Label label = new Label(text);
                 label.setMinWidth(350);
                 label.setMinHeight(30);
-                label.setStyle("-fx-border-radius: 1; -fx-border-color: gray; -fx-background-color: white;" +
-                        " -fx-font-weight: bold; -fx-font-size:16");
+                label.setStyle("-fx-border-radius: 1; -fx-border-color: gray; " +
+                    "-fx-background-color: white; -fx-font-weight: bold; -fx-font-size:16");
                 labelVBox.getChildren().add(label);
             }
         }
@@ -260,7 +256,8 @@ public class MainScreen implements Initializable {
     }
 
     /**
-     * shows notifications
+     * Shows notifications.
+     * 
      */
     public void initialize(URL location, ResourceBundle resources) {
         IconButton notificationButton = new IconButton("Bell", 70, 70);
@@ -269,7 +266,8 @@ public class MainScreen implements Initializable {
         topLeftButtons.getChildren().add(quizButton.getStackPane());
         quizButton.setOnClick(event -> Main.openQuizScreen());
         notificationButton.setOnClick(event -> {
-            if (notificationBox.isHidden()) notificationBox.setSidePane(setLabels());
+            if (notificationBox.isHidden())
+                notificationBox.setSidePane(setLabels());
             toggleNotifications(notificationBox);
         });
         /*
@@ -277,9 +275,11 @@ public class MainScreen implements Initializable {
          */
         Main.showMessage(notificationPane, "You have opened the main screen");
         /*
-         * String array with all usernames TODO retrieve usernames from database to string options (maybe move this to server)
+         * String array with all usernames TODO retrieve usernames from database to
+         * string options (maybe move this to server)
          */
-        String[] options = {"user1", "asdf", "aaa", "wovuwe", "brrrr", "name", "sample", "sample223", "naaaaaaaaaaame", "namenamename", "username"};
+        String[] options = { "user1", "asdf", "aaa", "wovuwe", "brrrr",
+            "name", "sample", "sample223", "naaaaaaaaaaame", "namenamename", "username" };
         searchField.textProperty().addListener((observable, oldValue, newValue) -> {
             if (container.getChildren().size() > 1) {
                 container.getChildren().remove(1);
@@ -307,26 +307,27 @@ public class MainScreen implements Initializable {
             String substring;
             if (!option.equals(text)) {
                 substring = option.substring(0, Math.min(text.length(), option.length()));
-            } else substring = text;
-            if (!text.replace(" ", "").isEmpty() && substring.toUpperCase().equals(text.toUpperCase())) {
+            } else
+                substring = text;
+            if (!text.replace(" ", "").isEmpty() &&
+                substring.toUpperCase().equals(text.toUpperCase())) {
                 Label label = new Label(option);
                 label.setMinWidth(330);
                 label.setStyle("-fx-border-radius: 1; -fx-border-color: gray;");
                 label.setOnMouseClicked(new EventHandler<MouseEvent>() {
-                                            @Override
-                                            public void handle(MouseEvent event) {
-                                                search.setText(label.getText());
-                                            }
-                                        }
-                );
-                dropDownMenu.getChildren().add(label); //adds suggestion to VBox
+                    @Override
+                    public void handle(MouseEvent event) {
+                        search.setText(label.getText());
+                    }
+                });
+                dropDownMenu.getChildren().add(label); // adds suggestion to VBox
             }
         }
         return dropDownMenu;
     }
 
     private void setUpStreak() {
-        //TODO Get Streak Days
+        // TODO Get Streak Days
         int streakDays = 6;
         AnchorPane streakPane = (AnchorPane) root.getChildren().get(3);
         BorderPane buttonPane = (BorderPane) streakPane.getChildren().get(0);
