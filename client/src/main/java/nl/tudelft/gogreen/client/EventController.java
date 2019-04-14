@@ -24,23 +24,23 @@ import nl.tudelft.gogreen.shared.EventItem;
 import java.io.IOException;
 import java.net.URL;
 import java.time.format.DateTimeFormatter;
-import java.time.format.DateTimeFormatterBuilder;
-import java.util.Date;
 import java.util.List;
 import java.util.ResourceBundle;
 
+
 public class EventController implements Initializable {
 
-    private AnchorPane root;
+    private static ObservableList<EventItem> allEvents = FXCollections.observableArrayList();
+    private static ObservableList<EventItem> userEvents = FXCollections.observableArrayList();
 
+    @FXML
+    public BorderPane buttonPane;
     @FXML
     public ListView<EventItem> eventList;
     @FXML
     public ListView<EventItem> fullEventList;
     @FXML
     public AnchorPane createEvent;
-    @FXML
-    public BorderPane buttonPane;
     @FXML
     public JFXTextField newEventName;
     @FXML
@@ -50,11 +50,10 @@ public class EventController implements Initializable {
     @FXML
     public JFXTimePicker newEventTime;
 
-    private ObservableList<EventItem> allEvents = FXCollections.observableArrayList();
-    private ObservableList<EventItem> userEvents = FXCollections.observableArrayList();
-
+    private AnchorPane root;
     private DateTimeFormatter timeFormat = DateTimeFormatter.ofPattern("HH:mm");
     private DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+
 
     /**
      * Returns ProfileGUI Scene.
@@ -104,11 +103,19 @@ public class EventController implements Initializable {
                 ((JFXDatePicker) base.getChildren().get(3)).getValue().format(dateFormat));
         createEvent.setVisible(false);
         new Thread(() -> Api.current.newEvent(newEvent)).start();
+        refreshEvents();
+    }
+
+    private void refreshEvents() {
         new Thread(() -> {
             List<EventItem> all = Api.current.getAllEvents();
             List<EventItem> user = Api.current.getUserEvents();
-            Platform.runLater(() -> allEvents.addAll(all));
-            Platform.runLater(() -> userEvents.addAll(user));
+            Platform.runLater(() -> {
+                allEvents.clear();
+                allEvents.addAll(all);
+                userEvents.clear();
+                userEvents.addAll(user);
+            });
         }).start();
     }
 
@@ -122,12 +129,7 @@ public class EventController implements Initializable {
      */
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        new Thread(() -> {
-            List<EventItem> all = Api.current.getAllEvents();
-            List<EventItem> user = Api.current.getUserEvents();
-            Platform.runLater(() -> allEvents.addAll(all));
-            Platform.runLater(() -> userEvents.addAll(user));
-        }).start();
+        refreshEvents();
 
         fullEventList.setItems(allEvents);
         fullEventList.setCellFactory(param -> new Cell(userEvents));
@@ -186,10 +188,12 @@ public class EventController implements Initializable {
         private void joinEvent(ObservableList<EventItem> events) {
             events.add(getItem());
             new Thread(() -> Api.current.joinEvent(getItem().getName())).start();
+            refreshEvents();
         }
 
         private void leaveEvent() {
-            //TODO for event leave
+            Api.current.leaveEvent(getItem().getName());
+            refreshEvents();
             this.getListView().getItems().remove(getItem());
         }
 

@@ -10,10 +10,12 @@ import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
+import nl.tudelft.gogreen.client.communication.Api;
 
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
+import java.util.stream.Collectors;
 
 public class AchievementsController implements Initializable {
 
@@ -51,16 +53,18 @@ public class AchievementsController implements Initializable {
     public void initialize(URL location, ResourceBundle resources) {
         //TODO Add achievements to the list which contains all achievements
         allAchievementsList.clear();
-        ListItem ach1 =  new ListItem("achievement1", "images/IconCupGold.png", "Description 1");
-        ListItem ach2 =  new ListItem("achievement2", "images/IconCupGold.png", "Description 2");
-        ListItem ach3 =  new ListItem("achievement3", "images/IconCupGold.png", "Description 3");
-        ListItem ach4 = new ListItem("achievement4", "images/IconCupGold.png", "Description 4");
-        allAchievementsList.add(ach1);
-        allAchievementsList.add(ach2);
-        allAchievementsList.add(ach3);
-        allAchievementsList.add(ach4);
-        userAchievementsList.add(ach2);
-        userAchievementsList.add(ach4);
+
+        allAchievementsList.addAll(
+                Api.current.getAchievementNames().stream().map(it ->
+                        new ListItem(it, "images/IconCupGold.png", ""))
+                        .collect(Collectors.toList()));
+        userAchievementsList.addAll(
+                Api.current.getAchievements(
+                        Api.current.getUsername())
+                        .stream().map(it ->
+                        Api.current.getAchievementNames().get(it - 1))
+                        .map(it -> new ListItem(it, "images/IconCupGold.png", ""))
+                        .collect(Collectors.toList()));
         allAchievements.setCellFactory(param -> new Cell());
         userAchievements.setCellFactory(param -> new Cell());
 

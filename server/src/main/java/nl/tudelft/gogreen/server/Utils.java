@@ -4,11 +4,18 @@ import nl.tudelft.gogreen.server.features.NewFeature;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
-public class Utils{
+public class Utils {
 
+    /**
+     * verify a list of usernames.
+     * @param usernames the usernames to verify
+     * @return a list of uids
+     */
     public static List<Integer> verifyUsersValid(String... usernames) {
         try {
             List<Integer> uids = new ArrayList<>();
@@ -17,14 +24,14 @@ public class Utils{
                     Main.resource.getString("Postgresql.datasource.username"),
                     Main.resource.getString("Postgresql.datasource.password"));
             for (String username : usernames) {
-                int otherID = NewFeature.getId(username,conn);
-                uids.add(otherID);
+                int otherid = NewFeature.getId(username, conn);
+                uids.add(otherid);
             }
             return uids;
-        } catch (Exception e) {
+        } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
-        return null;
+        return Collections.emptyList();
 
 
     }

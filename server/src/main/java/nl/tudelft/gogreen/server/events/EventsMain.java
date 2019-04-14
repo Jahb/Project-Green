@@ -1,6 +1,7 @@
 package nl.tudelft.gogreen.server.events;
 
 import nl.tudelft.gogreen.server.Main;
+import nl.tudelft.gogreen.server.achievements.Achievements;
 import nl.tudelft.gogreen.server.features.NewFeature;
 import nl.tudelft.gogreen.shared.EventItem;
 
@@ -23,11 +24,11 @@ public class EventsMain {
      * @param date        the date of the event
      * @param time        the time of the event
      * @param conn        connection to the database
-     * @throws Exception raises when an error occurs accessing
+     * @throws SQLException raises when an error occurs accessing
      */
     public static void create_event(String username, String eventName,
                                     String description, String date, String time,
-                                    Connection conn) throws Exception {
+                                    Connection conn) throws SQLException {
 
         int idEvent = getMaxId(conn);
         int idCreator = NewFeature.getId(username, conn);
@@ -44,6 +45,8 @@ public class EventsMain {
         createEvent.setString(6, time);
         System.out.println(createEvent.toString());
         createEvent.execute();
+        Achievements.addAchievement(idCreator, 10);
+        conn.close();
     }
 
 
@@ -59,10 +62,18 @@ public class EventsMain {
         return getEventItems(events);
     }
 
-    public static List<EventItem> get_user_events(String username, Connection conn) throws SQLException {
+    /**
+     * Get the events for a user.
+     * @param username the username to get all events for
+     * @param conn a sql connection
+     * @return a list of eventItems
+     * @throws SQLException when the database has an error
+     */
+    public static List<EventItem> get_user_events(String username,
+                                                  Connection conn) throws SQLException {
         PreparedStatement events = conn.prepareStatement(Main.resource.getString("qGetUserEvents"));
         int idCreator = NewFeature.getId(username, conn);
-        events.setInt(1,idCreator);
+        events.setInt(1, idCreator);
         return getEventItems(events);
     }
 
@@ -90,7 +101,8 @@ public class EventsMain {
                                     Connection conn) throws Exception {
         //delete event
 
-        PreparedStatement delete = conn.prepareStatement(Main.resource.getString("qDeleteFromEvent"));
+        PreparedStatement delete = conn.prepareStatement(
+                Main.resource.getString("qDeleteFromEvent"));
         delete.setString(1, eventName);
         delete.execute();
 
@@ -105,14 +117,17 @@ public class EventsMain {
      * @throws Exception raises when an error occurs accessing
      */
     public static void join_event(String username, String eventName,
-                                  Connection conn) throws Exception {
+                                  Connection conn) throws SQLException {
 
         int id = NewFeature.getId(username, conn);
-        PreparedStatement join = conn.prepareStatement(Main.resource.getString("qJoinEvent"));
+        PreparedStatement join = conn.prepareStatement(
+                Main.resource.getString("qJoinEvent"));
         join.setString(1, eventName);
         join.setInt(2, id);
         join.setInt(3, NewFeature.getId(username, conn));
         join.execute();
+        Achievements.addAchievement(id, 11);
+        conn.close();
 
     }
 
@@ -125,7 +140,7 @@ public class EventsMain {
      * @throws Exception raises when an error occurs accessing
      */
     public static void leave_event(String username, String eventName,
-                                   Connection conn) throws Exception {
+                                   Connection conn) throws SQLException {
 
         int id = NewFeature.getId(username, conn);
         PreparedStatement leave = conn.prepareStatement(Main.resource.getString("qLeaveEvent"));
@@ -160,10 +175,10 @@ public class EventsMain {
      *
      * @param conn connection to the database
      * @return returns the id
-     * @throws Exception raises when an error occurs accessing
+     * @throws SQLException raises when an error occurs accessing
      */
 
-    public static int getMaxId(Connection conn) throws Exception {
+    public static int getMaxId(Connection conn) throws SQLException {
 
         PreparedStatement getMaxId = conn.prepareStatement(Main.resource.getString("qGetMaxId"));
         ResultSet rs0 = getMaxId.executeQuery();
@@ -179,9 +194,9 @@ public class EventsMain {
      *
      * @param id   of the user
      * @param conn connection to the database
-     * @throws Exception raises when an error occurs accessing
+     * @throws SQLException raises when an error occurs accessing
      */
-    public static void deleteAllAtendance(int id, Connection conn) throws Exception {
+    public static void deleteAllAtendance(int id, Connection conn) throws SQLException {
         PreparedStatement delAttendance =
                 conn.prepareStatement(Main.resource.getString("qDeleteAllAtendance"));
         delAttendance.setInt(1, id);
@@ -193,10 +208,9 @@ public class EventsMain {
      *
      * @param id   of the user
      * @param conn connection to the database
-     * @throws Exception raises when an error occurs accessing
+     * @throws SQLException raises when an error occurs accessing
      */
-    public static void deleteAllEvents(int id, Connection conn) throws Exception {
-
+    public static void deleteAllEvents(int id, Connection conn) throws SQLException {
 
 
         PreparedStatement delEventAttendance =
@@ -204,7 +218,8 @@ public class EventsMain {
 
         delEventAttendance.setInt(1, id);
         delEventAttendance.execute();
-        PreparedStatement delEvent = conn.prepareStatement(Main.resource.getString("qDeleteAllEvents"));
+        PreparedStatement delEvent = conn.prepareStatement(
+                Main.resource.getString("qDeleteAllEvents"));
         delEvent.setInt(1, id);
         delEvent.execute();
     }

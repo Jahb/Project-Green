@@ -3,7 +3,7 @@ package nl.tudelft.gogreen.server;
 
 import nl.tudelft.gogreen.server.auth.CreateUser;
 import nl.tudelft.gogreen.server.features.NewFeature;
-import nl.tudelft.gogreen.server.statistics.Achievements;
+import nl.tudelft.gogreen.server.achievements.Achievements;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;

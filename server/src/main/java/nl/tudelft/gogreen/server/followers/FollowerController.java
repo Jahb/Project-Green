@@ -1,6 +1,5 @@
 package nl.tudelft.gogreen.server.followers;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import nl.tudelft.gogreen.server.Main;
 import nl.tudelft.gogreen.server.Utils;
@@ -21,6 +20,7 @@ import org.springframework.web.socket.WebSocketSession;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.SQLException;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -37,6 +37,11 @@ public class FollowerController {
         this.mapper = mapper;
     }
 
+    /**
+     * Get the current username.
+     *
+     * @return the username
+     */
     public String getCurrentUser() {
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
@@ -49,8 +54,14 @@ public class FollowerController {
         return username;
     }
 
+    /**
+     * Follow another user.
+     *
+     * @param username the username to follow
+     * @return a boolean indicating success
+     */
     @PostMapping("/follow")
-    public MessageHolder<Boolean> follow(String username) throws IOException {
+    public MessageHolder<Boolean> follow(String username) {
         List<Integer> users = Utils.verifyUsersValid(getCurrentUser(), username);
         System.out.println(users);
         if (users.stream().anyMatch(integer -> integer == -1)) {
@@ -58,17 +69,27 @@ public class FollowerController {
         }
         try {
             Following.follow(users.get(0), users.get(1));
-        } catch (Exception e) {
+        } catch (SQLException e) {
             e.printStackTrace();
             return new MessageHolder<>("Follow", false);
         }
         PingPacket msg = new PingPacket(PingPacketData.FOLLOWER, getCurrentUser());
         WebSocketSession sess = LiveConnections.sessionMap.get(username);
-        if (sess != null)
-            sess.sendMessage(new TextMessage(mapper.writeValueAsString(msg)));
+        if (sess != null) {
+            try {
+                sess.sendMessage(new TextMessage(mapper.writeValueAsString(msg)));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
         return new MessageHolder<>("Follow", true);
     }
 
+    /**
+     * Unfollow a user.
+     * @param username the user to unfollow
+     * @return a boolean indicating success
+     */
     @PostMapping("/unfollow")
     public MessageHolder<Boolean> unfollow(String username) {
         List<Integer> users = Utils.verifyUsersValid(getCurrentUser(), username);
@@ -77,55 +98,59 @@ public class FollowerController {
         }
         try {
             Following.unfollow(users.get(0), users.get(1));
-        } catch (Exception e) {
+        } catch (SQLException e) {
             e.printStackTrace();
             return new MessageHolder<>("Unfollow", false);
         }
         return new MessageHolder<>("Unfollow", true);
     }
 
-
-    @PostMapping("/activity")
-    public MessageHolder<Integer> activity(String username) {
-        try {
-            return new MessageHolder<>("Follower activity", NewFeature.getTotal(username));
-        } catch (Exception e) {
-            return new MessageHolder<>("Follower activity", 0);
-        }
-    }
-
+    /**
+     * Get the users you are following, and their total amount of points.
+     * @param username the username you want this info for
+     * @return a map of people following you to their total points
+     */
     @PostMapping("/following")
-    public MessageHolder<Map<String, Integer>> following() {
-        List<Integer> users = Utils.verifyUsersValid(getCurrentUser());
+    public MessageHolder<Map<String, Integer>> following(String username) {
+        List<Integer> users = Utils.verifyUsersValid(username);
         Map<String, Integer> result = new HashMap<>();
         try (Connection conn = DriverManager.getConnection(
                 Main.resource.getString("Postgresql.datasource.url"),
                 Main.resource.getString("Postgresql.datasource.username"),
                 Main.resource.getString("Postgresql.datasource.password"))) {
-            List<String> following = Following.showAllFollowing(users.get(0), conn).stream().map(userid -> Following.toUsername(userid, conn)).collect(Collectors.toList());
+            List<String> following = Following.showAllFollowing(users.get(0),
+                    conn).stream().map(userid ->
+                    Following.toUsername(userid, conn)).collect(Collectors.toList());
             for (String s : following) {
                 result.put(s, NewFeature.getTotal(s));
             }
 
-        } catch (Exception e) {
+        } catch (SQLException e) {
             result.putAll(Collections.emptyMap());
         }
         return new MessageHolder<>("Following", result);
     }
 
+    /**
+     * Get your followers, and their total amount of points.
+     * @param username the username you want this info for
+     * @return a map of followers to their total points
+     */
     @PostMapping("/followers")
-    public MessageHolder<Map<String, Integer>> followers() {
-        List<Integer> users = Utils.verifyUsersValid(getCurrentUser());
+    public MessageHolder<Map<String, Integer>> followers(String username) {
+        List<Integer> users = Utils.verifyUsersValid(username);
         Map<String, Integer> result = new HashMap<>();
         try (Connection conn = DriverManager.getConnection(
                 Main.resource.getString("Postgresql.datasource.url"),
                 Main.resource.getString("Postgresql.datasource.username"),
                 Main.resource.getString("Postgresql.datasource.password"))) {
-            List<String> followers = Following.showAllFollowers(users.get(0), conn).stream().map(userid -> Following.toUsername(userid, conn)).collect(Collectors.toList());
+            List<String> followers = Following.showAllFollowers(users.get(0),
+                    conn).stream().map(userid ->
+                    Following.toUsername(userid, conn)).collect(Collectors.toList());
             for (String s : followers) {
                 result.put(s, NewFeature.getTotal(s));
             }
-        } catch (Exception e) {
+        } catch (SQLException e) {
             result.putAll(Collections.emptyMap());
         }
         return new MessageHolder<>("Followers", result);

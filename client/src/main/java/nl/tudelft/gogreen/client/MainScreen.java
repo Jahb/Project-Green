@@ -4,7 +4,6 @@ import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXDrawer;
 import com.jfoenix.controls.JFXTextField;
 import javafx.application.Platform;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -22,6 +21,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import nl.tudelft.gogreen.client.communication.Api;
+import nl.tudelft.gogreen.shared.PingPacketData;
 
 import java.io.IOException;
 import java.net.URL;
@@ -37,6 +37,9 @@ import java.util.function.Consumer;
 public class MainScreen implements Initializable {
 
     public static String[] strings = new String[7];
+
+    private static boolean hasShownStreak = false;
+
     @FXML
     public HBox topLeftButtons;
     @FXML
@@ -58,17 +61,20 @@ public class MainScreen implements Initializable {
     private AnchorPane root;
     // TODO handler for each subcategory
     private Consumer<String> handler = name -> {
-        // Line below this one used to be res = API...... removed for checkStyle
-        Api.current.addFeature(name);
+        //Line below this one used to be res = API...... removed for checkStyle
+        System.out.println(name);
+        String[] split = name.split(":");
+        Api.current.addFeature(split[1], Integer.parseInt(split[2]));
         System.out.println(name);
         updateRingValues();
     };
-    // TODO handler for each ring category
+
+
+    //TODO handler for each ring category
     private Consumer<String> ringHandler = name -> System.out.println("EXE [" + name + "]");
 
     /**
      * Creates a scene for MainScreen.
-     * 
      */
     public Scene getScene() throws IOException {
         URL url = Main.class.getResource("/MainScreen.fxml");
@@ -96,9 +102,9 @@ public class MainScreen implements Initializable {
         overlayLayer.setPickOnBounds(false);
         buttonsPanel.setPickOnBounds(false);
 
-        // Streaks
-        // TODO Implement Streaks. condition to check if first login today.
-        if (true) {
+        //Streaks
+        //TODO Implement Streaks. condition to check if first login today.
+        if (!hasShownStreak) {
             setUpStreak();
         }
 
@@ -113,7 +119,6 @@ public class MainScreen implements Initializable {
 
     /**
      * toggles between showing and hiding dropdown menu.
-     * 
      */
     private static void toggleNotifications(JFXDrawer notificationBox) {
         if (!notificationBox.isShown()) {
@@ -224,20 +229,19 @@ public class MainScreen implements Initializable {
     }
 
     /**
-     * Add labels to the vbox.
-     * 
+     * add labels to the vbox.
      */
     public VBox setLabels() {
-        VBox labelVBox = new VBox();
         Label title = new Label(" Recent notifications:");
         title.setMinWidth(350);
         title.setMinHeight(40);
         title.setStyle("-fx-font-weight: bold; -fx-background-color: #50e476; " +
-            "-fx-font-size: 20; -fx-text-fill: white");
+                "-fx-font-size: 20; -fx-text-fill: white");
         Label empty = new Label(" There are no notifications.");
         empty.setMinHeight(30);
         empty.setMinWidth(350);
         empty.setStyle("-fx-font-size: 16; -fx-text-fill:grey; -fx-background-color: white;");
+        VBox labelVBox = new VBox();
         labelVBox.getChildren().add(title);
         if (strings[0] == null) {
             labelVBox.getChildren().add(empty);
@@ -248,7 +252,7 @@ public class MainScreen implements Initializable {
                 label.setMinWidth(350);
                 label.setMinHeight(30);
                 label.setStyle("-fx-border-radius: 1; -fx-border-color: gray; " +
-                    "-fx-background-color: white; -fx-font-weight: bold; -fx-font-size:16");
+                        "-fx-background-color: white; -fx-font-weight: bold; -fx-font-size:16");
                 labelVBox.getChildren().add(label);
             }
         }
@@ -256,8 +260,7 @@ public class MainScreen implements Initializable {
     }
 
     /**
-     * Shows notifications.
-     * 
+     * shows notifications.
      */
     public void initialize(URL location, ResourceBundle resources) {
         IconButton notificationButton = new IconButton("Bell", 70, 70);
@@ -273,13 +276,11 @@ public class MainScreen implements Initializable {
         /*
          * testing notifications
          */
-        Main.showMessage(notificationPane, "You have opened the main screen");
-        /*
-         * String array with all usernames TODO retrieve usernames from database to
-         * string options (maybe move this to server)
-         */
-        String[] options = { "user1", "asdf", "aaa", "wovuwe", "brrrr",
-            "name", "sample", "sample223", "naaaaaaaaaaame", "namenamename", "username" };
+        //Main.showMessage(notificationPane, "You have opened the main screen");
+        Api.current.registerNotification(PingPacketData.FOLLOWER, data ->
+                Main.showMessage(notificationPane, "You have a new Follower: " + data));
+
+        String[] options = Api.current.getAllUsers().toArray(new String[0]);
         searchField.textProperty().addListener((observable, oldValue, newValue) -> {
             if (container.getChildren().size() > 1) {
                 container.getChildren().remove(1);
@@ -287,6 +288,8 @@ public class MainScreen implements Initializable {
             container.getChildren().add(populateDropDownMenu(newValue, options, searchField));
         });
 
+        //Method for following an user
+        searchButton.setOnMouseClicked(event -> Api.current.follow(searchField.getText()));
     }
 
     /**
@@ -307,28 +310,23 @@ public class MainScreen implements Initializable {
             String substring;
             if (!option.equals(text)) {
                 substring = option.substring(0, Math.min(text.length(), option.length()));
-            } else
-                substring = text;
+            } else substring = text;
             if (!text.replace(" ", "").isEmpty() &&
-                substring.toUpperCase().equals(text.toUpperCase())) {
+                    substring.toUpperCase().equals(text.toUpperCase())) {
                 Label label = new Label(option);
                 label.setMinWidth(330);
                 label.setStyle("-fx-border-radius: 1; -fx-border-color: gray;");
-                label.setOnMouseClicked(new EventHandler<MouseEvent>() {
-                    @Override
-                    public void handle(MouseEvent event) {
-                        search.setText(label.getText());
-                    }
-                });
-                dropDownMenu.getChildren().add(label); // adds suggestion to VBox
+                label.setOnMouseClicked(event -> search.setText(label.getText())
+                );
+                dropDownMenu.getChildren().add(label); //adds suggestion to VBox
             }
         }
         return dropDownMenu;
     }
 
     private void setUpStreak() {
-        // TODO Get Streak Days
-        int streakDays = 6;
+        hasShownStreak = true;
+        int streakDays = Api.current.getStreak();
         AnchorPane streakPane = (AnchorPane) root.getChildren().get(3);
         BorderPane buttonPane = (BorderPane) streakPane.getChildren().get(0);
         Text numDays = (Text) streakPane.getChildren().get(2);

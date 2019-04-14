@@ -1,13 +1,11 @@
 package nl.tudelft.gogreen.client;
 
-
 import com.sun.javafx.scene.control.skin.ListViewSkin;
-
 import javafx.scene.control.ListView;
 
-class UpdateableListViewSkin<ListItem> extends ListViewSkin<ListItem> {
+class UpdateableListViewSkin<I> extends ListViewSkin<I> {
 
-    UpdateableListViewSkin(ListView<ListItem> arg0) {
+    UpdateableListViewSkin(ListView<I> arg0) {
         super(arg0);
     }
 

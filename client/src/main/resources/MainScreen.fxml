@@ -87,7 +87,7 @@
                 </BorderPane>
       <JFXDrawer fx:id="notificationBox" defaultDrawerSize="360.0" layoutX="2.0" layoutY="76.0" minHeight="0.0" minWidth="350.0" mouseTransparent="true" prefWidth="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="75.0" />
         </AnchorPane>
-   <AnchorPane prefHeight="340.0" prefWidth="650.0" style="-fx-background-color: white; -fx-background-radius: 20; -fx-border-color: #50e476; -fx-border-width: 5; -fx-border-radius: 15;" AnchorPane.bottomAnchor="270.0" AnchorPane.leftAnchor="175.0" AnchorPane.rightAnchor="175.0" AnchorPane.topAnchor="110.0">
+   <AnchorPane prefHeight="340.0" prefWidth="650.0" style="-fx-background-color: white; -fx-background-radius: 20; -fx-border-color: #50e476; -fx-border-width: 5; -fx-border-radius: 15;" AnchorPane.bottomAnchor="270.0" AnchorPane.leftAnchor="175.0" AnchorPane.rightAnchor="175.0" AnchorPane.topAnchor="110.0" visible="false">
       <children>
          <BorderPane prefHeight="88.0" prefWidth="650.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="265.0">
             <top>

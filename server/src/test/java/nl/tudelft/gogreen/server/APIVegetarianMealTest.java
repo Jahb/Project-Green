@@ -24,7 +24,7 @@ public class APIVegetarianMealTest {
         try (Connection conn = DriverManager.getConnection(Main.resource.getString("Postgresql.datasource.url"), Main.resource.getString("Postgresql.datasource.username"), Main.resource.getString("Postgresql.datasource.password"))) {
             CreateUser.create_user("paul", "paul");
 
-            float result = CoolClimateApi.VegetarianMeal("1020", NewFeature.getId("paul", conn));
+            float result = CoolClimateApi.vegetarianMeal("1020", NewFeature.getId("paul", conn));
 
 
                 float expected = Float.parseFloat("1.24721");

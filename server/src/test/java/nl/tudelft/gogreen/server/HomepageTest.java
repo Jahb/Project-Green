@@ -10,9 +10,18 @@ import org.mockito.Mockito;
 import org.mockito.Spy;
 import org.mockito.junit.MockitoJUnitRunner;
 
+import java.util.Locale;
+import java.util.ResourceBundle;
+
 @RunWith(MockitoJUnitRunner.class)
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class HomepageTest {
+
+    @Before
+    public void fix(){
+        Main.resource = ResourceBundle.getBundle("db", Locale.GERMANY);
+
+    }
 
     @Spy
     private Homepage cs = new Homepage();

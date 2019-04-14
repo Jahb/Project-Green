@@ -24,3 +24,10 @@ shadowJar {
     classifier = 'client'
     version = project.version
 }
+
+
+jar {
+    manifest {
+        attributes 'Main-Class': 'nl.tudelft.gogreen.client.Main'
+    }
+}

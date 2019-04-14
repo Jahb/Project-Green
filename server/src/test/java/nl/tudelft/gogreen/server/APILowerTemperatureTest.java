@@ -37,11 +37,11 @@ public class APILowerTemperatureTest {
             p.setInt(5, 10);
             p.setInt(6, 10);
             p.execute();
-            float result = CoolClimateApi.LowerTemperature("4", 0);
+            float result = CoolClimateApi.lowerTemperature("4", 0);
             float expected = Float.parseFloat("32");
             assertEquals((int) expected, (int) result);
 
-            CoolClimateApi.keysremapping();
+            CoolClimateApi.keysRemapping();
 
             float result2 = CoolClimateApi.fetchApiData("Lower Temperature", "4", 0);
             float expected2 = Float.parseFloat("32");

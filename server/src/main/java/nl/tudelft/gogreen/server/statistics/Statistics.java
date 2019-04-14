@@ -1,21 +1,14 @@
 package nl.tudelft.gogreen.server.statistics;
 
+import javafx.util.Pair;
 import nl.tudelft.gogreen.server.Main;
 
-import javafx.util.Pair;
-
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.ResourceBundle;
-
-import static java.sql.DriverManager.getConnection;
 
 public class Statistics {
-
 
 
     /**
@@ -25,11 +18,11 @@ public class Statistics {
      *
      * @param id id of the user
      * @return returns the data in the form of array of Floats
-     * @throws Exception raised if an error occurs accessing the database
+     * @throws SQLException raised if an error occurs accessing the database
      */
-    public static double[] getLastWeekData(int id) throws Exception {
+    public static double[] getLastWeekData(int id) throws SQLException {
 
-        Connection conn = getConnection(
+        Connection conn = DriverManager.getConnection(
                 Main.resource.getString("Postgresql.datasource.url"),
                 Main.resource.getString("Postgresql.datasource.username"),
                 Main.resource.getString("Postgresql.datasource.password"));
@@ -46,11 +39,11 @@ public class Statistics {
      *
      * @param id id of the user
      * @return returns the data in the form of array of Floats
-     * @throws Exception raised if an error occurs accessing the database
+     * @throws SQLException raised if an error occurs accessing the database
      */
-    public static double[] getLastMonthData(int id) throws Exception {
+    public static double[] getLastMonthData(int id) throws SQLException {
 
-        Connection conn = getConnection(
+        Connection conn = DriverManager.getConnection(
                 Main.resource.getString("Postgresql.datasource.url"),
                 Main.resource.getString("Postgresql.datasource.username"),
                 Main.resource.getString("Postgresql.datasource.password"));
@@ -69,11 +62,11 @@ public class Statistics {
      *
      * @param id id of the user
      * @return returns the data in the form of array of Floats
-     * @throws Exception raised if an error occurs accessing the database
+     * @throws SQLException raised if an error occurs accessing the database
      */
-    public static double[] getLastYearData(int id) throws Exception {
+    public static double[] getLastYearData(int id) throws SQLException {
 
-        Connection conn = getConnection(
+        Connection conn = DriverManager.getConnection(
                 Main.resource.getString("Postgresql.datasource.url"),
                 Main.resource.getString("Postgresql.datasource.username"),
                 Main.resource.getString("Postgresql.datasource.password"));
@@ -90,13 +83,14 @@ public class Statistics {
      * @param days Number of days you want data to be retrieved
      * @param conn Connection to the database
      * @return returns the data in the form of array of Floats
-     * @throws Exception raised if an error occurs accessing the database
+     * @throws SQLException raised if an error occurs accessing the database
      */
-    public static double[] getLastData(int id, int days, Connection conn) throws Exception {
+    public static double[] getLastData(int id, int days, Connection conn) throws SQLException {
 
         double[] result = new double[days + 2];
         double total = 0.0;
-        PreparedStatement gettingWeekData = conn.prepareStatement(Main.resource.getString("qGetData"));
+        PreparedStatement gettingWeekData =
+                conn.prepareStatement(Main.resource.getString("qGetData"));
         gettingWeekData.setInt(2, id);
         for (int i = 0; i < days; i++) {
             gettingWeekData.setInt(1, i);
@@ -123,43 +117,52 @@ public class Statistics {
      * @param ownVehicle    if the user owns a vehicle or not
      * @param energyBill    the annual energy bill of the user
      * @param houseSurface  user's house surface
-     * @throws Exception raises error if unable to access database
+     * @throws SQLException raises error if unable to access database
      */
     public static void insertQuizData(int id, int monthlyIncome,
                                       int householdSize, boolean ownVehicle,
-                                      int energyBill, int houseSurface) throws Exception {
-        Connection conn = getConnection(
+                                      int energyBill, int houseSurface) throws SQLException {
+        Connection conn = DriverManager.getConnection(
                 Main.resource.getString("Postgresql.datasource.url"),
                 Main.resource.getString("Postgresql.datasource.username"),
                 Main.resource.getString("Postgresql.datasource.password"));
 
-        PreparedStatement insertData = conn.prepareStatement(Main.resource.getString("qQuizData"));
+        PreparedStatement insertData =
+                conn.prepareStatement(Main.resource.getString("qQuizData"));
         insertData.setInt(1, id);
         insertData.setInt(2, monthlyIncome);
         insertData.setInt(3, householdSize);
         insertData.setBoolean(4, ownVehicle);
         insertData.setInt(5, energyBill);
         insertData.setInt(6, houseSurface);
-
         insertData.execute();
+        conn.close();
     }
 
-    public static List<Pair<String, Date>> retrieveFeaturesHistory(int id) throws Exception {
-        Connection conn = getConnection(
+    /**
+     * Get the features for a user.
+     * @param id the user id
+     * @return a list of pairs
+     * @throws SQLException if something goes wrong at the database
+     */
+    public static List<Pair<String, Date>> retrieveFeaturesHistory(int id) throws SQLException {
+        Connection conn = DriverManager.getConnection(
                 Main.resource.getString("Postgresql.datasource.url"),
                 Main.resource.getString("Postgresql.datasource.username"),
                 Main.resource.getString("Postgresql.datasource.password"));
 
-        PreparedStatement insertData = conn.prepareStatement(Main.resource.getString("qRetrieveFH"));
+        PreparedStatement insertData =
+                conn.prepareStatement(Main.resource.getString("qRetrieveFH"));
         insertData.setInt(1, id);
 
         ResultSet rs = insertData.executeQuery();
 
         List<Pair<String, Date>> list = new ArrayList<>();
         while (rs.next()) {
-            Pair<String, Date> pair = new Pair<String, Date>(rs.getString(1), rs.getDate(2));
+            Pair<String, Date> pair = new Pair<>(rs.getString(1), rs.getDate(2));
             list.add(pair);
         }
+        conn.close();
         return list;
     }
 

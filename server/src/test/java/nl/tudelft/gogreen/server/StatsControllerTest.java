@@ -37,6 +37,16 @@ public class StatsControllerTest {
         Assert.assertEquals(7, cs.getFor(DatePeriod.WEEK).getData().getDays());
     }
 
+    @Test
+    public void historyTest() {
+        Assert.assertNotEquals(-1, cs.getHistory("kees").getData().size());
+    }
+
+    @Test
+    public void quizDataTest() {
+        Assert.assertTrue(cs.insertQuizData(1, 1, true, 1, 1).getData());
+    }
+
     @AfterClass
     public static void delet() {
         try (Connection conn = DriverManager.getConnection(

@@ -1,8 +1,5 @@
 package nl.tudelft.gogreen.client;
 
-import java.io.IOException;
-import java.net.URL;
-import java.util.ResourceBundle;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXListCell;
 import javafx.collections.FXCollections;
@@ -11,7 +8,6 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Scene;
-import javafx.scene.chart.LineChart;
 import javafx.scene.chart.XYChart;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
@@ -23,6 +19,11 @@ import nl.tudelft.gogreen.client.ScoreGraph.UndecoratedGraph;
 import nl.tudelft.gogreen.client.communication.Api;
 import nl.tudelft.gogreen.shared.DateHolder;
 import nl.tudelft.gogreen.shared.DatePeriod;
+
+import java.io.IOException;
+import java.net.URL;
+import java.util.ResourceBundle;
+
 
 public class LeaderboardController implements Initializable {
 
@@ -78,23 +79,16 @@ public class LeaderboardController implements Initializable {
 
         XYChart.Series<Integer, Integer> weekly = new XYChart.Series<>();
 
-        weekly.getData().add(new XYChart.Data<>(1, 24));
-        weekly.getData().add(new XYChart.Data<>(2, 15));
-        weekly.getData().add(new XYChart.Data<>(3, 28));
-        weekly.getData().add(new XYChart.Data<>(4, 21));
-
         XYChart.Series<Integer, Integer> monthly = new XYChart.Series<>();
-        monthly.getData().add(new XYChart.Data<>(1, 23));
-        monthly.getData().add(new XYChart.Data<>(5, 13));
-        monthly.getData().add(new XYChart.Data<>(10, 19));
-        monthly.getData().add(new XYChart.Data<>(15, 25));
 
         UpdateableListViewSkin<ListItem> skin = new UpdateableListViewSkin<>(this.leaderboardList);
         this.leaderboardList.setSkin(skin);
 
         timeframeButton.setOnMouseClicked(event -> {
-            if(timeframeButton.getText().equals("View Monthly Data")) timeframeButton.setText("View Yearly Data");
-            else if(timeframeButton.getText().equals("View Yearly Data")) timeframeButton.setText("View Weekly Data");
+            if (timeframeButton.getText().equals("View Monthly Data"))
+                timeframeButton.setText("View Yearly Data");
+            else if (timeframeButton.getText().equals("View Yearly Data"))
+                timeframeButton.setText("View Weekly Data");
             else timeframeButton.setText("View Monthly Data");
 
             currentDatePeriod = currentDatePeriod.getNext();

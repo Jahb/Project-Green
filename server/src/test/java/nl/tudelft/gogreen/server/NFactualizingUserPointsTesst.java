@@ -38,9 +38,9 @@ public class NFactualizingUserPointsTesst {
             NewFeature.actualizingUserPoints(id, "Lower Temperature", 20, conn);
             int newTotal3 = NewFeature.getTotal("MJ");
 
-            NewFeature.actualizingUserPoints(id, "Recycling", 20, conn);
+            NewFeature.actualizingUserPoints(id, "recycling", 20, conn);
             int oldTotal4 = NewFeature.getTotal("MJ");
-            NewFeature.actualizingUserPoints(id, "Recycling", 20, conn);
+            NewFeature.actualizingUserPoints(id, "recycling", 20, conn);
             int newTotal4 = NewFeature.getTotal("MJ");
 
             assertNotEquals(oldTotal, newTotal);

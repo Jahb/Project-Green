@@ -7,6 +7,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,41 +15,61 @@ import java.util.List;
 @RequestMapping("/feature")
 public class FeatureController {
 
+    /**
+     * Add a new feature to the current user.
+     * @param feature the feature name
+     * @param userInput the amount of times it was done? I have no idea tbh
+     * @return an integer containing the total amount of points
+     */
     @PostMapping("/new")
-    public MessageHolder<Integer> addNew(@RequestParam String feature, @RequestParam(required = false) String userInput) {
+    public MessageHolder<Integer> addNew(@RequestParam String feature,
+                                         @RequestParam(required = false) String userInput) {
         getUserObject();
         System.out.printf("%s: %s", getUserObject(), feature);
         String feat = "0";
         try {
             feat = NewFeature.adding_feature(getUserObject(), feature, userInput);
-        } catch (Exception e) {
+        } catch (SQLException e) {
             e.printStackTrace();
         }
 
         return new MessageHolder<>("Nice!", Integer.parseInt(feat));
     }
 
+    /**
+     * Get the total amount of points for the current user.
+     * @return the total amount of points
+     */
     @PostMapping("/total")
     public MessageHolder<Integer> getTotal() {
         int total = 0;
         try {
             total = NewFeature.getTotal(getUserObject());
-        } catch (Exception e) {
+        } catch (SQLException e) {
             e.printStackTrace();
         }
 
         return new MessageHolder<>("Nice!", total);
     }
 
+    /**
+     * Get a list of points in the normal divided format.
+     * @param username the username that we want the points for
+     * @return the list
+     */
     @PostMapping("/points")
     public MessageHolder<List<Integer>> getPoints(@RequestParam String username) {
-        List<Integer> l = new ArrayList<>();
+        List<Integer> list = new ArrayList<>();
         for (int i : NewFeature.getPontsPerCategory(username)) {
-            l.add(i);
+            list.add(i);
         }
-        return new MessageHolder<>("Nice data you got there", l);
+        return new MessageHolder<>("Nice data you got there", list);
     }
 
+    /**
+     * Get the current username.
+     * @return the username
+     */
     public String getUserObject() {
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         String username;
@@ -58,6 +79,23 @@ public class FeatureController {
             username = principal.toString();
         }
         return username;
+    }
+
+
+    /**
+     * Get the current streak.
+     * @return the streak length
+     */
+    @PostMapping("/streak")
+    public MessageHolder<Integer> getStreak() {
+        try {
+            return new MessageHolder<>("streak",
+                    NewFeature.getStreak(NewFeature.getUid(getUserObject())));
+        } catch (SQLException e) {
+            return new MessageHolder<>("Streak");
+        }
+
+
     }
 
     @ExceptionHandler(PSQLException.class)
