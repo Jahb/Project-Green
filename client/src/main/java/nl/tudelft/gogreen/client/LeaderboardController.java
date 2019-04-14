@@ -1,8 +1,5 @@
 package nl.tudelft.gogreen.client;
 
-import java.io.IOException;
-import java.net.URL;
-import java.util.ResourceBundle;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXListCell;
 import javafx.collections.FXCollections;
@@ -11,7 +8,6 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Scene;
-import javafx.scene.chart.LineChart;
 import javafx.scene.chart.XYChart;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
@@ -23,6 +19,11 @@ import nl.tudelft.gogreen.client.ScoreGraph.UndecoratedGraph;
 import nl.tudelft.gogreen.client.communication.Api;
 import nl.tudelft.gogreen.shared.DateHolder;
 import nl.tudelft.gogreen.shared.DatePeriod;
+
+import java.io.IOException;
+import java.net.URL;
+import java.util.ResourceBundle;
+
 
 public class LeaderboardController implements Initializable {
 

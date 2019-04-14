@@ -131,18 +131,24 @@ public class ProfileController implements Initializable {
         switch (switchSize) {
 
             case 1:
-                addAchievements(new ListItem(new Image("/images/IconCupGold.png"), names.get(ach.get(0) - 1)),
+                addAchievements(new ListItem(new Image("/images/IconCupGold.png"),
+                                names.get(ach.get(0) - 1)),
                         null, null);
                 break;
             case 2:
-                addAchievements(new ListItem(new Image("/images/IconCupGold.png"), names.get(ach.get(0) - 1)),
-                        new ListItem(new Image("/images/IconCupGold.png"), names.get(ach.get(1) - 1)),
+                addAchievements(new ListItem(new Image("/images/IconCupGold.png"),
+                                names.get(ach.get(0) - 1)),
+                        new ListItem(new Image("/images/IconCupGold.png"),
+                                names.get(ach.get(1) - 1)),
                         null);
                 break;
             case 3:
-                addAchievements(new ListItem(new Image("/images/IconCupGold.png"), names.get(ach.get(0) - 1)),
-                        new ListItem(new Image("/images/IconCupGold.png"), names.get(ach.get(1) - 1)),
-                        new ListItem(new Image("/images/IconCupGold.png"), names.get(ach.get(2) - 1)));
+                addAchievements(new ListItem(new Image("/images/IconCupGold.png"),
+                                names.get(ach.get(0) - 1)),
+                        new ListItem(new Image("/images/IconCupGold.png"),
+                                names.get(ach.get(1) - 1)),
+                        new ListItem(new Image("/images/IconCupGold.png"),
+                                names.get(ach.get(2) - 1)));
                 break;
             default:
                 break;

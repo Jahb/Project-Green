@@ -272,7 +272,7 @@ public class MainScreen implements Initializable {
          * testing notifications
          */
         //Main.showMessage(notificationPane, "You have opened the main screen");
-        Api.current.registerNotification(PingPacketData.FOLLOWER, (data) ->
+        Api.current.registerNotification(PingPacketData.FOLLOWER, data ->
                 Main.showMessage(notificationPane, "You have a new Follower: " + data));
 
         String[] options = Api.current.getAllUsers().toArray(new String[0]);
