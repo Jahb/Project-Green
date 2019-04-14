@@ -24,8 +24,8 @@ public class Utils {
                     Main.resource.getString("Postgresql.datasource.username"),
                     Main.resource.getString("Postgresql.datasource.password"));
             for (String username : usernames) {
-                int otherID = NewFeature.getId(username, conn);
-                uids.add(otherID);
+                int otherid = NewFeature.getId(username, conn);
+                uids.add(otherid);
             }
             return uids;
         } catch (SQLException e) {

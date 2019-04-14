@@ -348,7 +348,7 @@ public class CoolClimateApi {
         params.put("accept", "application/json");
         params.put("app_id", "93af0470");
         params.put("app_key", "be1dbf535bd450c012e78261cf93c0ad");
-        String url = createUrlLT(inputfootprinthousingcdd);
+        String url = createUrlLt(inputfootprinthousingcdd);
 
 
         String holder = XML.toJSONObject(Unirest.get(url)
@@ -579,7 +579,7 @@ conn.close();
 
     }
 
-    private static String createUrlLT(String input) {
+    private static String createUrlLt(String input) {
         StringBuilder result = new StringBuilder("https://apis.berkeley.edu/coolclimate/footprint?");
 
         for (int i = 0; i < keysLT.length; i++) {
