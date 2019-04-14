@@ -1,5 +1,7 @@
 package nl.tudelft.gogreen.client;
 
+import static javafx.scene.layout.Priority.ALWAYS;
+
 import com.jfoenix.controls.JFXDatePicker;
 import com.jfoenix.controls.JFXTextArea;
 import com.jfoenix.controls.JFXTextField;
@@ -25,20 +27,19 @@ import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.ResourceBundle;
 
-import static javafx.scene.layout.Priority.ALWAYS;
 
 public class EventController implements Initializable {
 
     private AnchorPane root;
 
     @FXML
+    public BorderPane buttonPane;
+    @FXML
     public ListView<EventItem> eventList;
     @FXML
     public ListView<EventItem> fullEventList;
     @FXML
     public AnchorPane createEvent;
-    @FXML
-    public BorderPane buttonPane;
     @FXML
     public JFXTextField newEventName;
     @FXML
