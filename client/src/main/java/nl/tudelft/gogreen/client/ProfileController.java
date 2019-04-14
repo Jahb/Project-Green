@@ -104,12 +104,14 @@ public class ProfileController implements Initializable {
             topRightBox.getChildren().remove(follow);
         }
 
-        if (Api.current.getFollowing(username).keySet().stream().noneMatch(un -> un.equals(username))) {
+        if (Api.current.getFollowing(username).keySet()
+                .stream().noneMatch(un -> un.equals(username))) {
             topRightBox.getChildren().remove(position);
         } else {
             position.setText("Position: #" + Api.current.getPosition());
         }
-        if (Api.current.getFollowing(username).keySet().stream().noneMatch(s -> s.equals(username))) {
+        if (Api.current.getFollowing(username).keySet()
+                .stream().noneMatch(s -> s.equals(username))) {
             follow.setText("Follow");
         }
 

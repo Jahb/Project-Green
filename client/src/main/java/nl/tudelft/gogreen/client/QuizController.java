@@ -2,13 +2,10 @@ package nl.tudelft.gogreen.client;
 
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXSlider;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Scene;
-import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
 import javafx.util.StringConverter;
 import nl.tudelft.gogreen.client.communication.Api;
@@ -36,6 +33,12 @@ public class QuizController implements Initializable {
     public JFXButton saveButton;
 
 
+    /**
+     * Initialise the quiz.
+     *
+     * @param location  a url specifying the location
+     * @param resources the resource bundle to use
+     */
     public void initialize(URL location, ResourceBundle resources) {
 
         defaultButton.setOnMouseClicked(event -> useDefaults());
@@ -47,23 +50,22 @@ public class QuizController implements Initializable {
          */
         vehicleSlider.setLabelFormatter(new StringConverter<Double>() {
             @Override
-            public String toString(Double n) {
-                if (n <= 0.5) return "No";
+            public String toString(Double num) {
+                if (num <= 0.5) return "No";
                 else return "Yes";
 
             }
 
-            public Double fromString(String s) {
-                return "No".equals(s) ? 0d : 1d;
+            public Double fromString(String str) {
+                return "No".equals(str) ? 0d : 1d;
             }
         });
     }
 
     /**
-     * Method for loading the QuizScreen scene
-     *
-     * @return
-     * @throws IOException
+     * Method for loading the QuizScreen scene.
+     * @return the Scene
+     * @throws IOException when it errors
      */
     public Scene getScene() throws IOException {
         URL url = Main.class.getResource("/QuizScreen.fxml");
@@ -74,7 +76,7 @@ public class QuizController implements Initializable {
 
 
     /**
-     * Method for using the default stats when clicking the defaultsButton
+     * Method for using the default stats when clicking the defaultsButton.
      */
     public void useDefaults() {
         Main.openMainScreen();
@@ -83,11 +85,11 @@ public class QuizController implements Initializable {
         boolean vehicle = true;
         int income = 1000;
         int bill = 400;
-        Api.current.insertQuizData(income,size, true,bill,surface);
+        Api.current.insertQuizData(income, size, true, bill, surface);
     }
 
     /**
-     * Method for using user-selected stats when clicking the saveButton
+     * Method for using user-selected stats when clicking the saveButton.
      */
     public void useSaved() {
         Main.openMainScreen();
@@ -96,6 +98,6 @@ public class QuizController implements Initializable {
         boolean vehicle = ((int) vehicleSlider.getValue()) == 1;
         int income = (int) incomeSlider.getValue();
         int bill = (int) billSlider.getValue();
-        Api.current.insertQuizData(income,size,vehicle,bill,surface);
+        Api.current.insertQuizData(income, size, vehicle, bill, surface);
     }
 }

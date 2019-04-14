@@ -6,12 +6,22 @@ public enum ProfileEmblem {
     SAPLING, LEAF, APPLE, TREE;
 
 
+    /**
+     * Get the image for the level.
+     * @param level the level
+     * @return the image
+     */
     public static Image getImage(int level) {
         if (level <= 0 || level > 4)
             return new Image("Images/IconEmpty.png");
         return new Image("Images/ppLvl" + level + ".png");
     }
 
+    /**
+     * Convert the level to an emblem.
+     * @param level the level
+     * @return an emblem
+     */
     public static ProfileEmblem levelToEmblem(int level) {
         switch (level) {
             case 1:
