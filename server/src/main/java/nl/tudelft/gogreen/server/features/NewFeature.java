@@ -100,10 +100,10 @@ public class NewFeature {
      * @throws SQLException a sql exception
      */
     public static int getTotal(int id, Connection conn) throws SQLException {
-        PreparedStatement qgetTotalUP =
+        PreparedStatement qgetTotalUp =
                 conn.prepareStatement(Main.resource.getString("qgetTotalUP"));
-        qgetTotalUP.setFloat(1, id);
-        ResultSet resultSet = qgetTotalUP.executeQuery();
+        qgetTotalUp.setFloat(1, id);
+        ResultSet resultSet = qgetTotalUp.executeQuery();
         int total = -1;
         while (resultSet.next()) {
             total = resultSet.getInt(1);
@@ -523,9 +523,9 @@ public class NewFeature {
                 conn.prepareStatement(Main.resource.getString("qRetrievingStreakDays"));
         getStreak.setInt(1, id);
         int numDays = 0;
-        ResultSet numDaysRS = getStreak.executeQuery();
-        while (numDaysRS.next()) {
-            numDays = numDaysRS.getInt(1);
+        ResultSet resultSet = getStreak.executeQuery();
+        while (resultSet.next()) {
+            numDays = resultSet.getInt(1);
         }
         conn.close();
         return numDays;
