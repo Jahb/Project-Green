@@ -437,8 +437,8 @@ class AddActivityButton {
             }
             if (name.equals("Energy")) {
                 addSubCategoryButton("Solarpanel", "kW/day");
-                addSubCategoryButton("Help", ""); // CFL
-                addSubCategoryButton("Help", ""); // Lower temp
+                addSubCategoryButton("Lower \nHVAC", "°C");
+                addSubCategoryButton("Install \nCFL", "amount");
             }
             if (name.equals("Habit")) {
                 addSubCategoryButton("Recycle", "kg");
