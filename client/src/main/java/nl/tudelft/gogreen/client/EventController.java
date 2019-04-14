@@ -48,8 +48,8 @@ public class EventController implements Initializable {
     @FXML
     public JFXTimePicker newEventTime;
 
-    private ObservableList<EventItem> allEvents = FXCollections.observableArrayList();
-    private ObservableList<EventItem> userEvents = FXCollections.observableArrayList();
+    private static ObservableList<EventItem> allEvents = FXCollections.observableArrayList();
+    private static ObservableList<EventItem> userEvents = FXCollections.observableArrayList();
 
     private DateTimeFormatter timeFormat = DateTimeFormatter.ofPattern("HH:mm");
     private DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("yyyy-MM-dd");
@@ -109,8 +109,12 @@ public class EventController implements Initializable {
         new Thread(() -> {
             List<EventItem> all = Api.current.getAllEvents();
             List<EventItem> user = Api.current.getUserEvents();
-            Platform.runLater(() -> allEvents.addAll(all));
-            Platform.runLater(() -> userEvents.addAll(user));
+            Platform.runLater(() -> {
+                allEvents.clear();
+                allEvents.addAll(all);
+                userEvents.clear();
+                userEvents.addAll(user);
+            });
         }).start();
     }
 
