@@ -121,7 +121,14 @@ public class ProfileController implements Initializable {
         List<Integer> ach = Api.current.getAchievemens(username);
         List<String> names = Api.current.getAchievementNames();
 
-        switch (ach.size()) {
+        int switchSize;
+        if (ach == null) {
+            switchSize = 0;
+        } else {
+            switchSize = ach.size();
+        }
+
+        switch (switchSize) {
 
             case 1:
                 addAchievements(new ListItem(new Image("/images/IconCupGold.png"), names.get(ach.get(0) - 1)),
