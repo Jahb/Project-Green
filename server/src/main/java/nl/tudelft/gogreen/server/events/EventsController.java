@@ -22,6 +22,7 @@ public class EventsController {
 
     /**
      * Get the current user, based on a cookie.
+     *
      * @return the current user
      */
     public String getCurrentUser() {
@@ -37,10 +38,11 @@ public class EventsController {
 
     /**
      * Add a new event.
-     * @param name the name of the event
+     *
+     * @param name        the name of the event
      * @param description the description of the event
-     * @param date the date of the event, for some reason as a string
-     * @param time the time as an event, see date for why
+     * @param date        the date of the event, for some reason as a string
+     * @param time        the time as an event, see date for why
      * @return a boolean indicating success
      */
     @PostMapping("/new")
@@ -60,6 +62,7 @@ public class EventsController {
 
     /**
      * Get a list of all events.
+     *
      * @return the list
      */
     @PostMapping("/list")
@@ -78,22 +81,27 @@ public class EventsController {
 
     /**
      * get a list of the events the current user has joined.
+     *
      * @return the list of the events
-     * @throws SQLException when there is a database error?
      */
     @PostMapping("/user")
-    public MessageHolder<List<EventItem>> userEvents() throws SQLException {
-        Connection conn = DriverManager.getConnection(
-                Main.resource.getString("Postgresql.datasource.url"),
-                Main.resource.getString("Postgresql.datasource.username"),
-                Main.resource.getString("Postgresql.datasource.password"));
-        List<EventItem> items = EventsMain.get_user_events(getCurrentUser(), conn);
-        conn.close();
+    public MessageHolder<List<EventItem>> userEvents() {
+        List<EventItem> items = new ArrayList<>();
+        try {
+            Connection conn = DriverManager.getConnection(
+                    Main.resource.getString("Postgresql.datasource.url"),
+                    Main.resource.getString("Postgresql.datasource.username"),
+                    Main.resource.getString("Postgresql.datasource.password"));
+            items.addAll(EventsMain.get_user_events(getCurrentUser(), conn));
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
         return new MessageHolder<>("Events", items);
     }
 
     /**
      * Join an event.
+     *
      * @param eventName the name of the event
      * @return a boolean indicating success.
      */
@@ -113,6 +121,7 @@ public class EventsController {
 
     /**
      * Leave an event.
+     *
      * @param eventName the name of the event
      * @return a boolean indicating success
      */

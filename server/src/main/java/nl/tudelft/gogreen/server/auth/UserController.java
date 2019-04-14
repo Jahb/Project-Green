@@ -25,7 +25,7 @@ public class UserController {
     @PostMapping("/new")
     public MessageHolder<Boolean> createNew(@RequestParam String username,
                                             @RequestParam String password) {
-        return new MessageHolder<>("User already exists",
+        return new MessageHolder<>("User created?",
                 CreateUser.create_user(username, password));
     }
 

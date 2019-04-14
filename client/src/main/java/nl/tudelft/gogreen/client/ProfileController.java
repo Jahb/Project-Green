@@ -22,12 +22,7 @@ import nl.tudelft.gogreen.client.communication.ProfileType;
 
 import java.io.IOException;
 import java.net.URL;
-import java.time.format.DateTimeFormatter;
-import java.time.format.FormatStyle;
-import java.util.Date;
-import java.util.List;
-import java.util.ResourceBundle;
-import java.util.Set;
+import java.util.*;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
@@ -118,7 +113,7 @@ public class ProfileController implements Initializable {
             follow.setText("Follow");
         }
 
-        List<Integer> ach = Api.current.getAchievemens(username);
+        List<Integer> ach = Api.current.getAchievements(username);
         List<String> names = Api.current.getAchievementNames();
 
         int switchSize;
@@ -170,10 +165,10 @@ public class ProfileController implements Initializable {
 
 
         new Thread(() -> {
-            List<Pair<String, Date>> data = Api.current.getHistoryFor(username);
+            List<Pair<String, String>> data = Api.current.getHistoryFor(username);
+            data.sort(Comparator.comparing(Pair::getValue));
             List<String> dates = data.stream().map(it ->
-                    DateTimeFormatter.ofLocalizedTime(FormatStyle.SHORT).format(it.getValue().toInstant())
-                            + " - " + it.getKey()).collect(Collectors.toList());
+                    it.getValue() + " - " + it.getKey()).collect(Collectors.toList());
             Platform.runLater(() -> {
                 activities.addAll(dates);
                 activityList.setItems(activities);

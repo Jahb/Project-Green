@@ -3,6 +3,7 @@ package nl.tudelft.gogreen.client.communication;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
+
 import com.mashape.unirest.http.ObjectMapper;
 import com.mashape.unirest.http.Unirest;
 import com.mashape.unirest.http.exceptions.UnirestException;
@@ -461,13 +462,13 @@ public class Api {
      * @param username the username to get the history for
      * @return an array of strings mapped to dates
      */
-    public List<Pair<String, Date>> getHistoryFor(String username) {
+    public List<Pair<String, String>> getHistoryFor(String username) {
         String res;
         Map<String, Object> params = new HashMap<>();
         params.put("username", username);
         res = this.post(baseUrl + "/stats/hist", params);
-        MessageHolder<List<Pair<String, Date>>> holder =
-                gson.fromJson(res, new TypeToken<MessageHolder<List<Pair<String, Date>>>>() {
+        MessageHolder<List<Pair<String, String>>> holder =
+                gson.fromJson(res, new TypeToken<MessageHolder<List<Pair<String, String>>>>() {
                 }.getType());
 
         return holder.getData();
@@ -522,7 +523,7 @@ public class Api {
      *
      * @return a list of all achievement id's
      */
-    public List<Integer> getAchievemens(String username) {
+    public List<Integer> getAchievements(String username) {
         String res;
         Map<String, Object> params = new HashMap<>();
         params.put("username", username);

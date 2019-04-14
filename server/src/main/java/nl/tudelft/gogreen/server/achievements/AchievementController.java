@@ -11,7 +11,9 @@ import org.springframework.web.bind.annotation.RestController;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
 
 @RestController
@@ -32,7 +34,8 @@ public class AchievementController {
                 Main.resource.getString("Postgresql.datasource.password"))) {
             int uid = Utils.verifyUsersValid(username).get(0);
             if (uid < 0) throw new SQLException("Yeet!");
-            List<Integer> ach = Achievements.showAchievementsForUser(uid);
+            List<Integer> ach = new ArrayList<>(
+                    new HashSet<>(Achievements.showAchievementsForUser(uid)));
             conn.close();
             return new MessageHolder<>("Dates", ach);
         } catch (SQLException e) {

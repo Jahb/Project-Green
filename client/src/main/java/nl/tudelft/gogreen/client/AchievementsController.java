@@ -53,20 +53,17 @@ public class AchievementsController implements Initializable {
     public void initialize(URL location, ResourceBundle resources) {
         //TODO Add achievements to the list which contains all achievements
         allAchievementsList.clear();
-        ListItem ach1 = new ListItem("achievement1", "images/IconCupGold.png", "Description 1");
-        ListItem ach2 = new ListItem("achievement2", "images/IconCupGold.png", "Description 2");
-        ListItem ach3 = new ListItem("achievement3", "images/IconCupGold.png", "Description 3");
-        ListItem ach4 = new ListItem("achievement4", "images/IconCupGold.png", "Description 4");
+
         allAchievementsList.addAll(
                 Api.current.getAchievementNames().stream().map(it ->
-                        new ListItem(it, "images/IconCupGold.png"))
+                        new ListItem(it, "images/IconCupGold.png", ""))
                         .collect(Collectors.toList()));
         userAchievementsList.addAll(
-                Api.current.getAchievemens(
+                Api.current.getAchievements(
                         Api.current.getUsername())
                         .stream().map(it ->
                         Api.current.getAchievementNames().get(it - 1))
-                        .map(it -> new ListItem(it, "images/IconCupGold.png"))
+                        .map(it -> new ListItem(it, "images/IconCupGold.png", ""))
                         .collect(Collectors.toList()));
         allAchievements.setCellFactory(param -> new Cell());
         userAchievements.setCellFactory(param -> new Cell());

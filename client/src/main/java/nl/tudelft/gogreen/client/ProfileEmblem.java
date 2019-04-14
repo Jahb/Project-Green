@@ -1,4 +1,4 @@
-package nl.tudelft.gogreen.shared;
+package nl.tudelft.gogreen.client;
 
 import javafx.scene.image.Image;
 

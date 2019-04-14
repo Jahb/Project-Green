@@ -184,7 +184,8 @@ public class Main extends Application {
     }
 
     /**
-     * Method used to show notifications to the user. Notification appears in the selected pane and disappears if clicked.
+     * Method used to show notifications to the user.
+     * Notification appears in the selected pane and disappears if clicked.
      *
      * @param message text to show inside the notification box
      */

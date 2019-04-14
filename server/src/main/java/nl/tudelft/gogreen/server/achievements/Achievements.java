@@ -21,6 +21,10 @@ public class Achievements {
                 Main.resource.getString("Postgresql.datasource.url"),
                 Main.resource.getString("Postgresql.datasource.username"),
                 Main.resource.getString("Postgresql.datasource.password"));
+        if (showAchievementsForUser(id).contains(achievementid)) {
+            conn.close();
+            return;
+        }
 
         PreparedStatement add = conn.prepareStatement(Main.resource.getString("qAddAchievement"));
         add.setInt(1, id);

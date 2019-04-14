@@ -24,7 +24,6 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.util.Duration;
-import nl.tudelft.gogreen.shared.ProfileEmblem;
 
 import java.util.ArrayList;
 import java.util.function.Consumer;

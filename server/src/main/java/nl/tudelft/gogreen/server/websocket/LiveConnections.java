@@ -2,7 +2,6 @@ package nl.tudelft.gogreen.server.websocket;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import nl.tudelft.gogreen.shared.PingPacket;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.socket.CloseStatus;
 import org.springframework.web.socket.TextMessage;
@@ -17,8 +16,8 @@ import java.util.Map;
 public class LiveConnections extends TextWebSocketHandler {
     public static Map<String, WebSocketSession> sessionMap = new HashMap<>();
 
-    @Autowired
-    private ObjectMapper mapper;
+
+    private ObjectMapper mapper = new ObjectMapper();
 
     @Override
     public void handleTextMessage(WebSocketSession session,
@@ -45,7 +44,9 @@ public class LiveConnections extends TextWebSocketHandler {
     @Override
     public void afterConnectionClosed(WebSocketSession session,
                                       CloseStatus status) {
-        sessionMap.entrySet().stream().filter(it ->
-                it.getValue().equals(session)).forEach(it -> sessionMap.remove(it.getKey()));
+        while (sessionMap.values().remove(session)) {
+            System.out.println();
+        }
+
     }
 }

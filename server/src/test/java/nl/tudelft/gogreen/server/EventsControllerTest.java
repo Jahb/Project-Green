@@ -45,6 +45,16 @@ public class EventsControllerTest {
         Assert.assertTrue(cs.join("TestEvent" + now).getData());
     }
 
+    @Test
+    public void baLeaveEvent(){
+        Assert.assertTrue(cs.leave("TestEvent" + now).getData());
+    }
+
+    @Test
+    public void bbListEvent(){
+        Assert.assertNotNull(cs.userEvents().getData());
+    }
+
     @AfterClass
     public static void delet() {
         try (Connection conn = DriverManager.getConnection(

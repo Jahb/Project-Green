@@ -2,7 +2,6 @@ package nl.tudelft.gogreen.server;
 
 
 import nl.tudelft.gogreen.server.auth.CreateUser;
-import nl.tudelft.gogreen.server.events.EventsMain;
 import nl.tudelft.gogreen.server.features.FeatureController;
 import org.junit.*;
 import org.junit.runner.RunWith;
@@ -34,7 +33,7 @@ public class FeatureControllerTest {
 
     @Test
     public void aaNewTest() {
-        Assert.assertNotEquals(-1, cs.addNew("Local Product","10").getData().intValue());
+        Assert.assertNotEquals(-1, cs.addNew("Local Product", "10").getData().intValue());
     }
 
     @Test
@@ -50,6 +49,11 @@ public class FeatureControllerTest {
     @Test
     public void adPointsTest() {
         Assert.assertEquals(4, cs.getPoints("kees").getData().size());
+    }
+
+    @Test
+    public void aeStreakTest() {
+        Assert.assertNotEquals(-1, cs.getStreak());
     }
 
     @AfterClass
