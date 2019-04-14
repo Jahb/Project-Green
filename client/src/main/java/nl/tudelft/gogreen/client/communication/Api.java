@@ -492,7 +492,7 @@ public class Api {
         params.put("ownVehicle", ownVehicle);
         params.put("energyBill", energyBill);
         params.put("houseSurface", houseSurface);
-        String res = this.post(baseUrl + "/stats/hist", params);
+        String res = this.post(baseUrl + "/stats/quiz", params);
         MessageHolder<Boolean> holder =
                 gson.fromJson(res, new TypeToken<MessageHolder<Boolean>>() {
                 }.getType());

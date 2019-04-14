@@ -69,7 +69,7 @@ public class MainScreen implements Initializable {
     //TODO handler for each ring category
     private Consumer<String> ringHandler = name -> System.out.println("EXE [" + name + "]");
 
-    public static boolean hasShownStreak = false;
+    private static boolean hasShownStreak = false;
 
     /**
      * Creates a scene for MainScreen.
@@ -103,7 +103,7 @@ public class MainScreen implements Initializable {
 
         //Streaks
         //TODO Implement Streaks. condition to check if first login today.
-        if (hasShownStreak) {
+        if (!hasShownStreak) {
             setUpStreak();
         }
 

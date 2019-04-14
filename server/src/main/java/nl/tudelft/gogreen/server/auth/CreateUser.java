@@ -90,6 +90,7 @@ public class CreateUser {
                     conn.prepareStatement(Main.resource.getString("qInsertHistory0"));
             userHistory.setInt(1, id);
         } catch (SQLException e) {
+            e.printStackTrace();
             return false;
         }
         return true;
@@ -112,7 +113,6 @@ public class CreateUser {
 
             id = id + 1;
         }
-        conn.close();
         return id;
     }
 
