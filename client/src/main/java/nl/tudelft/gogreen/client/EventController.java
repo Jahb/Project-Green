@@ -30,7 +30,8 @@ import java.util.ResourceBundle;
 
 public class EventController implements Initializable {
 
-    private AnchorPane root;
+    private static ObservableList<EventItem> allEvents = FXCollections.observableArrayList();
+    private static ObservableList<EventItem> userEvents = FXCollections.observableArrayList();
 
     @FXML
     public BorderPane buttonPane;
@@ -49,11 +50,10 @@ public class EventController implements Initializable {
     @FXML
     public JFXTimePicker newEventTime;
 
-    private static ObservableList<EventItem> allEvents = FXCollections.observableArrayList();
-    private static ObservableList<EventItem> userEvents = FXCollections.observableArrayList();
-
+    private AnchorPane root;
     private DateTimeFormatter timeFormat = DateTimeFormatter.ofPattern("HH:mm");
     private DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+
 
     /**
      * Returns ProfileGUI Scene.

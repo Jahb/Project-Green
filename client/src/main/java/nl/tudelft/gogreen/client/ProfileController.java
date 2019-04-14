@@ -28,6 +28,8 @@ import java.util.stream.Collectors;
 
 public class ProfileController implements Initializable {
 
+    private static String username;
+
     @FXML
     public Button followingButton;
     @FXML
@@ -76,8 +78,6 @@ public class ProfileController implements Initializable {
     private Consumer<String> ringHandler = name -> System.out.println("EXE [" + name + "]");
 
     private ProfileType type = ProfileType.CURRENTUSER;
-
-    private static String username;
 
     public static void setUsername(String username) {
         ProfileController.username = username;

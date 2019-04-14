@@ -85,8 +85,10 @@ public class LeaderboardController implements Initializable {
         this.leaderboardList.setSkin(skin);
 
         timeframeButton.setOnMouseClicked(event -> {
-            if(timeframeButton.getText().equals("View Monthly Data")) timeframeButton.setText("View Yearly Data");
-            else if(timeframeButton.getText().equals("View Yearly Data")) timeframeButton.setText("View Weekly Data");
+            if (timeframeButton.getText().equals("View Monthly Data"))
+                timeframeButton.setText("View Yearly Data");
+            else if (timeframeButton.getText().equals("View Yearly Data"))
+                timeframeButton.setText("View Weekly Data");
             else timeframeButton.setText("View Monthly Data");
 
             currentDatePeriod = currentDatePeriod.getNext();

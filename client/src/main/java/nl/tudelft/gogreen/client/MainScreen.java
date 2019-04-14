@@ -66,10 +66,11 @@ public class MainScreen implements Initializable {
         System.out.println(name);
         updateRingValues();
     };
-    //TODO handler for each ring category
-    private Consumer<String> ringHandler = name -> System.out.println("EXE [" + name + "]");
 
     private static boolean hasShownStreak = false;
+
+    //TODO handler for each ring category
+    private Consumer<String> ringHandler = name -> System.out.println("EXE [" + name + "]");
 
     /**
      * Creates a scene for MainScreen.
@@ -118,7 +119,7 @@ public class MainScreen implements Initializable {
     }
 
     /**
-     * toggles between showing and hiding dropdown menu
+     * toggles between showing and hiding dropdown menu.
      */
     private static void toggleNotifications(JFXDrawer notificationBox) {
         if (!notificationBox.isShown()) {
@@ -226,14 +227,15 @@ public class MainScreen implements Initializable {
     }
 
     /**
-     * add labels to the vbox
+     * add labels to the vbox.
      */
     public VBox setLabels() {
         VBox labelVBox = new VBox();
         Label title = new Label(" Recent notifications:");
         title.setMinWidth(350);
         title.setMinHeight(40);
-        title.setStyle("-fx-font-weight: bold; -fx-background-color: #50e476; -fx-font-size: 20; -fx-text-fill: white");
+        title.setStyle("-fx-font-weight: bold; -fx-background-color: #50e476;" +
+                " -fx-font-size: 20; -fx-text-fill: white");
         Label empty = new Label(" There are no notifications.");
         empty.setMinHeight(30);
         empty.setMinWidth(350);
@@ -247,8 +249,9 @@ public class MainScreen implements Initializable {
                 Label label = new Label(text);
                 label.setMinWidth(350);
                 label.setMinHeight(30);
-                label.setStyle("-fx-border-radius: 1; -fx-border-color: gray; -fx-background-color: white;" +
-                        " -fx-font-weight: bold; -fx-font-size:16");
+                label.setStyle("-fx-border-radius: 1; " +
+                        "-fx-border-color: gray;" + " -fx-background-color: white;"
+                        + " -fx-font-weight: bold; -fx-font-size:16");
                 labelVBox.getChildren().add(label);
             }
         }
@@ -256,7 +259,7 @@ public class MainScreen implements Initializable {
     }
 
     /**
-     * shows notifications
+     * shows notifications.
      */
     public void initialize(URL location, ResourceBundle resources) {
         IconButton notificationButton = new IconButton("Bell", 70, 70);
@@ -306,7 +309,8 @@ public class MainScreen implements Initializable {
             if (!option.equals(text)) {
                 substring = option.substring(0, Math.min(text.length(), option.length()));
             } else substring = text;
-            if (!text.replace(" ", "").isEmpty() && substring.toUpperCase().equals(text.toUpperCase())) {
+            if (!text.replace(" ", "").isEmpty()
+                    && substring.toUpperCase().equals(text.toUpperCase())) {
                 Label label = new Label(option);
                 label.setMinWidth(330);
                 label.setStyle("-fx-border-radius: 1; -fx-border-color: gray;");
