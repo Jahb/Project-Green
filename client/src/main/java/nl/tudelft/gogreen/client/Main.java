@@ -87,6 +87,7 @@ public class Main extends Application {
         try {
             stage.setScene(mainScreen.getScene());
             stage.setTitle("Go Green: MainScreen");
+            stage.setMinWidth(900);
         } catch (IOException ex) {
             pageOpenError(ex);
         }

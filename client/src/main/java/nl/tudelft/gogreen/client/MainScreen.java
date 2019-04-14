@@ -28,12 +28,11 @@ import java.net.URL;
 import java.util.ResourceBundle;
 import java.util.function.Consumer;
 
-
 /**
  * MainScreen object.
  *
  * @author Kamron Geijsen
- * @version 4.20.21
+ * @version 4.20.24
  */
 public class MainScreen implements Initializable {
 
@@ -74,6 +73,7 @@ public class MainScreen implements Initializable {
 
     /**
      * Creates a scene for MainScreen.
+     * 
      */
     public Scene getScene() throws IOException {
         URL url = Main.class.getResource("/MainScreen.fxml");
@@ -95,7 +95,6 @@ public class MainScreen implements Initializable {
         addIconButtons(buttonsPanel);
         addActivityButton(overlayLayer);
 
-
         helpText.setVisible(false);
         overlayLayer.setPrefSize(1000, 720);
 
@@ -107,7 +106,6 @@ public class MainScreen implements Initializable {
         if (!hasShownStreak) {
             setUpStreak();
         }
-
 
         scene.addEventHandler(MouseEvent.MOUSE_PRESSED, event -> {
             Node node = event.getPickResult().getIntersectedNode();
@@ -131,7 +129,6 @@ public class MainScreen implements Initializable {
         }
     }
 
-
     private void addRings(AnchorPane anchorPane) {
         ringMain = new Ring((int) (150 * .75), 150, Main.getWidth() / 2, 200, "MAIN");
         ringMain.setHandler(ringHandler);
@@ -148,12 +145,11 @@ public class MainScreen implements Initializable {
         ringPrevious.setUsername(Api.current.getUsernamePrevious());
         anchorPane.getChildren().add(ringPrevious.getPane());
 
-        scene.widthProperty()
-                .addListener((obs, oldVal, newVal) -> {
-                    ringMain.setX(newVal.intValue() / 2);
-                    ringNext.setX(120);
-                    ringPrevious.setX(newVal.intValue() - 120);
-                });
+        scene.widthProperty().addListener((obs, oldVal, newVal) -> {
+            ringMain.setX(newVal.intValue() / 2);
+            ringNext.setX(120);
+            ringPrevious.setX(newVal.intValue() - 120);
+        });
 
         updateRingValues();
 
@@ -181,20 +177,26 @@ public class MainScreen implements Initializable {
             Platform.runLater(() -> ringPrevious.startAnimation());
         }).start();
 
-
     }
 
     private void addActivityButton(AnchorPane anchorPane) {
         activityButton = new AddActivityButton();
         activityButton.setHandler(handler);
         anchorPane.getChildren().add(0, activityButton.getPane());
+
+        scene.widthProperty().addListener((obs, oldVal, newVal) -> {
+            activityButton.setX((newVal.longValue() - (600 * 31 / 32)) / 2);
+        });
+
+        scene.heightProperty().addListener((obs, oldVal, newVal) -> {
+            activityButton.setY(newVal.longValue() - 75);
+        });
     }
 
     private void addIconButtons(BorderPane root) {
         IconButton leaderboardButton = new IconButton("Leaderboard", 150, 150);
         IconButton addButton = new IconButton("Add", 600, 150);
         IconButton eventButton = new IconButton("Event", 150, 150);
-
 
         root.setLeft(leaderboardButton.getStackPane());
         root.setCenter(addButton.getStackPane());
@@ -223,7 +225,6 @@ public class MainScreen implements Initializable {
         rightHbox.getChildren().add(root2);
         profileButton.setOnClick(event -> Main.openProfileScreen());
 
-
     }
 
     /**
@@ -234,8 +235,8 @@ public class MainScreen implements Initializable {
         Label title = new Label(" Recent notifications:");
         title.setMinWidth(350);
         title.setMinHeight(40);
-        title.setStyle("-fx-font-weight: bold; -fx-background-color: #50e476;" +
-                " -fx-font-size: 20; -fx-text-fill: white");
+        title.setStyle("-fx-font-weight: bold; -fx-background-color: #50e476; " +
+            "-fx-font-size: 20; -fx-text-fill: white");
         Label empty = new Label(" There are no notifications.");
         empty.setMinHeight(30);
         empty.setMinWidth(350);
@@ -249,9 +250,8 @@ public class MainScreen implements Initializable {
                 Label label = new Label(text);
                 label.setMinWidth(350);
                 label.setMinHeight(30);
-                label.setStyle("-fx-border-radius: 1; " +
-                        "-fx-border-color: gray;" + " -fx-background-color: white;"
-                        + " -fx-font-weight: bold; -fx-font-size:16");
+                label.setStyle("-fx-border-radius: 1; -fx-border-color: gray; " +
+                    "-fx-background-color: white; -fx-font-weight: bold; -fx-font-size:16");
                 labelVBox.getChildren().add(label);
             }
         }
@@ -268,7 +268,8 @@ public class MainScreen implements Initializable {
         topLeftButtons.getChildren().add(quizButton.getStackPane());
         quizButton.setOnClick(event -> Main.openQuizScreen());
         notificationButton.setOnClick(event -> {
-            if (notificationBox.isHidden()) notificationBox.setSidePane(setLabels());
+            if (notificationBox.isHidden())
+                notificationBox.setSidePane(setLabels());
             toggleNotifications(notificationBox);
         });
         /*

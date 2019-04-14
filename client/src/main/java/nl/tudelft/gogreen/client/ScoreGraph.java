@@ -1,7 +1,5 @@
 package nl.tudelft.gogreen.client;
 
-import java.util.Arrays;
-
 import javafx.geometry.Insets;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
@@ -21,6 +19,8 @@ import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import nl.tudelft.gogreen.shared.DatePeriod;
 
+import java.util.Arrays;
+
 public class ScoreGraph {
 
     AnchorPane pane;
@@ -29,24 +29,25 @@ public class ScoreGraph {
     Text title;
     StackPane titleBackground;
 
-    ScoreGraph(int x, int y, int width, int height) {
+    ScoreGraph(int xoffs, int yoffs, int width, int height) {
         graph = new UndecoratedGraph(width, height);
 
         title = new Text(datePeriod.toString());
         title.setFont(Font.font("Calibri", FontWeight.BOLD, 30));
         title.setFill(Color.WHITE);
         titleBackground = new StackPane(title);
-        titleBackground.setBackground(new Background(
-                new BackgroundFill(new Color(.2, .2, .2, .7), new CornerRadii(0, 0, 10, 0, false), null)));
+        titleBackground.setBackground(new Background(new BackgroundFill(
+            new Color(.2, .2, .2, .7), new CornerRadii(0, 0, 10, 0, false), null)));
         titleBackground.setBorder(new Border(new BorderStroke(Color.BLACK, BorderStrokeStyle.SOLID,
                 new CornerRadii(0, 0, 10, 0, false), new BorderWidths(0, 1, 1, 0))));
         titleBackground.setPadding(new Insets(5, 0, 5, 0));
         titleBackground.setPrefWidth(100);
 
         pane = new AnchorPane(graph.getCanvas(), titleBackground);
-        pane.setLayoutX(x);
-        pane.setLayoutY(y);
-        pane.setBorder(new Border(new BorderStroke(Color.BLACK, BorderStrokeStyle.SOLID, null, BorderWidths.DEFAULT)));
+        pane.setLayoutX(xoffs);
+        pane.setLayoutY(yoffs);
+        pane.setBorder(new Border(new BorderStroke(
+            Color.BLACK, BorderStrokeStyle.SOLID, null, BorderWidths.DEFAULT)));
 
     }
 
@@ -60,11 +61,9 @@ public class ScoreGraph {
 
     public class UndecoratedGraph {
         private Canvas graphCanvas;
-        private GraphicsContext g;
+        private GraphicsContext gc;
 
         private double[] allData = new double[1];
-        private double minX;
-        private double maxX;
         private double minY;
         private double maxY;
         private double width;
@@ -75,7 +74,7 @@ public class ScoreGraph {
             this.height = height;
 
             graphCanvas = new Canvas(width, height);
-            g = graphCanvas.getGraphicsContext2D();
+            gc = graphCanvas.getGraphicsContext2D();
 
         }
 
@@ -83,55 +82,54 @@ public class ScoreGraph {
             allData = data;
         }
 
+        /**
+         * Draws the graph to the canvas.
+         * 
+         */
         public void drawGraph() {
             final int padding = 20;
             final double insetWidth = width - padding * 2;
             final double insetHeight = height - padding * 2;
 
             final int len = allData.length;
-            double[] xPoints = new double[len];
-            Arrays.setAll(xPoints, a -> padding + a / (double) (len - 1) * insetWidth);
-            double[] yPoints = Arrays.stream(allData).map(a ->
+            double[] xpoints = new double[len];
+            Arrays.setAll(xpoints, a -> padding + a / (double) (len - 1) * insetWidth);
+            double[] ypoints = Arrays.stream(allData).map(a ->
                     padding + insetHeight - (a - minY) / (maxY - minY) * insetHeight).toArray();
-            System.out.println(Arrays.toString(xPoints));
-            System.out.println(Arrays.toString(yPoints));
+            System.out.println(Arrays.toString(xpoints));
+            System.out.println(Arrays.toString(ypoints));
 
-            g.setFill(Color.WHITE);
-            g.fillRect(0, 0, width, height);
+            gc.setFill(Color.WHITE);
+            gc.fillRect(0, 0, width, height);
 
-            g.setLineWidth(5);
-            g.setStroke(Color.DARKGRAY);
-            g.setFill(Color.DARKGRAY);
-            g.transform(1, 0, 0, 1, 3, 3);
-            g.strokePolyline(xPoints, yPoints, len);
-            g.transform(1, 0, 0, 1, -3, -3);
+            gc.setLineWidth(5);
+            gc.setStroke(Color.DARKGRAY);
+            gc.setFill(Color.DARKGRAY);
+            gc.transform(1, 0, 0, 1, 3, 3);
+            gc.strokePolyline(xpoints, ypoints, len);
+            gc.transform(1, 0, 0, 1, -3, -3);
 
             final double r = 12;
             for (int i = 0; i < len; i++)
-                g.fillOval(xPoints[i] - r / 2 + 3, yPoints[i] - r / 2 + 3, r, r);
+                gc.fillOval(xpoints[i] - r / 2 + 3, ypoints[i] - r / 2 + 3, r, r);
 
 
-            g.setStroke(Color.RED);
-            g.strokePolyline(xPoints, yPoints, len);
+            gc.setStroke(Color.RED);
+            gc.strokePolyline(xpoints, ypoints, len);
 
-//            final double r = 12;
             for (int i = 0; i < len; i++) {
-                g.setFill(Color.RED);
-                g.fillOval(xPoints[i] - r / 2, yPoints[i] - r / 2, r, r);
-                g.setFill(Color.WHITE);
-                g.fillOval(xPoints[i] - r / 4, yPoints[i] - r / 4, r / 2, r / 2);
+                gc.setFill(Color.RED);
+                gc.fillOval(xpoints[i] - r / 2, ypoints[i] - r / 2, r, r);
+                gc.setFill(Color.WHITE);
+                gc.fillOval(xpoints[i] - r / 4, ypoints[i] - r / 4, r / 2, r / 2);
             }
         }
 
-        public void standardizeY() {
-            minY = Double.MAX_VALUE;
-            maxY = Double.MIN_VALUE;
-            for (double d : allData) {
-                minY = Math.min(minY, d);
-                maxY = Math.max(maxY, d);
-            }
-        }
-
+        /**
+         * Updates the minY and maxY.
+         * 
+         * @param snapOntoValue the value for the graphs y-axis to snap onto.
+         */
         public void standardizeY(double snapOntoValue) {
             minY = Double.MAX_VALUE;
             maxY = Double.MIN_VALUE;
