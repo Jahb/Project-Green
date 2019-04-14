@@ -78,16 +78,7 @@ public class LeaderboardController implements Initializable {
 
         XYChart.Series<Integer, Integer> weekly = new XYChart.Series<>();
 
-        weekly.getData().add(new XYChart.Data<>(1, 24));
-        weekly.getData().add(new XYChart.Data<>(2, 15));
-        weekly.getData().add(new XYChart.Data<>(3, 28));
-        weekly.getData().add(new XYChart.Data<>(4, 21));
-
         XYChart.Series<Integer, Integer> monthly = new XYChart.Series<>();
-        monthly.getData().add(new XYChart.Data<>(1, 23));
-        monthly.getData().add(new XYChart.Data<>(5, 13));
-        monthly.getData().add(new XYChart.Data<>(10, 19));
-        monthly.getData().add(new XYChart.Data<>(15, 25));
 
         UpdateableListViewSkin<ListItem> skin = new UpdateableListViewSkin<>(this.leaderboardList);
         this.leaderboardList.setSkin(skin);
