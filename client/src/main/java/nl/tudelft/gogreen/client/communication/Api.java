@@ -522,7 +522,7 @@ public class Api {
      *
      * @return a list of all achievement id's
      */
-    public List<Integer> getAchievemens(String username) {
+    public List<Integer> getAchievements(String username) {
         String res;
         Map<String, Object> params = new HashMap<>();
         params.put("username", username);

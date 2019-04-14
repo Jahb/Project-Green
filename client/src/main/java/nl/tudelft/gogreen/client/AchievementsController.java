@@ -62,7 +62,7 @@ public class AchievementsController implements Initializable {
                         new ListItem(it, "images/IconCupGold.png"))
                         .collect(Collectors.toList()));
         userAchievementsList.addAll(
-                Api.current.getAchievemens(
+                Api.current.getAchievements(
                         Api.current.getUsername())
                         .stream().map(it ->
                         Api.current.getAchievementNames().get(it - 1))
